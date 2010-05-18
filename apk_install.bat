@@ -1,3 +1,0 @@
-
-adb install Bubble.apk
-
