@@ -2,7 +2,7 @@ package com.tsubu.bubble;
 
 import twExpress.*;
 
-public class bubbleActivity extends TweActivity 
+public class BubbleActivity extends TweActivity 
 {
 	private Scene scene;
 	
@@ -12,7 +12,7 @@ public class bubbleActivity extends TweActivity
 	// -------------------------
 	// コンストラクツゥ
 	// -------------------------
-	public bubbleActivity()
+	public BubbleActivity()
 	{
 		this.scene = null;
 		this.gameManager = null;
