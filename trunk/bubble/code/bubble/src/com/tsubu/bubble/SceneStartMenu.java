@@ -91,7 +91,11 @@ public class SceneStartMenu extends Scene
 		this.tempString.setAlpha( ratio );
 		this.tempString.draw( this.activityInterface.getScreenWidth()/2.0f , 350 );
 
-		this.imageTsubuIcon.setAlpha( ratio );
+		if( this.isExit )
+			this.imageTsubuIcon.setAlpha( ratio );
+		else
+			this.imageTsubuIcon.setColor( ratio , ratio , ratio );
+		
 		this.imageTsubuIcon.draw( this.activityInterface.getScreenWidth()/2.0f , this.activityInterface.getScreenHeight()/2.0f );
 	}
 

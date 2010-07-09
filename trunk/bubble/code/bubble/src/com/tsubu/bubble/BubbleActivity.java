@@ -1,7 +1,5 @@
 package com.tsubu.bubble;
 
-import android.util.Log;
-import android.view.KeyEvent;
 import twExpress.*;
 
 public class BubbleActivity extends TweActivity 
@@ -52,12 +50,6 @@ public class BubbleActivity extends TweActivity
 		this.childLock = new ChildLock( this );
 	}
 	
-
-	public boolean onKeyDown(int iKeyCode, KeyEvent oKeyEvent)
-	{
-    this.getLogManager().logDebug("key", "0x%x",iKeyCode);
-	return super.onKeyDown(iKeyCode, oKeyEvent);
-	}	
 	
 	/** -
 	 * 画面の起動時の処理
