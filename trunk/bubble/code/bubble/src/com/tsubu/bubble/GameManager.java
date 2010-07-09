@@ -103,7 +103,8 @@ public class GameManager implements GameListener
 	// ---------------------------------		
 	public void draw()
 	{
-		this.shapeBackScreen.draw();
+		// this.shapeBackScreen.draw();
+		this.backgroundDraw();
 		
 		for( int drawId = 0 ; drawId<this.bubbleList.size() ; drawId++ )
 		{
@@ -144,5 +145,15 @@ public class GameManager implements GameListener
 	public Random getRandom()
 	{
 		return this.random;
+	}
+	
+	public void bgmStart()
+	{
+		this.resouce.getBgm().play();
+	}
+	
+	public void backgroundDraw()
+	{
+		this.resouce.getBackground().draw( 0 , 0 );
 	}
 }

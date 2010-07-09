@@ -1,5 +1,9 @@
 package com.tsubu.bubble;
 
+
+/*
+ * 	泡のインタフェイス　
+ */
 public interface Bubble
 {
 	public boolean action();

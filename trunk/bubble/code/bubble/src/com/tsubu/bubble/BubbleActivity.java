@@ -1,5 +1,7 @@
 package com.tsubu.bubble;
 
+import android.util.Log;
+import android.view.KeyEvent;
 import twExpress.*;
 
 public class BubbleActivity extends TweActivity 
@@ -8,6 +10,10 @@ public class BubbleActivity extends TweActivity
 	
 	// ゲーム管理オブジェクトゥ
 	private GameManager gameManager;
+	
+	
+	// チャイルドロック機能
+	private ChildLock childLock;
 	
 	// -------------------------
 	// コンストラクツゥ
@@ -32,10 +38,27 @@ public class BubbleActivity extends TweActivity
 		config.setUseDeviceVivrate( true );
 		
 		// 背景色設定
-		config.setBackColor( 0.5f , 0.5f , 0.5f );
+		config.setBackColor( 0.0f , 0.0f , 0.0f );
+		
+		// 解像度固定
+		config.setScreenSize( 800 , 480 );
+		
+		// 基本キー動作抑止
+		//config.setKeyDefaultAction( KeyEvent.KEYCODE_MENU , false );
+		//config.setKeyDefaultAction( KeyEvent.KEYCODE_BACK , false );
+		//config.setKeyDefaultAction( KeyEvent.KEYCODE_HOME , false );
+		
+		// ちゃいるどろっく
+		this.childLock = new ChildLock( this );
 	}
 	
 
+	public boolean onKeyDown(int iKeyCode, KeyEvent oKeyEvent)
+	{
+    this.getLogManager().logDebug("key", "0x%x",iKeyCode);
+	return super.onKeyDown(iKeyCode, oKeyEvent);
+	}	
+	
 	/** -
 	 * 画面の起動時の処理
 	 */	
@@ -43,6 +66,8 @@ public class BubbleActivity extends TweActivity
 	protected void eventCreate()
 	{
 		this.gameManager = new GameManager( this );
+		
+		this.gameManager.bgmStart();
 		
 		// 最初はスタートメニュー画面
 		this.scene = new SceneStartMenu( this , gameManager );
@@ -62,6 +87,7 @@ public class BubbleActivity extends TweActivity
 			this.scene.finish();
 			this.scene = null;
 		}
+		
 	}
 	
 
@@ -71,6 +97,20 @@ public class BubbleActivity extends TweActivity
 	@Override
 	protected void eventActionFrame()
 	{
+		if( this.childLock.checkShutdownControl() )
+		{
+			try
+			{
+				this.finish();
+				
+			}
+			catch (Throwable e)
+			{
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+			
 		if( this.scene != null )
 		{
 			SceneResult sceneResult;
