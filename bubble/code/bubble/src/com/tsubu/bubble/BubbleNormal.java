@@ -10,6 +10,17 @@ public class BubbleNormal implements Bubble
 	
 	private float scale;
 	
+	class BubbleColor
+	{
+		public float red , green , blue;
+	};
+	
+	private BubbleColor[] bubbleColor;
+	
+	private final int COLOR_SET_MAX = 4; // 色は４箇所に設定
+	
+	private float rotate;
+	
 	//------
 	// しゃぼんだま　の状態
 	//------
@@ -50,9 +61,22 @@ public class BubbleNormal implements Bubble
 		this.frameCount = 0;
 		
 		// 耐久度は 1～3
-		this.life = gameListener.getRandom().nextInt(2)+1;
+		this.life = gameListener.getRandom().nextInt(3)+1;
 
 		this.scale = 1.0f;
+		
+		bubbleColor = new BubbleColor[ COLOR_SET_MAX ];
+		
+		for( int colorId=0 ; colorId<COLOR_SET_MAX ; colorId++ )
+		{
+			bubbleColor[ colorId ] = new BubbleColor();
+			bubbleColor[ colorId ].red   = (float)gameListener.getRandom().nextInt( 100 ) / 100.0f;
+			bubbleColor[ colorId ].green = (float)gameListener.getRandom().nextInt( 100 ) / 100.0f;
+			bubbleColor[ colorId ].blue  = (float)gameListener.getRandom().nextInt( 100 ) / 100.0f;
+		}
+		
+		
+		this.rotate = 0;
 	}
 	
 	
@@ -115,13 +139,37 @@ public class BubbleNormal implements Bubble
 		if( this.frameCount>=8 && this.status == Status.DESTROY )
 			return false;
 		
+		if( this.status == Status.NORMAL )
+			this.rotate = (float)(java.lang.Math.sin( (double)frameCount/30.0 )*360.0);
+		
 		return true;
 	}
 
 	@Override
 	public void draw()
 	{
+		
+		this.animeBubble.setRotate( this.rotate );
 		this.animeBubble.setScale( this.scale );
+		this.animeBubble.setBlendMode( TweBlendMode.ADD );
+		
+		for( int colorId=0 ; colorId<this.COLOR_SET_MAX ; colorId++ )
+		{
+			TweVertexPoint point = TweVertexPoint.BOTTOM_LEFT;
+			
+			BubbleColor color = this.bubbleColor[ colorId ];
+			
+			switch( colorId )
+			{
+				case 0 : point=TweVertexPoint.BOTTOM_LEFT;  break;
+				case 1 : point=TweVertexPoint.BOTTOM_RIGHT; break;
+				case 2 : point=TweVertexPoint.TOP_LEFT;     break;
+				case 4 : point=TweVertexPoint.TOP_RIGHT;    break;
+				default:
+			}
+			
+			this.animeBubble.setColor( point , color.red , color.green , color.red );
+		}
 		
 		switch( this.status )
 		{
@@ -138,6 +186,7 @@ public class BubbleNormal implements Bubble
 			this.animeBubble.draw( this.positionX , this.positionY );
 			break;
 		}
+		
 	}
 
 }

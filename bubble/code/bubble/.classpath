@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="/home/morikawa/workspace/Bubble/TwExpress_v0_6/twExpress_Ver0_06.jar"/>
+	<classpathentry kind="lib" path="E:/tool/TwExpressLib/TwExpress_v0_7/twExpress_Ver0_07.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
