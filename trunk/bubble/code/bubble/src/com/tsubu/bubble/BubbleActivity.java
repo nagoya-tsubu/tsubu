@@ -6,7 +6,7 @@ public class BubbleActivity extends TweActivity
 {
 	private Scene scene;
 	
-	// ゲーム管理オブジェクトゥ
+	// ゲーム管理オブジェクト
 	private GameManager gameManager;
 	
 	
