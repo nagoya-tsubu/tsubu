@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	android:background="#FFD4EEF9"
+>
+	<LinearLayout
+		android:id="@+id/LinearLayout01"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="bottom|center_horizontal"
+	>
+		<ImageView
+			android:id="@+id/ImageView01"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_cat04"
+		/>
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/LinearLayout02"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"
+		android:gravity="center"
+	>
+		<ImageView
+			android:id="@+id/ImageView02"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_hukidashi01"
+			android:onClick="onClickHajimeru"
+		/>
+<!--
+		<TextView
+			android:id="@+id/TextView01"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="はじめる"
+			android:textSize="50sp"
+			android:textColor="#F00"
+			android:onClick="onClickHajimeru"
+			android:clickable="true"
+		/>
+-->
+	</LinearLayout>
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/kumo"
+		android:id="@+id/ImageViewKumo"
+		android:paddingTop="50dip"
+		android:paddingLeft="20dip"
+	/>
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/taiyo"
+		android:layout_gravity="right"
+		android:onClick="onClickTaiyo"
+		android:id="@+id/ImageViewTaiyo"
+		android:padding="20dip"
+	/>
+</FrameLayout>

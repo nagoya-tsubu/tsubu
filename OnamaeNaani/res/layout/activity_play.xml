@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:background="#FFD4EEF9" 
+  android:layout_width="fill_parent" 
+  android:layout_height="fill_parent">
+  
+	
+
+	<LinearLayout 
+		android:id="@+id/LinearLayout01" 
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+	
+	</LinearLayout>
+	
+	<ImageView 
+		android:id="@+id/ImageViewKumo" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:src="@drawable/kumo" 
+		android:paddingTop="50dip" 
+		android:paddingLeft="20dip" />
+	
+	<ImageView 
+		android:id="@+id/ImageViewTaiyo" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:src="@drawable/taiyo" 
+		android:layout_gravity="right" 
+		android:onClick="onClickTaiyo" 
+		android:padding="20dip" />
+	
+	<LinearLayout 
+		android:id="@+id/LinearLayout02" 
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" 
+		android:paddingTop="150dip" 
+		android:orientation="vertical">
+		
+		<FrameLayout 
+			android:id="@+id/FrameLayout01" 
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" 
+			android:layout_weight="1">
+
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon01" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon01" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx01" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp01" 
+					android:padding="5dip"/>
+			</FrameLayout>
+
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon02" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon02" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx02" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp02" 
+					android:padding="5dip"/>
+			</FrameLayout>
+
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon03" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon03" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx03" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp03" 
+					android:padding="5dip"/>
+			</FrameLayout>
+						
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon04" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon04" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx04" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp04" 
+					android:padding="5dip"/>
+			</FrameLayout>
+
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon05" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				
+	
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon05" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx05" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp05" 
+					android:padding="5dip"/>
+			</FrameLayout>
+
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon06" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				
+	
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon06" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx06" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp06" 
+					android:padding="5dip"/>
+			</FrameLayout>
+
+			<FrameLayout 
+					android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon07" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				
+	
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon07" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx07" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp07" 
+					android:padding="5dip"/>
+			</FrameLayout>
+			
+			<FrameLayout 
+				android:layout_gravity="center_horizontal" 
+				android:id="@+id/Shabon08" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				>
+				
+	
+				<ViewFlipper
+					android:id="@+id/flipper"
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content">
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabon08" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:src="@drawable/shabonx08" 
+						android:padding="5dip"/>
+	
+					<ImageView 
+						android:layout_width="120dip" 
+						android:layout_height="120dip" 
+						android:padding="5dip"/>
+	
+				</ViewFlipper>
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp08" 
+					android:padding="5dip"/>
+			</FrameLayout>
+			
+			
+			
+		</FrameLayout>
+		
+		<LinearLayout 
+			android:id="@+id/LinearLayout01" 
+			android:layout_width="fill_parent" 
+			android:gravity="bottom|center_horizontal" 
+			android:layout_height="wrap_content">
+		
+			<ImageView 
+				android:id="@+id/ImageView01" 
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:onClick="onClickCat" 
+				android:src="@drawable/btn_cat01" />
+		</LinearLayout>
+	</LinearLayout>
+</FrameLayout>
