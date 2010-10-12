@@ -15,14 +15,6 @@
 	</LinearLayout>
 	
 	<ImageView 
-		android:id="@+id/ImageViewKumo" 
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content" 
-		android:src="@drawable/kumo" 
-		android:paddingTop="50dip" 
-		android:paddingLeft="20dip" />
-	
-	<ImageView 
 		android:id="@+id/ImageViewTaiyo" 
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
@@ -31,6 +23,14 @@
 		android:onClick="onClickTaiyo" 
 		android:padding="20dip" />
 	
+	<ImageView 
+		android:id="@+id/ImageViewKumo" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content" 
+		android:src="@drawable/kumo" 
+		android:paddingTop="50dip" 
+		android:paddingLeft="20dip" />
+
 	<LinearLayout 
 		android:id="@+id/LinearLayout02" 
 		android:layout_width="fill_parent" 

@@ -1,5 +1,7 @@
 package jp.caldroid.sample.hackathon.onamae;
 
+import java.util.Random;
+
 import jp.caldroid.sample.hackathon.onamae.util.OnamaeAnimUtil;
 import android.content.Intent;
 import android.os.Bundle;
@@ -175,9 +177,13 @@ public class PlayActivity extends BaseActivity {
 		}
 
 		int start = 1000;
+		Random rand = new Random();
+		
 		for (int i = 0; i < 10; i++) {
-			for (int j = 1; j <= 4; j++) {
-				mHandler.sendEmptyMessageDelayed(j, start);
+			for (int j = 1; j <= shabons.length; j++) {
+				int randshabon = rand.nextInt()%shabons.length;
+				randshabon = randshabon<0 ? -randshabon : randshabon;//乱数を正数に
+				mHandler.sendEmptyMessageDelayed(randshabon+1, start);
 				start += OnamaeAnimUtil.SHABON_DURATION
 						+ OnamaeAnimUtil.SHABON_CLICK_DURATION
 						+ OnamaeAnimUtil.SHABON_ALPHA_DURATION + 100;
