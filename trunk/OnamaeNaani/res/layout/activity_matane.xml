@@ -48,17 +48,17 @@
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:src="@drawable/kumo"
-		android:paddingLeft="20dip"
-		android:paddingTop="50dip"
-		android:id="@+id/ImageViewKumo"
-	/>
-	<ImageView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
 		android:src="@drawable/taiyo"
 		android:layout_gravity="right"
 		android:padding="20dip"
 		android:id="@+id/ImageViewTaiyo"
+	/>
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/kumo"
+		android:paddingLeft="20dip"
+		android:paddingTop="50dip"
+		android:id="@+id/ImageViewKumo"
 	/>
 </FrameLayout>
