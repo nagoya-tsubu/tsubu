@@ -122,6 +122,8 @@ public class PlayActivity extends BaseActivity {
 			vs  = (ViewFlipper) v.mShabon.findViewById(R.id.flipper);
 		}
 		vs.setDisplayedChild(IMG_ANIMAL);
+		Message msg = mHandler.obtainMessage(MSG_GO_ANIMAL_ACTIVITY, v.animal, -1);
+		mHandler.sendMessageDelayed(msg, SHOW_ANIMAL_OFFSET);
 	}
 
 	private boolean isActive = false;
@@ -179,7 +181,7 @@ public class PlayActivity extends BaseActivity {
 		int start = 1000;
 		Random rand = new Random();
 		
-		for (int i = 0; i < 10; i++) {
+//		for (int i = 0; i < 10; i++) {
 			for (int j = 1; j <= shabons.length; j++) {
 				int randshabon = rand.nextInt()%shabons.length;
 				randshabon = randshabon<0 ? -randshabon : randshabon;//乱数を正数に
@@ -188,21 +190,34 @@ public class PlayActivity extends BaseActivity {
 						+ OnamaeAnimUtil.SHABON_CLICK_DURATION
 						+ OnamaeAnimUtil.SHABON_ALPHA_DURATION + 100;
 			}
-		}
+//		}
 		mHandler.sendEmptyMessageDelayed(100, start);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
+//		removeMessages();
+	}
+	
+	@Override
+	protected void onPause(){
+		super.onPause();
 		removeMessages();
 	}
 
 	private void removeMessages() {
 
-		for (int i = 1; i <= 4; i++)
+		for (int i = 1; i <= mShabons.length; i++)
 			mHandler.removeMessages(i);
 		mHandler.removeMessages(MSG_REFRESH);
+		
+		//画面に残っている動物を消す
+		for (int i = 0; i < mShabons.length; i++) {
+			ViewHolder shabon = mShabons[i];
+			shabon.mShabon.clearAnimation();
+		}
+
 	}
 
 	@Override
