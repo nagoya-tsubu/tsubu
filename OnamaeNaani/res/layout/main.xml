@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_gravity="center"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/top_back"
+    android:background="#FFD4EEF9"
     android:onClick="onClickFrame" >
 		
+		<ImageView 
+			android:id="@+id/ImageViewTop_Shabon" 
+			android:layout_width="fill_parent" 
+			android:layout_height="fill_parent" 
+			android:src="@drawable/top_shabon" 
+			android:scaleType="fitCenter" />
+	
 		<ImageView 
 			android:id="@+id/ImageViewTaiyo" 
 			android:layout_width="wrap_content" 
