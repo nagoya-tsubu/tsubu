@@ -3,14 +3,15 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFD4EEF9"
+    android:background="#D4EEF9"
     android:onClick="onClickFrame" >
 		
 		<ImageView 
 			android:id="@+id/ImageViewTop_Shabon" 
-			android:layout_width="fill_parent" 
-			android:layout_height="fill_parent" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
 			android:src="@drawable/top_shabon" 
+			android:layout_gravity="center" 
 			android:scaleType="fitCenter" />
 	
 		<ImageView 
