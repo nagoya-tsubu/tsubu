@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 //import android.widget.Toast;
 
 /**
@@ -53,11 +54,10 @@ public class BaseActivity extends Activity {
 	protected void startAnimationTaiyoKumo() {
 		View taiyo = findViewById(R.id.ImageViewTaiyo);
 		if (taiyo != null)
-			taiyo.startAnimation(OnamaeAnimUtil.createTaiyoAnimation(this));
+			taiyo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.taiyo));
 		View kumo = findViewById(R.id.ImageViewKumo);
 		if (kumo != null)
-			kumo.startAnimation(OnamaeAnimUtil.createKumoAnimation(this));
-
+			kumo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.kumo));
 	}
 
 }
