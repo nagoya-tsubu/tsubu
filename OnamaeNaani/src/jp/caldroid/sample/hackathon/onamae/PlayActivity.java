@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.FrameLayout;
 import android.widget.ViewFlipper;
@@ -133,33 +134,19 @@ public class PlayActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_play);
+		
+		Animation shabonAnim = AnimationUtils.loadAnimation(this, R.anim.shabon);
+		Animation shabonClickAnim = AnimationUtils.loadAnimation(this, R.anim.shabon_click);
 
 		ViewHolder[] shabons = new ViewHolder[] {
-				new ViewHolder(findViewById(R.id.Shabon01),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()),
-				new ViewHolder(findViewById(R.id.Shabon02),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()),
-				new ViewHolder(findViewById(R.id.Shabon03),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()),
-				new ViewHolder(findViewById(R.id.Shabon04),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()), 
-				new ViewHolder(findViewById(R.id.Shabon05),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()), 
-				new ViewHolder(findViewById(R.id.Shabon06),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()), 
-				new ViewHolder(findViewById(R.id.Shabon07),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()), 
-				new ViewHolder(findViewById(R.id.Shabon08),
-						OnamaeAnimUtil.createShabonAnimation(),
-						OnamaeAnimUtil.createShabonClickAnimation()), };
-
+				new ViewHolder(findViewById(R.id.Shabon01),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon02),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon03),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon04),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon05),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon06),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon07),shabonAnim,shabonClickAnim),
+				new ViewHolder(findViewById(R.id.Shabon08),shabonAnim,shabonClickAnim)};
 		mShabons = shabons;
 
 		startAnimationTaiyoKumo();

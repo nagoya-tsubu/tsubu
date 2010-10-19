@@ -103,36 +103,31 @@ public class OnamaeAnimUtil {
 	 */
 	public static Animation createShabonAnimation() {
 		AnimationSet set = new AnimationSet(false);
-
+		//点滅アニメーション
 		AlphaAnimation aa = new AlphaAnimation(0f, 1f);
 		aa.setDuration(SHABON_ALPHA_DURATION * 4);
-
+		//左右に平行移動
 		TranslateAnimation ta1 = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, -0.1f,
 				Animation.RELATIVE_TO_PARENT, 0.1f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
 		ta1.setDuration(SHABON_DURATION / 5);
-		ta1.setRepeatMode(Animation.REVERSE);
-		ta1.setRepeatCount(SHABON_DURATION / (SHABON_DURATION / 5) - 1);
-
+		ta1.setRepeatMode(Animation.REVERSE);//逆方向にアニメーションの繰り返し
+		ta1.setRepeatCount(SHABON_DURATION / (SHABON_DURATION / 5) - 1);//左→右→左→右→左
+		//初期値：縮小　→ もとのサイズ
 		ScaleAnimation sa = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
 		sa.setDuration(SHABON_DURATION - SHABON_ALPHA_DURATION);
-		// sa.setRepeatCount(1);
-		// sa.setRepeatMode(Animation.REVERSE);
-
+		//下から上に平行移動
 		TranslateAnimation ta2 = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, 0f, Animation.RELATIVE_TO_PARENT,
-				0f, Animation.RELATIVE_TO_PARENT, 0.8f, // 猫の上あたり
+				Animation.RELATIVE_TO_PARENT, 0f, 
+				Animation.RELATIVE_TO_PARENT, 0f, 
+				Animation.RELATIVE_TO_PARENT, 0.8f, // 猫の上あたり
 				Animation.RELATIVE_TO_PARENT, 0f);
 		ta2.setDuration(SHABON_DURATION + SHABON_ALPHA_DURATION);
-
-		AlphaAnimation aa2 = new AlphaAnimation(1f, 0f);
-		aa2.setDuration(SHABON_ALPHA_DURATION);
-		aa2.setStartOffset(SHABON_DURATION - SHABON_ALPHA_DURATION);
-
+		//右から中心位置に戻るアニメーション
 		TranslateAnimation ta3 = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, 0f, Animation.RELATIVE_TO_PARENT,
 				-0.1f, Animation.RELATIVE_TO_PARENT, 0f,
@@ -144,7 +139,6 @@ public class OnamaeAnimUtil {
 		set.addAnimation(ta1);
 		set.addAnimation(sa);
 		set.addAnimation(ta2);
-		// set.addAnimation(aa2);
 		set.addAnimation(ta3);
 		set.setFillAfter(true);
 
