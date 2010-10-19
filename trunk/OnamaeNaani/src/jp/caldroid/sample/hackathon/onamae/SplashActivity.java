@@ -1,12 +1,12 @@
 package jp.caldroid.sample.hackathon.onamae;
 
-import jp.caldroid.sample.hackathon.onamae.util.OnamaeAnimUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 public class SplashActivity extends Activity {
@@ -24,7 +24,8 @@ public class SplashActivity extends Activity {
 				
 				if(mTitleLogo != null) {
 					try {
-						mTitleLogo.startAnimation(OnamaeAnimUtil.createSplashLogoAnimation());
+//						mTitleLogo.startAnimation(OnamaeAnimUtil.createSplashLogoAnimation());
+						mTitleLogo.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.splash_logo));
 					} catch (Exception e) {
 						// 何もしない
 					}
