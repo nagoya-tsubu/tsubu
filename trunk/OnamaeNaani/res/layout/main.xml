@@ -3,33 +3,14 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#D4EEF9"
+    android:background="#FFD4EEF9"
     android:onClick="onClickFrame" >
+    
+	<ImageView 
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" 
+		android:background="@drawable/topbg" />
 		
-		<ImageView 
-			android:id="@+id/ImageViewTop_Shabon" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:src="@drawable/top_shabon" 
-			android:layout_gravity="center" 
-			android:scaleType="fitCenter" />
-	
-		<ImageView 
-			android:id="@+id/ImageViewTaiyo" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:src="@drawable/taiyo" 
-			android:layout_gravity="right" 
-			android:padding="20dip" />
-	
-		<ImageView 
-			android:id="@+id/ImageViewKumo" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:src="@drawable/kumo" 
-			android:paddingTop="50dip" 
-			android:paddingLeft="20dip" />
-
 	<LinearLayout 
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent" 
@@ -39,8 +20,7 @@
 			android:id="@+id/TitleLogo" 
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 
-			android:src="@drawable/title" 
-			/>
+			android:src="@drawable/title" />
 	
 	</LinearLayout>
 

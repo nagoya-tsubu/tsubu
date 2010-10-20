@@ -45,15 +45,21 @@
 			android:layout_weight="1">
 
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon01" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
-				<ViewFlipper
+				android:layout_height="wrap_content" >
+				
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp01" 
+					android:padding="5dip"/>
+				<ViewFlipper				
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -72,23 +78,24 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp01" 
-					android:padding="5dip"/>
 			</FrameLayout>
 
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon02" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
+				android:layout_height="wrap_content" >
+				
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp02" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -107,23 +114,24 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp02" 
-					android:padding="5dip"/>
 			</FrameLayout>
 
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon03" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
+				android:layout_height="wrap_content" >
+				
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp03" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content">
+					android:layout_height="wrap_content" >
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -142,23 +150,24 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp03" 
-					android:padding="5dip"/>
 			</FrameLayout>
 						
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon04" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
+				android:layout_height="wrap_content" >
+				
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp04" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -177,25 +186,24 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp04" 
-					android:padding="5dip"/>
 			</FrameLayout>
 
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon05" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
-				
-	
+				android:layout_height="wrap_content" >
+					
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp05" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -214,25 +222,24 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp05" 
-					android:padding="5dip"/>
 			</FrameLayout>
 
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon06" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
-				
-	
+				android:layout_height="wrap_content" >
+					
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp06" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -251,25 +258,24 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp06" 
-					android:padding="5dip"/>
 			</FrameLayout>
 
 			<FrameLayout 
-					android:layout_gravity="center_horizontal" 
+				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon07" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
-				
-	
+				android:layout_height="wrap_content" >
+					
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp07" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -288,25 +294,25 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp07" 
-					android:padding="5dip"/>
+
 			</FrameLayout>
 			
 			<FrameLayout 
 				android:layout_gravity="center_horizontal" 
 				android:id="@+id/Shabon08" 
 				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				>
-				
-	
+				android:layout_height="wrap_content" >
+					
+				<ImageView 
+					android:layout_width="120dip" 
+					android:layout_height="120dip" 
+					android:src="@drawable/animalp08" 
+					android:padding="5dip"/>
 				<ViewFlipper
 					android:id="@+id/flipper"
 					android:layout_width="wrap_content" 
 					android:layout_height="wrap_content">
+					
 					<ImageView 
 						android:layout_width="120dip" 
 						android:layout_height="120dip" 
@@ -325,15 +331,9 @@
 						android:padding="5dip"/>
 	
 				</ViewFlipper>
-				<ImageView 
-					android:layout_width="120dip" 
-					android:layout_height="120dip" 
-					android:src="@drawable/animalp08" 
-					android:padding="5dip"/>
+
 			</FrameLayout>
-			
-			
-			
+					
 		</FrameLayout>
 		
 		<LinearLayout 
