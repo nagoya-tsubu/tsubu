@@ -73,10 +73,12 @@ public class PlayActivity extends BaseActivity {
 			final ViewHolder Shabon = mShabons[what - 1];
 			if (Shabon != null) {
 				try {
-					((ViewFlipper) Shabon.mShabon).setDisplayedChild(IMG_SHABON);
+					((ViewFlipper) Shabon.mShabon)
+							.setDisplayedChild(IMG_SHABON);
 				} catch (ClassCastException e) {
-					
-					ViewFlipper vf = (ViewFlipper) ((FrameLayout) Shabon.mShabon).findViewById(R.id.flipper);
+
+					ViewFlipper vf = (ViewFlipper) ((FrameLayout) Shabon.mShabon)
+							.findViewById(R.id.flipper);
 					vf.setDisplayedChild(IMG_SHABON);
 				}
 				Shabon.startAnimation();
@@ -98,7 +100,8 @@ public class PlayActivity extends BaseActivity {
 				try {
 					vf = (ViewFlipper) shabon.mShabon;
 				} catch (ClassCastException e) {
-					vf = (ViewFlipper) shabon.mShabon.findViewById(R.id.flipper);
+					vf = (ViewFlipper) shabon.mShabon
+							.findViewById(R.id.flipper);
 				}
 				if (vf.getDisplayedChild() == IMG_ANIMAL) {
 					Message msg = mHandler.obtainMessage(
@@ -120,10 +123,11 @@ public class PlayActivity extends BaseActivity {
 		try {
 			vs = (ViewFlipper) v.mShabon;
 		} catch (ClassCastException e) {
-			vs  = (ViewFlipper) v.mShabon.findViewById(R.id.flipper);
+			vs = (ViewFlipper) v.mShabon.findViewById(R.id.flipper);
 		}
 		vs.setDisplayedChild(IMG_ANIMAL);
-		Message msg = mHandler.obtainMessage(MSG_GO_ANIMAL_ACTIVITY, v.animal, -1);
+		Message msg = mHandler.obtainMessage(MSG_GO_ANIMAL_ACTIVITY, v.animal,
+				-1);
 		mHandler.sendMessageDelayed(msg, SHOW_ANIMAL_OFFSET);
 	}
 
@@ -134,19 +138,32 @@ public class PlayActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_play);
-		
-		Animation shabonAnim = AnimationUtils.loadAnimation(this, R.anim.shabon);
-		Animation shabonClickAnim = AnimationUtils.loadAnimation(this, R.anim.shabon_click);
 
 		ViewHolder[] shabons = new ViewHolder[] {
-				new ViewHolder(findViewById(R.id.Shabon01),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon02),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon03),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon04),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon05),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon06),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon07),shabonAnim,shabonClickAnim),
-				new ViewHolder(findViewById(R.id.Shabon08),shabonAnim,shabonClickAnim)};
+				new ViewHolder(findViewById(R.id.Shabon01), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon02), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon03), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon04), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon05), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon06), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon07), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)),
+				new ViewHolder(findViewById(R.id.Shabon08), AnimationUtils
+						.loadAnimation(this, R.anim.shabon), AnimationUtils
+						.loadAnimation(this, R.anim.shabon_click)) };
 		mShabons = shabons;
 
 		startAnimationTaiyoKumo();
@@ -167,28 +184,28 @@ public class PlayActivity extends BaseActivity {
 
 		int start = 1000;
 		Random rand = new Random();
-		
-//		for (int i = 0; i < 10; i++) {
-			for (int j = 1; j <= shabons.length; j++) {
-				int randshabon = rand.nextInt()%shabons.length;
-				randshabon = randshabon<0 ? -randshabon : randshabon;//乱数を正数に
-				mHandler.sendEmptyMessageDelayed(randshabon+1, start);
-				start += OnamaeAnimUtil.SHABON_DURATION
-						+ OnamaeAnimUtil.SHABON_CLICK_DURATION
-						+ OnamaeAnimUtil.SHABON_ALPHA_DURATION + 100;
-			}
-//		}
+
+		// for (int i = 0; i < 10; i++) {
+		for (int j = 1; j <= shabons.length; j++) {
+			int randshabon = rand.nextInt() % shabons.length;
+			randshabon = randshabon < 0 ? -randshabon : randshabon;// 乱数を正数に
+			mHandler.sendEmptyMessageDelayed(randshabon + 1, start);
+			start += OnamaeAnimUtil.SHABON_DURATION
+					+ OnamaeAnimUtil.SHABON_CLICK_DURATION
+					+ OnamaeAnimUtil.SHABON_ALPHA_DURATION + 100;
+		}
+		// }
 		mHandler.sendEmptyMessageDelayed(100, start);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-//		removeMessages();
+		// removeMessages();
 	}
-	
+
 	@Override
-	protected void onPause(){
+	protected void onPause() {
 		super.onPause();
 		removeMessages();
 	}
@@ -198,8 +215,8 @@ public class PlayActivity extends BaseActivity {
 		for (int i = 1; i <= mShabons.length; i++)
 			mHandler.removeMessages(i);
 		mHandler.removeMessages(MSG_REFRESH);
-		
-		//画面に残っている動物を消す
+
+		// 画面に残っている動物を消す
 		for (int i = 0; i < mShabons.length; i++) {
 			ViewHolder shabon = mShabons[i];
 			shabon.mShabon.clearAnimation();
