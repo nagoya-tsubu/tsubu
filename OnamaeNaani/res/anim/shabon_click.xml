@@ -5,7 +5,7 @@
 		android:fromAlpha="0.5"
 		android:toAlpha="1" 
 		android:repeatMode="reverse"
-		android:repeatCount="10" />
+		android:repeatCount="9" />
 	<scale
 		android:fromXScale="0.99"
 		android:toXScale="1.0" 
@@ -16,11 +16,11 @@
 		android:duration="300" 
 		android:repeatMode="reverse"
 		android:repeatCount="10" />
-	<alpha
+
+ 	<alpha
 		android:duration="300"
 		android:startOffset="2700"
 		android:fromAlpha="1"
-		android:toAlpha="0" 
-		android:repeatMode="reverse"
-		android:repeatCount="10" />
+		android:toAlpha="0" />
+
 </set>
