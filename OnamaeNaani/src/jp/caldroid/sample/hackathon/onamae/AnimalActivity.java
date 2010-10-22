@@ -43,6 +43,19 @@ public class AnimalActivity extends BaseActivity implements OnClickListener {
 		R.drawable.animalp08		
 	};
 	
+	private static int FUKIDASHI_ID_MAT[] = 
+	{
+		0,
+		R.drawable.anamae01,
+		R.drawable.anamae02,
+		R.drawable.anamae03,
+		R.drawable.anamae04,
+		R.drawable.anamae05,
+		R.drawable.anamae06,
+		R.drawable.anamae07,
+		R.drawable.anamae08		
+	};
+	
 	private static int sound_id=0;
 	
 	@Override
@@ -60,6 +73,12 @@ public class AnimalActivity extends BaseActivity implements OnClickListener {
 		img.setBackgroundResource(ANIMAL_ID_MAT[animal]);
 
 		img.setOnClickListener(this);
+		
+		ImageView fuk = (ImageView) findViewById(R.id.ImageViewFukidashi);
+		
+		fuk.setBackgroundResource(FUKIDASHI_ID_MAT[animal]);
+		
+		fuk.setOnClickListener(this);
 
 		super.startAnimationTaiyoKumo();
 
