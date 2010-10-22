@@ -2,6 +2,7 @@ package jp.caldroid.sample.hackathon.onamae;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -83,8 +84,6 @@ public class AnimalActivity extends BaseActivity implements OnClickListener {
 		super.startAnimationTaiyoKumo();
 
 		setResult(RESULT_CANCELED);
-		
-//		playSound(SOUND_ID_MAT[sound_id]);
 
 	}
 
@@ -94,13 +93,41 @@ public class AnimalActivity extends BaseActivity implements OnClickListener {
 	}
 
 	private void playSound(int resid) {
+		//タッチしても何も起こらないように設定
+		disableOnClick();
 		MediaPlayer player = MediaPlayer.create(this, resid);
 		player.start();
+		//音声が終了したときに呼び出されて、OnClickListenerを再設定する
+		player.setOnCompletionListener(new OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				//OnClickListenerの再設定
+				enableOnClick();
+			}
+		});
 	}
 
+	/**
+	 * 動物と吹き出しのイメージビューにOnClickListener を再設定
+	 */
+	private void enableOnClick(){
+		ImageView img = (ImageView) findViewById(R.id.ImageViewAnimal);
+		ImageView fuk = (ImageView) findViewById(R.id.ImageViewFukidashi);
+		img.setOnClickListener(this);
+		fuk.setOnClickListener(this);
+	}	
+	/**
+	 * 動物と吹き出しのイメージビューのOnClickListener にnullを設定。タッチしても何も起こらない
+	 */
+	private void disableOnClick(){
+		ImageView img = (ImageView) findViewById(R.id.ImageViewAnimal);
+		ImageView fuk = (ImageView) findViewById(R.id.ImageViewFukidashi);
+		img.setOnClickListener(null);
+		fuk.setOnClickListener(null);
+	}
+	
 	@Override
 	public void onClick(View v) {
-		// TODO 自動生成されたメソッド・スタブ
 		playSound(SOUND_ID_MAT[sound_id]);
 	}
 }
