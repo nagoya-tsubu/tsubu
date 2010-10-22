@@ -84,7 +84,7 @@ public class AnimalActivity extends BaseActivity implements OnClickListener {
 
 		setResult(RESULT_CANCELED);
 		
-		playSound(SOUND_ID_MAT[sound_id]);
+//		playSound(SOUND_ID_MAT[sound_id]);
 
 	}
 
