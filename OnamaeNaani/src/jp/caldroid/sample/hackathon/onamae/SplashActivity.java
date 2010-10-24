@@ -2,6 +2,7 @@ package jp.caldroid.sample.hackathon.onamae;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
@@ -31,7 +32,7 @@ public class SplashActivity extends Activity {
 					}
 				}				
 				break;
-				
+
 			case MSG_GO_MAIN:
 				
 				try {
@@ -61,15 +62,17 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
+		//ハードウェアキーによる音量設定を有効にする
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+		
         // タイトルロゴ view を取得
         mTitleLogo = findViewById(R.id.TitleLogo);
-        
+
+        //1.5秒後にタイトルロゴをアニメーションする
         mHandler.sendEmptyMessageDelayed(MSG_TITLE_LOGO_START_ANIMATION, 1500);
         
         // 自動的に次の画面に遷移する
-        mHandler.sendEmptyMessageDelayed(MSG_GO_MAIN, 6500);
-        
-        
+//      mHandler.sendEmptyMessageDelayed(MSG_GO_MAIN, 6500);
     }
     
     @Override
@@ -85,7 +88,11 @@ public class SplashActivity extends Activity {
     	if(mHandler != null)
     		mHandler.removeMessages(MSG_GO_MAIN);
     }
-    
+
+    /**
+     * ハードウェアキーイベント
+     * ハードウェアキーが押されたときに呼び出される
+     */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
     	

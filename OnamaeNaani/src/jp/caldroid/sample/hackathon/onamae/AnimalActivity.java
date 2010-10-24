@@ -1,6 +1,7 @@
 package jp.caldroid.sample.hackathon.onamae;
 
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
@@ -92,7 +93,7 @@ public class AnimalActivity extends BaseActivity implements OnClickListener {
 		finish();
 	}
 
-	private void playSound(int resid) {
+	private synchronized void playSound(int resid) {
 		//タッチしても何も起こらないように設定
 		disableOnClick();
 		MediaPlayer player = MediaPlayer.create(this, resid);

@@ -3,6 +3,8 @@ package jp.caldroid.sample.hackathon.onamae;
 import jp.caldroid.sample.hackathon.onamae.util.OnamaeAnimUtil;
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -58,6 +60,15 @@ public class BaseActivity extends Activity {
 		View kumo = findViewById(R.id.ImageViewKumo);
 		if (kumo != null)
 			kumo.startAnimation(AnimationUtils.loadAnimation(this, R.anim.kumo));
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+
+		//ハードウェアキーによる音量設定を有効にする
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 
 }
