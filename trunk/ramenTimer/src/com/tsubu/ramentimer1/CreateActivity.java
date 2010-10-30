@@ -1,13 +1,15 @@
-package com.tsubu.RamenTimer;
+package com.tsubu.ramentimer1;
+
+import com.tsubu.ramentimer.R;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-public class HistoryActivity extends Activity {
-	
+public class CreateActivity extends Activity  {
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.history_activity);
+        setContentView(R.layout.create_activity);
 	}
 }

@@ -1,4 +1,6 @@
-package com.tsubu.RamenTimer;
+package com.tsubu.ramentimer1;
+
+import com.tsubu.ramentimer.R;
 
 import android.app.Activity;
 import android.content.Intent;
