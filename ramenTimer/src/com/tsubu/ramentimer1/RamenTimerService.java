@@ -1,4 +1,4 @@
-package com.tsubu.RamenTimer;
+package com.tsubu.ramentimer1;
 
 import java.util.Timer;
 import java.util.TimerTask;

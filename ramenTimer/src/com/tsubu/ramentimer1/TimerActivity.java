@@ -1,6 +1,6 @@
-package com.tsubu.RamenTimer;
+package com.tsubu.ramentimer1;
 
-import com.tsubu.RamenTimer.R;
+import com.tsubu.ramentimer.R;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
