@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class Main extends Activity {
+public class TimerActivity extends Activity {
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
 		
@@ -25,7 +25,7 @@ public class Main extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Time over!", Toast.LENGTH_LONG);
 			toast.show();
-	    	MediaPlayer mp = MediaPlayer.create(Main.this, R.raw.alarm);
+	    	MediaPlayer mp = MediaPlayer.create(TimerActivity.this, R.raw.alarm);
 			try {
 				mp.start();
 			} catch (Exception e) {
