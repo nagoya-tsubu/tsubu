@@ -1,14 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content"
+	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:orientation="vertical">
 
-	<TextView 
-		android:text="CreateActivity" 
-		android:layout_width="wrap_content" 
+	<LinearLayout 
+		android:id="@+id/LinearLayout01"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		>
+		<EditText 
+			android:hint="JANコード" 
+			android:id="@+id/JanEdit"
+			android:inputType="number"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			/>
+		<ImageButton 
+			android:id="@+id/CaptureButton" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"
+			android:src="@android:drawable/ic_menu_camera"
+			/>			
+	</LinearLayout>
+
+	<EditText 
+		android:hint="名前" 
+		android:id="@+id/NameEdit"
+		android:layout_width="fill_parent" 
 		android:layout_height="wrap_content"
 		/>
-	
+	<EditText 
+		android:hint="湯で時間(分)" 
+		android:id="@+id/BoilingTimeEdit"
+		android:inputType="number"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		/>
+	<EditText
+		android:hint="商品説明"
+		android:id="@+id/DescriptionEdit"
+		android:inputType="textMultiLine"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content"
+		/>	
+	<LinearLayout 
+		android:id="@+id/LinearLayout03" 
+		android:orientation="horizontal"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content">
+		<Button 
+			android:text="登録" 
+			android:id="@+id/CreateButton" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"/>
+		<Button 
+			android:text="開始" 
+			android:id="@+id/StartButton" 
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content"/>
+	</LinearLayout>
 </LinearLayout>
