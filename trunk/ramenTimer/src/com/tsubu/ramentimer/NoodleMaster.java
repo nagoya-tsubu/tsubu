@@ -83,7 +83,7 @@ public class NoodleMaster implements Parcelable{
 		dest.writeInt(noodleType.ordinal());
 	}
 	
-	public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+	public static final Parcelable.Creator<NoodleMaster> CREATOR = new Parcelable.Creator<NoodleMaster>() {
 		public NoodleMaster createFromParcel(Parcel in) {
 			return new NoodleMaster(in);
 		}
@@ -92,6 +92,4 @@ public class NoodleMaster implements Parcelable{
 			return new NoodleMaster[size];
 		}
 	};
-
-	
 }
