@@ -10,7 +10,7 @@ import android.os.Parcelable;
  */
 public class NoodleMaster implements Parcelable{
 	/** JANコード */
-	private int janCode;
+	private String janCode; //janCodeの型をintからStringに変更 by leibun  date 2010.11.01
 	/** 名前 */
 	private String name;
 	/** 画像イメージ */
@@ -29,7 +29,7 @@ public class NoodleMaster implements Parcelable{
 	 * @param timerLimit
 	 * @param noodleType
 	 */
-	public NoodleMaster(int janCode, String name, Bitmap image, int timerLimit,
+	public NoodleMaster(String janCode, String name, Bitmap image, int timerLimit,
 			NoodleType noodleType) {
 		this.janCode = janCode;
 		this.name = name;
@@ -43,14 +43,14 @@ public class NoodleMaster implements Parcelable{
 	 * @param parcel
 	 */
 	public NoodleMaster(Parcel parcel){
-		this.janCode = parcel.readInt();
+		this.janCode = parcel.readString();
 		this.name = parcel.readString();
 		this.image = parcel.readParcelable(Bitmap.class.getClassLoader());
 		this.timerLimit = parcel.readInt();
 		this.noodleType = NoodleType.values()[parcel.readInt()];
 	}
 	
-	public int getJanCode(){
+	public String getJanCode(){
 		return janCode;
 	}
 	
@@ -76,7 +76,7 @@ public class NoodleMaster implements Parcelable{
 	}
 
 	public void writeToParcel(Parcel dest, int arg1) {
-		dest.writeInt(janCode);
+		dest.writeString(janCode);
 		dest.writeString(name);
 		dest.writeParcelable(image, 0);
 		dest.writeInt(timerLimit);

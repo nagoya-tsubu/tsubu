@@ -17,7 +17,7 @@ public class NoodleHistory implements Parcelable{
 	/**計測時間*/
 	private Date measureTime;
 	/**マスタのJANコード*/
-	private int janCode;
+	private String janCode;	//janCodeの型をintからStringに変更 by leibun  date 2010.11.01
 	/**マスタの名称*/
 	private String name;
 	/**マスタの画像イメージ*/
@@ -43,7 +43,7 @@ public class NoodleHistory implements Parcelable{
 	public NoodleHistory(Parcel parcel){
 		this.noodleMaster = parcel.readParcelable(NoodleMaster.class.getClassLoader());
 		this.measureTime =  new Date(parcel.readLong());
-		this.janCode = parcel.readInt();
+		this.janCode = parcel.readString();
 		this.name = parcel.readString();
 		this.image = parcel.readParcelable(Bitmap.class.getClassLoader());
 	}
@@ -56,7 +56,7 @@ public class NoodleHistory implements Parcelable{
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeParcelable(noodleMaster, 0);
 		dest.writeLong(measureTime.getTime());
-		dest.writeInt(janCode);
+		dest.writeString(janCode);
 		dest.writeString(name);
 		dest.writeParcelable(image, 0);
 	}
