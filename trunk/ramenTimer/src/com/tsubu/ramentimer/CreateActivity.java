@@ -1,5 +1,7 @@
 package com.tsubu.ramentimer;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class CreateActivity extends Activity {
 
@@ -24,6 +27,7 @@ public class CreateActivity extends Activity {
 	private static final String	QRCODE_PKG_NAME = "com.google.zxing.client.android";
 	private static final int REQUEST_BARCODE = 0;
 	private static final int REQUEST_GALLERY = 1;
+	private static final int REQUEST_CAMERA = 2;
 	
 	//JANコード
 	private EditText janEdit = null;
@@ -64,23 +68,36 @@ public class CreateActivity extends Activity {
 
 	/**
 	 * インテントがもどってきた時の動作
+	 * @param requestCode
+	 * @param resultCode
+	 * @param intent
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_OK) {
-			if (requestCode == REQUEST_BARCODE) {
+			
+			if (requestCode == REQUEST_BARCODE) {//バーコードリーダー
 				//EditTextにバーコードリーダーで読み込んだJANコードの値を設定
-					final String barcode = intent.getStringExtra("SCAN_RESULT");
-					janEdit.setText(barcode);
-			}else if(requestCode == REQUEST_GALLERY){
+				final String barcode = intent.getStringExtra("SCAN_RESULT");
+				janEdit.setText(barcode);
+				
+			}else if(requestCode == REQUEST_GALLERY){//ギャラリー
 				try{
 					InputStream is = getContentResolver().openInputStream(intent.getData());
 					noodleImage = BitmapFactory.decodeStream(is);
 					is.close();
-					noodleImageView.setImageBitmap(noodleImage);
-				}catch(Exception e){
-					Log.e("CreateActivity", "Intent return error by REQUEST_GALLARY"+e.toString());
-				}    
+					//ビューに画像をセット
+					noodleImageView.setImageBitmap(noodleImage);		
+				}catch(FileNotFoundException e){
+					Toast.makeText(this, "ファイルが見つかりません", 3);
+				}catch(IOException e){
+					Toast.makeText(this, e.toString(), 3);	
+				}
+				
+	        }else if(requestCode == REQUEST_CAMERA){//カメラ
+	        	noodleImage = (Bitmap) intent.getExtras().get("data");
+				//ビューに画像をセット
+	        	noodleImageView.setImageBitmap(noodleImage);
 	        }
 		}
 	}
@@ -125,37 +142,63 @@ public class CreateActivity extends Activity {
 	}
 	
 	/**
-	 * 画像読み込みボタンが押された時の動作 インテントでギャラリーを呼び出す
+	 * 画像読み込みボタンが押された時の動作 インテントでギャラリーかカメラを呼び出す
 	 * @param v
 	 */
 	public void onLoadImageClick(View v) {
+		//ダイアログでカメラかギャラリーを選択させる
+		final CharSequence[] items = {"カメラ", "ギャラリー"};
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("画像の選択");
+		builder.setItems(items, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int item) {
+		    	if(item==0)
+		    		callCamera();
+		    	else
+		    		callGallery();
+		    }
+		});
+		builder.show();
+	}
+	
+	/**
+	 * ギャラリーをインテントで起動
+	 */
+	private void callGallery(){
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
-		// 第二引数は戻ってきたときの判別用の適当なint
 		try {
+			// 第二引数は戻ってきたときの判別用の適当なint
 			startActivityForResult(intent, REQUEST_GALLERY);
 		} catch (ActivityNotFoundException e) {
 			new AlertDialog.Builder(CreateActivity.this).setTitle(
 					"Gallery not found.").setMessage(
 					"Please install Gallery").setPositiveButton(
 					"OK", null).show();
-		}
+		}		
 	}
-	
+
+	/**
+	 * カメラをインテントで起動
+	 */
+	private void callCamera(){
+		Intent intent = new Intent();
+		intent.setAction("android.media.action.IMAGE_CAPTURE");
+			startActivityForResult(intent, REQUEST_CAMERA);
+	}
+		
 	/**
 	 * 登録ボタンが押された時の動作
+	 * @param v
 	 */
 	public void onCreateClick(View v) {
-//		try{
-			NoodleMaster noodleMaster = getNoodleMaster();
-//		}catch(Exception e){
-			
-//		}
+		NoodleMaster noodleMaster = getNoodleMaster();
 	}
 	
 	/**
 	 * logoボタンが押された時の動作
+	 * @param v
 	 */
 	public void onLogoClick(View v) {
 		finish();
