@@ -1,5 +1,7 @@
 package com.androidtsubu.ramentimer;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -60,8 +62,25 @@ public class TimerActivity extends Activity {
 
 		final TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker01);
 		timePicker.setIs24HourView(true);
-		timePicker.setCurrentHour(0);
-		timePicker.setCurrentMinute(1);
+		timePicker.setCurrentHour(3);
+		timePicker.setCurrentMinute(0);
+		timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+			// 秒を10秒単位で操作する
+			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+				
+				int[] age = {1,11,21,31,41,51};
+				int[] sage = {9,19,29,39,49,59};
+				if(Arrays.binarySearch(age, minute) >= 0){
+					view.setCurrentMinute(minute + 9);
+					// 60の場合は表示に問題があるため、0を指定する
+					if(minute==51){
+						view.setCurrentMinute(0);
+					}
+				}else if(Arrays.binarySearch(sage, minute) >= 0){
+					view.setCurrentMinute(minute - 9);
+				}
+			}
+		});
 		
 		Button button = (Button)findViewById(R.id.Button01);
 		button.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +89,10 @@ public class TimerActivity extends Activity {
 				long hour = timePicker.getCurrentHour();
 				long min = timePicker.getCurrentMinute();
 				
-				ramenTimerService.schedule((hour * 60 + min) * 60 * 1000);
-				moveTaskToBack(true);
+				//ramenTimerService.schedule((hour * 60 + min) * 60 * 1000);
+				//moveTaskToBack(true);
+				ramenTimerService.schedule((hour * 60 + min) * 1000);
+				moveTaskToBack(false);
 			}
 			
 		});
@@ -101,10 +122,13 @@ public class TimerActivity extends Activity {
 			public void onClick(View v) {
 
 				EditText janEditText = (EditText)findViewById(R.id.JanCodeEditText);
-				//String janCode = janEditText.getText().toString();
-				int janCode = 0;
+				String janCode = janEditText.getText().toString();
+
+				NoodleMaster noodleMaster = null;
 				try{
-					janCode = Integer.valueOf(janEditText.getText().toString());
+					NoodleManager noodleManager = new NoodleManager();
+					// NoodleManager.getNoodleMasterメソッドの引数がStringになるまでコメント
+					//noodleMaster = noodleManager.getNoodleMaster(janCode);
 				}catch (NumberFormatException e) {
 					new AlertDialog.Builder(TimerActivity.this).setTitle(
 					"JANコードを入力してください").setMessage(
@@ -112,8 +136,6 @@ public class TimerActivity extends Activity {
 					"OK", null).show();
 					return;
 				}
-				NoodleManager noodleManager = new NoodleManager();
-				NoodleMaster noodleMaster = noodleManager.getNoodleMaster(janCode);
 				
 				if(noodleMaster==null){
 					// Janコードが存在しない場合の処理

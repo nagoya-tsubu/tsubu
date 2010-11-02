@@ -1,43 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-		<LinearLayout android:id="@+id/LinearLayout01" 
-		android:layout_height="wrap_content" 
-		android:layout_width="wrap_content">
+    android:layout_height="fill_parent" android:orientation="vertical">
+		<ScrollView android:id="@+id/ScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent"><LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent"><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="wrap_content">
 		
-		<EditText android:layout_height="wrap_content" 
-		android:hint="JANコード" 
-		android:layout_weight="2" 
-		android:layout_width="wrap_content" 
-		android:id="@+id/JanCodeEditText">
+		<EditText android:layout_height="wrap_content" android:hint="JANコード" android:layout_weight="2" android:layout_width="wrap_content" android:id="@+id/JanCodeEditText">
 		</EditText>
 		
-		<Button android:layout_height="wrap_content" 
-		android:layout_weight="1" 
-		android:text="バーコード撮影" 
-		android:layout_width="wrap_content" 
-		android:id="@+id/JanCodeReadButton">
+		<Button android:layout_height="wrap_content" android:layout_weight="1" android:text="バーコード撮影" android:layout_width="wrap_content" android:id="@+id/JanCodeReadButton">
 		</Button>
-	</LinearLayout>
+	</LinearLayout><Button android:layout_height="wrap_content" android:text="JANコードを検索する" android:layout_width="wrap_content" android:id="@+id/JanCodeSearchButton">
+	</Button><TimePicker android:id="@+id/TimePicker01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+	</TimePicker><Button android:id="@+id/Button01" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="開始"></Button></LinearLayout>
+</ScrollView>
 	
-	<Button android:layout_height="wrap_content" 
-	android:text="JANコードを検索する" 
-	android:layout_width="wrap_content" 
-	android:id="@+id/JanCodeSearchButton">
-	</Button>
 	
-	<TimePicker android:id="@+id/TimePicker01" 
-	android:layout_width="wrap_content" 
-	android:layout_height="wrap_content" 
-	android:layout_gravity="center_horizontal">
-	</TimePicker>
 	
-	<Button android:id="@+id/Button01" 
-	android:layout_width="fill_parent" 
-	android:layout_height="wrap_content" 
-	android:text="Set"></Button>
+	
+	
+	
+
 
 </LinearLayout>
