@@ -98,12 +98,12 @@
             <Button android:id="@+id/Button01"
                 style="@style/HomeButton"
                 android:onClick="onTimerButtonClick"
-                android:text="@string/btn_schedule"
+                android:text="タイマー"
                 android:drawableTop="@drawable/home_btn_schedule"/>
             <Button android:id="@+id/Button02"
                 style="@style/HomeButton"
                 android:onClick="onCreateButtonClick"
-                android:text="@string/btn_map"
+                android:text="登録"
                 android:drawableTop="@drawable/home_btn_map"/>
         </LinearLayout>
 
@@ -115,12 +115,12 @@
             <Button android:id="@+id/Button03"
                 style="@style/HomeButton"
                 android:onClick="onHistoryButtonClick"
-                android:text="@string/btn_sessions"
+                android:text="履歴"
                 android:drawableTop="@drawable/home_btn_sessions"/>
             <Button android:id="@+id/home_btn_starred"
                 style="@style/HomeButton"
                 android:onClick="onStarredClick"
-                android:text="@string/btn_starred"
+                android:text="何か"
                 android:drawableTop="@drawable/home_btn_starred"/>
         </LinearLayout>
 
@@ -132,13 +132,13 @@
             <Button android:id="@+id/home_btn_vendors"
                 style="@style/HomeButton"
                 android:onClick="onVendorsClick"
-                android:text="@string/btn_vendors"
+                android:text="ふめいにゃ"
                 android:drawableTop="@drawable/home_btn_sandbox"/>
                 <!-- TODO: refactor home_btn_sandbox drawable name -->
             <Button android:id="@+id/home_btn_notes"
                 style="@style/HomeButton"
                 android:onClick="onNotesClick"
-                android:text="@string/btn_notes"
+                android:text="よーわからんにゃ"
                 android:drawableTop="@drawable/home_btn_office_hours"/>
                 <!-- TODO: refactor home_btn_office_hours drawable name -->
         </LinearLayout>
@@ -161,6 +161,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_small"
-            android:text="@string/now_playing_loading"/>
+            android:text="なんだろにゃ"/>
     </LinearLayout>
 </LinearLayout>
