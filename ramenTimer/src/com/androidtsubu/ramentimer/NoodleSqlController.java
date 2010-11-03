@@ -17,7 +17,7 @@ public class NoodleSqlController {
 	 * @return
 	 * @throws SQLException
 	 */
-	public NoodleMaster getNoodleMaster(int janCode) throws SQLException{
+	public NoodleMaster getNoodleMaster(String janCode) throws SQLException{
 		/**@todo 中身作る*/
 		return null;
 	}
