@@ -21,7 +21,7 @@ public class DashboardActivity extends Activity {
 	public void onCreateButtonClick(View view) {
 		int requestCode = RequestCode.READER2CREATE.ordinal();
 		Intent intent = new Intent(this, CreateActivity.class)
-		.putExtra(RequestCode.RESUEST_CODE,requestCode);
+		.putExtra(RequestCode.KEY_RESUEST_CODE,requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 	
