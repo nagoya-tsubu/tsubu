@@ -62,6 +62,10 @@ public class NoodleMaster implements Parcelable{
 		return image;
 	}
 	
+	public void setImage(Bitmap image){
+		this.image = image;
+	}
+	
 	public int getTimerLimit(){
 		return timerLimit;
 	}
