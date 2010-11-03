@@ -17,7 +17,7 @@ public enum RequestCode {
 	HISTORY2TIMER;		//履歴からタイマー
 	
 	//Intent.putExtra()の第１引数に利用
-	public static final String RESUEST_CODE= "REQUEST_CODE";
+	public static final String KEY_RESUEST_CODE= "REQUEST_CODE";
 	
 };
 
