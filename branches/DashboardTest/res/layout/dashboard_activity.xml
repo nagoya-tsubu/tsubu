@@ -60,30 +60,6 @@
     android:layout_height="fill_parent">
     <include layout="@layout/colorstrip"/>
 
-    <LinearLayout style="@style/TitleBar">
-        <ImageView style="@style/TitleBarLogo"
-            android:contentDescription="@string/description_logo"
-            android:src="@drawable/title_logo" />
-
-        <View style="@style/TitleBarSpring" />
-
-        <ImageView style="@style/TitleBarSeparator" />
-        <ImageButton style="@style/TitleBarAction"
-            android:id="@+id/btn_title_refresh"
-            android:contentDescription="@string/description_refresh"
-            android:src="@drawable/ic_title_refresh"
-            android:onClick="onRefreshClick" />
-        <ProgressBar style="@style/TitleBarProgressIndicator"
-            android:id="@+id/title_refresh_progress"
-            android:visibility="gone" />
-
-        <ImageView style="@style/TitleBarSeparator" />
-        <ImageButton style="@style/TitleBarAction"
-            android:contentDescription="@string/description_search"
-            android:src="@drawable/ic_title_search"
-            android:onClick="onSearchClick" />
-    </LinearLayout>
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
