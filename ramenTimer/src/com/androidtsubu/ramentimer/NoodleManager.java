@@ -14,12 +14,27 @@ public class NoodleManager {
 	private NoodleGaeController noodleGaeController;
 	
 	/**
+	 * コンストラクタ
+	 */
+	public NoodleManager(){
+		noodleGaeController = new NoodleGaeController();
+	}
+	
+	/**
 	 * JANコードを引数にSQliteやGAEから商品マスタを得ます
 	 * @param janCode
 	 * @return
 	 */
-	public NoodleMaster getNoodleMaster(int janCode){
+	public NoodleMaster getNoodleMaster(String janCode){
 		/**@todo SQLiteからデータをひっぱってみる。なければGAEからデータをひっぱってみる*/
+		try {
+			//とりあえずGAEからだけひっぱってみる
+			return noodleGaeController.getNoodleMaster(janCode);
+		} catch (GaeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 	
