@@ -19,7 +19,10 @@ public class DashboardActivity extends Activity {
 	}
 
 	public void onCreateButtonClick(View view) {
-		startActivity(new Intent(this, CreateActivity.class));
+		int requestCode = RequestCode.READER2CREATE.ordinal();
+		Intent intent = new Intent(this, CreateActivity.class)
+		.putExtra(RequestCode.RESUEST_CODE,requestCode);
+		startActivityForResult(intent, requestCode);
 	}
 	
 	public void onHistoryButtonClick(View view) {
