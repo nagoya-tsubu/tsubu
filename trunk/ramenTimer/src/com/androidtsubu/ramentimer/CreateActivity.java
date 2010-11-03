@@ -7,7 +7,6 @@ import java.io.InputStream;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,11 +15,16 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.androidtsubu.ramentimer.quickaction.ActionItem;
+import com.androidtsubu.ramentimer.quickaction.QuickAction;
 
 public class CreateActivity extends Activity {
 
@@ -45,6 +49,12 @@ public class CreateActivity extends Activity {
 	private Bitmap noodleImage = null;
 	//リクエストコードの値（どこから呼び出されたか）
 	private int requestCode = 0;
+	
+	//QuickAction のアイテム カメラ
+	ActionItem itemCamera = null;
+	//QuickAction のアイテム カメラ
+	ActionItem itemGallery = null;
+
 	 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +83,25 @@ public class CreateActivity extends Activity {
 			radioButton.setId(i);
 			noodleTypeRadioGroup.addView(radioButton);
 		}
+		
+		//QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
+		itemCamera = new ActionItem();
+		itemCamera.setTitle("カメラ");
+		itemCamera.setIcon(getResources().getDrawable(R.drawable.image_button));
+		itemCamera.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				callCamera();
+			}
+		});
+		
+		itemGallery = new ActionItem();
+		itemGallery.setTitle("ギャラリー");
+		itemGallery.setIcon(getResources().getDrawable(R.drawable.icon));
+		itemGallery.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				callGallery();
+			}
+		});
 	}
 
 
@@ -156,19 +185,12 @@ public class CreateActivity extends Activity {
 	 * @param v
 	 */
 	public void onLoadImageClick(View v) {
-		//ダイアログでカメラかギャラリーを選択させる
-		final CharSequence[] items = {"カメラ", "ギャラリー"};
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("画像の選択");
-		builder.setItems(items, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int item) {
-		    	if(item==0)
-		    		callCamera();
-		    	else
-		    		callGallery();
-		    }
-		});
-		builder.show();
+		//QuickAction
+		QuickAction qa = new QuickAction(v);
+		
+		qa.addActionItem(itemCamera);
+		qa.addActionItem(itemGallery);
+		qa.show();
 	}
 	
 	/**

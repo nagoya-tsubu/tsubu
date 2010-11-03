@@ -159,6 +159,7 @@
 			<ImageView
 				android:id = "@+id/NoodleImageView"
 				android:src= "@drawable/icon"
+				android:onClick="onLoadImageClick"
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content"/>
 		</LinearLayout>
