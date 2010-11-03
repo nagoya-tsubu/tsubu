@@ -12,5 +12,7 @@
     <activity android:name="HistoryActivity" />
     <service android:enabled="true" android:name=".RamenTimerService"/>
   </application>
-<uses-sdk android:targetSdkVersion="4" android:minSdkVersion="4"></uses-sdk>
+
+
+<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7"></uses-sdk>
 </manifest>
