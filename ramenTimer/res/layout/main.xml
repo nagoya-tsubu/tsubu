@@ -1,24 +1,154 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:orientation="vertical">
-		<ScrollView android:id="@+id/ScrollView01" android:layout_height="wrap_content" android:layout_width="fill_parent"><LinearLayout android:id="@+id/LinearLayout02" android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent"><LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="wrap_content">
+<?xml
+version="1.0"
+encoding="utf-8"?>
+<LinearLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent">
+
+	<LinearLayout
+	android:layout_height="wrap_content"
+	android:layout_weight="2"
+	android:layout_width="fill_parent">
+		<TextView
+		android:text="ramenTimer"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/RamenInfoTextView">
+		</TextView>
+	</LinearLayout>
+
+	<LinearLayout
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:gravity="center"
+	android:layout_weight="2">
+	
+		<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:layout_weight="1">
 		
-		<EditText android:layout_height="wrap_content" android:hint="JANコード" android:layout_weight="2" android:layout_width="wrap_content" android:id="@+id/JanCodeEditText">
-		</EditText>
+			<LinearLayout
+			android:orientation="vertical"
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent"
+			android:layout_weight="1">
+			
+				<TextView
+				android:text="3"
+				android:layout_weight="2"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				style="@style/TimeTextView"
+				android:id="@+id/MinTextView">
+				</TextView>
 		
-		<Button android:layout_height="wrap_content" android:layout_weight="1" android:text="バーコード撮影" android:layout_width="wrap_content" android:id="@+id/JanCodeReadButton">
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="bottom"
+				android:layout_gravity="bottom|right"
+				android:text="分">
+				</TextView>
+			</LinearLayout>
+		
+			<LinearLayout
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_weight="1">
+		
+				<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="+"
+				android:id="@+id/MinUpButton"
+				style="@style/PickerButton">
+				</Button>
+		
+				<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="-"
+				android:id="@+id/MinDownButton"
+				style="@style/PickerButton">
+				</Button>
+			</LinearLayout>
+		</LinearLayout>
+		
+		<LinearLayout
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_width="fill_parent"
+		android:layout_weight="1">
+		
+			<LinearLayout
+			android:orientation="vertical"
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent"
+			android:layout_weight="1">
+			
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="00"
+				android:layout_weight="2"
+				android:gravity="center"
+				style="@style/TimeTextView"
+				android:id="@+id/SecTextView">
+				</TextView>
+		
+				<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:gravity="bottom"
+				android:layout_gravity="bottom|right"
+				android:text="秒">
+				</TextView>
+			</LinearLayout>
+			
+			<LinearLayout
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_weight="1"
+			android:layout_width="fill_parent">
+			
+				<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="+"
+				android:id="@+id/SecUpButton"
+				style="@style/PickerButton">
+				</Button>
+			
+				<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="-"
+				android:id="@+id/SecDownButton"
+				style="@style/PickerButton">
+				</Button>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+
+	<LinearLayout
+	android:layout_height="wrap_content"
+	android:layout_width="fill_parent"
+	android:layout_weight="1"
+	android:gravity="center">
+	
+		<Button
+		android:layout_width="wrap_content"
+		android:text="開始"
+		android:layout_gravity="center"
+		android:layout_height="wrap_content"
+		android:width="100px" android:id="@+id/StartButton">
 		</Button>
-	</LinearLayout><Button android:layout_height="wrap_content" android:text="JANコードを検索する" android:layout_width="wrap_content" android:id="@+id/JanCodeSearchButton">
-	</Button><TimePicker android:id="@+id/TimePicker01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
-	</TimePicker><Button android:id="@+id/Button01" android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="開始"></Button></LinearLayout>
-</ScrollView>
-	
-	
-	
-	
-	
-	
-
-
+	</LinearLayout>
 </LinearLayout>

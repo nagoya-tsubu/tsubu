@@ -47,4 +47,15 @@
 		<item name="@android:windowEnterAnimation">@anim/pump_bottom</item>
 		<item name="@android:windowExitAnimation">@anim/disappear</item>
 	</style>
+
+	<style name="PickerButton">
+		<item name="android:width">50px</item>
+		<item name="android:height">50px</item>
+	</style>
+
+	<style name="TimeTextView">
+		<item name="android:textSize">50px</item>
+		<item name="android:textStyle">bold</item>
+	</style>
+
 </resources>

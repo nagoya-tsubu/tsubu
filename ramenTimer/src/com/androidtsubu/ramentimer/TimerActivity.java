@@ -1,10 +1,7 @@
 package com.androidtsubu.ramentimer;
 
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,13 +14,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TimePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TimerActivity extends Activity {
 	
 	private static final int REQUEST_CODE =100;
+	TextView minTextView;
+	TextView secTextView;
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
 		
@@ -60,106 +58,75 @@ public class TimerActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-		final TimePicker timePicker = (TimePicker)findViewById(R.id.TimePicker01);
-		timePicker.setIs24HourView(true);
-		timePicker.setCurrentHour(3);
-		timePicker.setCurrentMinute(0);
-		timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-			// 秒を10秒単位で操作する
-			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				
-				int[] age = {1,11,21,31,41,51};
-				int[] sage = {9,19,29,39,49,59};
-				if(Arrays.binarySearch(age, minute) >= 0){
-					view.setCurrentMinute(minute + 9);
-					// 60の場合は表示に問題があるため、0を指定する
-					if(minute==51){
-						view.setCurrentMinute(0);
-					}
-				}else if(Arrays.binarySearch(sage, minute) >= 0){
-					view.setCurrentMinute(minute - 9);
-				}
-			}
-		});
+        minTextView = (TextView)findViewById(R.id.MinTextView);
+		secTextView = (TextView)findViewById(R.id.SecTextView);
 		
-		Button button = (Button)findViewById(R.id.Button01);
-		button.setOnClickListener(new View.OnClickListener() {
-		
-			public void onClick(View view) {
-				long hour = timePicker.getCurrentHour();
-				long min = timePicker.getCurrentMinute();
-				
-				//ramenTimerService.schedule((hour * 60 + min) * 60 * 1000);
-				//moveTaskToBack(true);
-				ramenTimerService.schedule((hour * 60 + min) * 1000);
-				moveTaskToBack(false);
-			}
-			
-		});
-		
-		// IntentでJanコードを読むアプリを呼び出す
-		Button janReadButton = (Button)findViewById(R.id.JanCodeReadButton);
-		janReadButton.setOnClickListener(new View.OnClickListener() {
+		Button minUpButton = (Button)findViewById(R.id.MinUpButton);
+		minUpButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-				intent.putExtra("SCAN_MODE", "ONE_D_MODE");
-				try {
-					startActivityForResult(intent, REQUEST_CODE);
-				} catch (ActivityNotFoundException e) {
-					new AlertDialog.Builder(TimerActivity.this).setTitle(
-							"アプリケーションが存在しません。").setMessage(
-							"アプリケーションをインストールしてください。").setPositiveButton(
-							"OK", null).show();
-				}
+				int min = Integer.valueOf(minTextView.getText().toString())+1;
+				if(min >= 10) return; // 10分以上は不要と判断
+				minTextView.setText(String.valueOf(min));
 			}
 		});
 		
-		// EditTextのJanコードを検索する
-		Button searchButton = (Button)findViewById(R.id.JanCodeSearchButton);
-		searchButton.setOnClickListener(new View.OnClickListener() {
+		Button minDownButton = (Button)findViewById(R.id.MinDownButton);
+		minDownButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
+				int min = Integer.valueOf(minTextView.getText().toString())-1;
+				if(min <= 0) return; // 1分未満は不要と判断
+				minTextView.setText(String.valueOf(min));
+				
+			}
+		});
 
-				EditText janEditText = (EditText)findViewById(R.id.JanCodeEditText);
-				String janCode = janEditText.getText().toString();
-
-				NoodleMaster noodleMaster = null;
-				try{
-					NoodleManager noodleManager = new NoodleManager();
-					// NoodleManager.getNoodleMasterメソッドの引数がStringになるまでコメント
-					//noodleMaster = noodleManager.getNoodleMaster(janCode);
-				}catch (NumberFormatException e) {
-					new AlertDialog.Builder(TimerActivity.this).setTitle(
-					"JANコードを入力してください").setMessage(
-					"数字を入力してください。").setPositiveButton(
-					"OK", null).show();
+		Button secUpButton = (Button)findViewById(R.id.SecUpButton);
+		secUpButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				int sec = Integer.valueOf(secTextView.getText().toString())+10;
+				if(sec >= 51){ // 60秒になったら1分あげて、00秒とする
+					int min = Integer.valueOf(minTextView.getText().toString())+1;
+					if(min >= 10) return; // 10分以上となる場合は処理しない
+					minTextView.setText(String.valueOf(min));
+					secTextView.setText("00");
 					return;
 				}
+				secTextView.setText(String.valueOf(sec));
 				
-				if(noodleMaster==null){
-					// Janコードが存在しない場合の処理
-			    	String dialogTitle = "未登録の商品です。";
-			    	String dialogMessage = "この商品を登録しますか？";
-			    	
-			    	new AlertDialog.Builder(TimerActivity.this)
-			    	.setTitle(dialogTitle)
-			    	.setMessage(dialogMessage) // 
-			    	.setPositiveButton("はい",new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							// 登録機能を呼び出す。Janコード情報を付加する。
-							startActivity(new Intent(TimerActivity.this, CreateActivity.class));
-						}
-					})
-					.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							return;
-						}
-					})
-					.show();
+			}
+		});
+
+		Button secDownButton = (Button)findViewById(R.id.SecDownButton);
+		secDownButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				int sec = Integer.valueOf(secTextView.getText().toString())-10;
+				if(sec == 0){ // 0秒になったら、00秒と表示する
+					secTextView.setText("00");
+					return;
+				}else if(sec <= 0){ // 0秒時にマイナスボタンを押下した場合は、1分さげて50秒とする
+					int min = Integer.valueOf(minTextView.getText().toString())-1;
+					if(min <= 0) return; // １分未満となる場合は処理しない
+					minTextView.setText(String.valueOf(min));
+					secTextView.setText("50");
+					return;
 				}
+				secTextView.setText(String.valueOf(sec));
 				
-				
+			}
+		});
+		
+		Button startButton = (Button)findViewById(R.id.StartButton);
+		startButton.setOnClickListener(new View.OnClickListener() {
+			
+			public void onClick(View v) {
+				long min = Integer.valueOf(minTextView.getText().toString());
+				long sec = Integer.valueOf(secTextView.getText().toString());
+				ramenTimerService.schedule((min * 60 + sec ) * 1000 );
+				moveTaskToBack(true);
 			}
 		});
 		
@@ -184,7 +151,7 @@ public class TimerActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == REQUEST_CODE) {
-            EditText textView = (EditText)findViewById(R.id.JanCodeEditText);
+            TextView textView = (TextView)findViewById(R.id.RamenInfoTextView);
             if (resultCode == RESULT_OK) {
                 final String barcode = data.getStringExtra("SCAN_RESULT");
                 textView.setText(barcode);
@@ -198,5 +165,45 @@ public class TimerActivity extends Activity {
 		unbindService(serviceConnection); // バインド解除
 		unregisterReceiver(receiver); // 登録解除
 		ramenTimerService.stopSelf(); // サービスは必要ないので終了させる。
+	}
+	
+	private NoodleMaster getRamen(){
+
+		String janCode = "";
+
+		NoodleMaster noodleMaster = null;
+		try{
+			NoodleManager noodleManager = new NoodleManager();
+			noodleMaster = noodleManager.getNoodleMaster(janCode);
+		}catch (NumberFormatException e) {
+			new AlertDialog.Builder(TimerActivity.this).setTitle(
+			"JANコードを入力してください").setMessage(
+			"数字を入力してください。").setPositiveButton(
+			"OK", null).show();
+			return null;
+		}
+		
+		if(noodleMaster==null){
+			// Janコードが存在しない場合の処理
+	    	String dialogTitle = "未登録の商品です。";
+	    	String dialogMessage = "この商品を登録しますか？";
+	    	
+	    	new AlertDialog.Builder(TimerActivity.this)
+	    	.setTitle(dialogTitle)
+	    	.setMessage(dialogMessage) // 
+	    	.setPositiveButton("はい",new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					// 登録機能を呼び出す。Janコード情報を付加する。
+					startActivity(new Intent(TimerActivity.this, CreateActivity.class));
+				}
+			})
+			.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					return;
+				}
+			})
+			.show();
+		}
+		return null;
 	}
 }
