@@ -29,8 +29,9 @@ public class ReaderActivity extends Activity {
 
 	//ReaderActivityの状態
 	private static final int	EXECUTE_QR_CODE_SCANNER = 1;	//QRコードスキャナの実行
-	private static final int	RECEIVE_NOODLE_DATA = 2;		//ラーメン情報受信
-	private static final int	GOTO_NEXT_INTENT = 3;			//次のインテントへ処理を移す
+	private static final int DOWNLOAD_QR_CODE_SCANNER = 2;	//QRコードスキャナーのダウンロード
+	private static final int	RECEIVE_NOODLE_DATA = 3;		//ラーメン情報受信
+	private static final int	GOTO_NEXT_INTENT = 4;			//次のインテントへ処理を移す
 
 	//メッセージハンドラーに対する処理
 	private final Handler	_handler = new Handler() {
@@ -42,6 +43,11 @@ public class ReaderActivity extends Activity {
 				executeQrCodeScanner();
 				break;
 
+			case DOWNLOAD_QR_CODE_SCANNER:
+				//QRコードスキャナーをAndroid Marketからダウンロードする
+				getQrCodeScanner();
+				break;
+				
 			case RECEIVE_NOODLE_DATA:
 				//ラーメン情報を受信する
 				receiveNoodleData();
@@ -73,11 +79,22 @@ public class ReaderActivity extends Activity {
 
 	/**
 	 * ReaderActivityがインテント呼び出しされた時に実行する
+	 * 実際には特に処理は行わない
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+	}
+
+	/**
+	 * アクティビティが開始された時に実行する
+	 * ここでは、QRコードスキャナーを実行する
+	 */
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
 		
 		//QRコードスキャナーを実行する
 		_handler.sendEmptyMessage(EXECUTE_QR_CODE_SCANNER);
@@ -98,21 +115,26 @@ public class ReaderActivity extends Activity {
 		} catch(ActivityNotFoundException e) {
 			//アクティビティが存在しない(=インテントの開始に失敗した)場合は、
 			//Android Marketからダウンロードするか問い合わせる
-			getQrCodeScanner();
+			_handler.sendEmptyMessage(DOWNLOAD_QR_CODE_SCANNER);
 		}
 	}
 
 	/**
-	 * QRコードスキャナが実行された後に呼び出される
+	 * QRコードスキャナーが実行された後に呼び出される
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		
 		if(RESULT_OK == resultCode) {
+			//QRコードスキャナーからJANコードをスキャンできた場合は、
+			//ラーメン情報を履歴またはGAEから取得してみる
 			_janCode = intent.getStringExtra("SCAN_RESULT");
 			_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
 		} else {
+			//「Back」キー等でJANコードをスキャンできなかった場合は、
+			//JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
 			_janCode = null;
+			_noodleMaster = null;
 			_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
 		}
 	}
@@ -122,10 +144,15 @@ public class ReaderActivity extends Activity {
 	 * 履歴・GAEから商品情報を取得する
 	 */
 	private void receiveNoodleData() {
+		
+		//NoodleManagerクラスを実体化させる
 		if(null == _noodleManager) {
 			_noodleManager = new NoodleManager();
 		}
+		//JANコードを検索キーにして、履歴またはGAEから
+		//商品を検索する
 		_noodleMaster = _noodleManager.getNoodleMaster(_janCode);
+		//次のインテントへ遷移する
 		_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
 	}
 	
@@ -134,6 +161,9 @@ public class ReaderActivity extends Activity {
 	 * (直接ダウンロードするのではなく、Android Marketのダウンロードページへ飛ぶ)
 	 */
 	private void getQrCodeScanner() {
+		
+		//QRコードをAndroid Marketからダウンロードしてよいか
+		//ダイアログを表示して問い合わせる
 		new AlertDialog.Builder(this)
 		.setTitle("QR Code Scanner not found.")
 		.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
@@ -182,5 +212,16 @@ public class ReaderActivity extends Activity {
 		
 		//自分自身を終了する
 		finish();
+	}
+
+	/**
+	 * アクティビティ停止時
+	 */
+	@Override
+	protected void onStop() {
+		//念のため、ハンドラーに登録されたメッセージを削除しておく
+		_handler.removeMessages(EXECUTE_QR_CODE_SCANNER);
+		_handler.removeMessages(RECEIVE_NOODLE_DATA);
+		_handler.removeMessages(GOTO_NEXT_INTENT);
 	}
 }
