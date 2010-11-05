@@ -181,6 +181,9 @@ public class ReaderActivity extends Activity {
 		.setNegativeButton("いいえ", null)
 		.create().show();
 	}
+
+	//商品情報(NoodleMaster)のキー
+	private static final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
 	
 	/**
 	 * 次の画面へ遷移する
@@ -199,16 +202,18 @@ public class ReaderActivity extends Activity {
 		if(null == _noodleMaster.getJanCode()) {
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.DASHBORAD2TIMER.ordinal());
-			startActivity(intent);
 		} else if(null == _noodleMaster.getName()) {
 			intent = new Intent(this, CreateActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2CREATE.ordinal());
-			startActivity(intent);
 		} else {
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2TIMER.ordinal());
-			startActivity(intent);
 		}
+
+		//NoodleMaster情報もインテントに情報を送る
+		intent.putExtra(KEY_NOODLE_MASTER, _noodleMaster);
+		//インテントを発行する
+		startActivity(intent);
 		
 		//自分自身を終了する
 		finish();
