@@ -15,10 +15,8 @@ public class NoodleMaster implements Parcelable{
 	private String name;
 	/** 画像イメージ */
 	private Bitmap image;
-	/** 時間 */
+	/** ゆで時間 */
 	private int timerLimit;
-	/** 麺種類 */
-	private NoodleType noodleType;
 
 	/**
 	 * コンストラクタ
@@ -29,13 +27,11 @@ public class NoodleMaster implements Parcelable{
 	 * @param timerLimit
 	 * @param noodleType
 	 */
-	public NoodleMaster(String janCode, String name, Bitmap image, int timerLimit,
-			NoodleType noodleType) {
+	public NoodleMaster(String janCode, String name, Bitmap image, int timerLimit) {
 		this.janCode = janCode;
 		this.name = name;
 		this.image = image;
 		this.timerLimit = timerLimit;
-		this.noodleType = noodleType;
 	}
 	
 	/**
@@ -47,7 +43,6 @@ public class NoodleMaster implements Parcelable{
 		this.name = parcel.readString();
 		this.image = parcel.readParcelable(Bitmap.class.getClassLoader());
 		this.timerLimit = parcel.readInt();
-		this.noodleType = NoodleType.values()[parcel.readInt()];
 	}
 	
 	public String getJanCode(){
@@ -70,8 +65,8 @@ public class NoodleMaster implements Parcelable{
 		return timerLimit;
 	}
 	
-	public NoodleType getNoodleType(){
-		return noodleType;
+	public String getTimerLimitString(){
+		return Integer.toString(getTimerLimit());
 	}
 
 	public int describeContents() {
@@ -84,7 +79,6 @@ public class NoodleMaster implements Parcelable{
 		dest.writeString(name);
 		dest.writeParcelable(image, 0);
 		dest.writeInt(timerLimit);
-		dest.writeInt(noodleType.ordinal());
 	}
 	
 	public static final Parcelable.Creator<NoodleMaster> CREATOR = new Parcelable.Creator<NoodleMaster>() {
