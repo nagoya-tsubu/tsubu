@@ -16,11 +16,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidtsubu.ramentimer.quickaction.ActionItem;
@@ -33,29 +34,34 @@ public class CreateActivity extends Activity {
 	private static final int REQUEST_BARCODE = 0;
 	private static final int REQUEST_GALLERY = 1;
 	private static final int REQUEST_CAMERA = 2;
+
+	//商品情報(NoodleMaster)のキー
+	private static final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
 	
 	//JANコード
-	private EditText janEdit = null;
+	private TextView janText = null;
 	//商品名
 	private EditText nameEdit = null;
-	//商品説明
-	private EditText descriptionEdit = null;
 	//ゆで時間
 	private EditText boilTimeEdit = null;
-	//麺の種類
-	private RadioGroup noodleTypeRadioGroup = null;
+//	//麺の種類
+//	private RadioGroup noodleTypeRadioGroup = null;
 	//商品の画像
-	private ImageView noodleImageView = null;
+	private ImageButton noodleImageView = null;
 	private Bitmap noodleImage = null;
 	//リクエストコードの値（どこから呼び出されたか）
 	private int requestCode = 0;
+	//カップラーメン情報
+	private NoodleMaster noodleMaster = null;
 	
 	//QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
 	//QuickAction のアイテム カメラ
 	ActionItem itemGallery = null;
 
-	 
+	/**
+	 * CreateActivityがインテントで呼び出されたときに呼ばれる 
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,40 +72,43 @@ public class CreateActivity extends Activity {
 		//リクエストコードがセットされてない場合は終了
 		if(requestCode==-1)
 			finish();
+		//カップラーメン情報の取得
+		noodleMaster = (NoodleMaster)intent.getParcelableExtra(KEY_NOODLE_MASTER);
 
 		//ボタンとかエディットボックスとかのUIを取ってくる
-		janEdit = (EditText) findViewById(R.id.JanEdit);
+		janText = (TextView) findViewById(R.id.JanEdit);
+		janText.setText(noodleMaster.getJanCode());
 		nameEdit= (EditText) findViewById(R.id.NameEdit);
-		descriptionEdit=(EditText) findViewById(R.id.DescriptionEdit);
 		boilTimeEdit = (EditText) findViewById(R.id.BoilingTimeEdit);
-		noodleTypeRadioGroup	= (RadioGroup) findViewById(R.id.NoodleTypeRadioGroup);
-		noodleImageView = (ImageView) findViewById(R.id.NoodleImageView);
+//		noodleTypeRadioGroup	= (RadioGroup) findViewById(R.id.NoodleTypeRadioGroup);
+		noodleImageView = (ImageButton) findViewById(R.id.NoodleImageButton);
 		
-		//麺の種類をラジオボタンで作成
-		final NoodleType NoodleTypeValues[] = NoodleType.values();
-		for(int i=0;i<NoodleTypeValues.length;i++){
-			RadioButton radioButton=new RadioButton(this);
-			radioButton.setText(NoodleTypeValues[i].getName());
-			radioButton.setId(i);
-			noodleTypeRadioGroup.addView(radioButton);
-		}
+//		//麺の種類をラジオボタンで作成
+//		final NoodleType NoodleTypeValues[] = NoodleType.values();
+//		for(int i=0;i<NoodleTypeValues.length;i++){
+//			RadioButton radioButton=new RadioButton(this);
+//			radioButton.setText(NoodleTypeValues[i].getName());
+//			radioButton.setId(i);
+//			radioButton.setTextColor(R.color.information_form_text2);
+//			noodleTypeRadioGroup.addView(radioButton);
+//		}
 		
 		//QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
 		itemCamera = new ActionItem();
 		itemCamera.setTitle("カメラ");
-		itemCamera.setIcon(getResources().getDrawable(R.drawable.image_button));
+		itemCamera.setIcon(getResources().getDrawable(R.drawable.camera_button));
 		itemCamera.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				callCamera();
+				callCamera();	//カメラを起動
 			}
 		});
 		
 		itemGallery = new ActionItem();
 		itemGallery.setTitle("ギャラリー");
-		itemGallery.setIcon(getResources().getDrawable(R.drawable.icon));
+		itemGallery.setIcon(getResources().getDrawable(R.drawable.image_button));
 		itemGallery.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				callGallery();
+				callGallery();	//ギャラリーを起動
 			}
 		});
 	}
@@ -118,7 +127,7 @@ public class CreateActivity extends Activity {
 			if (requestCode == REQUEST_BARCODE) {//バーコードリーダー
 				//EditTextにバーコードリーダーで読み込んだJANコードの値を設定
 				final String barcode = intent.getStringExtra("SCAN_RESULT");
-				janEdit.setText(barcode);
+				janText.setText(barcode);
 				
 			}else if(requestCode == REQUEST_GALLERY){//ギャラリー
 				try{
@@ -126,7 +135,8 @@ public class CreateActivity extends Activity {
 					noodleImage = BitmapFactory.decodeStream(is);
 					is.close();
 					//ビューに画像をセット
-					noodleImageView.setImageBitmap(noodleImage);		
+					noodleImageView.setImageBitmap(noodleImage);
+					noodleImageView.setBackgroundColor(R.color.clear);//背景の削除
 				}catch(FileNotFoundException e){
 					Toast.makeText(this, "ファイルが見つかりません", 3);
 				}catch(IOException e){
@@ -137,6 +147,7 @@ public class CreateActivity extends Activity {
 	        	noodleImage = (Bitmap) intent.getExtras().get("data");
 				//ビューに画像をセット
 	        	noodleImageView.setImageBitmap(noodleImage);
+				noodleImageView.setBackgroundColor(R.color.clear);//背景の削除
 	        }
 		}
 	}
@@ -236,13 +247,12 @@ public class CreateActivity extends Activity {
 	 */
 	NoodleMaster getNoodleMaster(){
 		//EditTextやRadioGroupから状態を取得
-		String jancode = janEdit.getText().toString();
+		String jancode = janText.getText().toString();
 		String name = nameEdit.getText().toString();
-		String description = descriptionEdit.getText().toString();
 		int boilTime = new Integer(boilTimeEdit.getText().toString()).intValue();
 		Bitmap image = noodleImage;
-		NoodleType noodleType = NoodleType.values()[noodleTypeRadioGroup.getCheckedRadioButtonId()];
-		NoodleMaster noodle = new NoodleMaster(jancode,name,image,boilTime,noodleType);
+//		NoodleType noodleType = NoodleType.values()[noodleTypeRadioGroup.getCheckedRadioButtonId()];
+		NoodleMaster noodle = new NoodleMaster(jancode,name,image,boilTime);
 		return noodle;
 	}
 	
@@ -279,7 +289,10 @@ public class CreateActivity extends Activity {
 			}
 			return true;
 		}
-		
+		/**
+		 * 
+		 * doInBackgroundが呼ばれた後に呼び出される
+		 */
 		@Override
 		protected void onPostExecute(Boolean result){
 			if(result){

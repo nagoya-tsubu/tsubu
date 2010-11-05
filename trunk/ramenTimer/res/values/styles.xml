@@ -50,6 +50,22 @@
         <item name="android:background">@drawable/title_button</item>
     </style>
 
+    <style name="TitleBarText">
+        <item name="android:id">@id/title_text</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:paddingLeft">12dip</item>
+        <item name="android:paddingRight">12dip</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/title_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+
     <style name="TitleBarProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -133,7 +149,57 @@
         <item name="android:textColor">@android:color/secondary_text_light</item>
     </style>
     
-    	<style name="Animations" />
+    <style name="InformationForm">
+   		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_margin">10dip</item>
+		<item name="android:padding">5dip</item>
+		<item name="android:background">@color/background2</item>
+    </style>
+    
+    <style name="InformationFormText">
+   		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+ 		<item name="android:layout_gravity">center_vertical</item>
+ 		<item name="android:textColor">@android:color/primary_text_light</item>
+    </style>
+    <style name="InformationFormText2">
+   		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+ 		<item name="android:layout_gravity">center_vertical</item>
+ 		<item name="android:textColor">@android:color/secondary_text_light</item>
+    </style>
+    <style name="InformationFormEdit">
+   		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+ 		<item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="InformationFormImage">
+		<item name="android:onClick">onLoadImageClick</item>
+		<item name="android:layout_width">@dimen/form_image_width</item>
+		<item name="android:layout_height">@dimen/form_image_height</item>
+		<item name="android:layout_margin">0dip</item>
+		<item name="android:padding">0dip</item>
+		<item name="android:visibility">visible</item>
+		<item name="android:scaleType">centerCrop</item>
+<!-- 		<item name="android:background">#00000000</item> -->
+    </style>
+    <style name="InformationFormNoodleType">
+		<item name="android:layout_width">fill_parent</item> 
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:orientation">horizontal</item>
+    </style>
+    <style name="CreateButton">
+    	<item name="android:text">登録</item>
+		<item name="android:layout_gravity">center_horizontal</item>
+		<item name="android:onClick">onCreateClick</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+    	
+    </style>
+    
+	<!-- QuickAction styles -->
+	<style name="Animations" />
 
 	<!-- PopDownMenu -->
 	<style name="Animations.PopDownMenu" />
@@ -180,6 +246,7 @@
 		<item name="@android:windowEnterAnimation">@anim/pump_bottom</item>
 		<item name="@android:windowExitAnimation">@anim/disappear</item>
 	</style>
+	<!-- QuickAction styles end -->	
 
 	<style name="PickerButton">
 		<item name="android:width">50px</item>
