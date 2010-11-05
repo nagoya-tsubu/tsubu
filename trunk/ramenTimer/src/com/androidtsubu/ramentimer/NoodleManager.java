@@ -46,6 +46,8 @@ public class NoodleManager {
 	 */
 	public void createNoodleMaster(NoodleMaster noodleMaster) throws SQLException,GaeException{
 		/**@todo SQLiteとGAEに商品マスタを登録する。SQLiteに登録できなくてGAEに登録できた場合はどうするか*/
+		//とりあえずGAEにだけ登録してみる
+		noodleGaeController.create(noodleMaster);
 	}
 	
 	/**
