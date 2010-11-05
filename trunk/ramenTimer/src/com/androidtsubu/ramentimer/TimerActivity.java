@@ -19,9 +19,21 @@ import android.widget.Toast;
 
 public class TimerActivity extends Activity {
 	
-	private static final int REQUEST_CODE =100;
-	TextView minTextView;
-	TextView secTextView;
+	// 分表示部
+	private TextView minTextView = null;
+	// 秒表示部
+	private TextView secTextView = null;
+	// Intentに付与している呼び出し元を保持する
+	private int requestCode = 0;
+	// ラーメン情報
+	private NoodleMaster noodleMaster = null;
+	
+	// 秒の増減間隔
+	private static final int SEC_INTERVALS = 10;
+	// 分の上限値
+	private static final int MIN_UPPEL_LIMIT = 9;
+	// 分の下限値
+	private static final int MIN_LOWER_LIMIT = 1;
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
 		
@@ -35,6 +47,7 @@ public class TimerActivity extends Activity {
 			} catch (Exception e) {
 				// 例外は発生しない
 			}
+			finish(); //Activityを終了する
 		}
 	}
 	
@@ -56,77 +69,101 @@ public class TimerActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-        minTextView = (TextView)findViewById(R.id.MinTextView);
+		setContentView(R.layout.main);
+		
+		minTextView = (TextView)findViewById(R.id.MinTextView);
 		secTextView = (TextView)findViewById(R.id.SecTextView);
 		
+		// 呼び出し元を保持する
+		Intent requestIntent = getIntent();
+		requestCode = requestIntent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+		
+		// 呼び出し元のラーメン情報を取得する
+		//noodleMaster = requestIntent;
+		
+		// case文を使うにはIntentからEnumを取得しなければならんぽい。よくわからんから、とりあえずif文
+		if(requestCode == RequestCode.DASHBORAD2TIMER.ordinal()){ //DashboardActivityから呼ばれた場合
+			// 何もしない
+		}else if(requestCode == RequestCode.CREATE2TIMER.ordinal()){ //CreateActivityから呼ばれた場合
+			// ラーメン情報を表示し時間をセットする
+			setNoodleData();
+		}else if(requestCode == RequestCode.HISTORY2TIMER.ordinal()){ //HistoryActivityから呼ばれた場合
+			// ラーメン情報を表示し時間をセットする
+			setNoodleData();
+		}else if(requestCode == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
+			// ラーメン情報が存在する場合は、ラーメン情報を表示し時間をセットする
+			if(noodleMaster != null){
+				setNoodleData();
+			}else{ // 存在しない場合は、登録するかタイマーを使うか確認するメッセージを表示する
+				showCreateConfirmDialog();
+			}
+		}else{ //上記以外は終了する
+			//finish();
+		}
+		
+		// 分+ボタン
 		Button minUpButton = (Button)findViewById(R.id.MinUpButton);
 		minUpButton.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
 				int min = Integer.valueOf(minTextView.getText().toString())+1;
-				if(min >= 10) return; // 10分以上は不要と判断
+				if(min > MIN_UPPEL_LIMIT) // 上限値を超える場合は処理しない
+					return; 
 				minTextView.setText(String.valueOf(min));
 			}
 		});
 		
+		// 分-ボタン
 		Button minDownButton = (Button)findViewById(R.id.MinDownButton);
 		minDownButton.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
 				int min = Integer.valueOf(minTextView.getText().toString())-1;
-				if(min <= 0) return; // 1分未満は不要と判断
+				if(min < MIN_LOWER_LIMIT) // 下限値未満となる場合は処理しない
+					return; 
 				minTextView.setText(String.valueOf(min));
-				
 			}
 		});
-
+		
+		// 秒+ボタン
 		Button secUpButton = (Button)findViewById(R.id.SecUpButton);
 		secUpButton.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
-				int sec = Integer.valueOf(secTextView.getText().toString())+10;
-				if(sec >= 51){ // 60秒になったら1分あげて、00秒とする
+				int sec = Integer.valueOf(secTextView.getText().toString())+SEC_INTERVALS;
+				if(sec >= 60){ // 60秒以上になったら1分あげる
 					int min = Integer.valueOf(minTextView.getText().toString())+1;
-					if(min >= 10) return; // 10分以上となる場合は処理しない
+					if(min > MIN_UPPEL_LIMIT) // 上限値を超える場合は処理しない
+						return; 
 					minTextView.setText(String.valueOf(min));
-					secTextView.setText("00");
-					return;
 				}
-				secTextView.setText(String.valueOf(sec));
-				
+				secTextView.setText(getSecText(sec));
 			}
 		});
-
+		
+		// 秒-ボタン
 		Button secDownButton = (Button)findViewById(R.id.SecDownButton);
 		secDownButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
-				int sec = Integer.valueOf(secTextView.getText().toString())-10;
-				if(sec == 0){ // 0秒になったら、00秒と表示する
-					secTextView.setText("00");
-					return;
-				}else if(sec <= 0){ // 0秒時にマイナスボタンを押下した場合は、1分さげて50秒とする
+				int sec = Integer.valueOf(secTextView.getText().toString())-SEC_INTERVALS;
+				if(sec < 0){ // 0秒時にマイナスボタンを押下した場合は、1分さげる
 					int min = Integer.valueOf(minTextView.getText().toString())-1;
-					if(min <= 0) return; // １分未満となる場合は処理しない
+					if(min < MIN_LOWER_LIMIT) // 下限値未満となる場合は処理しない
+						return; 
 					minTextView.setText(String.valueOf(min));
-					secTextView.setText("50");
-					return;
 				}
-				secTextView.setText(String.valueOf(sec));
-				
+				secTextView.setText(getSecText(sec));
 			}
 		});
 		
+		// 開始ボタン
 		Button startButton = (Button)findViewById(R.id.StartButton);
 		startButton.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
 				long min = Integer.valueOf(minTextView.getText().toString());
 				long sec = Integer.valueOf(secTextView.getText().toString());
 				ramenTimerService.schedule((min * 60 + sec ) * 1000 );
 				moveTaskToBack(true);
+				
+				//このあと登録したりつぶやいたいする（？）
 			}
 		});
 		
@@ -144,21 +181,6 @@ public class TimerActivity extends Activity {
 		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 	}
 	
-	
-	/*
-	 * Intentの戻り値を受け取る
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == REQUEST_CODE) {
-            TextView textView = (TextView)findViewById(R.id.RamenInfoTextView);
-            if (resultCode == RESULT_OK) {
-                final String barcode = data.getStringExtra("SCAN_RESULT");
-                textView.setText(barcode);
-            }
-        }
-	}
-	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -167,43 +189,56 @@ public class TimerActivity extends Activity {
 		ramenTimerService.stopSelf(); // サービスは必要ないので終了させる。
 	}
 	
-	private NoodleMaster getRamen(){
-
-		String janCode = "";
-
-		NoodleMaster noodleMaster = null;
-		try{
-			NoodleManager noodleManager = new NoodleManager();
-			noodleMaster = noodleManager.getNoodleMaster(janCode);
-		}catch (NumberFormatException e) {
-			new AlertDialog.Builder(TimerActivity.this).setTitle(
-			"JANコードを入力してください").setMessage(
-			"数字を入力してください。").setPositiveButton(
-			"OK", null).show();
-			return null;
+	/**
+	 * 引数が有効値でなければ有効値を戻す。
+	 * 1桁の場合は前0を付加する。
+	 */
+	private String getSecText(int sec){
+		if(sec >= 60){ //60秒以上の場合
+			sec = sec - 60;
+		}else if(sec < 0){ //0未満の場合
+			sec = sec + 60;
 		}
+		String secText = String.valueOf(sec);
+		if(sec < 10){ //一桁の場合は前0を表示
+			secText = "0" + sec;
+		}
+		return secText;
+	}
+
+	/**
+	 * ラーメン情報が登録されていない場合の確認メッセージを表示する
+	 */
+	private void showCreateConfirmDialog(){
 		
-		if(noodleMaster==null){
-			// Janコードが存在しない場合の処理
-	    	String dialogTitle = "未登録の商品です。";
-	    	String dialogMessage = "この商品を登録しますか？";
-	    	
-	    	new AlertDialog.Builder(TimerActivity.this)
-	    	.setTitle(dialogTitle)
-	    	.setMessage(dialogMessage) // 
-	    	.setPositiveButton("はい",new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					// 登録機能を呼び出す。Janコード情報を付加する。
-					startActivity(new Intent(TimerActivity.this, CreateActivity.class));
-				}
-			})
-			.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					return;
-				}
-			})
-			.show();
-		}
-		return null;
+		// 商品が登録されていない場合の処理
+    	String dialogTitle = "この商品はまだ登録されていません。";
+    	String dialogMessage = "商品の登録を行いますか？";
+    	
+    	new AlertDialog.Builder(TimerActivity.this)
+    	.setTitle(dialogTitle)
+    	.setMessage(dialogMessage)
+		.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// 
+			}
+		})
+    	.setPositiveButton("はい",new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// CreateActivityを呼び出す。
+				Intent intent = new Intent(TimerActivity.this, CreateActivity.class)
+				.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.TIMER2CREATE.ordinal())
+				.putExtra("", noodleMaster);
+				startActivity(intent);
+			}
+		})
+		.show();
+	}
+	
+	/**
+	 * ラーメン情報をレイアウトにセットする
+	 */
+	private void setNoodleData(){
+		
 	}
 }
