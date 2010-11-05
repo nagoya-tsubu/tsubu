@@ -26,12 +26,14 @@ public class ReaderActivity extends Activity {
 	private NoodleManager	_noodleManager;
 	//JANコード
 	private String			_janCode;
+	//呼び出し元インテント
+	private int			_requestCode;
 
 	//ReaderActivityの状態
-	private static final int	EXECUTE_QR_CODE_SCANNER = 1;	//QRコードスキャナの実行
-	private static final int DOWNLOAD_QR_CODE_SCANNER = 2;	//QRコードスキャナーのダウンロード
-	private static final int	RECEIVE_NOODLE_DATA = 3;		//ラーメン情報受信
-	private static final int	GOTO_NEXT_INTENT = 4;			//次のインテントへ処理を移す
+	private static final int	EXECUTE_QR_CODE_SCANNER = 100;	//QRコードスキャナの実行
+	private static final int DOWNLOAD_QR_CODE_SCANNER = 200;	//QRコードスキャナーのダウンロード
+	private static final int	RECEIVE_NOODLE_DATA = 300;		//ラーメン情報受信
+	private static final int	GOTO_NEXT_INTENT = 400;			//次のインテントへ処理を移す
 
 	//メッセージハンドラーに対する処理
 	private final Handler	_handler = new Handler() {
@@ -79,12 +81,15 @@ public class ReaderActivity extends Activity {
 
 	/**
 	 * ReaderActivityがインテント呼び出しされた時に実行する
-	 * 実際には特に処理は行わない
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+
+		//どのボタンからこのインテントが呼び出されたかを取得する
+		Intent intent = getIntent();
+		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 	}
 
 	/**
@@ -111,7 +116,7 @@ public class ReaderActivity extends Activity {
 
 		//QRコードスキャナーを呼び出す
 		try {
-			startActivityForResult(intent, 0);
+			startActivityForResult(intent, EXECUTE_QR_CODE_SCANNER);
 		} catch(ActivityNotFoundException e) {
 			//アクティビティが存在しない(=インテントの開始に失敗した)場合は、
 			//Android Marketからダウンロードするか問い合わせる
@@ -125,18 +130,35 @@ public class ReaderActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		
-		if(RESULT_OK == resultCode) {
-			//QRコードスキャナーからJANコードをスキャンできた場合は、
-			//ラーメン情報を履歴またはGAEから取得してみる
-			_janCode = intent.getStringExtra("SCAN_RESULT");
-			_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
-		} else {
-			//「Back」キー等でJANコードをスキャンできなかった場合は、
-			//JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
-			_janCode = null;
-			_noodleMaster = null;
-			_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+		switch(requestCode) {
+		case EXECUTE_QR_CODE_SCANNER:
+			if(RESULT_OK == resultCode) {
+				//QRコードスキャナーからJANコードをスキャンできた場合は、
+				//ラーメン情報を履歴またはGAEから取得してみる
+				_janCode = intent.getStringExtra("SCAN_RESULT");
+				_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
+			} else {
+				//「Back」キー等でJANコードをスキャンできなかった場合は、
+				//JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
+				_janCode = null;
+				_noodleMaster = null;
+				_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+			}
+			break;
+			
+		case DOWNLOAD_QR_CODE_SCANNER:
+			if(RESULT_OK == resultCode) {
+				_handler.sendEmptyMessage(EXECUTE_QR_CODE_SCANNER);
+			} else {
+				_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+			}
+			break;
+			
+		default:
+			//呼び出したインテントが空の場合は、処理を終了する
+			break;
 		}
+		
 	}
 
 	/**
@@ -175,10 +197,15 @@ public class ReaderActivity extends Activity {
 				final Intent intent = new Intent(
 						Intent.ACTION_VIEW,
 						Uri.parse("market://search?q=pname:" + QRCODE_PKG_NAME));
-				startActivity(intent);
+				startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
 			}
 		})
-		.setNegativeButton("いいえ", null)
+		.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+			//「いいえ」押下時は、タイマー画面へ遷移する
+			public void onClick(DialogInterface dialog, int which) {
+				_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+			}
+		})
 		.create().show();
 	}
 
@@ -192,24 +219,29 @@ public class ReaderActivity extends Activity {
 		Intent intent;
 
 		//次の画面へ遷移する
-		//(1)JANコードが取得できなかった場合は、タイマー画面へ遷移する
+		//(1)商品情報オブジェクトが空の場合は、タイマー画面へ遷移する
+		//(2)JANコードが取得できなかった場合は、タイマー画面へ遷移する
 		//   ・QRコードスキャナーで「Back」キーを押下した場合
 		//   ・QRコードスキャナーをインストールしなかった場合
 		//   　→「Dashboardからタイマー」遷移と同じ
-		//(2)商品の取得ができなかった場合は、商品登録画面へ遷移する
+		//(3)商品の取得ができなかった場合は、商品登録画面へ遷移する
 		//   ・履歴、GAEから商品情報を取得できなかった場合
-		//(3)それ以外は、商品情報と共にタイマー画面へ遷移する
-		if(null == _noodleMaster.getJanCode()) {
+		//(4)それ以外は、商品情報と共にタイマー画面へ遷移する
+		if(null == _noodleMaster) {
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.DASHBORAD2TIMER.ordinal());
-		} else if(null == _noodleMaster.getName()) {
-			intent = new Intent(this, CreateActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2CREATE.ordinal());
 		} else {
-			intent = new Intent(this, TimerActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2TIMER.ordinal());
+			if(null == _noodleMaster.getJanCode()) {
+				intent = new Intent(this, TimerActivity.class);
+				intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.DASHBORAD2TIMER.ordinal());
+			} else if(null == _noodleMaster.getName()) {
+				intent = new Intent(this, CreateActivity.class);
+				intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2CREATE.ordinal());
+			} else {
+				intent = new Intent(this, TimerActivity.class);
+				intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2TIMER.ordinal());
+			}
 		}
-
 		//NoodleMaster情報もインテントに情報を送る
 		intent.putExtra(KEY_NOODLE_MASTER, _noodleMaster);
 		//インテントを発行する
@@ -224,6 +256,7 @@ public class ReaderActivity extends Activity {
 	 */
 	@Override
 	protected void onStop() {
+		super.onStop();
 		//念のため、ハンドラーに登録されたメッセージを削除しておく
 		_handler.removeMessages(EXECUTE_QR_CODE_SCANNER);
 		_handler.removeMessages(RECEIVE_NOODLE_DATA);
