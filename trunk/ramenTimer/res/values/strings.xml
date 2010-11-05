@@ -3,6 +3,9 @@
   
   <string name="app_name">RamenTimer</string>    
   
+  <string name="description_logo">RamenTimer</string>
+  <string name="description_refresh">Refresh</string>
+  <string name="description_search">Search</string>
   
   
   

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class DashboardActivity extends Activity {
+public class DashBoardActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -19,10 +19,7 @@ public class DashboardActivity extends Activity {
 	}
 
 	public void onCreateButtonClick(View view) {
-		int requestCode = RequestCode.READER2CREATE.ordinal();
-		Intent intent = new Intent(this, CreateActivity.class)
-		.putExtra(RequestCode.KEY_RESUEST_CODE,requestCode);
-		startActivityForResult(intent, requestCode);
+		startActivity(new Intent(this, CreateActivity.class));
 	}
 	
 	public void onHistoryButtonClick(View view) {
