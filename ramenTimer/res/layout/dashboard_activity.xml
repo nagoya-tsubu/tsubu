@@ -1,36 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="wrap_content"
-	android:layout_height="wrap_content"
-	android:orientation="vertical">
 
-	<Button 
-		android:text="タイマー" 
-		android:id="@+id/Button01"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:onClick="onTimerButtonClick"
-		/>
-	<Button 
-		android:text="商品読込" 
-		android:id="@+id/Button02"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		/>
-	<Button 
-		android:text="商品登録"
-	 	android:id="@+id/Button03"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:onClick="onCreateButtonClick"
-		/>
-	<Button
-		android:text="履歴" 
-		android:id="@+id/Button04"
-		android:layout_width="wrap_content" 
-		android:layout_height="wrap_content"
-		android:onClick="onHistoryButtonClick"
-		/>
+<LinearLayout
+ 	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_root"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <include layout="@layout/colorstrip"/>
 
+    <LinearLayout style="@style/TitleBar">
+        <ImageView style="@style/TitleBarLogo"
+            android:contentDescription="@string/description_logo"
+            android:src="@drawable/title_logo" />
+
+        <View style="@style/TitleBarSpring" />
+
+        <ImageView style="@style/TitleBarSeparator" />
+        <ImageButton
+        	style="@style/TitleBarAction"
+            android:id="@+id/btn_title_refresh"
+            android:contentDescription="@string/description_refresh"
+            android:src="@drawable/ic_title_refresh"
+            android:onClick="onRefreshClick" />
+        <ProgressBar
+        	style="@style/TitleBarProgressIndicator"
+            android:id="@+id/title_refresh_progress"
+            android:visibility="gone" />
+
+        <ImageView style="@style/TitleBarSeparator" />
+        <ImageButton
+        	style="@style/TitleBarAction"
+            android:contentDescription="@string/description_search"
+            android:src="@drawable/ic_title_search"
+            android:onClick="onSearchClick" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="6dip">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:id="@+id/Button01"
+                style="@style/HomeButton"
+                android:onClick="onTimerButtonClick"
+                android:text="タイマー"
+                android:drawableTop="@drawable/home_btn_schedule"/>
+            <Button android:id="@+id/Button02"
+                style="@style/HomeButton"
+                android:onClick="onCreateButtonClick"
+                android:text="登録"
+                android:drawableTop="@drawable/home_btn_map"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <Button android:id="@+id/Button03"
+                style="@style/HomeButton"
+                android:onClick="onHistoryButtonClick"
+                android:text="履歴"
+                android:drawableTop="@drawable/home_btn_sessions"/>
+            <Button android:id="@+id/home_btn_starred"
+                style="@style/HomeButton"
+                android:onClick="onStarredClick"
+                android:text="何か"
+                android:drawableTop="@drawable/home_btn_starred"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/now_playing_loading"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/now_playing_height"
+        android:orientation="horizontal"
+        android:background="#eee"
+        android:gravity="center">
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="6dip"
+            android:indeterminate="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:text="なんだろにゃ"/>
+    </LinearLayout>
 </LinearLayout>
