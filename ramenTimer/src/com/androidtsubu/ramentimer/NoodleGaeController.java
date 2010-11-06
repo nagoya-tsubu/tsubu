@@ -5,31 +5,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
@@ -38,7 +26,6 @@ import org.json.JSONObject;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -169,17 +156,19 @@ public class NoodleGaeController {
 
 		try {
 			MultipartEntity entity = new MultipartEntity();
-			//名称
+			// 名称
 			entity.addPart("name", new StringBody(noodleMaster.getName()));
-			//商品名
+			// 商品名
 			entity.addPart("jan", new StringBody(noodleMaster.getJanCode()));
-			//茹で時間
-			entity.addPart("boilTime", new StringBody(noodleMaster.getTimerLimitString()));
-			//イメージ画像
-			entity.addPart("image", new FileBody(createImageFile(noodleMaster.getImage())));
-			
+			// 茹で時間
+			entity.addPart("boilTime",
+					new StringBody(noodleMaster.getTimerLimitString()));
+			// イメージ画像
+			entity.addPart("image",
+					new FileBody(createImageFile(noodleMaster.getImage())));
+
 			httpPost.setEntity(entity);
-			
+
 			HttpResponse httpResponse;
 			httpResponse = client.execute(httpPost);
 
@@ -187,7 +176,7 @@ public class NoodleGaeController {
 			if (statusCode < 400) {
 				// レスポンスのContentStreamを読み出すBufferedReaderを生成する
 				reader = new BufferedReader(new InputStreamReader(httpResponse
-						.getEntity().getContent(), "Shift_Jis"));
+						.getEntity().getContent(), "UTF-8"));
 				// 結果文字列を溜め込むStringBuilderを生成する
 				StringBuilder builder = new StringBuilder();
 				String line = null;
@@ -209,33 +198,34 @@ public class NoodleGaeController {
 	}
 
 	/**
-	 * Bitmapをpost用の文字列に変える
+	 * Bitmapからファイルを作成する
 	 * 
+	 * @param bitmap
 	 * @return
 	 */
 	private File createImageFile(Bitmap bitmap) {
-		//jpgファイルを作る	
+		// jpgファイルを作る
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		FileOutputStream fileOutputStream = null;			
+		FileOutputStream fileOutputStream = null;
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
-			//ファイルを書き出す
+			// ファイルを書き出す
 			File file = new File("/sdcard/ramen.jpg");
-			fileOutputStream = new FileOutputStream(file);			
+			fileOutputStream = new FileOutputStream(file);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
 			return file;
 		} catch (FileNotFoundException e) {
-			Log.d("err", e.getMessage(),e);
-		}catch(IOException e){
-			Log.d("err", e.getMessage(),e);
-		}finally{
-			if(fileOutputStream != null){
+			Log.d("err", e.getMessage(), e);
+		} catch (IOException e) {
+			Log.d("err", e.getMessage(), e);
+		} finally {
+			if (fileOutputStream != null) {
 				try {
 					fileOutputStream.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					Log.d("err", e.getMessage(),e);
+					Log.d("err", e.getMessage(), e);
 				}
 			}
 		}
