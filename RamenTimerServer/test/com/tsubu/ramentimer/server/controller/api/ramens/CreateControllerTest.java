@@ -23,8 +23,9 @@ public class CreateControllerTest extends ControllerTestCaseEx {
         String jan = "4902885000686";
         int boilTime = 180;
         byte[] image = TestImage.load("sample.jpg");
+        byte[] resizedImage = TestImage.load("sample_resized.jpg");
 
-        tester.imageServiceStub.register("Transform", TestImage.load("sample_resized.jpg"));
+        tester.imageServiceStub.register("Transform", resizedImage);
         tester.request.setMethod("post");
         tester.request.addLocale(new Locale("en"));
         tester.param("name", name);
@@ -44,6 +45,6 @@ public class CreateControllerTest extends ControllerTestCaseEx {
         assertThat(stored.getName(), is(name));
         assertThat(stored.getJan(), is(jan));
         assertThat(stored.getBoilTime(), is(boilTime));
-        assertThat(stored.getImageData(), is(image));
+        assertThat(stored.getImageData(), is(resizedImage));
     }
 }
