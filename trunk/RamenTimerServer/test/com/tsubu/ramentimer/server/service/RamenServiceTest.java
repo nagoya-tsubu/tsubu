@@ -25,6 +25,7 @@ public class RamenServiceTest extends AppEngineTestCaseEx {
     private String jan = "4902885000686";
     private int boilTime = 180;
     private byte[] imageData = TestImage.load("sample.jpg");
+    private byte[] resizedImageData = TestImage.load("sample_resized.jpg");
     
     @Test
     public void test() throws Exception {
@@ -43,7 +44,7 @@ public class RamenServiceTest extends AppEngineTestCaseEx {
         input.put("boilTime", "180");
         input.put("image", new FileItem("sample.jpg", "image/jpeg", imageData));
 
-        tester.imageServiceStub.register("Transform", TestImage.load("sample_resized.jpg"));
+        tester.imageServiceStub.register("Transform", resizedImageData);
         Ramen ramen = service.create(input);
         assertThat(ramen, is(notNullValue()));
         
@@ -51,7 +52,7 @@ public class RamenServiceTest extends AppEngineTestCaseEx {
         assertThat(got.getName(), is(name));
         assertThat(got.getJan(), is(jan));
         assertThat(got.getBoilTime(), is(boilTime));
-        assertThat(got.getImageData(), is(imageData));
+        assertThat(got.getImageData(), is(resizedImageData));
     }
     
     @Test(expected = IllegalArgumentException.class)
