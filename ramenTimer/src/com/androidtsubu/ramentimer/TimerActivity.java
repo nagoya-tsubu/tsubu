@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,13 +28,17 @@ public class TimerActivity extends Activity {
 	private int requestCode = 0;
 	// ラーメン情報
 	private NoodleMaster noodleMaster = null;
+	// 登録フラグ
+	private boolean registrationFlg = false;
+	// 登録表示用のＩＤ
+	private int confirmCreateId = 1000;
 	
 	// 秒の増減間隔
 	private static final int SEC_INTERVALS = 10;
 	// 分の上限値
 	private static final int MIN_UPPEL_LIMIT = 9;
 	// 分の下限値
-	private static final int MIN_LOWER_LIMIT = 1;
+	private static final int MIN_LOWER_LIMIT = 0;
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
 		
@@ -47,7 +52,10 @@ public class TimerActivity extends Activity {
 			} catch (Exception e) {
 				// 例外は発生しない
 			}
-			finish(); //Activityを終了する
+			if(registrationFlg){
+				displaySetting(confirmCreateId);
+			}
+			//finish(); //Activityを終了する
 		}
 	}
 	
@@ -81,25 +89,9 @@ public class TimerActivity extends Activity {
 		// 呼び出し元のラーメン情報を取得する
 		//noodleMaster = requestIntent;
 		
-		// case文を使うにはIntentからEnumを取得しなければならんぽい。よくわからんから、とりあえずif文
-		if(requestCode == RequestCode.DASHBORAD2TIMER.ordinal()){ //DashboardActivityから呼ばれた場合
-			// 何もしない
-		}else if(requestCode == RequestCode.CREATE2TIMER.ordinal()){ //CreateActivityから呼ばれた場合
-			// ラーメン情報を表示し時間をセットする
-			setNoodleData();
-		}else if(requestCode == RequestCode.HISTORY2TIMER.ordinal()){ //HistoryActivityから呼ばれた場合
-			// ラーメン情報を表示し時間をセットする
-			setNoodleData();
-		}else if(requestCode == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
-			// ラーメン情報が存在する場合は、ラーメン情報を表示し時間をセットする
-			if(noodleMaster != null){
-				setNoodleData();
-			}else{ // 存在しない場合は、登録するかタイマーを使うか確認するメッセージを表示する
-				showCreateConfirmDialog();
-			}
-		}else{ //上記以外は終了する
-			//finish();
-		}
+		// 呼び出し元に応じて表示を切り替える
+		displaySetting(requestCode);
+		
 		
 		// 分+ボタン
 		Button minUpButton = (Button)findViewById(R.id.MinUpButton);
@@ -161,7 +153,10 @@ public class TimerActivity extends Activity {
 				long min = Integer.valueOf(minTextView.getText().toString());
 				long sec = Integer.valueOf(secTextView.getText().toString());
 				ramenTimerService.schedule((min * 60 + sec ) * 1000 );
-				moveTaskToBack(true);
+				
+				//残り時間をカウントダウンする
+				
+				//moveTaskToBack(true);
 				
 				//このあと登録したりつぶやいたいする（？）
 			}
@@ -239,6 +234,50 @@ public class TimerActivity extends Activity {
 	 * ラーメン情報をレイアウトにセットする
 	 */
 	private void setNoodleData(){
+		
+	}
+	
+	/**
+	 * リクエストコードで表示を切り替える
+	 * @param id
+	 */
+	private void displaySetting(int id){
+
+		// 上部を非表示にする
+		LinearLayout blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
+		blank.setVisibility(View.GONE);
+		LinearLayout notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
+		notExistNoodle.setVisibility(View.GONE);
+		LinearLayout existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
+		existNoodle.setVisibility(View.GONE);
+		LinearLayout confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
+		confirmCreation.setVisibility(View.GONE);
+		
+		if(id == RequestCode.DASHBORAD2TIMER.ordinal()){ //DashboardActivityから呼ばれた場合
+			blank.setVisibility(View.VISIBLE);
+			
+		}else if(id == RequestCode.CREATE2TIMER.ordinal()){ //CreateActivityから呼ばれた場合
+			existNoodle.setVisibility(View.VISIBLE);
+			// ラーメン情報を表示し時間をセットする
+			setNoodleData();
+		}else if(id == RequestCode.HISTORY2TIMER.ordinal()){ //HistoryActivityから呼ばれた場合
+			existNoodle.setVisibility(View.VISIBLE);
+			// ラーメン情報を表示し時間をセットする
+			setNoodleData();
+		}else if(id == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
+			// ラーメン情報が存在する場合は、ラーメン情報を表示し時間をセットする
+			if(noodleMaster != null){
+				existNoodle.setVisibility(View.VISIBLE);
+				setNoodleData();
+			}else{ //登録フラグをたてる
+				notExistNoodle.setVisibility(View.VISIBLE);
+				registrationFlg = true;
+			}
+		}else if(id == confirmCreateId){ //タイマー終了後に登録確認画面を表示する場合
+			confirmCreation.setVisibility(View.VISIBLE);			
+		}else{ //上記以外は、、、
+			
+		}
 		
 	}
 }
