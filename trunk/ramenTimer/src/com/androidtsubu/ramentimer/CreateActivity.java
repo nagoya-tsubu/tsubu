@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,9 +19,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -257,49 +255,61 @@ public class CreateActivity extends Activity {
 	}
 	
 	/**
-	 * GoogleAppEngine にラーメンの情報を登録する
+	 * ラーメンの情報を登録する
 	 * @author leibun
 	 *
 	 */
-	private class EntryAsyncTask extends AsyncTask<NoodleMaster, Integer, Boolean>{
+	private class EntryAsyncTask extends AsyncTask<NoodleMaster, Integer, Integer>{
 		//表示用にコンテキストを保持
 		private Activity activity =null; 
 		private NoodleMaster noodleMaster = null;
+		NoodleManager nm;
+		
+		private static final int RESULT_CREATE_OK = 0;	//登録成功
+		private static final int RESULT_ERROR_SQLITE = 1;//SQLITEでエラー
+		private static final int RESULT_ERROR_GAE = 2;	//Webへの登録でエラー
+		
 		/**
 		 * コンストラクタ
 		 * @param context
 		 */
 		public EntryAsyncTask(Activity activity){
 			this.activity = activity;
+			this.nm = new NoodleManager();
 		}
 		
 		/**
-		 * 別スレッドでWeb登録を実行
+		 * Web登録があるので別スレッドで実行
 		 * @params params
 		 */
 		@Override
-		protected Boolean doInBackground(NoodleMaster... params) {
+		protected Integer doInBackground(NoodleMaster... params) {
 			try{
-				//カップラーメンの情報をWebに登録
-				NoodleGaeController ngc = new NoodleGaeController();
-				ngc.create(params[0]);
-				
-			}catch(Exception e){
-				return false;
+				//カップラーメンの情報をWebとローカルに登録
+				nm.createNoodleMaster(params[0]);
+			}catch(GaeException e){
+				return RESULT_ERROR_GAE;
+			} catch (java.sql.SQLException e) {
+				return RESULT_ERROR_SQLITE;
 			}
-			return true;
+			return RESULT_CREATE_OK;
 		}
 		/**
 		 * 
 		 * doInBackgroundが呼ばれた後に呼び出される
 		 */
 		@Override
-		protected void onPostExecute(Boolean result){
-			if(result){
-				Toast.makeText(activity, "アップロード完了", Toast.LENGTH_LONG).show();
-			}else{
-				Toast.makeText(activity, "アップロード失敗", Toast.LENGTH_LONG).show();
-				return;
+		protected void onPostExecute(Integer result){
+			switch(result){
+				case RESULT_CREATE_OK:
+					Toast.makeText(activity, "登録完了", Toast.LENGTH_LONG).show();
+					break;
+				case RESULT_ERROR_GAE:
+					Toast.makeText(activity, "サーバーへの登録に失敗しました", Toast.LENGTH_LONG).show();
+					return;
+				case RESULT_ERROR_SQLITE:
+					Toast.makeText(activity, "ローカルへの登録に失敗しました", Toast.LENGTH_LONG).show();
+					return;
 			}
 			//リーダーから呼び出された場合
 			if(requestCode == RequestCode.READER2CREATE.ordinal()){
