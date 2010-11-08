@@ -4,60 +4,66 @@ import java.sql.SQLException;
 
 /**
  * データの読み書きをするマネージャーです
+ * 
  * @author hide
- *
+ * 
  */
 public class NoodleManager {
-	/**SQLite読み書きクラス*/
+	/** SQLite読み書きクラス */
 	private NoodleSqlController noodleSqlController;
-	/**GAE読み書きクラス*/
+	/** GAE読み書きクラス */
 	private NoodleGaeController noodleGaeController;
-	
+
 	/**
 	 * コンストラクタ
 	 */
-	public NoodleManager(){
+	public NoodleManager() {
 		noodleGaeController = new NoodleGaeController();
 	}
-	
+
 	/**
 	 * JANコードを引数にSQliteやGAEから商品マスタを得ます
+	 * 
 	 * @param janCode
 	 * @return
 	 */
-	public NoodleMaster getNoodleMaster(String janCode){
-		/**@todo SQLiteからデータをひっぱってみる。なければGAEからデータをひっぱってみる*/
+	public NoodleMaster getNoodleMaster(String janCode) throws GaeException {
+		/** @todo SQLiteからデータをひっぱってみる。なければGAEからデータをひっぱってみる */
 		try {
-			//とりあえずGAEからだけひっぱってみる
+			// とりあえずGAEからだけひっぱってみる
 			return noodleGaeController.getNoodleMaster(janCode);
 		} catch (GaeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
-	 * SQLiteとGAEに商品マスタを登録する
+	 * SQLiteとGAEに商品を登録する
+	 * 
 	 * @param noodleMaster
 	 * @throws SQLException
+	 * @throws DuplexNoodleMasterException
 	 * @throws GaeException
 	 */
-	public void createNoodleMaster(NoodleMaster noodleMaster) throws SQLException,GaeException{
-		/**@todo SQLiteとGAEに商品マスタを登録する。SQLiteに登録できなくてGAEに登録できた場合はどうするか*/
-		//とりあえずGAEにだけ登録してみる
+	public void createNoodleMaster(NoodleMaster noodleMaster)
+			throws SQLException, DuplexNoodleMasterException, GaeException {
+		/** @todo SQLiteとGAEに商品マスタを登録する。SQLiteに登録できなくてGAEに登録できた場合はどうするか */
+		// とりあえずGAEにだけ登録してみる
 		noodleGaeController.create(noodleMaster);
 	}
-	
+
 	/**
 	 * 商品履歴を登録する
+	 * 
 	 * @param noodleMaster
 	 * @throws SQLException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster) throws SQLException{
-		/**@todo GAEにマスタを登録してから履歴を登録する？*/
+	public void createNoodleHistory(NoodleMaster noodleMaster)
+			throws SQLException {
+		/** @todo GAEにマスタを登録してから履歴を登録する？ */
 	}
-	
-	
+
 }
