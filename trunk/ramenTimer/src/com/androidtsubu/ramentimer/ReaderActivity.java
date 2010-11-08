@@ -174,6 +174,13 @@ public class ReaderActivity extends Activity {
 		// 商品を検索する
 		try {
 			_noodleMaster = _noodleManager.getNoodleMaster(_janCode);
+			// @hideponm
+			if (_noodleMaster == null
+					&& RequestCode.values()[_requestCode]
+							.equals(RequestCode.DASHBORAD2READER)) {
+				// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
+				_noodleMaster = new NoodleMaster(_janCode, "", null, 0);
+			}
 		} catch (GaeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -241,7 +248,8 @@ public class ReaderActivity extends Activity {
 				intent = new Intent(this, TimerActivity.class);
 				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 						RequestCode.DASHBORAD2TIMER.ordinal());
-			} else if (null == _noodleMaster.getName()) {
+			} else if (null == _noodleMaster.getName()
+					|| "".equals(_noodleMaster.getName())) {
 				intent = new Intent(this, CreateActivity.class);
 				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 						RequestCode.READER2CREATE.ordinal());
