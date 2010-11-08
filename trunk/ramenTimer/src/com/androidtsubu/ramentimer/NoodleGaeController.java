@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.DuplicateFormatFlagsException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
@@ -39,9 +41,13 @@ import android.util.Log;
 public class NoodleGaeController {
 	/** Google App Engine のアドレス */
 	private static String address = "http://ramentimer.appspot.com/";
+	/** 該当JANコードの商品がありません */
+	private static final int NOT_FOUND = 404;
+	/** すでに該当JANコードの商品があります */
+	private static final int DUPLICATE = 400;
 
 	/**
-	 * JANコードを引数にGAEから商品マスタ形を得る
+	 * JANコードを引数にGAEから商品マスタを得る
 	 * 
 	 * @param janCode
 	 * @return
@@ -63,25 +69,32 @@ public class NoodleGaeController {
 		try {
 			HttpGet httpGet = new HttpGet(request.toString());
 			HttpResponse httpResponse = client.execute(httpGet);
-			if (httpResponse.getStatusLine().getStatusCode() < 400) {
-				// レスポンスのContentStreamを読み出すBufferedReaderを生成する
-				reader = new BufferedReader(new InputStreamReader(httpResponse
-						.getEntity().getContent(), "UTF-8"));
-				// 結果文字列を溜め込むStringBuilderを生成する
-				StringBuilder builder = new StringBuilder();
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-				// 正常な結果が返ってきたので商品マスタを生成する
-				return createNoodleMaster(builder.toString());
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			if (statusCode == NOT_FOUND) {
+				// 該当するJANコードの商品はないのでnullを返す
+				return null;
 			}
+			if (statusCode >= 400) {
+				// 400以上の場合はエラーなのでExceptionを投げる
+				throw new GaeException("Status Error = "
+						+ Integer.toString(statusCode));
+			}
+			// 正常返答レスポンスのContentStreamを読み出すBufferedReaderを生成する
+			reader = new BufferedReader(new InputStreamReader(httpResponse
+					.getEntity().getContent(), "UTF-8"));
+			// 結果文字列を溜め込むStringBuilderを生成する
+			StringBuilder builder = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+			// 正常な結果が返ってきたので商品マスタを生成する
+			return createNoodleMaster(builder.toString());
 		} catch (ClientProtocolException e) {
 			throw new GaeException(e);
 		} catch (IOException exception) {
 			throw new GaeException(exception);
 		}
-		return null;
 	}
 
 	/**
@@ -140,9 +153,11 @@ public class NoodleGaeController {
 	 * GAEに商品マスタを追加作成します
 	 * 
 	 * @param noodleMaster
+	 * @throws DuplexNoodleMasterException
 	 * @throws GaeException
 	 */
-	public void create(NoodleMaster noodleMaster) throws GaeException {
+	public void create(NoodleMaster noodleMaster)
+			throws DuplexNoodleMasterException, GaeException {
 		// HTTPクライアントを生成
 		HttpClient client = new DefaultHttpClient();
 		// HTTPパラメーターを取得
@@ -173,21 +188,25 @@ public class NoodleGaeController {
 			httpResponse = client.execute(httpPost);
 
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
-			if (statusCode < 400) {
-				// レスポンスのContentStreamを読み出すBufferedReaderを生成する
-				reader = new BufferedReader(new InputStreamReader(httpResponse
-						.getEntity().getContent(), "UTF-8"));
-				// 結果文字列を溜め込むStringBuilderを生成する
-				StringBuilder builder = new StringBuilder();
-				String line = null;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
-				}
-				System.out.println(builder.toString());
-				return;
+			if (statusCode == DUPLICATE) {
+				// 重複エラーを返す
+				throw new DuplexNoodleMasterException();
 			}
-			throw new GaeException("Responce Error:"
-					+ Integer.toString(statusCode));
+			if (statusCode > 400) {
+				// 400以上の場合はエラーなのでExceptionを投げる
+				throw new GaeException("Status Error = "
+						+ Integer.toString(statusCode));
+			}
+			// レスポンスのContentStreamを読み出すBufferedReaderを生成する
+			reader = new BufferedReader(new InputStreamReader(httpResponse
+					.getEntity().getContent(), "UTF-8"));
+			// 結果文字列を溜め込むStringBuilderを生成する
+			StringBuilder builder = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+			System.out.println(builder.toString());
 		} catch (UnsupportedEncodingException exception) {
 			throw new GaeException(exception);
 		} catch (ClientProtocolException e) {

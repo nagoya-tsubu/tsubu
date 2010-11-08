@@ -14,6 +14,13 @@ public class GaeException extends Exception {
 	
 	/**
 	 * コンストラクタ
+	 */
+	public GaeException(){
+		
+	}
+	
+	/**
+	 * コンストラクタ
 	 * @param throwable
 	 */
 	public GaeException(Throwable throwable){
