@@ -81,7 +81,14 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 			}
 			
 		};
-		timer.schedule(timerTask, delay);
+		timer.schedule(timerTask, delay, delay);
+	}
+	
+	public void stop(){
+		if (timer != null) {
+			timer.cancel();
+			timer.purge();
+		}
 	}
 	
 }

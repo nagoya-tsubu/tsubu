@@ -1,5 +1,7 @@
 package com.androidtsubu.ramentimer;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -9,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SyncResult;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -29,7 +32,8 @@ public class TimerActivity extends Activity {
 	// ラーメン情報
 	private NoodleMaster noodleMaster = null;
 	// 登録フラグ
-	private boolean registrationFlg = false;
+//	private boolean registrationFlg = false;
+	private boolean registrationFlg = true; //表示テスト用にTrue
 	// 登録表示用のＩＤ
 	private int confirmCreateId = 1000;
 	
@@ -39,11 +43,31 @@ public class TimerActivity extends Activity {
 	private static final int MIN_UPPEL_LIMIT = 9;
 	// 分の下限値
 	private static final int MIN_LOWER_LIMIT = 0;
+	// タイマーの更新時間間隔(ms)
+	private static final int TIMER_UPDATE_INTERVALS = 100;
+	
+	// 開始時刻を保持
+	private int startTime = 0;
+	// 待ち時間を保持
+	private int waitTime = 0;
+		
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
-		
+
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			
+			Calendar calendar = Calendar.getInstance();
+			int currentTime = calendar.get(Calendar.MINUTE)*60 + calendar.get(Calendar.SECOND);
+			
+			// 待ち時間を超えてない場合は、表示を更新し処理を終了する。
+			if(waitTime > currentTime ){
+				updateTimerDisplay(waitTime - currentTime);
+				return;
+			}
+			// サービスを停止する
+			ramenTimerService.stop();
+
 			Toast toast = Toast.makeText(getApplicationContext(), "Time over!", Toast.LENGTH_LONG);
 			toast.show();
 	    	MediaPlayer mp = MediaPlayer.create(TimerActivity.this, R.raw.alarm);
@@ -52,10 +76,13 @@ public class TimerActivity extends Activity {
 			} catch (Exception e) {
 				// 例外は発生しない
 			}
+			// 0秒、終了ボタンを表示
+			updateTimerDisplay(0);
+			
+			// 登録可否の表示
 			if(registrationFlg){
-				displaySetting(confirmCreateId);
+				showConfirmCreationLayout();
 			}
-			//finish(); //Activityを終了する
 		}
 	}
 	
@@ -147,18 +174,27 @@ public class TimerActivity extends Activity {
 		});
 		
 		// 開始ボタン
-		Button startButton = (Button)findViewById(R.id.StartButton);
+		Button startButton = (Button)findViewById(R.id.TimerStartButton);
 		startButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				long min = Integer.valueOf(minTextView.getText().toString());
-				long sec = Integer.valueOf(secTextView.getText().toString());
-				ramenTimerService.schedule((min * 60 + sec ) * 1000 );
+				int min = Integer.valueOf(minTextView.getText().toString());
+				int sec = Integer.valueOf(secTextView.getText().toString());
 				
-				//残り時間をカウントダウンする
+				Calendar calendar = Calendar.getInstance();
+				startTime = calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND); 
+				waitTime = min * 60 + sec + startTime;
+
+				//ramenTimerService.schedule((min * 60 + sec ) * 1000 );
+				ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
 				
-				//moveTaskToBack(true);
-				
-				//このあと登録したりつぶやいたいする（？）
+			}
+		});
+
+		// 終了ボタン
+		Button endButton = (Button)findViewById(R.id.TimerEndButton);
+		endButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				finish();
 			}
 		});
 		
@@ -269,7 +305,7 @@ public class TimerActivity extends Activity {
 			if(noodleMaster != null){
 				existNoodle.setVisibility(View.VISIBLE);
 				setNoodleData();
-			}else{ //登録フラグをたてる
+			}else{ //タイマー終了後、登録可否を問うメッセージを表示するフラグをたてる
 				notExistNoodle.setVisibility(View.VISIBLE);
 				registrationFlg = true;
 			}
@@ -279,5 +315,24 @@ public class TimerActivity extends Activity {
 			
 		}
 		
+	}
+	
+	private void showConfirmCreationLayout(){
+		// 上部を非表示にする
+		LinearLayout blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
+		blank.setVisibility(View.GONE);
+		LinearLayout notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
+		notExistNoodle.setVisibility(View.GONE);
+		LinearLayout existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
+		existNoodle.setVisibility(View.GONE);
+		LinearLayout confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
+		confirmCreation.setVisibility(View.GONE);
+
+		confirmCreation.setVisibility(View.VISIBLE);
+	}
+	
+	private void updateTimerDisplay(int time){
+		minTextView.setText(String.valueOf(time / 60));
+		secTextView.setText(getSecText(time % 60));
 	}
 }

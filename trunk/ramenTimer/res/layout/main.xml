@@ -7,13 +7,11 @@ android:orientation="vertical"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent" android:background="@color/background1">
 
-	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="2" android:orientation="vertical" android:id="@+id/BlankLinearLayout"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DashBoard now"></TextView>
+	<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="2" android:orientation="vertical"><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/BlankLinearLayout"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DashBoard now"></TextView>
 
-</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="2" android:id="@+id/NotExistsNoodleLinearLayout" android:orientation="vertical"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not exist noodle now" android:id="@+id/NotExistsJanCodeTextView"></TextView>
-</LinearLayout><LinearLayout
-	android:layout_height="wrap_content"
-	android:layout_weight="2"
-	android:layout_width="fill_parent" android:id="@+id/ExistsNoodleLinearLayout" android:orientation="horizontal">
+
+</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/NotExistsNoodleLinearLayout" android:orientation="vertical" android:visibility="gone"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not exist noodle now" android:id="@+id/NotExistsJanCodeTextView"></TextView>
+</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ExistsNoodleLinearLayout" android:orientation="horizontal" android:visibility="gone">
 		<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_weight="2"><TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Exist noodle now" android:id="@+id/ExistsJanCodeTextView">
 		</TextView><TextView android:text="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExistsNameTextView"></TextView><TextView android:text="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExistsTimerLimitTextView"></TextView></LinearLayout>
 	
@@ -21,13 +19,13 @@ android:layout_height="fill_parent" android:background="@color/background1">
 
 
 <ImageView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/ExistsNoodleImageView"></ImageView>
-</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="2" android:orientation="vertical" android:id="@+id/ConfirmCreationLinearLayout">
+</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/ConfirmCreationLinearLayout" android:visibility="gone">
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Confirm create now" android:id="@+id/ConfirmCreationJanCodeTextView"></TextView>
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:id="@+id/ConfirmCreationYesButton"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:id="@+id/ConfirmCreationNoButton"></Button>
+<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:id="@+id/ConfirmCreationYesButton" style="@style/ButtonStyle"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:id="@+id/ConfirmCreationNoButton" style="@style/ButtonStyle"></Button>
 </LinearLayout>
-</LinearLayout>
+</LinearLayout></LinearLayout>
 
 	<LinearLayout
 	android:layout_height="wrap_content"
@@ -150,14 +148,14 @@ android:layout_height="fill_parent" android:background="@color/background1">
 	<LinearLayout
 	android:layout_height="wrap_content"
 	android:layout_width="fill_parent"
-	android:gravity="center" android:layout_weight="2">
+	android:gravity="center" android:layout_weight="2" android:orientation="vertical">
 	
 		<Button
 		android:layout_width="wrap_content"
 		android:text="開始"
-		android:layout_gravity="center"
 		android:layout_height="wrap_content"
-		android:width="100px" android:id="@+id/StartButton">
+		android:id="@+id/TimerStartButton" style="@style/ButtonStyle">
 		</Button>
-	</LinearLayout>
+	<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TimerEndButton" android:text="終了" style="@style/ButtonStyle"></Button>
+</LinearLayout>
 </LinearLayout>
