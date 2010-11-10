@@ -14,10 +14,12 @@ public enum RequestCode {
 	READER2CREATE,		//リーダーから登録
 	CREATE2TIMER,			//登録からタイマー
 	TIMER2CREATE,			//タイマーから登録
-	HISTORY2TIMER;		//履歴からタイマー
+	HISTORY2TIMER,		//履歴からタイマー	
+	//ActionBar用
+	ACTION_HISTORY,
+	ACTION＿TIMER;
 	
 	//Intent.putExtra()の第１引数に利用
 	public static final String KEY_RESUEST_CODE= "REQUEST_CODE";
 	
 };
-
