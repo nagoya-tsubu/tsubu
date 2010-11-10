@@ -5,14 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.SQLException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -27,9 +22,6 @@ import com.androidtsubu.ramentimer.quickaction.QuickAction;
 
 public class CreateActivity extends Activity {
 
-	//QRコードスキャナーのパッケージ名
-	private static final String	QRCODE_PKG_NAME = "com.google.zxing.client.android";
-	private static final int REQUEST_BARCODE = 0;
 	private static final int REQUEST_GALLERY = 1;
 	private static final int REQUEST_CAMERA = 2;
 
@@ -54,9 +46,16 @@ public class CreateActivity extends Activity {
 	
 	//QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
-	//QuickAction のアイテム カメラ
+	//QuickAction のアイテム ギャラリー
 	ActionItem itemGallery = null;
+	//QuickAction のアイテム ホーム
+	ActionItem itemHome = null;
+	//QuickAction のアイテム タイマー
+	ActionItem itemTimer = null;
 
+	//WEB登録用スレッド
+	EntryAsyncTask entry = null; 
+	
 	/**
 	 * CreateActivityがインテントで呼び出されたときに呼ばれる 
 	 */
@@ -94,7 +93,7 @@ public class CreateActivity extends Activity {
 		//QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
 		itemCamera = new ActionItem();
 		itemCamera.setTitle("カメラ");
-		itemCamera.setIcon(getResources().getDrawable(R.drawable.camera_button));
+		itemCamera.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_camera));
 		itemCamera.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				callCamera();	//カメラを起動
@@ -103,10 +102,29 @@ public class CreateActivity extends Activity {
 		
 		itemGallery = new ActionItem();
 		itemGallery.setTitle("ギャラリー");
-		itemGallery.setIcon(getResources().getDrawable(R.drawable.image_button));
+		itemGallery.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_gallery));
 		itemGallery.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				callGallery();	//ギャラリーを起動
+			}
+		});
+		itemHome = new ActionItem();
+		itemHome.setTitle("ダッシュボード");
+		itemHome.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_home));
+		itemHome.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				entry.execute(noodleMaster);
+				finish();
+			}
+		});
+		itemTimer = new ActionItem();
+		itemTimer.setTitle("タイマー");
+		itemTimer.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_timer));
+		itemTimer.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				entry.execute(noodleMaster);
+				callTimerActivity();
+				finish();
 			}
 		});
 	}
@@ -120,14 +138,8 @@ public class CreateActivity extends Activity {
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (resultCode == RESULT_OK) {
-			
-			if (requestCode == REQUEST_BARCODE) {//バーコードリーダー
-				//EditTextにバーコードリーダーで読み込んだJANコードの値を設定
-				final String barcode = intent.getStringExtra("SCAN_RESULT");
-				janText.setText(barcode);
-				
-			}else if(requestCode == REQUEST_GALLERY){//ギャラリー
+		if (resultCode == RESULT_OK) {	
+			if(requestCode == REQUEST_GALLERY){//ギャラリー
 				try{
 					InputStream is = getContentResolver().openInputStream(intent.getData());
 					noodleImage = BitmapFactory.decodeStream(is);
@@ -151,42 +163,26 @@ public class CreateActivity extends Activity {
 	}
 	
 	/**
-	 * バーコードをキャプチャーする時に呼び出される
-	 * @param view
+	 * アクションバーの履歴ボタンが押されたとき
+	 * インテントに（RequestCode）をセットしてfinish()
+	 * @param v
 	 */
-	public void onCaptureClick(View view) {
-
-		//QRコードスキャナーのインテントを設定する
-		final Intent intent = new Intent(QRCODE_PKG_NAME + ".SCAN");
-		//JANコードを読み取る
-		intent.putExtra("SCAN_MODE", "ONE_D_MODE");
-
-		//QRコードスキャナーを呼び出す
-		try {
-			startActivityForResult(intent, REQUEST_BARCODE);
-		} catch(ActivityNotFoundException e) {
-			//アクティビティが存在しない(=インテントの開始に失敗した)場合は、
-			//Android Marketからダウンロードするか問い合わせる
-			
-			//TODO: メッセージ文字列のリソース化
-			
-			new AlertDialog.Builder(this)
-					.setTitle("QR Code Scanner not found.")
-					.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
-					.setPositiveButton("はい", new DialogInterface.OnClickListener() {
-						//「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
-						//ダウンロードページを表示する
-						public void onClick(DialogInterface dialog, int which) {
-							// TODO Auto-generated method stub
-							final Intent intent = new Intent(
-									Intent.ACTION_VIEW,
-									Uri.parse("market://search?q=pname:" + QRCODE_PKG_NAME));
-							startActivity(intent);
-						}
-					})
-					.setNegativeButton("いいえ", null)
-					.create().show();
-		}
+	public void onHistoryButtonClick(View v){
+		Intent intent = new Intent();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION＿TIMER);
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+	/**
+	 * アクションバーのタイマーボタンが押されたとき
+	 * インテントに（）をセットしてFinish()
+	 * @param v
+	 */
+	public void onTimerButtonClick(View v){
+		Intent intent = new Intent();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION_HISTORY);
+		setResult(RESULT_OK, intent);
+		finish();
 	}
 	
 	/**
@@ -220,15 +216,40 @@ public class CreateActivity extends Activity {
 		intent.setAction("android.media.action.IMAGE_CAPTURE");
 		startActivityForResult(intent, REQUEST_CAMERA);
 	}
-		
+
+	/**
+	 * タイマーをインテントで呼び出す
+	 */
+	private void callTimerActivity(){
+		Intent intent = new Intent(this, TimerActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
+		intent.putExtra(KEY_NOODLE_MASTER, noodleMaster);
+		startActivityForResult(intent,RequestCode.CREATE2TIMER.ordinal());			
+	}
+	
 	/**
 	 * 登録ボタンが押された時の動作
 	 * @param v
 	 */
 	public void onCreateClick(View v) {
-		NoodleMaster noodleMaster = getNoodleMaster();
-		EntryAsyncTask entry = new EntryAsyncTask(this); 
-		entry.execute(noodleMaster);
+		try{
+			noodleMaster = getNoodleMaster();
+		}catch(Exception e){
+			Toast.makeText(this, "入力項目を埋めてください", Toast.LENGTH_LONG).show();
+			return;
+		}
+		entry = new EntryAsyncTask(this); 
+		//リーダーアクティビティから起動された場合
+		if(requestCode == RequestCode.READER2CREATE.ordinal()){
+			QuickAction qa = new QuickAction(v);
+			qa.addActionItem(itemHome);
+			qa.addActionItem(itemTimer);
+			qa.show();
+		//タイマーから起動された場合
+		}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
+			entry.execute(noodleMaster);
+		}
+		
 	}
 	
 	/**
@@ -262,7 +283,6 @@ public class CreateActivity extends Activity {
 	private class EntryAsyncTask extends AsyncTask<NoodleMaster, Integer, Integer>{
 		//表示用にコンテキストを保持
 		private Activity activity =null; 
-		private NoodleMaster noodleMaster = null;
 		NoodleManager nm;
 		
 		private static final int RESULT_CREATE_OK = 0;	//登録成功
@@ -313,32 +333,22 @@ public class CreateActivity extends Activity {
 			}
 			//リーダーから呼び出された場合
 			if(requestCode == RequestCode.READER2CREATE.ordinal()){
-				//ダイアログでカメラかギャラリーを選択させる
-				final CharSequence[] items = {"タイマーを起動", "ダッシュボードに戻る"};
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("画像の選択");
-				builder.setItems(items, new DialogInterface.OnClickListener() {
-				    public void onClick(DialogInterface dialog, int item) {
-				    	if(item==0)
-							callTimerActivity();
-				    	else
-							activity.finish();
-				    }
-				});
-				builder.show();
+//				//ダイアログでカメラかギャラリーを選択させる
+//				final CharSequence[] items = {"タイマーを起動", "ダッシュボードに戻る"};
+//				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+//				builder.setTitle("画像の選択");
+//				builder.setItems(items, new DialogInterface.OnClickListener() {
+//				    public void onClick(DialogInterface dialog, int item) {
+//				    	if(item==0)
+//							callTimerActivity();
+//						activity.finish();
+//				    }
+//				});
+//				builder.show();
 			//タイマーから呼び出された場合
 			}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
 				activity.finish();
 			}
-		}
-
-		/**
-		 * タイマーをインテントで呼び出す
-		 */
-		private void callTimerActivity(){
-			Intent intent = new Intent(this.activity, TimerActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
-			activity.startActivityForResult(intent,RequestCode.CREATE2TIMER.ordinal());			
 		}
 	}
 }

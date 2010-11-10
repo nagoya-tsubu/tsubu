@@ -12,7 +12,7 @@
 		<ImageButton
 			style="@style/TitleBarAction"
 			android:onClick="onLogoClick"
-			android:src="@drawable/icon"/>
+			android:src="@drawable/ic_actionbar_home"/>
 		<ImageView style="@style/TitleBarSeparator" />
        <TextView 
        	style="@style/TitleBarText" 
@@ -21,14 +21,14 @@
 		<ImageView style="@style/TitleBarSeparator" />
 		<ImageButton 
 			style="@style/TitleBarAction" 
-			android:onClick="onLoadImageClick"
-			android:src="@drawable/image_button" />
+			android:onClick="onHistoryButtonClick"
+			android:src="@drawable/ic_actionbar_history" />
 		<ImageView style="@style/TitleBarSeparator" />
 
 		<ImageButton 
 			style="@style/TitleBarAction" 
-			android:onClick="onCaptureClick"
-			android:src="@drawable/camera_button" />
+			android:onClick="onTimerButtonClick"
+			android:src="@drawable/ic_actionbar_timer" />
  
 		<requestFocus />
 	</LinearLayout>  
@@ -93,8 +93,7 @@
 		android:text="登録"
 		android:layout_gravity="center_horizontal"
 		android:onClick="onCreateClick"
-		android:paddingLeft="10dip"
-		android:paddingRight="10dip"
+		android:textSize="@dimen/text_size_large"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		/>
