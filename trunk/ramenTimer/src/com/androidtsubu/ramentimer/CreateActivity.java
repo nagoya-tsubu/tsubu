@@ -169,7 +169,7 @@ public class CreateActivity extends Activity {
 	 */
 	public void onHistoryButtonClick(View v){
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION＿TIMER);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION＿TIMER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
@@ -180,7 +180,7 @@ public class CreateActivity extends Activity {
 	 */
 	public void onTimerButtonClick(View v){
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION_HISTORY);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION_HISTORY.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}

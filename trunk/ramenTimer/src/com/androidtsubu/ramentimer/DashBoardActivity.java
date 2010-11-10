@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class DashBoardActivity extends Activity {
 
@@ -13,28 +14,32 @@ public class DashBoardActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity);
 	}
-	
+	/**
+	 * タイマーのボタンが押されたとき
+	 * @param view
+	 */
 	public void onTimerButtonClick(View view) {
-		Intent intent = new Intent(this, TimerActivity.class);
-		int requestCode = RequestCode.DASHBORAD2TIMER.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
-		startActivityForResult(intent, requestCode);
+		gotoTimerActivity();
 	}
-
+	/**
+	 * 登録ボタンが押されたとき
+	 * @param view
+	 */
 	public void onCreateButtonClick(View view) {
-		Intent intent = new Intent(this, ReaderActivity.class);
 		int requestCode = RequestCode.DASHBORAD2READER.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
-		startActivityForResult(intent, requestCode);
+		gotoReaderActivity(requestCode);
 	}
-	
+	/**
+	 * 履歴ボタンが押されたとき
+	 * @param view
+	 */
 	public void onHistoryButtonClick(View view) {
-		Intent intent = new Intent(this, HistoryActivity.class);
-		int requestCode = RequestCode.DASHBORAD2HISTORY.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
-		startActivityForResult(intent, requestCode);
+		gotoHistoryActivity();
 	}
-	
+	/**
+	 * 読込ボタンが押されたとき
+	 * @param view
+	 */
 	public void onStarredClick(View view){
 		//CreateActivityのデバックにちょっと拝借  by leibun
 		final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
@@ -43,8 +48,69 @@ public class DashBoardActivity extends Activity {
 		int requestCode = RequestCode.READER2CREATE.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		intent.putExtra(KEY_NOODLE_MASTER, new NoodleMaster(TEST_JAN_CODE, null, null, 0));
+		startActivityForResult(intent, requestCode);		
+	}
+	
+	/**
+	 * リーダーの起動 requestCodeでその後にTimerActivityかCreateActivityを選択
+	 * @param requestCode
+	 */
+	private void gotoReaderActivity(int requestCode){
+		Intent intent = new Intent(this, HistoryActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
-		
+	}
+	
+	/**
+	 * 履歴の起動
+	 */
+	private void gotoHistoryActivity(){
+		Intent intent = new Intent(this, HistoryActivity.class);
+		int requestCode = RequestCode.DASHBORAD2HISTORY.ordinal();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		startActivityForResult(intent, requestCode);
+	}
+
+	/**
+	 * タイマーの起動
+	 */
+	private void gotoTimerActivity(){
+		Intent intent = new Intent(this, TimerActivity.class);
+		int requestCode = RequestCode.DASHBORAD2TIMER.ordinal();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		startActivityForResult(intent, requestCode);
+	}
+	
+	/**
+	 * インテントがもどってきた時の動作
+	 * アクションバーが他のActivityで押さたときは
+	 * Dashboardまで戻って、目的のActivityを実行する
+	 * @param requestCode
+	 * @param resultCode
+	 * @param intent
+	 */
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (resultCode == RESULT_OK) {
+			//戻り値のREQUEST_CODEに応じてActivityを選択する
+			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+			//エラー処理
+			if(rtn_code==-1){
+				return;
+			}
+			//アクションバーが他のActivityで押さたときはDashboardまで戻って、他のActivityを実行する
+			switch(RequestCode.values()[rtn_code]){
+				case ACTION_HISTORY:	//アクションバーの履歴ボタンが押された場合
+					gotoHistoryActivity();
+					break;
+				case ACTION＿TIMER:	//アクションバーのタイマーボタンが押された場合
+					gotoTimerActivity();
+					break;
+				case ACTION_READER:	//アクションバーの読込ボタンが押された場合
+					gotoReaderActivity(RequestCode.DASHBORAD2READER.ordinal());
+					break;
+			}
+		}
 	}
 }
 
