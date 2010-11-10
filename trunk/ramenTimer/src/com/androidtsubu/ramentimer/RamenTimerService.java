@@ -29,14 +29,6 @@ public class RamenTimerService extends Service {
 		toast.show();
 System.out.println("####### service onCreate() process:"+ android.os.Process.myPid() + " task:" + android.os.Process.myTid());
 	}
-	
-	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
-		Toast toast = Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT);
-		toast.show();
-	}
-	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -47,24 +39,31 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 			timer = null;
 		}
 	}
-	
+
 	@Override
-	public IBinder onBind(Intent intent) {
-		Toast toast = Toast.makeText(getApplicationContext(), "onBind()", Toast.LENGTH_SHORT);
-		toast.show();
-		return new RamenTimerBinder();
+	public void onStart(Intent intent, int startId) {
+		super.onStart(intent, startId);
+		Toast toast = Toast.makeText(getApplicationContext(), "onStart()", Toast.LENGTH_SHORT);
+		//toast.show();
 	}
 	
 	@Override
 	public void onRebind(Intent intent) {
 		Toast toast = Toast.makeText(getApplicationContext(), "onRebind()", Toast.LENGTH_SHORT);
-		toast.show();
+		//toast.show();
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		Toast toast = Toast.makeText(getApplicationContext(), "onBind()", Toast.LENGTH_SHORT);
+		//toast.show();
+		return new RamenTimerBinder();
 	}
 	
 	@Override
 	public boolean onUnbind(Intent intent) {
 		Toast toast = Toast.makeText(getApplicationContext(), "onUnbind()", Toast.LENGTH_SHORT);
-		toast.show();
+		//toast.show();
 		return true; // 再度クライアントから接続された際に onRebind を呼び出させる場合は true を返す
 	}
 	
