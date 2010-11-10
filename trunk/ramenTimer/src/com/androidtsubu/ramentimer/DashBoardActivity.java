@@ -26,8 +26,14 @@ public class DashBoardActivity extends Activity {
 	 * @param view
 	 */
 	public void onCreateButtonClick(View view) {
-		int requestCode = RequestCode.DASHBORAD2READER.ordinal();
-		gotoReaderActivity(requestCode);
+		//CreateActivityのデバックにちょっと拝借  by leibun
+		final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
+		final String    TEST_JAN_CODE ="4903320241800";
+		Intent intent = new Intent(this, CreateActivity.class);
+		int requestCode = RequestCode.READER2CREATE.ordinal();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		intent.putExtra(KEY_NOODLE_MASTER, new NoodleMaster(TEST_JAN_CODE, null, null, 0));
+		startActivityForResult(intent, requestCode);		
 	}
 	/**
 	 * 履歴ボタンが押されたとき
@@ -40,15 +46,9 @@ public class DashBoardActivity extends Activity {
 	 * 読込ボタンが押されたとき
 	 * @param view
 	 */
-	public void onStarredClick(View view){
-		//CreateActivityのデバックにちょっと拝借  by leibun
-		final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
-		final String    TEST_JAN_CODE ="4903320241800";
-		Intent intent = new Intent(this, CreateActivity.class);
-		int requestCode = RequestCode.READER2CREATE.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
-		intent.putExtra(KEY_NOODLE_MASTER, new NoodleMaster(TEST_JAN_CODE, null, null, 0));
-		startActivityForResult(intent, requestCode);		
+	public void onReaderButtonClick(View view){
+		int requestCode = RequestCode.DASHBORAD2READER.ordinal();
+		gotoReaderActivity(requestCode);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class DashBoardActivity extends Activity {
 	 * @param requestCode
 	 */
 	private void gotoReaderActivity(int requestCode){
-		Intent intent = new Intent(this, HistoryActivity.class);
+		Intent intent = new Intent(this, ReaderActivity.class);
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}

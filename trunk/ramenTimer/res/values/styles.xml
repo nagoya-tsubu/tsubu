@@ -43,7 +43,15 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@color/title_background</item>
     </style>
-
+    
+    <style name="RaimonBar">
+        <item name="android:id">@id/title_container</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/raimon_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@color/title_background</item>
+    </style>
+    
     <style name="TitleBarAction">
         <item name="android:layout_width">@dimen/title_height</item>
         <item name="android:layout_height">fill_parent</item>
@@ -78,6 +86,12 @@
     <style name="TitleBarSeparator">
         <item name="android:layout_width">1px</item>
         <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/title_separator</item>
+    </style>
+    
+    <style name="HorizontalSeparator">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1px</item>
         <item name="android:background">@color/title_separator</item>
     </style>
 

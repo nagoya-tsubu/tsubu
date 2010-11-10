@@ -12,7 +12,7 @@
 		<ImageButton
 			style="@style/TitleBarAction"
 			android:onClick="onLogoClick"
-			android:src="@drawable/ic_actionbar_home"/>
+			android:src="@drawable/acic_home"/>
 		<ImageView style="@style/TitleBarSeparator" />
        <TextView 
        	style="@style/TitleBarText" 
@@ -22,17 +22,20 @@
 		<ImageButton 
 			style="@style/TitleBarAction" 
 			android:onClick="onHistoryButtonClick"
-			android:src="@drawable/ic_actionbar_history" />
+			android:src="@drawable/acic_history" />
 		<ImageView style="@style/TitleBarSeparator" />
 
 		<ImageButton 
 			style="@style/TitleBarAction" 
 			android:onClick="onTimerButtonClick"
-			android:src="@drawable/ic_actionbar_timer" />
+			android:src="@drawable/acic_timer" />
  
 		<requestFocus />
 	</LinearLayout>  
+	<ImageView style="@style/HorizontalSeparator"/>
+	
 	<!-- ActionBar End -->
+	
 	
 
 	<TableLayout 

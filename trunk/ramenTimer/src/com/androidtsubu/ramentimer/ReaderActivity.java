@@ -6,6 +6,8 @@
 
 package com.androidtsubu.ramentimer;
 
+import java.sql.ResultSet;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -151,6 +153,11 @@ public class ReaderActivity extends Activity {
 
 		default:
 			// 呼び出したインテントが空の場合は、処理を終了する
+			if(RESULT_OK ==resultCode){
+				setResult(RESULT_OK,intent);
+				finish();
+			}
+				
 			break;
 		}
 
