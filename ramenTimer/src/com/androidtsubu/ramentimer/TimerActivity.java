@@ -1,17 +1,12 @@
 package com.androidtsubu.ramentimer;
 
-import java.util.Calendar;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.SyncResult;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -27,6 +22,11 @@ public class TimerActivity extends Activity {
 	private TextView minTextView = null;
 	// 秒表示部
 	private TextView secTextView = null;
+	// 開始ボタン
+	private Button startButton = null;
+	// 終了ボタン
+	private Button endButton = null;
+	
 	// Intentに付与している呼び出し元を保持する
 	private int requestCode = 0;
 	// ラーメン情報
@@ -34,8 +34,6 @@ public class TimerActivity extends Activity {
 	// 登録フラグ
 //	private boolean registrationFlg = false;
 	private boolean registrationFlg = true; //表示テスト用にTrue
-	// 登録表示用のＩＤ
-	private int confirmCreateId = 1000;
 	
 	// 秒の増減間隔
 	private static final int SEC_INTERVALS = 10;
@@ -44,12 +42,12 @@ public class TimerActivity extends Activity {
 	// 分の下限値
 	private static final int MIN_LOWER_LIMIT = 0;
 	// タイマーの更新時間間隔(ms)
-	private static final int TIMER_UPDATE_INTERVALS = 100;
+	private static final int TIMER_UPDATE_INTERVALS = 200;
 	
 	// 開始時刻を保持
-	private int startTime = 0;
+	private long startTime = 0;
 	// 待ち時間を保持
-	private int waitTime = 0;
+	private long waitTime = 0;
 		
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
@@ -57,16 +55,18 @@ public class TimerActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			
-			Calendar calendar = Calendar.getInstance();
-			int currentTime = calendar.get(Calendar.MINUTE)*60 + calendar.get(Calendar.SECOND);
+			long currentTime = System.currentTimeMillis();
 			
 			// 待ち時間を超えてない場合は、表示を更新し処理を終了する。
 			if(waitTime > currentTime ){
-				updateTimerDisplay(waitTime - currentTime);
+				updateTimerTextView((waitTime - currentTime) / 1000 + 1);
 				return;
 			}
 			// サービスを停止する
 			ramenTimerService.stop();
+
+			// 0秒TextView、終了ボタンを表示
+			updateTimerTextView(0);
 
 			Toast toast = Toast.makeText(getApplicationContext(), "Time over!", Toast.LENGTH_LONG);
 			toast.show();
@@ -76,10 +76,7 @@ public class TimerActivity extends Activity {
 			} catch (Exception e) {
 				// 例外は発生しない
 			}
-			// 0秒、終了ボタンを表示
-			updateTimerDisplay(0);
-			
-			// 登録可否の表示
+			// 未登録の商品であれば、登録するか問う
 			if(registrationFlg){
 				showConfirmCreationLayout();
 			}
@@ -112,13 +109,11 @@ public class TimerActivity extends Activity {
 		// 呼び出し元を保持する
 		Intent requestIntent = getIntent();
 		requestCode = requestIntent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
-		
 		// 呼び出し元のラーメン情報を取得する
 		//noodleMaster = requestIntent;
 		
 		// 呼び出し元に応じて表示を切り替える
 		displaySetting(requestCode);
-		
 		
 		// 分+ボタン
 		Button minUpButton = (Button)findViewById(R.id.MinUpButton);
@@ -174,29 +169,23 @@ public class TimerActivity extends Activity {
 		});
 		
 		// 開始ボタン
-		Button startButton = (Button)findViewById(R.id.TimerStartButton);
+		startButton = (Button)findViewById(R.id.TimerStartButton);
 		startButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				int min = Integer.valueOf(minTextView.getText().toString());
-				int sec = Integer.valueOf(secTextView.getText().toString());
-				
-				Calendar calendar = Calendar.getInstance();
-				startTime = calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND); 
-				waitTime = min * 60 + sec + startTime;
-
-				//ramenTimerService.schedule((min * 60 + sec ) * 1000 );
-				ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
-				
+				startTimer();
 			}
 		});
 
 		// 終了ボタン
-		Button endButton = (Button)findViewById(R.id.TimerEndButton);
+		endButton = (Button)findViewById(R.id.TimerEndButton);
 		endButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				finish();
 			}
 		});
+
+		// 開始ボタンを表示する
+		showStartButton();
 		
 		// サービスを開始
 		Intent intent = new Intent(this,RamenTimerService.class);
@@ -224,10 +213,11 @@ public class TimerActivity extends Activity {
 	 * 引数が有効値でなければ有効値を戻す。
 	 * 1桁の場合は前0を付加する。
 	 */
-	private String getSecText(int sec){
-		if(sec >= 60){ //60秒以上の場合
+	private String getSecText(long sec){
+		
+		if(sec >= 60){
 			sec = sec - 60;
-		}else if(sec < 0){ //0未満の場合
+		}else if(sec < 0){
 			sec = sec + 60;
 		}
 		String secText = String.valueOf(sec);
@@ -236,35 +226,6 @@ public class TimerActivity extends Activity {
 		}
 		return secText;
 	}
-
-	/**
-	 * ラーメン情報が登録されていない場合の確認メッセージを表示する
-	 */
-	private void showCreateConfirmDialog(){
-		
-		// 商品が登録されていない場合の処理
-    	String dialogTitle = "この商品はまだ登録されていません。";
-    	String dialogMessage = "商品の登録を行いますか？";
-    	
-    	new AlertDialog.Builder(TimerActivity.this)
-    	.setTitle(dialogTitle)
-    	.setMessage(dialogMessage)
-		.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// 
-			}
-		})
-    	.setPositiveButton("はい",new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// CreateActivityを呼び出す。
-				Intent intent = new Intent(TimerActivity.this, CreateActivity.class)
-				.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.TIMER2CREATE.ordinal())
-				.putExtra("", noodleMaster);
-				startActivity(intent);
-			}
-		})
-		.show();
-	}
 	
 	/**
 	 * ラーメン情報をレイアウトにセットする
@@ -272,6 +233,15 @@ public class TimerActivity extends Activity {
 	private void setNoodleData(){
 		
 	}
+
+	// 情報を表示しない
+	private LinearLayout blank = null;
+	// 未登録
+	private LinearLayout notExistNoodle = null;
+	// 登録済み
+	private LinearLayout existNoodle = null;
+	// 登録確認
+	private LinearLayout confirmCreation = null;
 	
 	/**
 	 * リクエストコードで表示を切り替える
@@ -279,60 +249,87 @@ public class TimerActivity extends Activity {
 	 */
 	private void displaySetting(int id){
 
-		// 上部を非表示にする
-		LinearLayout blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
-		blank.setVisibility(View.GONE);
-		LinearLayout notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
-		notExistNoodle.setVisibility(View.GONE);
-		LinearLayout existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
-		existNoodle.setVisibility(View.GONE);
-		LinearLayout confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
-		confirmCreation.setVisibility(View.GONE);
-		
+		hideNoodleInformation();
 		if(id == RequestCode.DASHBORAD2TIMER.ordinal()){ //DashboardActivityから呼ばれた場合
 			blank.setVisibility(View.VISIBLE);
 			
 		}else if(id == RequestCode.CREATE2TIMER.ordinal()){ //CreateActivityから呼ばれた場合
 			existNoodle.setVisibility(View.VISIBLE);
-			// ラーメン情報を表示し時間をセットする
+			// ラーメン情報、時間をセットする
 			setNoodleData();
 		}else if(id == RequestCode.HISTORY2TIMER.ordinal()){ //HistoryActivityから呼ばれた場合
 			existNoodle.setVisibility(View.VISIBLE);
-			// ラーメン情報を表示し時間をセットする
+			// ラーメン情報、時間をセットする
 			setNoodleData();
 		}else if(id == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
-			// ラーメン情報が存在する場合は、ラーメン情報を表示し時間をセットする
+			// ラーメン情報が存在する場合は、ラーメン情報、時間をセットする
 			if(noodleMaster != null){
 				existNoodle.setVisibility(View.VISIBLE);
 				setNoodleData();
-			}else{ //タイマー終了後、登録可否を問うメッセージを表示するフラグをたてる
+			}else{ //ラーメン情報が存在しなければ、登録フラグをたてる
 				notExistNoodle.setVisibility(View.VISIBLE);
 				registrationFlg = true;
 			}
-		}else if(id == confirmCreateId){ //タイマー終了後に登録確認画面を表示する場合
-			confirmCreation.setVisibility(View.VISIBLE);			
 		}else{ //上記以外は、、、
 			
 		}
-		
 	}
-	
-	private void showConfirmCreationLayout(){
-		// 上部を非表示にする
-		LinearLayout blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
-		blank.setVisibility(View.GONE);
-		LinearLayout notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
-		notExistNoodle.setVisibility(View.GONE);
-		LinearLayout existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
-		existNoodle.setVisibility(View.GONE);
-		LinearLayout confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
-		confirmCreation.setVisibility(View.GONE);
 
+	/**
+	 * 登録画面へ移動するレイアウトの表示
+	 */
+	private void showConfirmCreationLayout(){
+		hideNoodleInformation();
 		confirmCreation.setVisibility(View.VISIBLE);
 	}
 	
-	private void updateTimerDisplay(int time){
-		minTextView.setText(String.valueOf(time / 60));
-		secTextView.setText(getSecText(time % 60));
+	/**
+	 * タイマーの残り時間を表示する
+	 * @param time
+	 */
+	private void updateTimerTextView(long sec){
+		
+		minTextView.setText(String.valueOf(sec / 60));
+		secTextView.setText(getSecText(sec % 60));
+	}
+	
+	/**
+	 * 終了時間をセットし、サービスのタイマーを起動する
+	 */
+	private void startTimer(){
+
+		int min = Integer.valueOf(minTextView.getText().toString());
+		int sec = Integer.valueOf(secTextView.getText().toString());
+		
+		// 終了時刻を設定する
+		startTime = System.currentTimeMillis(); 
+		waitTime = startTime + ((min * 60 + sec) * 1000);
+		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
+		// 終了ボタンを表示する
+		showEndButton();
+	}
+	
+	private void showStartButton(){
+		startButton.setVisibility(View.VISIBLE);
+		endButton.setVisibility(View.GONE);
+	}
+
+	private void showEndButton(){
+		endButton.setVisibility(View.VISIBLE);
+		startButton.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * ラーメン情報のLinearLayoutを非表示にする
+	 */
+	private void hideNoodleInformation(){
+		blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
+		blank.setVisibility(View.GONE);
+		notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
+		notExistNoodle.setVisibility(View.GONE);
+		existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
+		existNoodle.setVisibility(View.GONE);
+		confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
+		confirmCreation.setVisibility(View.GONE);
 	}
 }
