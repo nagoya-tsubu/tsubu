@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,24 @@ public class TimerActivity extends Activity {
 	private Button startButton = null;
 	// 終了ボタン
 	private Button endButton = null;
+	// 分+ボタン
+	private Button minUpButton = null;
+	// 分-ボタン
+	private Button minDownButton = null;
+	// 秒+ボタン
+	private Button secUpButton = null;
+	// 秒-ボタン
+	private Button secDownButton = null;
+	// タイマーイメージ
+	private ImageView timerImage = null;
+	// 情報を表示しないレイアウト
+	private LinearLayout blank = null;
+	// 未登録レイアウト
+	private LinearLayout notExistNoodle = null;
+	// 登録済みレイアウト
+	private LinearLayout existNoodle = null;
+	// 登録確認レイアウト
+	private LinearLayout confirmCreation = null;
 	
 	// Intentに付与している呼び出し元を保持する
 	private int requestCode = 0;
@@ -35,6 +54,8 @@ public class TimerActivity extends Activity {
 //	private boolean registrationFlg = false;
 	private boolean registrationFlg = true; //表示テスト用にTrue
 	
+	// 商品情報(NoodleMaster)のキー
+	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
 	// 秒の増減間隔
 	private static final int SEC_INTERVALS = 10;
 	// 分の上限値
@@ -87,15 +108,12 @@ public class TimerActivity extends Activity {
 	private final RamenTimerReceiver receiver = new RamenTimerReceiver();
 	
 	private ServiceConnection serviceConnection = new ServiceConnection() {
-		
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			ramenTimerService = ((RamenTimerService.RamenTimerBinder)service).getService();
 		}
-		
 		public void onServiceDisconnected(ComponentName className) {
 			ramenTimerService = null;
 		}
-		
 	};
 
 	@Override
@@ -103,20 +121,31 @@ public class TimerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
+		// レイアウトを取得
 		minTextView = (TextView)findViewById(R.id.MinTextView);
 		secTextView = (TextView)findViewById(R.id.SecTextView);
+		
+		minUpButton = (Button)findViewById(R.id.MinUpButton);
+		minDownButton = (Button)findViewById(R.id.MinDownButton);
+		secUpButton = (Button)findViewById(R.id.SecUpButton);
+		secDownButton = (Button)findViewById(R.id.SecDownButton);
+		
+		blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
+		notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
+		existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
+		confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
+
+		timerImage = (ImageView)findViewById(R.id.TimerImageView);
 		
 		// 呼び出し元を保持する
 		Intent requestIntent = getIntent();
 		requestCode = requestIntent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 		// 呼び出し元のラーメン情報を取得する
-		//noodleMaster = requestIntent;
-		
+		noodleMaster =(NoodleMaster)requestIntent.getParcelableExtra(KEY_NOODLE_MASTER);
 		// 呼び出し元に応じて表示を切り替える
 		displaySetting(requestCode);
 		
 		// 分+ボタン
-		Button minUpButton = (Button)findViewById(R.id.MinUpButton);
 		minUpButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int min = Integer.valueOf(minTextView.getText().toString())+1;
@@ -127,7 +156,6 @@ public class TimerActivity extends Activity {
 		});
 		
 		// 分-ボタン
-		Button minDownButton = (Button)findViewById(R.id.MinDownButton);
 		minDownButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int min = Integer.valueOf(minTextView.getText().toString())-1;
@@ -138,7 +166,6 @@ public class TimerActivity extends Activity {
 		});
 		
 		// 秒+ボタン
-		Button secUpButton = (Button)findViewById(R.id.SecUpButton);
 		secUpButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				int sec = Integer.valueOf(secTextView.getText().toString())+SEC_INTERVALS;
@@ -153,7 +180,6 @@ public class TimerActivity extends Activity {
 		});
 		
 		// 秒-ボタン
-		Button secDownButton = (Button)findViewById(R.id.SecDownButton);
 		secDownButton.setOnClickListener(new View.OnClickListener() {
 			
 			public void onClick(View v) {
@@ -184,7 +210,23 @@ public class TimerActivity extends Activity {
 			}
 		});
 
-		// 開始ボタンを表示する
+		// はいボタン
+		Button yesButton = (Button)findViewById(R.id.ConfirmCreationYesButton);
+		yesButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				// CreateActivityへ移動
+			}
+		});
+		
+		// いいえボタン
+		Button noButton = (Button)findViewById(R.id.ConfirmCreationNoButton);
+		noButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		
+		// 開始前の画面表示
 		showStartButton();
 		
 		// サービスを開始
@@ -214,7 +256,6 @@ public class TimerActivity extends Activity {
 	 * 1桁の場合は前0を付加する。
 	 */
 	private String getSecText(long sec){
-		
 		if(sec >= 60){
 			sec = sec - 60;
 		}else if(sec < 0){
@@ -233,15 +274,6 @@ public class TimerActivity extends Activity {
 	private void setNoodleData(){
 		
 	}
-
-	// 情報を表示しない
-	private LinearLayout blank = null;
-	// 未登録
-	private LinearLayout notExistNoodle = null;
-	// 登録済み
-	private LinearLayout existNoodle = null;
-	// 登録確認
-	private LinearLayout confirmCreation = null;
 	
 	/**
 	 * リクエストコードで表示を切り替える
@@ -276,7 +308,7 @@ public class TimerActivity extends Activity {
 	}
 
 	/**
-	 * 登録画面へ移動するレイアウトの表示
+	 * 登録確認レイアウトの表示
 	 */
 	private void showConfirmCreationLayout(){
 		hideNoodleInformation();
@@ -284,7 +316,7 @@ public class TimerActivity extends Activity {
 	}
 	
 	/**
-	 * タイマーの残り時間を表示する
+	 * タイマーの残り時間を更新する
 	 * @param time
 	 */
 	private void updateTimerTextView(long sec){
@@ -297,7 +329,6 @@ public class TimerActivity extends Activity {
 	 * 終了時間をセットし、サービスのタイマーを起動する
 	 */
 	private void startTimer(){
-
 		int min = Integer.valueOf(minTextView.getText().toString());
 		int sec = Integer.valueOf(secTextView.getText().toString());
 		
@@ -307,15 +338,25 @@ public class TimerActivity extends Activity {
 		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
 		// 終了ボタンを表示する
 		showEndButton();
+		// 時間調整ボタンを非表示にする
+		hidePickerButton();
 	}
 	
+	/**
+	 * 開始ボタン等を表示する
+	 */
 	private void showStartButton(){
 		startButton.setVisibility(View.VISIBLE);
+		timerImage.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
 	}
-
+	
+	/**
+	 * 終了ボタン等を表示する
+	 */
 	private void showEndButton(){
 		endButton.setVisibility(View.VISIBLE);
+		timerImage.setVisibility(View.VISIBLE);
 		startButton.setVisibility(View.GONE);
 	}
 	
@@ -323,13 +364,19 @@ public class TimerActivity extends Activity {
 	 * ラーメン情報のLinearLayoutを非表示にする
 	 */
 	private void hideNoodleInformation(){
-		blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
 		blank.setVisibility(View.GONE);
-		notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
 		notExistNoodle.setVisibility(View.GONE);
-		existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
 		existNoodle.setVisibility(View.GONE);
-		confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
 		confirmCreation.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * 時間調整ボタンを非表示にする
+	 */
+	private void hidePickerButton(){
+		minUpButton.setVisibility(View.GONE);
+		minDownButton.setVisibility(View.GONE);
+		secUpButton.setVisibility(View.GONE);
+		secDownButton.setVisibility(View.GONE);
 	}
 }
