@@ -72,7 +72,7 @@
 				style="@style/InformationFormText"
 				android:text="時間（秒）"/>
 			<EditText 
-				style="@style/InformationFormText"
+				style="@style/InformationFormEdit"
 				android:hint="時間" 
 				android:id="@+id/BoilingTimeEdit"
 				android:inputType="number"/>		
