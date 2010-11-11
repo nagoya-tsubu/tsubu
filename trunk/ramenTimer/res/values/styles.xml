@@ -176,17 +176,20 @@
 		<item name="android:layout_height">wrap_content</item>
  		<item name="android:layout_gravity">center_vertical</item>
  		<item name="android:textColor">@android:color/primary_text_light</item>
+ 		<item name="android:textSize">@dimen/text_size_small</item>
     </style>
     <style name="InformationFormText2">
    		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
  		<item name="android:layout_gravity">center_vertical</item>
  		<item name="android:textColor">@android:color/secondary_text_light</item>
+ 		<item name="android:textSize">@dimen/text_size_small</item>
     </style>
     <style name="InformationFormEdit">
    		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
  		<item name="android:layout_gravity">center_vertical</item>
+ 		<item name="android:textSize">@dimen/text_size_large</item>
     </style>
     <style name="InformationFormImage">
 		<item name="android:onClick">onLoadImageClick</item>
