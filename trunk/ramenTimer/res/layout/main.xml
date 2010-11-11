@@ -3,82 +3,247 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="@color/background1">
+	android:layout_height="fill_parent"
+	android:background="@color/background1">
 
-	<LinearLayout android:layout_width="fill_parent" android:layout_weight="2" android:orientation="vertical" android:layout_height="fill_parent"><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/BlankLinearLayout"><TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="DashBoard now"></TextView>
-
-
-
-
-</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/NotExistsNoodleLinearLayout" android:orientation="vertical" android:visibility="gone"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not exist noodle now" android:id="@+id/NotExistsJanCodeTextView"></TextView>
-</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:id="@+id/ExistsNoodleLinearLayout" android:orientation="horizontal" android:visibility="gone">
-		<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_weight="2"><TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Exist noodle now" android:id="@+id/ExistsJanCodeTextView">
-		</TextView><TextView android:text="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExistsNameTextView"></TextView><TextView android:text="@+id/TextView02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/ExistsTimerLimitTextView"></TextView></LinearLayout>
-	
-
-
-
-<ImageView android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="fill_parent" android:id="@+id/ExistsNoodleImageView"></ImageView>
-</LinearLayout><LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/ConfirmCreationLinearLayout" android:visibility="gone">
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Confirm create now" android:id="@+id/ConfirmCreationJanCodeTextView"></TextView>
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
-<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:id="@+id/ConfirmCreationYesButton" style="@style/ButtonStyle"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:id="@+id/ConfirmCreationNoButton" style="@style/ButtonStyle"></Button>
-</LinearLayout>
-</LinearLayout>
-</LinearLayout><LinearLayout android:layout_width="fill_parent" android:gravity="center" android:layout_weight="2" android:layout_height="fill_parent">
-	
-		<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_weight="1">
+	<LinearLayout 
+		android:layout_width="fill_parent" 
+		android:layout_weight="2" 
+		android:orientation="vertical" 
+		android:layout_height="fill_parent" 
+		style="@style/InformationForm" android:gravity="center">
 		
-			<LinearLayout android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1">
+		<LinearLayout 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:orientation="vertical" 
+			android:id="@+id/BlankLinearLayout">
 			
-				<TextView android:text="3" android:layout_weight="2" android:layout_width="fill_parent" android:layout_height="wrap_content" android:gravity="center" style="@style/TimeTextView" android:id="@+id/MinTextView">
-				</TextView>
+			<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:text="DashBoard now" 
+				style="@style/InformationFormText">
+			</TextView>
+		</LinearLayout>
+
+		<LinearLayout android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:id="@+id/NotExistsNoodleLinearLayout" 
+			android:orientation="vertical" 
+			android:visibility="gone">
+
+			<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:text="Not exist noodle now" 
+				android:id="@+id/NotExistsJanCodeTextView" 
+				style="@style/InformationFormText">
+			</TextView>
+		</LinearLayout>
 		
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="bottom" android:layout_gravity="bottom|right" android:text="分">
-				</TextView>
+		<LinearLayout android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:id="@+id/ExistsNoodleLinearLayout" 
+			android:orientation="horizontal" 
+			android:visibility="gone">
 			
-</LinearLayout>
+			<LinearLayout android:layout_height="wrap_content" 
+				android:orientation="vertical" 
+				android:layout_width="fill_parent" 
+				android:layout_weight="2">
+				
+				<TextView android:layout_width="fill_parent" 
+					android:layout_height="wrap_content" 
+					android:text="Exist noodle now" 
+					android:id="@+id/ExistsJanCodeTextView" 
+					style="@style/InformationFormText">
+				</TextView>
+				
+				<TextView android:text="@+id/TextView02" 
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:id="@+id/ExistsNameTextView" 
+					style="@style/InformationFormText">
+				</TextView>
+				
+				<TextView android:text="@+id/TextView02" 
+					android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:id="@+id/ExistsTimerLimitTextView" 
+					style="@style/InformationFormText">
+				</TextView>
+			</LinearLayout>
+	
+			<ImageView android:layout_height="wrap_content" 
+				android:layout_weight="1" 
+				android:layout_width="fill_parent" 
+				android:id="@+id/ExistsNoodleImageView">
+			</ImageView>
+		</LinearLayout>
 		
-			<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_width="fill_parent" android:layout_weight="1">
-		
-				<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:id="@+id/MinUpButton" style="@style/PickerButton">
+		<LinearLayout android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:orientation="vertical" 
+			android:id="@+id/ConfirmCreationLinearLayout" 
+			android:visibility="gone">
+			
+			<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				android:text="Confirm create now" 
+				android:id="@+id/ConfirmCreationJanCodeTextView" 
+				style="@style/InformationFormText">
+			</TextView>
+			
+			<TextView android:layout_width="wrap_content" 
+				android:layout_height="wrap_content" 
+				style="@style/InformationFormText">
+			</TextView>
+			
+			<LinearLayout android:layout_height="wrap_content" 
+				android:layout_width="fill_parent" 
+				android:gravity="center">
+				
+				<Button android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="Yes" 
+					android:id="@+id/ConfirmCreationYesButton" 
+					style="@style/ButtonStyle">
 				</Button>
+				
+				<Button android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="No" 
+					android:id="@+id/ConfirmCreationNoButton" 
+					style="@style/ButtonStyle">
+				</Button>
+			</LinearLayout>
+		</LinearLayout>
+	</LinearLayout>
+	
+	<LinearLayout android:layout_width="fill_parent" 
+		android:layout_height="fill_parent" android:layout_weight="2" android:gravity="center">
+	
+		<LinearLayout android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:layout_weight="1">
 		
-				<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-" android:id="@+id/MinDownButton" style="@style/PickerButton">
+			<LinearLayout android:orientation="vertical" 
+				android:layout_weight="1" 
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content">
+			
+				<TextView android:text="3" 
+					android:layout_weight="2" 
+					android:layout_width="fill_parent" 
+					android:layout_height="wrap_content" 
+					android:gravity="center" 
+					style="@style/TimeTextView" 
+					android:id="@+id/MinTextView">
+				</TextView>
+		
+				<TextView android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:layout_weight="1" 
+					android:gravity="bottom" 
+					android:layout_gravity="bottom|right" 
+					android:text="分">
+				</TextView>
+			</LinearLayout>
+			
+			<LinearLayout android:layout_height="wrap_content" 
+				android:layout_weight="1" 
+				android:layout_width="fill_parent" android:orientation="vertical">
+				
+				<Button android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="+" 
+					android:id="@+id/MinUpButton" 
+					style="@style/PickerButton">
+				</Button>
+				
+				<Button android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="-" 
+					android:id="@+id/MinDownButton" 
+					style="@style/PickerButton">
 				</Button>
 			</LinearLayout>
 		</LinearLayout>
 		
-		<LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_weight="1">
+		<LinearLayout android:layout_height="wrap_content" 
+			android:orientation="horizontal" 
+			android:layout_width="fill_parent" 
+			android:layout_weight="1">
 		
-			<LinearLayout android:orientation="vertical" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_weight="1">
+			<LinearLayout android:orientation="vertical" 
+				android:layout_width="fill_parent" 
+				android:layout_weight="1" 
+				android:layout_height="wrap_content">
 			
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="00" android:layout_weight="2" android:gravity="center" style="@style/TimeTextView" android:id="@+id/SecTextView">
+				<TextView android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="00" 
+					android:layout_weight="2" 
+					android:gravity="center" 
+					style="@style/TimeTextView" 
+					android:id="@+id/SecTextView">
 				</TextView>
 		
-				<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="1" android:gravity="bottom" android:layout_gravity="bottom|right" android:text="秒">
+				<TextView android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:layout_weight="1" 
+					android:gravity="bottom" 
+					android:layout_gravity="bottom|right" 
+					android:text="秒">
 				</TextView>
 			</LinearLayout>
 			
-			<LinearLayout android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_width="fill_parent">
+			<LinearLayout android:layout_height="wrap_content" 
+				android:orientation="vertical" 
+				android:layout_weight="1" 
+				android:layout_width="fill_parent">
 			
-				<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+" android:id="@+id/SecUpButton" style="@style/PickerButton">
+				<Button android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="+" 
+					android:id="@+id/SecUpButton" 
+					style="@style/PickerButton">
 				</Button>
 			
-				<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-" android:id="@+id/SecDownButton" style="@style/PickerButton">
+				<Button android:layout_width="wrap_content" 
+					android:layout_height="wrap_content" 
+					android:text="-" 
+					android:id="@+id/SecDownButton" 
+					style="@style/PickerButton">
 				</Button>
 			</LinearLayout>
 		</LinearLayout>
-	</LinearLayout><LinearLayout android:layout_width="fill_parent" android:gravity="center" android:layout_weight="2" android:orientation="vertical" android:layout_height="fill_parent">
+	</LinearLayout>
 	
-		<Button android:layout_width="wrap_content" android:text="開始" android:layout_height="wrap_content" android:id="@+id/TimerStartButton" style="@style/ButtonStyle">
+	<LinearLayout android:layout_width="fill_parent" 
+		android:gravity="center" 
+		android:layout_weight="2" 
+		android:orientation="vertical" 
+		android:layout_height="fill_parent">
+	
+		<Button android:layout_width="wrap_content" 
+			android:text="開始" 
+			android:layout_height="wrap_content" 
+			android:id="@+id/TimerStartButton" 
+			style="@style/ButtonStyle">
 		</Button>
-	<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TimerEndButton" android:text="終了" style="@style/ButtonStyle" android:visibility="visible"></Button>
-</LinearLayout>
 
-	
-
-	
-
+		<ImageView android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:id="@+id/TimerImageView" 
+			android:src="@drawable/acic_timer">
+		</ImageView>
+		
+		<Button android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:id="@+id/TimerEndButton" 
+			android:text="終了" 
+			style="@style/ButtonStyle" 
+			android:visibility="visible">
+		</Button>
+	</LinearLayout>
 </LinearLayout>
