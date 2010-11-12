@@ -60,4 +60,25 @@ public class NoodleHistory implements Parcelable{
 		dest.writeString(name);
 		dest.writeParcelable(image, 0);
 	}
+	
+	//ゲッター
+	public NoodleMaster getNoodleMaster() {
+		return noodleMaster;
+	}
+
+	public Date getMeasureTime() {
+		return measureTime;
+	}
+
+	public String getJanCode() {
+		return janCode;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Bitmap getImage() {
+		return image;
+	}
 }

@@ -20,9 +20,18 @@
 			<TableRow>
 					<TextView 
 						style="@style/InformationFormText"
+						android:id="@+id/Form_Date"
+						android:text="日付"/>
+					<TextView
+						style="@style/InformationFormText"
+						android:id="@+id/Date"/>
+			</TableRow>
+			<TableRow>
+					<TextView 
+						style="@style/InformationFormText"
 						android:text="JANコード"/>
 					<TextView
-						style="@style/InformationFormText2"
+						style="@style/InformationFormText"
 						android:id="@+id/JanText"
 						android:maxLength="13"/>
 			</TableRow>
