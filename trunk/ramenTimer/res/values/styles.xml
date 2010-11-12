@@ -68,7 +68,7 @@
         <item name="android:paddingLeft">12dip</item>
         <item name="android:paddingRight">12dip</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/title_text</item>
+        <item name="android:textColor">@color/title_text_alt</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
