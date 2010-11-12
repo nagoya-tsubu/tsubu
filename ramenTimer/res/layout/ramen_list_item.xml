@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/background1"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<LinearLayout
+		style="@style/InformationForm"
+		android:orientation="horizontal">
+
+		<TableLayout 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+			android:stretchColumns="2"		
+			android:orientation="vertical"
+			android:layout_weight="1">
+			
+			<TableRow>
+					<TextView 
+						style="@style/InformationFormText"
+						android:text="JANコード"/>
+					<TextView
+						style="@style/InformationFormText2"
+						android:id="@+id/JanText"
+						android:maxLength="13"/>
+			</TableRow>
+			
+			<TableRow>
+					<TextView
+						style="@style/InformationFormText"
+						android:text="商品名"/>
+					<TextView 
+						style="@style/InformationFormText"
+						android:hint="商品名" 
+						android:id="@+id/RamenName"
+						/>
+			</TableRow>
+			
+			<TableRow>
+				<TextView
+					style="@style/InformationFormText"
+					android:text="時間（秒）"/>
+				<TextView 
+					style="@style/InformationFormText"
+					android:hint="時間" 
+					android:id="@+id/BoilingTime"
+					android:inputType="number"/>		
+			</TableRow>
+		</TableLayout>
+		<ImageView
+			style="@style/InformationFormImage"
+			android:id="@+id/NoodleImage"/>
+		
+	</LinearLayout>
+</LinearLayout>
