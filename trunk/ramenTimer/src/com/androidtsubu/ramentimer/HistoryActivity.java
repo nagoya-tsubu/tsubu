@@ -21,13 +21,10 @@ public class HistoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.history_activity);
 		
-		List<NoodleMaster> list = new ArrayList<NoodleMaster>();
-
-		// リストに入力
-		for (int i = 0; i < 10; i++) {
-//			NoodleMaster item = new NoodleMaster();
-//			list.add(item);
-		}
+		//履歴の呼び出し
+		NoodleManager manager = new NoodleManager();
+		List<NoodleHistory> list=null;
+//		list = new manager.getNoodleHistories();
 
 		// RamenListItemAdapterを生成
 		RamenListItemAdapter adapter;
@@ -44,11 +41,11 @@ public class HistoryActivity extends Activity {
 	 * @author leibun
 	 * 
 	 */
-	public class RamenListItemAdapter extends ArrayAdapter<NoodleMaster> {
+	public class RamenListItemAdapter extends ArrayAdapter<NoodleHistory> {
 		private LayoutInflater mInflater;
 
 		public RamenListItemAdapter(Context context, int rid,
-				List<NoodleMaster> list) {
+				List<NoodleHistory> list) {
 			super(context, rid, list);
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -56,7 +53,7 @@ public class HistoryActivity extends Activity {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			// データを取り出す
-			NoodleMaster item = (NoodleMaster) getItem(position);
+			NoodleHistory item = (NoodleHistory) getItem(position);
 			// レイアウトファイルからViewを生成
 			View view = mInflater.inflate(R.layout.ramen_list_item, null);
 			// 画像をセット
@@ -67,10 +64,10 @@ public class HistoryActivity extends Activity {
 			TextView name;
 			name = (TextView) view.findViewById(R.id.RamenName);
 			name.setText(item.getName());
-			// ゆで時間をセット
-			TextView time;
-			time = (TextView) view.findViewById(R.id.BoilingTime);
-			time.setText("" + item.getTimerLimit());
+			// 日付をセット
+			TextView date;
+			date = (TextView) view.findViewById(R.id.Date);
+			date.setText(item.getMeasureTime().toString());
 			// Janコードをセット
 			TextView jancode;
 			jancode = (TextView) view.findViewById(R.id.JanText);
