@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -43,7 +46,9 @@ public class CreateActivity extends Activity {
 	private int requestCode = 0;
 	//カップラーメン情報
 	private NoodleMaster noodleMaster = null;
-	
+	//カメラ撮影用
+	private Uri mPictureUri;
+
 	//QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
 	//QuickAction のアイテム ギャラリー
@@ -154,9 +159,9 @@ public class CreateActivity extends Activity {
 				}
 				
 	        }else if(requestCode == REQUEST_CAMERA){//カメラ
-	        	noodleImage = (Bitmap) intent.getExtras().get("data");
+//	        	noodleImage = (Bitmap) intent.getExtras().get("data");
 				//ビューに画像をセット
-	        	noodleImageView.setImageBitmap(noodleImage);
+	        	noodleImageView.setImageURI(mPictureUri);
 				noodleImageView.setBackgroundColor(R.color.clear);//背景の削除
 	        }
 		}
@@ -212,8 +217,14 @@ public class CreateActivity extends Activity {
 	 * カメラをインテントで起動
 	 */
 	private void callCamera(){
+		String filename = "Recipe_"+System.currentTimeMillis() + ".jpg";
+		ContentValues values = new ContentValues();
+		values.put(MediaStore.Images.Media.TITLE,filename);
+		values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+		mPictureUri=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 		Intent intent = new Intent();
 		intent.setAction("android.media.action.IMAGE_CAPTURE");
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, mPictureUri);
 		startActivityForResult(intent, REQUEST_CAMERA);
 	}
 
@@ -241,10 +252,11 @@ public class CreateActivity extends Activity {
 		entry = new EntryAsyncTask(this); 
 		//リーダーアクティビティから起動された場合
 		if(requestCode == RequestCode.READER2CREATE.ordinal()){
-			QuickAction qa = new QuickAction(v);
-			qa.addActionItem(itemHome);
-			qa.addActionItem(itemTimer);
-			qa.show();
+			entry.execute(noodleMaster);
+//			QuickAction qa = new QuickAction(v);
+//			qa.addActionItem(itemHome);
+//			qa.addActionItem(itemTimer);
+//			qa.show();
 		//タイマーから起動された場合
 		}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
 			entry.execute(noodleMaster);
