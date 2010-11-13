@@ -18,7 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-public class ReaderActivity extends Activity {
+public class ReaderActivity extends Activity{
 
 	// QRコードスキャナーのパッケージ名
 	private static final String QRCODE_PKG_NAME = "com.google.zxing.client.android";
@@ -233,42 +233,31 @@ public class ReaderActivity extends Activity {
 		Intent intent;
 
 		// 次の画面へ遷移する
-		// (1)商品情報オブジェクトが空の場合は、タイマー画面へ遷移する
-		// (2)JANコードが取得できなかった場合は、タイマー画面へ遷移する
-		// ・QRコードスキャナーで「Back」キーを押下した場合
-		// ・QRコードスキャナーをインストールしなかった場合
-		// 　→「Dashboardからタイマー」遷移と同じ
-		// (3)商品の取得ができなかった場合は、商品登録画面へ遷移する
-		// ・履歴、GAEから商品情報を取得できなかった場合
-		// (4)それ以外は、商品情報と共にタイマー画面へ遷移する
+		// (1)ダッシュボード→商品読込みの場合
+		//    →タイマー画面へ遷移する
+		// (2)ダッシュボード→商品登録の場合
+		//    →登録画面へ遷移する
 		
-		//(1)商品情報オブジェクトが空の場合
-		//※通常はありえない
+		// 商品情報オブジェクトが空の場合は、ダッシュボードに戻る
+		// ※通常はありえない
 		if (null == _noodleMaster) {
-			intent = new Intent(this, TimerActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-					RequestCode.DASHBORAD2TIMER.ordinal());
-		} else {
-			//JANコードが取得できなかった場合
-			if (null == _noodleMaster.getJanCode()) {
-				intent = new Intent(this, TimerActivity.class);
-				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-						RequestCode.DASHBORAD2TIMER.ordinal());
-			}
-			//商品の取得ができなかった場合
-			else if (null == _noodleMaster.getName()
-					|| "".equals(_noodleMaster.getName())) {
-				intent = new Intent(this, CreateActivity.class);
-				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-						RequestCode.READER2CREATE.ordinal());
-			}
-			//上記以外(商品情報が取得できた場合)
-			else {
-				intent = new Intent(this, TimerActivity.class);
-				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-						RequestCode.READER2TIMER.ordinal());
-			}
+			finish();
+			return;
 		}
+		
+		// (1)ダッシュボード→商品読込みの場合
+		if(RequestCode.values()[_requestCode].equals(RequestCode.DASHBORAD2READER)) {
+			// →タイマー画面へ遷移する
+			intent = new Intent(this, CreateActivity.class);
+			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2TIMER.ordinal());
+		}
+		// (2)ダッシュボード→商品登録の場合
+		else {
+			// →登録画面へ遷移する
+			intent = new Intent(this, CreateActivity.class);
+			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2CREATE.ordinal());
+		}
+
 		// NoodleMaster情報もインテントに情報を送る
 		intent.putExtra(KEY_NOODLE_MASTER, _noodleMaster);
 		// インテントを発行する
