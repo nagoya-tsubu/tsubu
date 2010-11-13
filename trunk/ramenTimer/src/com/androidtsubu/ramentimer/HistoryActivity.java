@@ -22,7 +22,7 @@ public class HistoryActivity extends Activity {
 		setContentView(R.layout.history_activity);
 		
 		//履歴の呼び出し
-		NoodleManager manager = new NoodleManager();
+		NoodleManager manager = new NoodleManager(this);
 		List<NoodleHistory> list=null;
 //		list = new manager.getNoodleHistories();
 
