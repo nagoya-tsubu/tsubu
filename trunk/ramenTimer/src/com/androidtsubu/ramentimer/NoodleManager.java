@@ -33,7 +33,7 @@ public class NoodleManager {
 	 * @param janCode
 	 * @return
 	 */
-	public NoodleMaster getNoodleMaster(String janCode) throws GaeException {
+	public NoodleMaster getNoodleMaster(String janCode) throws SQLException, GaeException {
 		//SQliteに商品マスタがあるか問い合わせる
 		NoodleMaster master = noodleSqlController.getNoodleMaster(janCode);
 		if(master != null){
@@ -57,8 +57,8 @@ public class NoodleManager {
 	 * @throws DuplexNoodleMasterException
 	 * @throws GaeException
 	 */
-	public void createNoodleMaster(NoodleMaster noodleMaster)
-			throws DuplexNoodleMasterException, GaeException {
+	public void createNoodleMaster(NoodleMaster noodleMaster) 
+			throws SQLException, DuplexNoodleMasterException, GaeException {
 		//SQliteにすでに登録されていないか調べる
 		NoodleMaster master = noodleSqlController.getNoodleMaster(noodleMaster.getJanCode());
 		if(master != null){

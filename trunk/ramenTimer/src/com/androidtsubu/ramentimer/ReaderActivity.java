@@ -6,6 +6,8 @@
 
 package com.androidtsubu.ramentimer;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -180,6 +182,8 @@ public class ReaderActivity extends Activity {
 				// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
 				_noodleMaster = new NoodleMaster(_janCode, "", null, 0);
 			}
+		}catch(SQLException e){
+			e.printStackTrace();
 		} catch (GaeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
