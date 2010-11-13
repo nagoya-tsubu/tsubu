@@ -321,8 +321,8 @@ public class CreateActivity extends Activity {
 				nm.createNoodleMaster(params[0]);
 			}catch(GaeException e){
 				return RESULT_ERROR_GAE;
-//			} catch (java.sql.SQLException e) {
-//				return RESULT_ERROR_SQLITE;
+			} catch (java.sql.SQLException e) {
+				return RESULT_ERROR_SQLITE;
 			}
 			return RESULT_CREATE_OK;
 		}

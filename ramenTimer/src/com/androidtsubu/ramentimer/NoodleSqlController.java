@@ -24,18 +24,18 @@ import android.graphics.Bitmap.CompressFormat;
  * @author hide
  */
 public class NoodleSqlController {
-	private static final int DB_VERSION = 1;
+	private static final int DB_VERSION = 5;
 	private static final String NOODLEMASTERTABLENAME = "NoodleMaster";
 	private static final String NOODLEHISTORYTABLENAME = "NoodleHistory";
 
 	/** テーブルCreate文 */
 	private static final String CREATE_NOODLEMASTER_TABLE = "CREATE TABLE "
 			+ NOODLEMASTERTABLENAME + "(" + "jancode TEXT PRIMARY KEY,"
-			+ "name TEXT ," + "boilTime INTEGER" + "image BLOB)";
+			+ "name TEXT ,boiltime INTEGER ,image BLOB )";
 	private static final String CREATE_NOODLEHISTORY_TABLE = "CREATE TABLE "
 			+ NOODLEHISTORYTABLENAME + "("
 			+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, jancode TEXT,"
-			+ "name TEXT ," + "measuretime TEXT)";
+			+ "name TEXT ,measuretime TEXT)";
 
 	/** DB読み書きクラス */
 	private SQLiteDatabase database = null;
@@ -60,7 +60,7 @@ public class NoodleSqlController {
 	 * @throws SQLException
 	 */
 	public NoodleMaster getNoodleMaster(String janCode){
-		String[] columns = { "jancode", "name", "boiltime" };
+		String[] columns = { "name", "boiltime","image" };
 		String where = "jancode = ?";
 		String[] args = { janCode };
 		Cursor cursor = null;
@@ -72,7 +72,7 @@ public class NoodleSqlController {
 				String name = cursor.getString(cursor.getColumnIndex("name"));
 				int boilTime = cursor.getInt(cursor.getColumnIndex("boiltime"));
 				byte[] imagebyte = cursor.getBlob(cursor
-						.getColumnIndex("boiltime"));
+						.getColumnIndex("image"));
 				Bitmap image = BitmapFactory.decodeByteArray(imagebyte, 0,
 						imagebyte.length);
 				return new NoodleMaster(janCode, name, image, boilTime);
@@ -165,7 +165,7 @@ public class NoodleSqlController {
 	 * 
 	 * @param noodleMaster
 	 */
-	public void createNoodleMater(NoodleMaster noodleMaster){
+	public void createNoodleMater(NoodleMaster noodleMaster) throws SQLException{
 		ContentValues contentValues = new ContentValues();
 		contentValues.put("jancode", noodleMaster.getJanCode());
 		contentValues.put("name", noodleMaster.getName());
@@ -175,7 +175,10 @@ public class NoodleSqlController {
 			noodleMaster.getImage().compress(CompressFormat.JPEG, 100, bos);
 			contentValues.put("image", bos.toByteArray());
 		}
-		database.insert(NOODLEMASTERTABLENAME, null, contentValues);
+		long ret = database.insert(NOODLEMASTERTABLENAME, null, contentValues);
+		if(ret == -1){
+			throw new SQLException();
+		}
 	}
 
 	/**
@@ -212,11 +215,11 @@ public class NoodleSqlController {
 		 * データベースが新規に作成された
 		 */
 		@Override
-		public void onCreate(SQLiteDatabase database) {
+		public void onCreate(SQLiteDatabase db) {
 			// NoodleMasterテーブルを作成する
-			database.execSQL(CREATE_NOODLEMASTER_TABLE);
+			db.execSQL(CREATE_NOODLEMASTER_TABLE);
 			// NoodleHistoryテーブルを作成する
-			database.execSQL(CREATE_NOODLEHISTORY_TABLE);
+			db.execSQL(CREATE_NOODLEHISTORY_TABLE);
 		}
 
 		/**
@@ -224,8 +227,15 @@ public class NoodleSqlController {
 		 */
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
-
+			//テーブルを削除する
+			StringBuilder builder = new StringBuilder("DROP TABLE ");
+			builder.append(NOODLEMASTERTABLENAME);
+			db.execSQL(builder.toString());
+			builder = new StringBuilder("DROP TABLE ");
+			builder.append(NOODLEHISTORYTABLENAME);
+			db.execSQL(builder.toString());
+			//テーブルを定義しなおす
+			onCreate(db);
 		}
 
 	}
