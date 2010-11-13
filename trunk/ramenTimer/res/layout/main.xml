@@ -6,6 +6,36 @@
 	android:layout_height="fill_parent"
 	android:background="@color/background1">
 
+	<!-- ActionBar -->
+	<LinearLayout style="@style/TitleBar">
+		<ImageButton
+			style="@style/TitleBarAction"
+			android:onClick="onLogoClick"
+			android:src="@drawable/acic_home"/>
+		<ImageView style="@style/TitleBarSeparator" />
+       <TextView 
+       	style="@style/TitleBarText" 
+      		android:text="タイマー"/>
+				
+		<ImageView style="@style/TitleBarSeparator" />
+
+		<ImageButton 
+			style="@style/TitleBarAction" 
+			android:onClick="onReaderButtonClick"
+			android:src="@drawable/acic_barcode" />
+		<ImageView style="@style/TitleBarSeparator" />
+
+		<ImageButton 
+			style="@style/TitleBarAction" 
+			android:onClick="onHistoryButtonClick"
+			android:src="@drawable/acic_history" />
+ 
+		<requestFocus />
+	</LinearLayout>  
+	<ImageView style="@style/HorizontalSeparator"/>
+	
+	<!-- ActionBar End -->
+
 	<LinearLayout 
 		android:layout_width="fill_parent" 
 		android:layout_weight="2" 
