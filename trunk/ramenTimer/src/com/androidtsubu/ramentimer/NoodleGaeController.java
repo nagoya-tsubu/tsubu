@@ -129,21 +129,17 @@ public class NoodleGaeController {
 	 * @throws IOException
 	 */
 	private Bitmap getBitmap(String imageUrl) {
+		URL url;
 		try {
-			URL url = new URL(address + imageUrl);
-			InputStream input = url.openStream();
-			try {
-				byte[] buf = new byte[102400];
-				int len = 0;
-				len = input.read(buf);
-				return BitmapFactory.decodeByteArray(buf, 0, len);
-			} finally {
-				input.close();
-			}
+			url = new URL(address + imageUrl);
+			InputStream input;
+			input = url.openStream();
+			return BitmapFactory.decodeStream(input);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
