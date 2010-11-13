@@ -26,14 +26,8 @@ public class DashBoardActivity extends Activity {
 	 * @param view
 	 */
 	public void onCreateButtonClick(View view) {
-		//CreateActivityのデバックにちょっと拝借  by leibun
-		final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
-		final String    TEST_JAN_CODE ="4903320241800";
-		Intent intent = new Intent(this, CreateActivity.class);
-		int requestCode = RequestCode.READER2CREATE.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
-		intent.putExtra(KEY_NOODLE_MASTER, new NoodleMaster(TEST_JAN_CODE, null, null, 0));
-		startActivityForResult(intent, requestCode);		
+		int requestCode = RequestCode.DASHBOARD2CREATE.ordinal();
+		gotoReaderActivity(requestCode);		
 	}
 	/**
 	 * 履歴ボタンが押されたとき
@@ -47,6 +41,7 @@ public class DashBoardActivity extends Activity {
 	 * @param view
 	 */
 	public void onReaderButtonClick(View view){
+		
 		int requestCode = RequestCode.DASHBORAD2READER.ordinal();
 		gotoReaderActivity(requestCode);
 	}
