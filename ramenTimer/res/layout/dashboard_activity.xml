@@ -10,7 +10,7 @@
 
     <LinearLayout style="@style/TitleBar">
         <ImageView style="@style/TitleBarLogo"
-            android:src="@drawable/app_logo" />
+            android:src="@drawable/icon_alt" />
     </LinearLayout>
 
     <ImageView style="@style/HorizontalSeparator"/>
