@@ -6,8 +6,6 @@
 
 package com.androidtsubu.ramentimer;
 
-import java.sql.ResultSet;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -119,9 +117,9 @@ public class ReaderActivity extends Activity {
 	 * アクティビティの実行結果処理
 	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode,
-			Intent intent) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
+		//アクティビティのリクエストコードで処理を分ける
 		switch (requestCode) {
 		case EXECUTE_QR_CODE_SCANNER:
 			//QRコードスキャナー実行後
@@ -239,21 +237,29 @@ public class ReaderActivity extends Activity {
 		// (3)商品の取得ができなかった場合は、商品登録画面へ遷移する
 		// ・履歴、GAEから商品情報を取得できなかった場合
 		// (4)それ以外は、商品情報と共にタイマー画面へ遷移する
+		
+		//(1)商品情報オブジェクトが空の場合
+		//※通常はありえない
 		if (null == _noodleMaster) {
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 					RequestCode.DASHBORAD2TIMER.ordinal());
 		} else {
+			//JANコードが取得できなかった場合
 			if (null == _noodleMaster.getJanCode()) {
 				intent = new Intent(this, TimerActivity.class);
 				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 						RequestCode.DASHBORAD2TIMER.ordinal());
-			} else if (null == _noodleMaster.getName()
+			}
+			//商品の取得ができなかった場合
+			else if (null == _noodleMaster.getName()
 					|| "".equals(_noodleMaster.getName())) {
 				intent = new Intent(this, CreateActivity.class);
 				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 						RequestCode.READER2CREATE.ordinal());
-			} else {
+			}
+			//上記以外(商品情報が取得できた場合)
+			else {
 				intent = new Intent(this, TimerActivity.class);
 				intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 						RequestCode.READER2TIMER.ordinal());
