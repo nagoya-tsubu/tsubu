@@ -88,7 +88,6 @@ public class ReaderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
 		// どのボタンからこのインテントが呼び出されたかを取得する
 		Intent intent = getIntent();
 		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
@@ -170,7 +169,7 @@ public class ReaderActivity extends Activity {
 
 		// NoodleManagerクラスを実体化させる
 		if (null == _noodleManager) {
-			_noodleManager = new NoodleManager();
+			_noodleManager = new NoodleManager(this);
 		}
 		// JANコードを検索キーにして、履歴またはGAEから
 		// 商品を検索する
