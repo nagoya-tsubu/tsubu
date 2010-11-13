@@ -272,7 +272,14 @@ public class TimerActivity extends Activity {
 	 * ラーメン情報をレイアウトにセットする
 	 */
 	private void setNoodleData(){
-		
+		ImageView image = (ImageView) findViewById(R.id.ExistsNoodleImageView);
+		image.setImageBitmap(noodleMaster.getImage());
+		TextView jancode = (TextView) findViewById(R.id.ExistsJanCodeTextView);
+		jancode.setText(noodleMaster.getJanCode());
+		TextView name = (TextView) findViewById(R.id.ExistsNameTextView);
+		name.setText(noodleMaster.getName());
+		TextView limit = (TextView) findViewById(R.id.ExistsTimerLimitTextView);
+		limit.setText(""+noodleMaster.getTimerLimit());
 	}
 	
 	/**
