@@ -36,12 +36,12 @@
                 style="@style/HomeButton"
                 android:onClick="onTimerButtonClick"
                 android:text="タイマー"
-                android:drawableTop="@drawable/ic_timer"/>
+                android:drawableTop="@drawable/home_ic_timer"/>
             <Button android:id="@+id/Button02"
                 style="@style/HomeButton"
                 android:onClick="onReaderButtonClick"
                 android:text="読込"
-                android:drawableTop="@drawable/ic_barcode"/>
+                android:drawableTop="@drawable/home_ic_barcode"/>
         </LinearLayout>
 
         <LinearLayout
@@ -53,12 +53,12 @@
                 style="@style/HomeButton"
                 android:onClick="onCreateButtonClick"
                 android:text="登録"
-                android:drawableTop="@drawable/ic_ramenadd"/>
+                android:drawableTop="@drawable/home_ic_ramenadd"/>
             <Button android:id="@+id/Button04"
                 style="@style/HomeButton"
                 android:onClick="onHistoryButtonClick"
                 android:text="履歴"
-                android:drawableTop="@drawable/ic_history"/>
+                android:drawableTop="@drawable/home_ic_history"/>
         </LinearLayout>
 
     </LinearLayout>
