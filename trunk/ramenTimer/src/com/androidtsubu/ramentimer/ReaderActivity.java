@@ -248,7 +248,7 @@ public class ReaderActivity extends Activity{
 		// (1)ダッシュボード→商品読込みの場合
 		if(RequestCode.values()[_requestCode].equals(RequestCode.DASHBORAD2READER)) {
 			// →タイマー画面へ遷移する
-			intent = new Intent(this, CreateActivity.class);
+			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2TIMER.ordinal());
 		}
 		// (2)ダッシュボード→商品登録の場合
