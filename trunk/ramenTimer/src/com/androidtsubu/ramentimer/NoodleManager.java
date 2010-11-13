@@ -1,6 +1,9 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
+import java.util.Date;
+
+import android.content.Context;
 
 /**
  * データの読み書きをするマネージャーです
@@ -16,9 +19,12 @@ public class NoodleManager {
 
 	/**
 	 * コンストラクタ
+	 * 
+	 * @param context
 	 */
-	public NoodleManager() {
+	public NoodleManager(Context context) {
 		noodleGaeController = new NoodleGaeController();
+		noodleSqlController = new NoodleSqlController(context);
 	}
 
 	/**
@@ -28,16 +34,19 @@ public class NoodleManager {
 	 * @return
 	 */
 	public NoodleMaster getNoodleMaster(String janCode) throws GaeException {
-		/** @todo SQLiteからデータをひっぱってみる。なければGAEからデータをひっぱってみる */
-		try {
-			// とりあえずGAEからだけひっぱってみる
-			return noodleGaeController.getNoodleMaster(janCode);
-		} catch (GaeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//SQliteに商品マスタがあるか問い合わせる
+		NoodleMaster master = noodleSqlController.getNoodleMaster(janCode);
+		if(master != null){
+			//SQliteの商品マスタを返す
+			return master;
 		}
-
-		return null;
+		//GAEに問い合わせる
+		master = noodleGaeController.getNoodleMaster(janCode);
+		if(master != null){
+			//SQliteになくてGAEにある場合はSQliteに登録してあげる
+			noodleSqlController.createNoodleMater(master);
+		}
+		return master; 
 	}
 
 	/**
@@ -49,9 +58,16 @@ public class NoodleManager {
 	 * @throws GaeException
 	 */
 	public void createNoodleMaster(NoodleMaster noodleMaster)
-			throws SQLException, DuplexNoodleMasterException, GaeException {
-		/** @todo SQLiteとGAEに商品マスタを登録する。SQLiteに登録できなくてGAEに登録できた場合はどうするか */
-		// とりあえずGAEにだけ登録してみる
+			throws DuplexNoodleMasterException, GaeException {
+		//SQliteにすでに登録されていないか調べる
+		NoodleMaster master = noodleSqlController.getNoodleMaster(noodleMaster.getJanCode());
+		if(master != null){
+			//重複エラーを返す
+			throw new DuplexNoodleMasterException();
+		}
+		//SQliteに登録
+		noodleSqlController.createNoodleMater(noodleMaster);
+		//GAEに登録
 		noodleGaeController.create(noodleMaster);
 	}
 
@@ -61,9 +77,9 @@ public class NoodleManager {
 	 * @param noodleMaster
 	 * @throws SQLException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster)
-			throws SQLException {
-		/** @todo GAEにマスタを登録してから履歴を登録する？ */
+	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime){
+		//商品マスタは何かしら登録されてから使われているはずなのでGAEにマスタを登録することはしない
+		noodleSqlController.createNoodleHistory(noodleMaster, measureTime);
 	}
 
 }
