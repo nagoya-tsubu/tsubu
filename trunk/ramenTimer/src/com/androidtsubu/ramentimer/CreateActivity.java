@@ -79,11 +79,24 @@ public class CreateActivity extends Activity {
 
 		//ボタンとかエディットボックスとかのUIを取ってくる
 		janText = (TextView) findViewById(R.id.JanEdit);
-		janText.setText(noodleMaster.getJanCode());
 		nameEdit= (EditText) findViewById(R.id.NameEdit);
 		boilTimeEdit = (EditText) findViewById(R.id.BoilingTimeEdit);
 //		noodleTypeRadioGroup	= (RadioGroup) findViewById(R.id.NoodleTypeRadioGroup);
 		noodleImageView = (ImageButton) findViewById(R.id.NoodleImageButton);
+		//NoodleMasterから情報を取り出す
+		String nmJancode = noodleMaster.getJanCode();
+		String nmName = noodleMaster.getName();
+		String nmTimerLimit= noodleMaster.getTimerLimitString();
+		Bitmap nmImage= noodleMaster.getImage();
+		//全部埋まっている場合は、既に登録されている
+		if( nmJancode!=null && nmName!=null && nmTimerLimit!=null && nmImage!=null){
+//			janText.setText(nmJancode);
+//			nameEdit.setText(nmName);
+//			boilTimeEdit.setText(nmTimerLimit);
+//			noodleImageView.setImageBitmap(nmImage);
+			Toast.makeText(this, "既に登録されています",Toast.LENGTH_LONG).show();
+			finish();
+		}
 		
 //		//麺の種類をラジオボタンで作成
 //		final NoodleType NoodleTypeValues[] = NoodleType.values();
