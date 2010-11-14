@@ -266,8 +266,8 @@
 	<!-- QuickAction styles end -->	
 
 	<style name="PickerButton">
-		<item name="android:width">50dip</item>
-		<item name="android:height">50dip</item>
+		<item name="android:width">30dip</item>
+		<item name="android:height">30dip</item>
 	</style>
 
 	<style name="TimeTextView">
@@ -276,7 +276,7 @@
 	</style>
 
 <style name="ButtonStyle"><item name="android:width">100dip</item>
-<item name="android:height">20dip</item>
+
 <item name="android:layout_gravity">center</item>
 </style>
 </resources>

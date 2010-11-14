@@ -43,135 +43,53 @@
 		android:layout_height="fill_parent" 
 		style="@style/InformationForm" android:gravity="center">
 		
-		<LinearLayout 
-			android:layout_height="wrap_content" 
-			android:layout_width="fill_parent" 
-			android:orientation="vertical" 
-			android:id="@+id/BlankLinearLayout">
-			
-			<TextView android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:text="DashBoard now" 
-				style="@style/InformationFormText"/>
-		</LinearLayout>
-
-		<LinearLayout android:layout_height="wrap_content" 
-			android:layout_width="fill_parent" 
-			android:id="@+id/NotExistsNoodleLinearLayout" 
-			android:orientation="vertical" 
-			android:visibility="gone">
-
-			<TextView android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:text="Not exist noodle now" 
-				android:id="@+id/NotExistsJanCodeTextView" 
-				style="@style/InformationFormText"/>
-		</LinearLayout>
-
-
-		<LinearLayout android:layout_height="wrap_content" 
-			android:layout_width="fill_parent" 
-			android:id="@+id/ExistsNoodleLinearLayout" 
-			android:orientation="horizontal" 
-			android:visibility="gone">
-
-			<TableLayout 
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center_vertical"
-				android:stretchColumns="2"		
-				android:orientation="vertical"
-				android:layout_weight="1">
+		<TableLayout android:layout_height="wrap_content" 
+			android:layout_gravity="center_vertical" 
+			android:stretchColumns="2" 
+			android:layout_weight="1" 
+			android:orientation="horizontal" android:layout_width="fill_parent">
 				
-				<TableRow>
-						<TextView 
-							style="@style/InformationFormText"
-							android:text="JANコード"/>
-						<TextView android:layout_width="fill_parent" 
-							android:layout_height="wrap_content" 
-							android:text="Exist noodle now" 
-							android:id="@+id/ExistsJanCodeTextView" 
-							style="@style/InformationFormText"/>			
-				</TableRow>
-				
-				<TableRow>
-						<TextView
-							style="@style/InformationFormText"
-							android:text="商品名"/>
-						<TextView 
-							style="@style/InformationFormText"
-							android:hint="商品名" 
-							android:id="@+id/RamenName"
-							/>
-						<TextView android:text="@+id/TextView02" 
-							android:layout_width="wrap_content" 
-							android:layout_height="wrap_content" 
-							android:id="@+id/ExistsNameTextView" 
-							style="@style/InformationFormText"/>
-									
-				</TableRow>
-				
-				<TableRow>
-					<TextView
-						style="@style/InformationFormText"
-						android:text="時間（秒）"/>
-					<TextView 
-						style="@style/InformationFormText"
-						android:hint="時間" 
-						android:id="@+id/BoilingTime"
-						android:inputType="number"/>		
-					<TextView android:text="@+id/TextView02" 
-						android:layout_width="wrap_content" 
+			<TableRow android:id="@+id/JanCodeTableRow" android:visibility="gone">
+					<TextView style="@style/InformationFormText" 
+						android:text="JANコード" />
+					<TextView android:layout_width="fill_parent" 
 						android:layout_height="wrap_content" 
-						android:id="@+id/ExistsTimerLimitTextView" 
-						style="@style/InformationFormText"/>							
-				</TableRow>
-			</TableLayout>
-	
-			<ImageView android:layout_height="wrap_content" 
-				android:layout_weight="1" 
-				android:layout_width="fill_parent" 
-				android:id="@+id/ExistsNoodleImageView">
-			</ImageView>
-		</LinearLayout>
+						android:text="JanCode" 
+						style="@style/InformationFormText" 
+						android:id="@+id/JanCodeTextView"/>			
+			</TableRow>
+			
+			<TextView style="@style/InformationFormText" android:hint="商品名" android:id="@+id/NameTextView" android:visibility="gone"/>
+			
+			<TableRow android:id="@+id/TimerLimitTableRow" android:visibility="gone">
+				<TextView style="@style/InformationFormText" 
+					android:text="時間（秒）" />
+				<TextView style="@style/InformationFormText" 
+					android:hint="時間" 
+					android:inputType="number" 
+					android:id="@+id/TimerLimitTextView"/>
+			</TableRow>
 		
-		<LinearLayout android:layout_height="wrap_content" 
-			android:layout_width="fill_parent" 
-			android:orientation="vertical" 
-			android:id="@+id/ConfirmCreationLinearLayout" 
-			android:visibility="gone">
+			<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/ConfirmCreationLinearLayout" android:visibility="gone">
+					
+					<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/InformationFormText" android:text="この商品は登録されていません。\n商品の登録を行いますか？">
+					</TextView>
+		
+					<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
 			
-			<TextView android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:text="Confirm create now" 
-				android:id="@+id/ConfirmCreationJanCodeTextView" 
-				style="@style/InformationFormText">
-			</TextView>
+						<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:id="@+id/ConfirmCreationYesButton" style="@style/ButtonStyle">
+						</Button>
 			
-			<TextView android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				style="@style/InformationFormText">
-			</TextView>
-			
-			<LinearLayout android:layout_height="wrap_content" 
-				android:layout_width="fill_parent" 
-				android:gravity="center">
-				
-				<Button android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" 
-					android:text="Yes" 
-					android:id="@+id/ConfirmCreationYesButton" 
-					style="@style/ButtonStyle">
-				</Button>
-				
-				<Button android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" 
-					android:text="No" 
-					android:id="@+id/ConfirmCreationNoButton" 
-					style="@style/ButtonStyle">
-				</Button>
-			</LinearLayout>
-		</LinearLayout>
+						<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:id="@+id/ConfirmCreationNoButton" style="@style/ButtonStyle">
+						</Button>
+					</LinearLayout>
+				</LinearLayout>
+		</TableLayout>
+		
+		<ImageView android:layout_height="wrap_content" 
+			android:layout_weight="1" 
+			android:layout_width="fill_parent" android:id="@+id/NoodleImageView">
+		</ImageView>
 	</LinearLayout>
 	
 	<LinearLayout android:layout_width="fill_parent" 
