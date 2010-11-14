@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,13 +100,16 @@ public class TimerActivity extends Activity {
 			toast.show();
 			
 			// Mainスレッドでアラーム再生すると遅延が発生するため、スレッドで実行する
-			
-			MediaPlayer mp = MediaPlayer.create(TimerActivity.this, R.raw.alarm);
-			try {
-				mp.start();
-			} catch (Exception e) {
-				// 例外は発生しない
-			}
+			new Thread(new Runnable() {
+				public void run() {
+					MediaPlayer mp = MediaPlayer.create(TimerActivity.this, R.raw.alarm);
+					try {
+						mp.start();
+					} catch (Exception e) {
+						// 例外は発生しない
+					}
+				}
+			}).start();
 		}
 	}
 	
@@ -135,10 +139,10 @@ public class TimerActivity extends Activity {
 		secUpButton = (Button)findViewById(R.id.SecUpButton);
 		secDownButton = (Button)findViewById(R.id.SecDownButton);
 
-		ImageView noodleImage = (ImageView)findViewById(R.id.NoodleImageView);
-		TextView janCode = (TextView)findViewById(R.id.JanCodeTextView);
-		TextView name = (TextView)findViewById(R.id.NameTextView);
-		TextView timerLimit = (TextView)findViewById(R.id.TimerLimitTextView);
+		noodleImage = (ImageView)findViewById(R.id.NoodleImageView);
+		janCode = (TextView)findViewById(R.id.JanCodeTextView);
+		name = (TextView)findViewById(R.id.NameTextView);
+		timerLimit = (TextView)findViewById(R.id.TimerLimitTextView);
 
 		timerImage = (ImageView)findViewById(R.id.TimerImageView);
 		
@@ -147,9 +151,13 @@ public class TimerActivity extends Activity {
 		requestCode = requestIntent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 		// 呼び出し元のラーメン情報を取得する
 		noodleMaster =(NoodleMaster)requestIntent.getParcelableExtra(KEY_NOODLE_MASTER);
+		
+		// 情報表示用にダミー情報をset
+		//noodleMaster = new NoodleMaster("49xxxxxxxxxxxxx", "太麺堂々", null, 245);
+
 		// 呼び出し元に応じて表示を切り替える
 		displaySetting(requestCode);
-		
+
 		// 分+ボタン
 		minUpButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -159,7 +167,6 @@ public class TimerActivity extends Activity {
 				minTextView.setText(String.valueOf(min));
 			}
 		});
-		
 		// 分-ボタン
 		minDownButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -169,7 +176,6 @@ public class TimerActivity extends Activity {
 				minTextView.setText(String.valueOf(min));
 			}
 		});
-		
 		// 秒+ボタン
 		secUpButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -183,10 +189,8 @@ public class TimerActivity extends Activity {
 				secTextView.setText(getSecText(sec));
 			}
 		});
-		
 		// 秒-ボタン
 		secDownButton.setOnClickListener(new View.OnClickListener() {
-			
 			public void onClick(View v) {
 				int sec = Integer.valueOf(secTextView.getText().toString())-SEC_INTERVALS;
 				if(sec < 0){ // 0秒時にマイナスボタンを押下した場合は、1分さげる
@@ -198,7 +202,6 @@ public class TimerActivity extends Activity {
 				secTextView.setText(getSecText(sec));
 			}
 		});
-		
 		// 開始ボタン
 		startButton = (Button)findViewById(R.id.TimerStartButton);
 		startButton.setOnClickListener(new View.OnClickListener() {
@@ -206,7 +209,6 @@ public class TimerActivity extends Activity {
 				startTimer();
 			}
 		});
-
 		// 終了ボタン
 		endButton = (Button)findViewById(R.id.TimerEndButton);
 		endButton.setOnClickListener(new View.OnClickListener() {
@@ -214,15 +216,13 @@ public class TimerActivity extends Activity {
 				finish();
 			}
 		});
-
 		// はいボタン
 		Button yesButton = (Button)findViewById(R.id.ConfirmCreationYesButton);
 		yesButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// CreateActivityへ移動
+				onCreateButtonClick(v);
 			}
 		});
-		
 		// いいえボタン
 		Button noButton = (Button)findViewById(R.id.ConfirmCreationNoButton);
 		noButton.setOnClickListener(new View.OnClickListener() {
@@ -277,14 +277,29 @@ public class TimerActivity extends Activity {
 	 * ラーメン情報をレイアウトにセット、表示する
 	 */
 	private void setNoodleData(){
-		noodleImage.setImageBitmap(noodleMaster.getImage());
-		noodleImage.setVisibility(View.VISIBLE);
-		janCode.setText(noodleMaster.getJanCode());
-		janCode.setVisibility(View.VISIBLE);
-		name.setText(noodleMaster.getName());
-		name.setVisibility(View.VISIBLE);
-		timerLimit.setText(""+noodleMaster.getTimerLimit());
-		timerLimit.setVisibility(View.VISIBLE);
+		if(noodleMaster == null)
+			return;
+		
+		if(noodleMaster.getImage()!=null){
+			noodleImage.setImageBitmap(noodleMaster.getImage());
+			noodleImage.setVisibility(View.VISIBLE);
+		}
+		if(noodleMaster.getJanCode()!=null){
+			janCode.setText(noodleMaster.getJanCode());
+			TableRow janCodeTableRow = (TableRow)findViewById(R.id.JanCodeTableRow);
+			janCodeTableRow.setVisibility(View.VISIBLE);
+		}
+		if(noodleMaster.getName()!=null){
+			name.setText(noodleMaster.getName());
+			name.setVisibility(View.VISIBLE);
+		}
+		if(noodleMaster.getTimerLimitString()!=null){
+			timerLimit.setText(""+noodleMaster.getTimerLimit());
+			TableRow timerLimitTableRow = (TableRow)findViewById(R.id.TimerLimitTableRow);
+			timerLimitTableRow.setVisibility(View.VISIBLE);
+			// タイマーの時間をセットする
+			updateTimerTextView(Long.valueOf(noodleMaster.getTimerLimit()));
+		}
 	}
 	
 	/**
@@ -293,21 +308,22 @@ public class TimerActivity extends Activity {
 	 */
 	private void displaySetting(int id){
 
-		setNoodleInformation();
+		setNoodleData();
 		if(id == RequestCode.DASHBORAD2TIMER.ordinal()){ //DashboardActivityから呼ばれた場合
 			// 何も表示しない
 		}else if(id == RequestCode.CREATE2TIMER.ordinal()){ //CreateActivityから呼ばれた場合
-			// ラーメン情報、時間をセットする
-			setNoodleData();
+			// 
 		}else if(id == RequestCode.HISTORY2TIMER.ordinal()){ //HistoryActivityから呼ばれた場合
-			// ラーメン情報、時間をセットする
-			setNoodleData();
+			// 
 		}else if(id == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
-			// ラーメン情報が存在する場合は、ラーメン情報、時間をセットする
+			// 
 			if(noodleMaster != null){
-				setNoodleData();
-			}else{ //ラーメン情報が存在しなければ、登録フラグをたてる
+				
+			}else{ // ラーメン情報が存在しない場合
+				// 登録フラグをたてる
 				registrationFlg = true;
+				// ActionBarのバーコードを登録と置き換える
+				
 			}
 		}else{ //上記以外は、、、
 			
@@ -375,13 +391,7 @@ public class TimerActivity extends Activity {
 		timerImage.setVisibility(View.VISIBLE);
 		startButton.setVisibility(View.GONE);
 	}
-	
-	/**
-	 * ラーメン情報を表示する
-	 */
-	private void setNoodleInformation(){
-		
-	}
+
 	
 	/**
 	 * 時間調整ボタンを非表示にする
@@ -391,5 +401,41 @@ public class TimerActivity extends Activity {
 		minDownButton.setVisibility(View.GONE);
 		secUpButton.setVisibility(View.GONE);
 		secDownButton.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * 登録を起動し、Timerを終了する
+	 * 
+	 */
+	public void onCreateButtonClick(View v){
+		Intent intent = new Intent(TimerActivity.this, CreateActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2CREATE.ordinal());
+		intent.putExtra(KEY_NOODLE_MASTER, noodleMaster);
+		startActivity(intent);
+		finish();
+	}
+	
+	public void onLogoClick(View v){
+		finish();
+	}
+
+	/**
+	 * バーコードリーダーを起動し、Timerを終了する
+	 */
+	public void onReaderButtonClick(View v){
+		Intent intent = new Intent(this, ReaderActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.DASHBORAD2READER.ordinal());
+		startActivity(intent);
+		finish();
+	}
+
+	/**
+	 * 履歴を起動し、Timerを終了する
+	 */
+	public void onHistoryButtonClick(View v){
+		Intent intent = new Intent(this, ReaderActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.DASHBORAD2HISTORY.ordinal());
+		startActivity(intent);
+		finish();
 	}
 }
