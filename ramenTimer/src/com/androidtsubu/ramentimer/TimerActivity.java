@@ -37,15 +37,15 @@ public class TimerActivity extends Activity {
 	private Button secDownButton = null;
 	// タイマーイメージ
 	private ImageView timerImage = null;
-	// 情報を表示しないレイアウト
-	private LinearLayout blank = null;
-	// 未登録レイアウト
-	private LinearLayout notExistNoodle = null;
-	// 登録済みレイアウト
-	private LinearLayout existNoodle = null;
-	// 登録確認レイアウト
-	private LinearLayout confirmCreation = null;
-	
+	// ラーメン画像
+	private ImageView noodleImage = null;
+	// Janコード
+	private TextView janCode = null;
+	// 商品名
+	private TextView name = null;
+	// 待ち時間
+	private TextView timerLimit = null;
+
 	// Intentに付与している呼び出し元を保持する
 	private int requestCode = 0;
 	// ラーメン情報
@@ -88,18 +88,23 @@ public class TimerActivity extends Activity {
 
 			// 0秒TextView、終了ボタンを表示
 			updateTimerTextView(0);
+			showEndButton();
+
+			// 未登録の商品であれば、登録するか問う
+			if(registrationFlg){
+				showConfirmCreation();
+			}
 
 			Toast toast = Toast.makeText(getApplicationContext(), "Time over!", Toast.LENGTH_LONG);
 			toast.show();
-	    	MediaPlayer mp = MediaPlayer.create(TimerActivity.this, R.raw.alarm);
+			
+			// Mainスレッドでアラーム再生すると遅延が発生するため、スレッドで実行する
+			
+			MediaPlayer mp = MediaPlayer.create(TimerActivity.this, R.raw.alarm);
 			try {
 				mp.start();
 			} catch (Exception e) {
 				// 例外は発生しない
-			}
-			// 未登録の商品であれば、登録するか問う
-			if(registrationFlg){
-				showConfirmCreationLayout();
 			}
 		}
 	}
@@ -129,11 +134,11 @@ public class TimerActivity extends Activity {
 		minDownButton = (Button)findViewById(R.id.MinDownButton);
 		secUpButton = (Button)findViewById(R.id.SecUpButton);
 		secDownButton = (Button)findViewById(R.id.SecDownButton);
-		
-		blank = (LinearLayout)findViewById(R.id.BlankLinearLayout);
-		notExistNoodle = (LinearLayout)findViewById(R.id.NotExistsNoodleLinearLayout);
-		existNoodle = (LinearLayout)findViewById(R.id.ExistsNoodleLinearLayout);
-		confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
+
+		ImageView noodleImage = (ImageView)findViewById(R.id.NoodleImageView);
+		TextView janCode = (TextView)findViewById(R.id.JanCodeTextView);
+		TextView name = (TextView)findViewById(R.id.NameTextView);
+		TextView timerLimit = (TextView)findViewById(R.id.TimerLimitTextView);
 
 		timerImage = (ImageView)findViewById(R.id.TimerImageView);
 		
@@ -269,17 +274,17 @@ public class TimerActivity extends Activity {
 	}
 	
 	/**
-	 * ラーメン情報をレイアウトにセットする
+	 * ラーメン情報をレイアウトにセット、表示する
 	 */
 	private void setNoodleData(){
-		ImageView image = (ImageView) findViewById(R.id.ExistsNoodleImageView);
-		image.setImageBitmap(noodleMaster.getImage());
-		TextView jancode = (TextView) findViewById(R.id.ExistsJanCodeTextView);
-		jancode.setText(noodleMaster.getJanCode());
-		TextView name = (TextView) findViewById(R.id.ExistsNameTextView);
+		noodleImage.setImageBitmap(noodleMaster.getImage());
+		noodleImage.setVisibility(View.VISIBLE);
+		janCode.setText(noodleMaster.getJanCode());
+		janCode.setVisibility(View.VISIBLE);
 		name.setText(noodleMaster.getName());
-		TextView limit = (TextView) findViewById(R.id.ExistsTimerLimitTextView);
-		limit.setText(""+noodleMaster.getTimerLimit());
+		name.setVisibility(View.VISIBLE);
+		timerLimit.setText(""+noodleMaster.getTimerLimit());
+		timerLimit.setVisibility(View.VISIBLE);
 	}
 	
 	/**
@@ -288,25 +293,20 @@ public class TimerActivity extends Activity {
 	 */
 	private void displaySetting(int id){
 
-		hideNoodleInformation();
+		setNoodleInformation();
 		if(id == RequestCode.DASHBORAD2TIMER.ordinal()){ //DashboardActivityから呼ばれた場合
-			blank.setVisibility(View.VISIBLE);
-			
+			// 何も表示しない
 		}else if(id == RequestCode.CREATE2TIMER.ordinal()){ //CreateActivityから呼ばれた場合
-			existNoodle.setVisibility(View.VISIBLE);
 			// ラーメン情報、時間をセットする
 			setNoodleData();
 		}else if(id == RequestCode.HISTORY2TIMER.ordinal()){ //HistoryActivityから呼ばれた場合
-			existNoodle.setVisibility(View.VISIBLE);
 			// ラーメン情報、時間をセットする
 			setNoodleData();
 		}else if(id == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
 			// ラーメン情報が存在する場合は、ラーメン情報、時間をセットする
 			if(noodleMaster != null){
-				existNoodle.setVisibility(View.VISIBLE);
 				setNoodleData();
 			}else{ //ラーメン情報が存在しなければ、登録フラグをたてる
-				notExistNoodle.setVisibility(View.VISIBLE);
 				registrationFlg = true;
 			}
 		}else{ //上記以外は、、、
@@ -315,10 +315,10 @@ public class TimerActivity extends Activity {
 	}
 
 	/**
-	 * 登録確認レイアウトの表示
+	 * 登録確認メッセージの表示
 	 */
-	private void showConfirmCreationLayout(){
-		hideNoodleInformation();
+	private void showConfirmCreation(){
+		LinearLayout confirmCreation = (LinearLayout)findViewById(R.id.ConfirmCreationLinearLayout);
 		confirmCreation.setVisibility(View.VISIBLE);
 	}
 	
@@ -344,7 +344,7 @@ public class TimerActivity extends Activity {
 		waitTime = startTime + ((min * 60 + sec) * 1000);
 		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
 		// 終了ボタンを表示する
-		showEndButton();
+		hideStartButton();
 		// 時間調整ボタンを非表示にする
 		hidePickerButton();
 	}
@@ -359,6 +359,15 @@ public class TimerActivity extends Activity {
 	}
 	
 	/**
+	 * 開始ボタン等を非表示にする
+	 */
+	private void hideStartButton(){
+		startButton.setVisibility(View.GONE);
+		timerImage.setVisibility(View.GONE);
+		endButton.setVisibility(View.GONE);
+	}
+
+	/**
 	 * 終了ボタン等を表示する
 	 */
 	private void showEndButton(){
@@ -368,13 +377,10 @@ public class TimerActivity extends Activity {
 	}
 	
 	/**
-	 * ラーメン情報のLinearLayoutを非表示にする
+	 * ラーメン情報を表示する
 	 */
-	private void hideNoodleInformation(){
-		blank.setVisibility(View.GONE);
-		notExistNoodle.setVisibility(View.GONE);
-		existNoodle.setVisibility(View.GONE);
-		confirmCreation.setVisibility(View.GONE);
+	private void setNoodleInformation(){
+		
 	}
 	
 	/**
