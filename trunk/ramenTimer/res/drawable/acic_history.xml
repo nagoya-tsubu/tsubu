@@ -2,16 +2,16 @@
 	<item 
 		android:state_focused="true" 
 		android:state_pressed="true"
-		android:drawable="@drawable/acic_history_alt" />
+		android:drawable="@drawable/icac_history_r" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="true"
-		android:drawable="@drawable/acic_history_alt" />
+		android:drawable="@drawable/icac_history_r" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/acic_history_alt" />
+		android:drawable="@drawable/icac_history_y" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"
-		android:drawable="@drawable/acic_history_default" />
+		android:drawable="@drawable/icac_history_g" />
 </selector>

@@ -2,16 +2,16 @@
 	<item 
 		android:state_focused="true" 
 		android:state_pressed="true"
-		android:drawable="@drawable/acic_home_alt" />
+		android:drawable="@drawable/icac_home_r" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="true"
-		android:drawable="@drawable/acic_home_alt" />
+		android:drawable="@drawable/icac_home_r" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/acic_home_alt" />
+		android:drawable="@drawable/icac_home_y" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"
-		android:drawable="@drawable/acic_home_default" />
+		android:drawable="@drawable/icac_home_g" />
 </selector>
