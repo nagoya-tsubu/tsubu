@@ -39,7 +39,7 @@
 	<LinearLayout 
 		android:layout_width="fill_parent" 
 		android:layout_weight="2" 
-		android:orientation="vertical" 
+		android:orientation="horizontal" 
 		android:layout_height="fill_parent" 
 		style="@style/InformationForm" android:gravity="center">
 		
@@ -83,12 +83,12 @@
 						<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:id="@+id/ConfirmCreationNoButton" style="@style/ButtonStyle">
 						</Button>
 					</LinearLayout>
-				</LinearLayout>
+			</LinearLayout>
 		</TableLayout>
 		
-		<ImageView android:layout_height="wrap_content" 
-			android:layout_weight="1" 
-			android:layout_width="fill_parent" android:id="@+id/NoodleImageView">
+		<ImageView 
+			style="@style/InformationFormImage"
+			android:id="@+id/NoodleImageView">
 		</ImageView>
 	</LinearLayout>
 	

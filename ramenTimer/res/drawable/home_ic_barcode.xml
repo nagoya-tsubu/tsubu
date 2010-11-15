@@ -13,5 +13,5 @@
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"
-		android:drawable="@drawable/ic_barcode" />
+		android:drawable="@drawable/ic_barcode_g" />
 </selector>

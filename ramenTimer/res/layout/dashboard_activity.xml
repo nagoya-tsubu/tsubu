@@ -9,8 +9,14 @@
     android:layout_height="fill_parent">
 
     <LinearLayout style="@style/TitleBar">
-        <ImageView style="@style/TitleBarLogo"
-            android:src="@drawable/icon_alt" />
+        <ImageView 
+        	style="@style/TitleBarLogo"
+          	android:src="@drawable/icon_alt" />
+        <ImageView 
+        	style="@style/TitleBarSeparator"/>
+        <ImageView 
+        	style="@style/TitleBarLogo"
+        	android:src="@drawable/title_logo"/>
     </LinearLayout>
 
     <ImageView style="@style/HorizontalSeparator"/>
