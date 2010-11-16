@@ -82,7 +82,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/now_playing_height"
         android:orientation="horizontal"
-        android:background="#eee"
+        android:background="@color/background1"
         android:gravity="center">
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
