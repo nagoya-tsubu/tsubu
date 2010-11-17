@@ -6,6 +6,8 @@
 
 package com.androidtsubu.ramentimer;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import android.app.Activity;
@@ -17,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 public class ReaderActivity extends Activity{
 
@@ -176,17 +179,20 @@ public class ReaderActivity extends Activity{
 		try {
 			_noodleMaster = _noodleManager.getNoodleMaster(_janCode);
 			// @hideponm
-			if (_noodleMaster == null
-					&& RequestCode.values()[_requestCode]
-							.equals(RequestCode.DASHBORAD2READER)) {
+			if (_noodleMaster == null) {
 				// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
 				_noodleMaster = new NoodleMaster(_janCode, "", null, 0);
 			}
 		}catch(SQLException e){
-			e.printStackTrace();
+			Toast.makeText(this, getExceptionDetail(e), Toast.LENGTH_LONG).show();
+			//エラーが発生したのでDashBoardへ戻る
+			finish();
+			return;
 		} catch (GaeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Toast.makeText(this, getExceptionDetail(e), Toast.LENGTH_LONG).show();
+			//エラーが発生したのでDashBoardへ戻る
+			finish();
+			return;
 		}
 		// 次のインテントへ遷移する
 		_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
@@ -277,5 +283,20 @@ public class ReaderActivity extends Activity{
 		_handler.removeMessages(EXECUTE_QR_CODE_SCANNER);
 		_handler.removeMessages(RECEIVE_NOODLE_DATA);
 		_handler.removeMessages(GOTO_NEXT_INTENT);
+	}
+	
+	/**
+	 * Exceptionの内容を文字列にする
+	 * @param ex
+	 * @return
+	 */
+	private String getExceptionDetail(Exception ex){
+	    CharArrayWriter buf = new CharArrayWriter();
+	    PrintWriter writer = new PrintWriter(buf);
+	    //コンソールにエラー内容を書く
+	    ex.printStackTrace();
+	    //ログ保存用の出力先にエラー内容を書く
+	    ex.printStackTrace(writer);
+	    return buf.toString();
 	}
 }
