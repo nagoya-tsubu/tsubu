@@ -71,7 +71,7 @@ public class RamenService {
     private byte[] resizeImage(byte[] src) {
         ImagesService imagesService = ImagesServiceFactory.getImagesService();
         Image oldImage = ImagesServiceFactory.makeImage(src);
-        Transform resize = ImagesServiceFactory.makeResize(480, 480);
+        Transform resize = ImagesServiceFactory.makeResize(144, 144);
         Image newImage = imagesService.applyTransform(resize, oldImage);
         return newImage.getImageData();
     }
