@@ -88,12 +88,18 @@ public class CreateActivity extends Activity {
 		String nmName = noodleMaster.getName();
 		String nmTimerLimit= noodleMaster.getTimerLimitString();
 		Bitmap nmImage= noodleMaster.getImage();
+
+		if(nmJancode!=null)
+			janText.setText(nmJancode);
+		if(nmName!=null)
+			nameEdit.setText(nmName);
+		if(nmTimerLimit!=null)
+			boilTimeEdit.setText(nmTimerLimit);
+		if(nmImage!=null)
+			noodleImageView.setImageBitmap(nmImage);
+		
 		//全部埋まっている場合は、既に登録されている
 		if( nmJancode!=null && nmName!=null && nmTimerLimit!=null && nmImage!=null){
-//			janText.setText(nmJancode);
-//			nameEdit.setText(nmName);
-//			boilTimeEdit.setText(nmTimerLimit);
-//			noodleImageView.setImageBitmap(nmImage);
 			Toast.makeText(this, "既に登録されています",Toast.LENGTH_LONG).show();
 			finish();
 		}
