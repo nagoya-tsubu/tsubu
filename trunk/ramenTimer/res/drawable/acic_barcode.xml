@@ -2,14 +2,14 @@
 	<item 
 		android:state_focused="true" 
 		android:state_pressed="true"
-		android:drawable="@drawable/icac_barcode_r" />
+		android:drawable="@drawable/icac_barcode_g" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="true"
-		android:drawable="@drawable/icac_barcode_r" />
+		android:drawable="@drawable/icac_barcode_g" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/icac_barcode_y" />
+		android:drawable="@drawable/icac_barcode_g" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"
