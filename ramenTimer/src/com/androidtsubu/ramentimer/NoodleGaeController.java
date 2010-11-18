@@ -3,6 +3,7 @@ package com.androidtsubu.ramentimer;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -48,15 +49,20 @@ public class NoodleGaeController {
 	/** すでに該当JANコードの商品があります */
 	private static final int DUPLICATE = 400;
 	private Context context;
-	
+	/** imageディレクトリ */
+	private File directory;
+
 	/**
 	 * コンストラクタ
+	 * 
 	 * @param context
+	 * @param directory
 	 */
-	public NoodleGaeController(Context context){
+	public NoodleGaeController(Context context, File directory) {
 		this.context = context;
+		this.directory = directory;
 	}
-	
+
 	/**
 	 * JANコードを引数にGAEから商品マスタを得る
 	 * 
@@ -186,8 +192,10 @@ public class NoodleGaeController {
 			entity.addPart("boilTime",
 					new StringBody(noodleMaster.getTimerLimitString()));
 			// イメージ画像
-			entity.addPart("image",
-					new InputStreamBody(createImageInputStream(noodleMaster.getImage()),"filename"));
+			entity.addPart(
+					"image",
+					new InputStreamBody(createImageInputStream(noodleMaster
+							.getImage()), "filename"));
 
 			httpPost.setEntity(entity);
 
@@ -236,11 +244,12 @@ public class NoodleGaeController {
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
 			// ファイルを書き出す
-			fileOutputStream = context.openFileOutput("tmp.jpg", Context.MODE_PRIVATE);
+			File file = new File(directory,"tmp.jpg");
+			fileOutputStream = new FileOutputStream(file);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
-			//作成したファイルのInputStreamを得る
-			return context.openFileInput("tmp.jpg");
+			// 作成したファイルのInputStreamを得る
+			return new FileInputStream(file);
 		} catch (FileNotFoundException e) {
 			Log.d("err", e.getMessage(), e);
 		} catch (IOException e) {

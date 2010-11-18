@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.io.File;
  * @author hide
  */
 public class NoodleSqlController {
-	private static final int DB_VERSION = 5;
+	private static final int DB_VERSION = 7;
 	private static final String NOODLEMASTERTABLENAME = "NoodleMaster";
 	private static final String NOODLEHISTORYTABLENAME = "NoodleHistory";
 
@@ -46,14 +47,18 @@ public class NoodleSqlController {
 	/** DB読み書きクラス */
 	private SQLiteDatabase database = null;
 	private Context context;
+	/** imageディレクトリ */
+	private File directory;
 
 	/**
 	 * コンストラクタ
 	 * 
 	 * @param context
+	 * @param directory
 	 */
-	public NoodleSqlController(Context context) {
+	public NoodleSqlController(Context context, File directory) {
 		this.context = context;
+		this.directory = directory;
 		if (database == null) {
 			DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 			database = helper.getWritableDatabase();
@@ -75,12 +80,13 @@ public class NoodleSqlController {
 		// Bitmap image = BitmapFactory.decodeByteArray(imagebyte, 0,
 		// imagebyte.length);
 		// 画像パス名を得る
-		String filePath = cursor.getString(cursor.getColumnIndex("image"));
+		String filename = cursor.getString(cursor.getColumnIndex("image"));
 		Bitmap image = null;
 		try {
 			// パス名からファイルのInputStreamを生成しBitmapにする。
 			// ファイルが見つからなかった場合はそのままnullが入る
-			image = BitmapFactory.decodeStream(context.openFileInput(filePath));
+			File file = new File(directory, filename);
+			image = BitmapFactory.decodeStream(new FileInputStream(file));
 		} catch (FileNotFoundException e) {
 			// ファイルが見つからなかった
 			// TODO Auto-generated catch block
@@ -211,6 +217,7 @@ public class NoodleSqlController {
 
 	/**
 	 * Imageをfileにします
+	 * 
 	 * @param filename
 	 * @param bitmap
 	 */
@@ -221,8 +228,8 @@ public class NoodleSqlController {
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
 			// ファイルを書き出す
-			fileOutputStream = context.openFileOutput(filename,
-					Context.MODE_PRIVATE);
+			File file = new File(directory, filename);
+			fileOutputStream = new FileOutputStream(file);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
 		} catch (FileNotFoundException e) {
