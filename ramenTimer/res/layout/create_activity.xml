@@ -18,15 +18,13 @@
        	style="@style/TitleBarText" 
       		android:text="登録画面"/>
 				
-		<ImageView style="@style/TitleBarSeparator" />
 		<ImageButton 
-			style="@style/TitleBarAction" 
+			style="@style/TitleBarAction2" 
 			android:onClick="onHistoryButtonClick"
 			android:src="@drawable/acic_history" />
-		<ImageView style="@style/TitleBarSeparator" />
 
 		<ImageButton 
-			style="@style/TitleBarAction" 
+			style="@style/TitleBarAction2" 
 			android:onClick="onTimerButtonClick"
 			android:src="@drawable/acic_timer" />
  
@@ -35,63 +33,71 @@
 	<ImageView style="@style/HorizontalSeparator"/>
 	
 	<!-- ActionBar End -->
-	
+    <LinearLayout style="@style/RaimonBar"
+    	android:background="@drawable/raimon"/>
+    	
+    <ImageView style="@style/HorizontalSeparator"/>
 	
 
-	<TableLayout 
-		style="@style/InformationForm"
-		android:stretchColumns="2"		
-		android:orientation="vertical">
-		
-		<TableRow>
-				<TextView 
-					style="@style/InformationFormText"
-					android:text="JANコード"/>
+	<LinearLayout
+		style="@style/InformationFormOuter">
+			
+		<TableLayout 
+			style="@style/InformationFormInner"
+			android:stretchColumns="2"		
+			android:orientation="vertical">
+			
+			<TableRow>
+					<TextView 
+						style="@style/InformationFormText"
+						android:text="JANコード"/>
+					<TextView
+						style="@style/InformationFormText2"
+						android:id="@+id/JanEdit"
+						android:maxLength="13"/>
+					<ImageButton 
+						style="@style/InformationFormImage"
+						android:src="@drawable/home_ic_ramenadd"
+						android:id="@+id/NoodleImageButton"/>
+			</TableRow>
+			
+			<TableRow>
+					<TextView
+						style="@style/InformationFormText"
+						android:text="商品名"/>
+					<EditText 
+						style="@style/InformationFormEdit"
+						android:hint="商品名" 
+						android:id="@+id/NameEdit"
+						android:layout_span="2"/>
+			</TableRow>
+			
+			<TableRow>
 				<TextView
-					style="@style/InformationFormText2"
-					android:id="@+id/JanEdit"
-					android:maxLength="13"/>
-				<ImageButton 
-					style="@style/InformationFormImage"
-					android:id="@+id/NoodleImageButton"/>
-		</TableRow>
-		
-		<TableRow>
-				<TextView
 					style="@style/InformationFormText"
-					android:text="商品名"/>
+					android:text="時間（秒）"/>
 				<EditText 
 					style="@style/InformationFormEdit"
-					android:hint="商品名" 
-					android:id="@+id/NameEdit"
-					android:layout_span="2"/>
-		</TableRow>
-		
-		<TableRow>
-			<TextView
-				style="@style/InformationFormText"
-				android:text="時間（秒）"/>
-			<EditText 
-				style="@style/InformationFormEdit"
-				android:hint="時間" 
-				android:id="@+id/BoilingTimeEdit"
-				android:inputType="number"/>		
-		</TableRow>
-<!-- 
-		<TableRow>			
-			<TextView
-				style="@style/InformationFormText"
-				android:text="麺の種類"
-				/>
-			<RadioGroup
-				style="@style/InformationFormNoodleType"
-				android:id="@+id/NoodleTypeRadioGroup"
-				android:layout_span="2"
-				>
-			</RadioGroup>
-		</TableRow>
- -->
-	</TableLayout>
+					android:hint="時間" 
+					android:id="@+id/BoilingTimeEdit"
+					android:inputType="number"/>		
+			</TableRow>
+	<!-- 
+			<TableRow>			
+				<TextView
+					style="@style/InformationFormText"
+					android:text="麺の種類"
+					/>
+				<RadioGroup
+					style="@style/InformationFormNoodleType"
+					android:id="@+id/NoodleTypeRadioGroup"
+					android:layout_span="2"
+					>
+				</RadioGroup>
+			</TableRow>
+	 -->
+		</TableLayout>
+	</LinearLayout>
 	<Button
 		android:text="登録"
 		android:layout_gravity="center_horizontal"

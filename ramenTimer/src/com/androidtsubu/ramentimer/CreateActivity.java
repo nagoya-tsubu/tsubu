@@ -170,7 +170,7 @@ public class CreateActivity extends Activity {
 					is.close();
 					//ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
-					noodleImageView.setBackgroundColor(R.color.clear);//背景の削除
+					noodleImageView.setBackgroundColor(android.R.color.transparent);//背景の削除
 				}catch(FileNotFoundException e){
 					Toast.makeText(this, "ファイルが見つかりません", 3);
 				}catch(IOException e){
