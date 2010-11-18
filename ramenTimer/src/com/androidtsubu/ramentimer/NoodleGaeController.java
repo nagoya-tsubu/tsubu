@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,9 +27,10 @@ import org.apache.http.params.HttpProtocolParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.InputStreamBody;
 import org.apache.http.entity.mime.content.StringBody;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -45,7 +47,16 @@ public class NoodleGaeController {
 	private static final int NOT_FOUND = 404;
 	/** すでに該当JANコードの商品があります */
 	private static final int DUPLICATE = 400;
-
+	private Context context;
+	
+	/**
+	 * コンストラクタ
+	 * @param context
+	 */
+	public NoodleGaeController(Context context){
+		this.context = context;
+	}
+	
 	/**
 	 * JANコードを引数にGAEから商品マスタを得る
 	 * 
@@ -176,7 +187,7 @@ public class NoodleGaeController {
 					new StringBody(noodleMaster.getTimerLimitString()));
 			// イメージ画像
 			entity.addPart("image",
-					new FileBody(createImageFile(noodleMaster.getImage())));
+					new InputStreamBody(createImageInputStream(noodleMaster.getImage()),"filename"));
 
 			httpPost.setEntity(entity);
 
@@ -213,23 +224,23 @@ public class NoodleGaeController {
 	}
 
 	/**
-	 * Bitmapからファイルを作成する
+	 * Bitmapからファイルを作成しファイルのInputStreamを返す
 	 * 
 	 * @param bitmap
-	 * @return
+	 * @return inputstream
 	 */
-	private File createImageFile(Bitmap bitmap) {
+	private InputStream createImageInputStream(Bitmap bitmap) {
 		// jpgファイルを作る
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		FileOutputStream fileOutputStream = null;
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
 			// ファイルを書き出す
-			File file = new File("/sdcard/ramen.jpg");
-			fileOutputStream = new FileOutputStream(file);
+			fileOutputStream = context.openFileOutput("tmp.jpg", Context.MODE_PRIVATE);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
-			return file;
+			//作成したファイルのInputStreamを得る
+			return context.openFileInput("tmp.jpg");
 		} catch (FileNotFoundException e) {
 			Log.d("err", e.getMessage(), e);
 		} catch (IOException e) {
