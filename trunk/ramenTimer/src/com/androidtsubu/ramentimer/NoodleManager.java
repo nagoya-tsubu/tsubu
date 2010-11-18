@@ -23,7 +23,7 @@ public class NoodleManager {
 	 * @param context
 	 */
 	public NoodleManager(Context context) {
-		noodleGaeController = new NoodleGaeController();
+		noodleGaeController = new NoodleGaeController(context);
 		noodleSqlController = new NoodleSqlController(context);
 	}
 
