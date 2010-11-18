@@ -40,9 +40,15 @@
     <style name="TitleBarAction">
         <item name="android:layout_width">@dimen/title_height</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@drawable/title_button</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
-
+    
+    <style name="TitleBarAction2">
+        <item name="android:layout_width">@dimen/title_height</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@drawable/actionbar_button</item>
+    </style>
+    
     <style name="TitleBarText">
         <item name="android:id">@id/title_text</item>
         <item name="android:layout_width">0dp</item>
@@ -155,6 +161,22 @@
 		<item name="android:padding">5dip</item>
 		<item name="android:background">@color/background2</item>
     </style>
+
+    <style name="InformationFormOuter">
+   		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_margin">10dip</item>
+		<item name="android:background">@color/red</item>
+    </style>
+    
+    <style name="InformationFormInner">
+   		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_margin">2dip</item>
+		<item name="android:padding">5dip</item>
+		<item name="android:background">@color/background1</item>
+    </style>
+
     
     <style name="InformationFormText">
    		<item name="android:layout_width">wrap_content</item>
@@ -181,7 +203,7 @@
 		<item name="android:layout_width">@dimen/form_image_width</item>
 		<item name="android:layout_height">@dimen/form_image_height</item>
 		<item name="android:layout_margin">0dip</item>
-		<item name="android:padding">0dip</item>
+		<item name="android:padding">10dip</item>
 		<item name="android:visibility">visible</item>
 		<item name="android:scaleType">centerCrop</item>
 <!-- 		<item name="android:background">#00000000</item> -->

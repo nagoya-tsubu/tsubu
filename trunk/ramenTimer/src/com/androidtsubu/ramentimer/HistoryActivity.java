@@ -24,15 +24,16 @@ public class HistoryActivity extends Activity {
 		//履歴の呼び出し
 		NoodleManager manager = new NoodleManager(this);
 		List<NoodleHistory> list=null;
-//		list = new manager.getNoodleHistories();
+//		list = manager.getNoodleHistories();
 
-		// RamenListItemAdapterを生成
-		RamenListItemAdapter adapter;
-		adapter = new RamenListItemAdapter(this, 0, list);
-		// ListViewにListItemAdapterをセット
-		ListView listView = (ListView) findViewById(R.id.RamenList);
-		listView.setAdapter(adapter);
-
+		if(list!=null){
+			// RamenListItemAdapterを生成
+			RamenListItemAdapter adapter;
+			adapter = new RamenListItemAdapter(this, 0, list);
+			// ListViewにListItemAdapterをセット
+			ListView listView = (ListView) findViewById(R.id.RamenList);
+			listView.setAdapter(adapter);
+		}
 	}
 
 	/**
