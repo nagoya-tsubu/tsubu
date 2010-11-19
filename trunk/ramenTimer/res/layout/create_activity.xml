@@ -38,66 +38,62 @@
     	
     <ImageView style="@style/HorizontalSeparator"/>
 	
-
-	<LinearLayout
-		style="@style/InformationFormOuter">
-			
-		<TableLayout 
-			style="@style/InformationFormInner"
-			android:stretchColumns="2"		
-			android:orientation="vertical">
-			
-			<TableRow>
-					<TextView 
-						style="@style/InformationFormText"
-						android:text="JANコード"/>
-					<TextView
-						style="@style/InformationFormText2"
-						android:id="@+id/JanEdit"
-						android:maxLength="13"/>
-					<ImageButton 
-						style="@style/InformationFormImage"
-						android:src="@drawable/home_ic_ramenadd"
-						android:id="@+id/NoodleImageButton"/>
-			</TableRow>
-			
-			<TableRow>
-					<TextView
-						style="@style/InformationFormText"
-						android:text="商品名"/>
-					<EditText 
-						style="@style/InformationFormEdit"
-						android:hint="商品名" 
-						android:id="@+id/NameEdit"
-						android:layout_span="2"/>
-			</TableRow>
-			
-			<TableRow>
+	<TableLayout 
+		style="@style/InformationForm"
+		android:stretchColumns="2"		
+		android:orientation="vertical">
+		
+		<TableRow>
+				<TextView 
+					style="@style/InformationFormText"
+					android:text="JANコード"/>
+				<TextView
+					style="@style/InformationFormText2"
+					android:id="@+id/JanEdit"
+					android:maxLength="13"/>
+				<ImageButton 
+					style="@style/InformationFormImage"
+					android:src="@drawable/home_ic_ramenadd"
+					android:id="@+id/NoodleImageButton"/>
+		</TableRow>
+		
+		<TableRow>
 				<TextView
 					style="@style/InformationFormText"
-					android:text="時間（秒）"/>
+					android:text="商品名"/>
 				<EditText 
 					style="@style/InformationFormEdit"
-					android:hint="時間" 
-					android:id="@+id/BoilingTimeEdit"
-					android:inputType="number"/>		
-			</TableRow>
-	<!-- 
-			<TableRow>			
-				<TextView
-					style="@style/InformationFormText"
-					android:text="麺の種類"
-					/>
-				<RadioGroup
-					style="@style/InformationFormNoodleType"
-					android:id="@+id/NoodleTypeRadioGroup"
-					android:layout_span="2"
-					>
-				</RadioGroup>
-			</TableRow>
-	 -->
-		</TableLayout>
-	</LinearLayout>
+					android:hint="商品名" 
+					android:id="@+id/NameEdit"
+					android:layout_span="2"/>
+		</TableRow>
+		
+		<TableRow>
+			<TextView
+				style="@style/InformationFormText"
+				android:text="時間（秒）"/>
+			<EditText 
+				style="@style/InformationFormEdit"
+				android:hint="時間" 
+				android:id="@+id/BoilingTimeEdit"
+				android:inputType="number"/>		
+		</TableRow>
+<!-- 
+		<TableRow>			
+			<TextView
+				style="@style/InformationFormText"
+				android:text="麺の種類"
+				/>
+			<RadioGroup
+				style="@style/InformationFormNoodleType"
+				android:id="@+id/NoodleTypeRadioGroup"
+				android:layout_span="2"
+				>
+			</RadioGroup>
+		</TableRow>
+ -->
+	</TableLayout>
+
 	<Button
 		android:text="登録"
 		android:layout_gravity="center_horizontal"

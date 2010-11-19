@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,10 +15,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -269,19 +274,54 @@ public class CreateActivity extends Activity {
 			return;
 		}
 		entry = new EntryAsyncTask(this); 
-		//リーダーアクティビティから起動された場合
-		if(requestCode == RequestCode.READER2CREATE.ordinal()){
-			entry.execute(noodleMaster);
-//			QuickAction qa = new QuickAction(v);
-//			qa.addActionItem(itemHome);
-//			qa.addActionItem(itemTimer);
-//			qa.show();
-		//タイマーから起動された場合
-		}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
-			entry.execute(noodleMaster);
-		}
 		
+		//確認ダイアログの作成
+		AlertDialog.Builder builder;
+		AlertDialog alertDialog;
+		
+		LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.LAYOUT_INFLATER_SERVICE);
+		View layout = inflater.inflate(R.layout.ramen_list_item,
+		                               (ViewGroup) findViewById(R.id.layout_root));
+		TextView jan_text = (TextView) layout.findViewById(R.id.JanText);
+		jan_text.setText(noodleMaster.getJanCode());
+		TextView name_text = (TextView) layout.findViewById(R.id.RamenName);
+		name_text.setText(noodleMaster.getName());
+		TextView time_text = (TextView) layout.findViewById(R.id.BoilingTime);
+		time_text.setText(noodleMaster.getTimerLimitString());
+		ImageView image = (ImageView) layout.findViewById(R.id.NoodleImage);
+		image.setImageBitmap(noodleMaster.getImage());
+
+		builder = new AlertDialog.Builder(this);
+		builder.setMessage("これで登録しますか？")
+				.setView(layout)
+		       .setCancelable(false)
+		       .setPositiveButton("登録", new DialogInterface.OnClickListener() {
+		    	   public void onClick(DialogInterface dialog, int id) {
+		    		   entry.execute(noodleMaster);
+		    	   }
+		       })
+		       .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+		    	   public void onClick(DialogInterface dialog, int id) {
+		    		   dialog.cancel();
+		    	   }
+		       });
+		alertDialog = builder.create();
+		alertDialog.show();
+		
+//		//リーダーアクティビティから起動された場合
+//		if(requestCode == RequestCode.READER2CREATE.ordinal()){
+//			entry.execute(noodleMaster);
+////			QuickAction qa = new QuickAction(v);
+////			qa.addActionItem(itemHome);
+////			qa.addActionItem(itemTimer);
+////			qa.show();
+//		//タイマーから起動された場合
+//		}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
+//			entry.execute(noodleMaster);
+//		}
 	}
+	
+	
 	
 	/**
 	 * logoボタンが押された時の動作
