@@ -38,16 +38,16 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
-            <Button android:id="@+id/Button01"
-                style="@style/HomeButton"
-                android:onClick="onTimerButtonClick"
-                android:text="タイマー"
-                android:drawableTop="@drawable/home_ic_timer"/>
             <Button android:id="@+id/Button02"
                 style="@style/HomeButton"
                 android:onClick="onReaderButtonClick"
                 android:text="読込"
                 android:drawableTop="@drawable/home_ic_barcode"/>
+            <Button android:id="@+id/Button01"
+                style="@style/HomeButton"
+                android:onClick="onTimerButtonClick"
+                android:text="タイマー"
+                android:drawableTop="@drawable/home_ic_timer"/>
         </LinearLayout>
 
         <LinearLayout
