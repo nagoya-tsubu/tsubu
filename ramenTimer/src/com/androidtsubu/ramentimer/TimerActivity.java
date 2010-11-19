@@ -1,5 +1,7 @@
 package com.androidtsubu.ramentimer;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -52,8 +54,8 @@ public class TimerActivity extends Activity {
 	// ラーメン情報
 	private NoodleMaster noodleMaster = null;
 	// 登録フラグ
-//	private boolean registrationFlg = false;
-	private boolean registrationFlg = true; //表示テスト用にTrue
+	private boolean registrationFlg = false;
+//	private boolean registrationFlg = true; //表示テスト用にTrue
 	
 	// 商品情報(NoodleMaster)のキー
 	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
@@ -70,13 +72,11 @@ public class TimerActivity extends Activity {
 	private long startTime = 0;
 	// 待ち時間を保持
 	private long waitTime = 0;
-		
 	
 	private class RamenTimerReceiver extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			
 			long currentTime = System.currentTimeMillis();
 			
 			// 待ち時間を超えてない場合は、表示を更新し処理を終了する。
@@ -86,16 +86,13 @@ public class TimerActivity extends Activity {
 			}
 			// サービスを停止する
 			ramenTimerService.stop();
-
 			// 0秒TextView、終了ボタンを表示
 			updateTimerTextView(0);
 			showEndButton();
-
-			// 未登録の商品であれば、登録するか問う
+			// 未登録の商品であれば、登録確認レイアウトを表示する
 			if(registrationFlg){
 				showConfirmCreation();
 			}
-
 			Toast toast = Toast.makeText(getApplicationContext(), "Time over!", Toast.LENGTH_LONG);
 			toast.show();
 			
@@ -108,6 +105,14 @@ public class TimerActivity extends Activity {
 					} catch (Exception e) {
 						// 例外は発生しない
 					}
+				}
+			}).start();
+			
+			// 履歴を登録する
+			new Thread(new Runnable() {
+				public void run() {
+					NoodleManager noodleManager = new NoodleManager(TimerActivity.this);
+					noodleManager.createNoodleHistory(noodleMaster, new Date());
 				}
 			}).start();
 		}
@@ -279,7 +284,8 @@ public class TimerActivity extends Activity {
 	private void setNoodleData(){
 		if(noodleMaster == null)
 			return;
-		
+
+		// 設定されている項目を表示する
 		if(noodleMaster.getImage()!=null){
 			noodleImage.setImageBitmap(noodleMaster.getImage());
 			noodleImage.setVisibility(View.VISIBLE);
@@ -317,7 +323,7 @@ public class TimerActivity extends Activity {
 			// 
 		}else if(id == RequestCode.READER2TIMER.ordinal()){ //ReaderActivityから呼ばれた場合
 			// 
-			if(noodleMaster != null){
+			if(noodleMaster.getTimerLimit() != 0){
 				
 			}else{ // ラーメン情報が存在しない場合
 				// 登録フラグをたてる
