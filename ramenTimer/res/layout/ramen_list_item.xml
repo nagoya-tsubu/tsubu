@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/layout_root"
 	android:background="@color/background1"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
 	<LinearLayout
-		style="@style/InformationFormOuter">	
-		
-		<LinearLayout
-		style="@style/InformationFormInner"
+		style="@style/InformationForm"
 		android:orientation="horizontal">
 
 			<TableLayout 
@@ -20,15 +18,12 @@
 				android:orientation="vertical"
 				android:layout_weight="1">
 				
-				<TableRow>
-						<TextView 
-							style="@style/InformationFormText"
-							android:id="@+id/Form_Date"
-							android:text="日付"/>
-						<TextView
-							style="@style/InformationFormText"
-							android:id="@+id/Date"/>
-				</TableRow>
+				<ViewStub
+					android:id="@+id/DateOrNumber"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+					
+
 				<TableRow>
 						<TextView 
 							style="@style/InformationFormText"
@@ -62,8 +57,8 @@
 			</TableLayout>
 			<ImageView
 				style="@style/InformationFormImage"
+				android:layout_gravity="center_vertical"
 				android:id="@+id/NoodleImage"/>
 			
-		</LinearLayout>
 	</LinearLayout>
 </LinearLayout>

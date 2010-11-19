@@ -1,17 +1,19 @@
 package com.androidtsubu.ramentimer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 public class HistoryActivity extends Activity {
@@ -65,16 +67,53 @@ public class HistoryActivity extends Activity {
 			TextView name;
 			name = (TextView) view.findViewById(R.id.RamenName);
 			name.setText(item.getName());
-			// 日付をセット
-			TextView date;
-			date = (TextView) view.findViewById(R.id.Date);
-			date.setText(item.getMeasureTime().toString());
 			// Janコードをセット
 			TextView jancode;
 			jancode = (TextView) view.findViewById(R.id.JanText);
 			jancode.setText("" + item.getJanCode());
 
+			//日付部分は回数と共有なのでViewStubで実装されてるので置き換える
+			ViewStub stub = (ViewStub) view.findViewById(R.id.DateOrNumber);
+			stub.setLayoutResource(R.layout.history_date);
+			View inflated = stub.inflate();
+			TableRow TableRowDate = (TableRow)inflated;
+			
+			// 日付をセット
+			TextView date;
+			date = (TextView) TableRowDate.findViewById(R.id.Date);
+			date.setText(item.getMeasureTime().toString());
+			
 			return view;
 		}
+	}
+	
+	/**
+	 * logoボタンが押された時の動作
+	 * @param v
+	 */
+	public void onLogoClick(View v) {
+		finish();
+	}
+	
+	/**
+	 * アクションバーのタイマーボタンが押されたとき
+	 * インテントに（）をセットしてFinish()
+	 * @param v
+	 */
+	public void onTimerButtonClick(View v){
+		Intent intent = new Intent();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION_HISTORY.ordinal());
+		setResult(RESULT_OK, intent);
+		finish();
+	}
+	
+	/**
+	 * バーコードリーダーを起動し、Timerを終了する
+	 */
+	public void onReaderButtonClick(View v){
+		Intent intent = new Intent(this, ReaderActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.DASHBORAD2READER.ordinal());
+		startActivity(intent);
+		finish();
 	}
 }
