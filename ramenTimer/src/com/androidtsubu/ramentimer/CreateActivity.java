@@ -6,11 +6,14 @@ import java.io.InputStream;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,113 +36,119 @@ public class CreateActivity extends Activity {
 	private static final int REQUEST_GALLERY = 1;
 	private static final int REQUEST_CAMERA = 2;
 
-	//商品情報(NoodleMaster)のキー
-	private static final String	KEY_NOODLE_MASTER = "NOODLE_MASTER";
-	
-	//JANコード
+	// 商品情報(NoodleMaster)のキー
+	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
+
+	// JANコード
 	private TextView janText = null;
-	//商品名
+	// 商品名
 	private EditText nameEdit = null;
-	//ゆで時間
+	// ゆで時間
 	private EditText boilTimeEdit = null;
-//	//麺の種類
-//	private RadioGroup noodleTypeRadioGroup = null;
-	//商品の画像
+	// //麺の種類
+	// private RadioGroup noodleTypeRadioGroup = null;
+	// 商品の画像
 	private ImageButton noodleImageView = null;
 	private Bitmap noodleImage = null;
-	//リクエストコードの値（どこから呼び出されたか）
+	// リクエストコードの値（どこから呼び出されたか）
 	private int requestCode = 0;
-	//カップラーメン情報
+	// カップラーメン情報
 	private NoodleMaster noodleMaster = null;
-	//カメラ撮影用
+	// カメラ撮影用
 	private Uri mPictureUri;
 
-	//QuickAction のアイテム カメラ
+	// QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
-	//QuickAction のアイテム ギャラリー
+	// QuickAction のアイテム ギャラリー
 	ActionItem itemGallery = null;
-	//QuickAction のアイテム ホーム
+	// QuickAction のアイテム ホーム
 	ActionItem itemHome = null;
-	//QuickAction のアイテム タイマー
+	// QuickAction のアイテム タイマー
 	ActionItem itemTimer = null;
 
-	//WEB登録用スレッド
-	EntryAsyncTask entry = null; 
-	
+	// WEB登録用スレッド
+	EntryAsyncTask entry = null;
+
 	/**
-	 * CreateActivityがインテントで呼び出されたときに呼ばれる 
+	 * CreateActivityがインテントで呼び出されたときに呼ばれる
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.create_activity);
-		//リクエストコードを保持
+		// リクエストコードを保持
 		Intent intent = getIntent();
 		requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
-		//リクエストコードがセットされてない場合は終了
-		if(requestCode==-1)
+		// リクエストコードがセットされてない場合は終了
+		if (requestCode == -1)
 			finish();
-		//カップラーメン情報の取得
-		noodleMaster = (NoodleMaster)intent.getParcelableExtra(KEY_NOODLE_MASTER);
+		// カップラーメン情報の取得
+		noodleMaster = (NoodleMaster) intent
+				.getParcelableExtra(KEY_NOODLE_MASTER);
 
-		//ボタンとかエディットボックスとかのUIを取ってくる
+		// ボタンとかエディットボックスとかのUIを取ってくる
 		janText = (TextView) findViewById(R.id.JanEdit);
-		nameEdit= (EditText) findViewById(R.id.NameEdit);
+		nameEdit = (EditText) findViewById(R.id.NameEdit);
 		boilTimeEdit = (EditText) findViewById(R.id.BoilingTimeEdit);
-//		noodleTypeRadioGroup	= (RadioGroup) findViewById(R.id.NoodleTypeRadioGroup);
+		// noodleTypeRadioGroup = (RadioGroup)
+		// findViewById(R.id.NoodleTypeRadioGroup);
 		noodleImageView = (ImageButton) findViewById(R.id.NoodleImageButton);
-		//NoodleMasterから情報を取り出す
+		// NoodleMasterから情報を取り出す
 		String nmJancode = noodleMaster.getJanCode();
 		String nmName = noodleMaster.getName();
-		String nmTimerLimit= noodleMaster.getTimerLimitString();
-		Bitmap nmImage= noodleMaster.getImage();
+		String nmTimerLimit = noodleMaster.getTimerLimitString();
+		Bitmap nmImage = noodleMaster.getImage();
 
-		if(nmJancode!=null)
+		if (nmJancode != null)
 			janText.setText(nmJancode);
-		if(nmName!=null)
+		if (nmName != null)
 			nameEdit.setText(nmName);
-		if(nmTimerLimit!=null)
+		if (nmTimerLimit != null)
 			boilTimeEdit.setText(nmTimerLimit);
-		if(nmImage!=null)
+		if (nmImage != null)
 			noodleImageView.setImageBitmap(nmImage);
-		
-		//全部埋まっている場合は、既に登録されている
-		if( nmJancode!=null && nmName!=null && nmTimerLimit!=null && nmImage!=null){
-			Toast.makeText(this, "既に登録されています",Toast.LENGTH_LONG).show();
+
+		// 全部埋まっている場合は、既に登録されている
+		if (nmJancode != null && nmName != null && nmTimerLimit != null
+				&& nmImage != null) {
+			Toast.makeText(this, "既に登録されています", Toast.LENGTH_LONG).show();
 			finish();
 		}
-		
-//		//麺の種類をラジオボタンで作成
-//		final NoodleType NoodleTypeValues[] = NoodleType.values();
-//		for(int i=0;i<NoodleTypeValues.length;i++){
-//			RadioButton radioButton=new RadioButton(this);
-//			radioButton.setText(NoodleTypeValues[i].getName());
-//			radioButton.setId(i);
-//			radioButton.setTextColor(R.color.information_form_text2);
-//			noodleTypeRadioGroup.addView(radioButton);
-//		}
-		
-		//QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
+
+		// //麺の種類をラジオボタンで作成
+		// final NoodleType NoodleTypeValues[] = NoodleType.values();
+		// for(int i=0;i<NoodleTypeValues.length;i++){
+		// RadioButton radioButton=new RadioButton(this);
+		// radioButton.setText(NoodleTypeValues[i].getName());
+		// radioButton.setId(i);
+		// radioButton.setTextColor(R.color.information_form_text2);
+		// noodleTypeRadioGroup.addView(radioButton);
+		// }
+
+		// QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
 		itemCamera = new ActionItem();
 		itemCamera.setTitle("カメラ");
-		itemCamera.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_camera));
+		itemCamera.setIcon(getResources().getDrawable(
+				R.drawable.ic_quickaction_camera));
 		itemCamera.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				callCamera();	//カメラを起動
+				callCamera(); // カメラを起動
 			}
 		});
-		
+
 		itemGallery = new ActionItem();
 		itemGallery.setTitle("ギャラリー");
-		itemGallery.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_gallery));
+		itemGallery.setIcon(getResources().getDrawable(
+				R.drawable.ic_quickaction_gallery));
 		itemGallery.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				callGallery();	//ギャラリーを起動
+				callGallery(); // ギャラリーを起動
 			}
 		});
 		itemHome = new ActionItem();
 		itemHome.setTitle("ダッシュボード");
-		itemHome.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_home));
+		itemHome.setIcon(getResources().getDrawable(
+				R.drawable.ic_quickaction_home));
 		itemHome.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				entry.execute(noodleMaster);
@@ -148,7 +157,8 @@ public class CreateActivity extends Activity {
 		});
 		itemTimer = new ActionItem();
 		itemTimer.setTitle("タイマー");
-		itemTimer.setIcon(getResources().getDrawable(R.drawable.ic_quickaction_timer));
+		itemTimer.setIcon(getResources().getDrawable(
+				R.drawable.ic_quickaction_timer));
 		itemTimer.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				entry.execute(noodleMaster);
@@ -158,79 +168,112 @@ public class CreateActivity extends Activity {
 		});
 	}
 
-
 	/**
 	 * インテントがもどってきた時の動作
+	 * 
 	 * @param requestCode
 	 * @param resultCode
 	 * @param intent
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (resultCode == RESULT_OK) {	
-			if(requestCode == REQUEST_GALLERY){//ギャラリー
-				try{
-					InputStream is = getContentResolver().openInputStream(intent.getData());
-					noodleImage = BitmapFactory.decodeStream(is);
-					is.close();
-					//ビューに画像をセット
-					noodleImageView.setImageBitmap(noodleImage);
-					noodleImageView.setBackgroundColor(android.R.color.transparent);//背景の削除
-				}catch(FileNotFoundException e){
-					Toast.makeText(this, "ファイルが見つかりません", 3);
-				}catch(IOException e){
-					Toast.makeText(this, e.toString(), 3);	
+		// dimens.xmlから値を取得 リサイズのパラメータ
+		int resizeLength = (int) getResources().getDimension(
+				R.dimen.image_longer_length);
+		if (resultCode == RESULT_OK) {
+			if (requestCode == REQUEST_CAMERA || requestCode == REQUEST_GALLERY) {
+				if (requestCode == REQUEST_GALLERY) {// ギャラリー
+					mPictureUri = intent.getData();
 				}
-				
-	        }else if(requestCode == REQUEST_CAMERA){//カメラ
-//	        	noodleImage = (Bitmap) intent.getExtras().get("data");
-				//ビューに画像をセット
-	        	noodleImageView.setImageURI(mPictureUri);
-				noodleImageView.setBackgroundColor(R.color.clear);//背景の削除
-	        }
+				try {
+					// メモリを大量に使うのでガベコレ これしておかないと、何回か呼び出されるとエラーで止まる
+					System.gc();
+					// UriからBitmapクラスを取得
+					InputStream is = getContentResolver().openInputStream(
+							mPictureUri);
+					Bitmap tmp = BitmapFactory.decodeStream(is);
+					is.close();
+					// 縦横比を固定したままリサイズ
+					noodleImage = resizeImage(tmp, resizeLength);
+					// ビューに画像をセット
+					noodleImageView.setImageBitmap(noodleImage);
+					// 背景の削除
+					noodleImageView
+							.setBackgroundColor(android.R.color.transparent);
+				} catch (IOException e) {
+					Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT)
+							.show();
+				}
+			}
 		}
 	}
-	
+
 	/**
-	 * アクションバーの履歴ボタンが押されたとき
-	 * インテントに（RequestCode）をセットしてfinish()
+	 * 縦横比を維持したまま画像をリサイズするメソッド 長い方の辺が引数のlengthの長さなる
+	 * 
+	 * @param img
+	 * @param length
+	 * @return
+	 */
+	public Bitmap resizeImage(Bitmap img, int length) {
+		int height = img.getHeight();
+		int width = img.getWidth();
+		// 縦、横の長い方
+		float longer = height < width ? (float) width : (float) height;
+		// 伸縮するスケール
+		float scale = length / longer;
+		Matrix matrix = new Matrix();
+		matrix.postScale(scale, scale);
+		// リサイズした画像を作成
+		Bitmap dst = Bitmap
+				.createBitmap(img, 0, 0, width, height, matrix, true);
+		return dst;
+	}
+
+	/**
+	 * アクションバーの履歴ボタンが押されたとき インテントに（RequestCode）をセットしてfinish()
+	 * 
 	 * @param v
 	 */
-	public void onHistoryButtonClick(View v){
+	public void onHistoryButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION＿TIMER.ordinal());
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION＿TIMER
+				.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
+
 	/**
-	 * アクションバーのタイマーボタンが押されたとき
-	 * インテントに（）をセットしてFinish()
+	 * アクションバーのタイマーボタンが押されたとき インテントに（）をセットしてFinish()
+	 * 
 	 * @param v
 	 */
-	public void onTimerButtonClick(View v){
+	public void onTimerButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION_HISTORY.ordinal());
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+				RequestCode.ACTION_HISTORY.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
-	
+
 	/**
 	 * 画像読み込みボタンが押された時の動作 インテントでギャラリーかカメラを呼び出す
+	 * 
 	 * @param v
 	 */
 	public void onLoadImageClick(View v) {
-		//QuickAction
+		// QuickAction
 		QuickAction qa = new QuickAction(v);
-		
+
 		qa.addActionItem(itemCamera);
 		qa.addActionItem(itemGallery);
 		qa.show();
 	}
-	
+
 	/**
 	 * ギャラリーをインテントで起動
 	 */
-	private void callGallery(){
+	private void callGallery() {
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -240,12 +283,13 @@ public class CreateActivity extends Activity {
 	/**
 	 * カメラをインテントで起動
 	 */
-	private void callCamera(){
-		String filename = "Recipe_"+System.currentTimeMillis() + ".jpg";
+	private void callCamera() {
+		String filename = "Recipe_" + System.currentTimeMillis() + ".jpg";
 		ContentValues values = new ContentValues();
-		values.put(MediaStore.Images.Media.TITLE,filename);
+		values.put(MediaStore.Images.Media.TITLE, filename);
 		values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-		mPictureUri=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+		mPictureUri = getContentResolver().insert(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 		Intent intent = new Intent();
 		intent.setAction("android.media.action.IMAGE_CAPTURE");
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, mPictureUri);
@@ -255,33 +299,36 @@ public class CreateActivity extends Activity {
 	/**
 	 * タイマーをインテントで呼び出す
 	 */
-	private void callTimerActivity(){
+	private void callTimerActivity() {
 		Intent intent = new Intent(this, TimerActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER
+				.ordinal());
 		intent.putExtra(KEY_NOODLE_MASTER, noodleMaster);
-		startActivityForResult(intent,RequestCode.CREATE2TIMER.ordinal());			
+		startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
 	}
-	
+
 	/**
 	 * 登録ボタンが押された時の動作
+	 * 
 	 * @param v
 	 */
 	public void onCreateClick(View v) {
-		try{
+		try {
 			noodleMaster = getNoodleMaster();
-		}catch(Exception e){
+		} catch (Exception e) {
 			Toast.makeText(this, "入力項目を埋めてください", Toast.LENGTH_LONG).show();
 			return;
 		}
-		entry = new EntryAsyncTask(this); 
-		
-		//確認ダイアログの作成
+		entry = new EntryAsyncTask(this);
+
+		// 確認ダイアログの作成
 		AlertDialog.Builder builder;
 		AlertDialog alertDialog;
-		
-		LayoutInflater inflater = (LayoutInflater) this.getSystemService(this.LAYOUT_INFLATER_SERVICE);
+
+		LayoutInflater inflater = (LayoutInflater) this
+				.getSystemService(this.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.ramen_list_item,
-		                               (ViewGroup) findViewById(R.id.layout_root));
+				(ViewGroup) findViewById(R.id.layout_root));
 		TextView jan_text = (TextView) layout.findViewById(R.id.JanText);
 		jan_text.setText(noodleMaster.getJanCode());
 		TextView name_text = (TextView) layout.findViewById(R.id.RamenName);
@@ -292,39 +339,36 @@ public class CreateActivity extends Activity {
 		image.setImageBitmap(noodleMaster.getImage());
 
 		builder = new AlertDialog.Builder(this);
-		builder.setMessage("これで登録しますか？")
-				.setView(layout)
-		       .setCancelable(false)
-		       .setPositiveButton("登録", new DialogInterface.OnClickListener() {
-		    	   public void onClick(DialogInterface dialog, int id) {
-		    		   entry.execute(noodleMaster);
-		    	   }
-		       })
-		       .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-		    	   public void onClick(DialogInterface dialog, int id) {
-		    		   dialog.cancel();
-		    	   }
-		       });
+		builder.setMessage("これで登録しますか？").setView(layout).setCancelable(false)
+				.setPositiveButton("登録", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						entry.execute(noodleMaster);
+					}
+				}).setNegativeButton("キャンセル",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
 		alertDialog = builder.create();
 		alertDialog.show();
-		
-//		//リーダーアクティビティから起動された場合
-//		if(requestCode == RequestCode.READER2CREATE.ordinal()){
-//			entry.execute(noodleMaster);
-////			QuickAction qa = new QuickAction(v);
-////			qa.addActionItem(itemHome);
-////			qa.addActionItem(itemTimer);
-////			qa.show();
-//		//タイマーから起動された場合
-//		}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
-//			entry.execute(noodleMaster);
-//		}
+
+		// //リーダーアクティビティから起動された場合
+		// if(requestCode == RequestCode.READER2CREATE.ordinal()){
+		// entry.execute(noodleMaster);
+		// // QuickAction qa = new QuickAction(v);
+		// // qa.addActionItem(itemHome);
+		// // qa.addActionItem(itemTimer);
+		// // qa.show();
+		// //タイマーから起動された場合
+		// }else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
+		// entry.execute(noodleMaster);
+		// }
 	}
-	
-	
-	
+
 	/**
 	 * logoボタンが押された時の動作
+	 * 
 	 * @param v
 	 */
 	public void onLogoClick(View v) {
@@ -333,93 +377,105 @@ public class CreateActivity extends Activity {
 
 	/**
 	 * UIから登録情報を集めて返す
+	 * 
 	 * @return
 	 */
-	NoodleMaster getNoodleMaster(){
-		//EditTextやRadioGroupから状態を取得
+	NoodleMaster getNoodleMaster() {
+		// EditTextやRadioGroupから状態を取得
 		String jancode = janText.getText().toString();
 		String name = nameEdit.getText().toString();
-		int boilTime = new Integer(boilTimeEdit.getText().toString()).intValue();
+		int boilTime = new Integer(boilTimeEdit.getText().toString())
+				.intValue();
 		Bitmap image = noodleImage;
-//		NoodleType noodleType = NoodleType.values()[noodleTypeRadioGroup.getCheckedRadioButtonId()];
-		NoodleMaster noodle = new NoodleMaster(jancode,name,image,boilTime);
+		// NoodleType noodleType =
+		// NoodleType.values()[noodleTypeRadioGroup.getCheckedRadioButtonId()];
+		NoodleMaster noodle = new NoodleMaster(jancode, name, image, boilTime);
 		return noodle;
 	}
-	
+
 	/**
 	 * ラーメンの情報を登録する
+	 * 
 	 * @author leibun
-	 *
+	 * 
 	 */
-	private class EntryAsyncTask extends AsyncTask<NoodleMaster, Integer, Integer>{
-		//表示用にコンテキストを保持
-		private Activity activity =null; 
+	private class EntryAsyncTask extends
+			AsyncTask<NoodleMaster, Integer, Integer> {
+		// 表示用にコンテキストを保持
+		private Activity activity = null;
 		NoodleManager nm;
-		
-		private static final int RESULT_CREATE_OK = 0;	//登録成功
-		private static final int RESULT_ERROR_SQLITE = 1;//SQLITEでエラー
-		private static final int RESULT_ERROR_GAE = 2;	//Webへの登録でエラー
-		
+
+		private static final int RESULT_CREATE_OK = 0; // 登録成功
+		private static final int RESULT_ERROR_SQLITE = 1;// SQLITEでエラー
+		private static final int RESULT_ERROR_GAE = 2; // Webへの登録でエラー
+
 		/**
 		 * コンストラクタ
+		 * 
 		 * @param context
 		 */
-		public EntryAsyncTask(Activity activity){
+		public EntryAsyncTask(Activity activity) {
 			this.activity = activity;
 			this.nm = new NoodleManager(activity);
 		}
-		
+
 		/**
 		 * Web登録があるので別スレッドで実行
+		 * 
 		 * @params params
 		 */
 		@Override
 		protected Integer doInBackground(NoodleMaster... params) {
-			try{
-				//カップラーメンの情報をWebとローカルに登録
+			try {
+				// カップラーメンの情報をWebとローカルに登録
 				nm.createNoodleMaster(params[0]);
-			}catch(GaeException e){
+			} catch (GaeException e) {
 				return RESULT_ERROR_GAE;
 			} catch (java.sql.SQLException e) {
 				return RESULT_ERROR_SQLITE;
 			}
 			return RESULT_CREATE_OK;
 		}
+
 		/**
 		 * 
 		 * doInBackgroundが呼ばれた後に呼び出される
 		 */
 		@Override
-		protected void onPostExecute(Integer result){
-			switch(result){
-				case RESULT_CREATE_OK:
-					Toast.makeText(activity, "登録完了", Toast.LENGTH_LONG).show();
-					break;
-				case RESULT_ERROR_GAE:
-					Toast.makeText(activity, "サーバーへの登録に失敗しました", Toast.LENGTH_LONG).show();
-					return;
-				case RESULT_ERROR_SQLITE:
-					Toast.makeText(activity, "ローカルへの登録に失敗しました", Toast.LENGTH_LONG).show();
-					return;
+		protected void onPostExecute(Integer result) {
+			switch (result) {
+			case RESULT_CREATE_OK:
+				Toast.makeText(activity, "登録完了", Toast.LENGTH_LONG).show();
+				break;
+			case RESULT_ERROR_GAE:
+				Toast.makeText(activity, "サーバーへの登録に失敗しました", Toast.LENGTH_LONG)
+						.show();
+				return;
+			case RESULT_ERROR_SQLITE:
+				Toast.makeText(activity, "ローカルへの登録に失敗しました", Toast.LENGTH_LONG)
+						.show();
+				return;
 			}
-			//リーダーから呼び出された場合
-			if(requestCode == RequestCode.READER2CREATE.ordinal()){
-//				//ダイアログでカメラかギャラリーを選択させる
-//				final CharSequence[] items = {"タイマーを起動", "ダッシュボードに戻る"};
-//				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-//				builder.setTitle("画像の選択");
-//				builder.setItems(items, new DialogInterface.OnClickListener() {
-//				    public void onClick(DialogInterface dialog, int item) {
-//				    	if(item==0)
-//							callTimerActivity();
-//						activity.finish();
-//				    }
-//				});
-//				builder.show();
-			//タイマーから呼び出された場合
-			}else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
+			// リーダーから呼び出された場合
+			if (requestCode == RequestCode.READER2CREATE.ordinal()) {
+				// ダイアログで選択させる
+				final CharSequence[] items = { "タイマーを起動", "ダッシュボードに戻る" };
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				builder.setTitle("タイマーを動かしますか？");
+				builder.setItems(items, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int item) {
+						if (item == 0)
+							callTimerActivity();
+						activity.finish();
+					}
+				});
+				builder.show();
+
+				// タイマーから呼び出された場合
+			} else if (requestCode == RequestCode.TIMER2CREATE.ordinal()) {
 				activity.finish();
 			}
 		}
 	}
+
 }
