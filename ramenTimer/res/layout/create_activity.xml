@@ -53,6 +53,7 @@
 					android:maxLength="13"/>
 				<ImageButton 
 					style="@style/InformationFormImage"
+					android:onClick="onLoadImageClick"
 					android:src="@drawable/home_ic_ramenadd"
 					android:id="@+id/NoodleImageButton"/>
 		</TableRow>
