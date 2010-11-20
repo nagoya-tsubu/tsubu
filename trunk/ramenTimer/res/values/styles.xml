@@ -202,7 +202,6 @@
  		<item name="android:textSize">@dimen/text_size_large</item>
     </style>
     <style name="InformationFormImage">
-		<item name="android:onClick">onLoadImageClick</item>
 		<item name="android:layout_width">@dimen/form_image_width</item>
 		<item name="android:layout_height">@dimen/form_image_height</item>
 		<item name="android:layout_margin">0dip</item>

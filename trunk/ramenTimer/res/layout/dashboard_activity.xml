@@ -13,8 +13,6 @@
         	style="@style/TitleBarLogo"
           	android:src="@drawable/icon_alt" />
         <ImageView 
-        	style="@style/TitleBarSeparator"/>
-        <ImageView 
         	style="@style/TitleBarLogo"
         	android:src="@drawable/title_logo"/>
     </LinearLayout>
@@ -35,8 +33,9 @@
         android:padding="6dip">
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1">
             <Button android:id="@+id/Button02"
                 style="@style/HomeButton"
@@ -52,8 +51,9 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="1">
             <Button android:id="@+id/Button03"
                 style="@style/HomeButton"
