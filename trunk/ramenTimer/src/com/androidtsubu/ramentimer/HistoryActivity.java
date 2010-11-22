@@ -1,33 +1,27 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.LauncherActivity.ListItem;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
-public class HistoryActivity extends Activity {
+public class HistoryActivity extends ListActivity {
+
+
 	// 履歴情報のリスト
 	private List<NoodleHistory> list = new ArrayList<NoodleHistory>();
 	// 商品情報(NoodleMaster)のキー
@@ -51,51 +45,27 @@ public class HistoryActivity extends Activity {
 			// RamenListItemAdapterを生成
 			RamenListItemAdapter adapter;
 			adapter = new RamenListItemAdapter(this, 0, list);
-			// ListViewにListItemAdapterをセット
-			ListView listView = (ListView) findViewById(R.id.RamenList);
-			listView.setOnItemClickListener(new HistoryItemClick());
-			listView.setAdapter(adapter);
+			setListAdapter(adapter);
 		}
 	}
 
 	/**
 	 * リストがクリックされた時の動作
 	 */
-	class HistoryItemClick implements OnItemClickListener {
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			Toast.makeText(HistoryActivity.this, position + "",
-					Toast.LENGTH_SHORT).show();
-			Log.i("HistoryActivity", "position:" + position);
-			
-			//押されたListItemに対応するNoodleMasterを取得
-			NoodleHistory nh = list.get(position);
-			NoodleMaster nm = nh.getNoodleMaster();
-			//タイマーを起動
-			Intent intent = new Intent(HistoryActivity.this, TimerActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
-			intent.putExtra(KEY_NOODLE_MASTER, nm);
-			startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
-			HistoryActivity.this.finish();
-		}
-	};
-
-	/**
-	 * ダミーデータ
-	 * 
-	 * @return
-	 */
-	private List<NoodleHistory> dummyList() {
-		Bitmap img = BitmapFactory.decodeResource(getResources(),
-				R.drawable.app_logo);
-		List<NoodleHistory> list = new ArrayList<NoodleHistory>();
-		for (int i = 0; i < 10; ++i) {
-			NoodleMaster nm = new NoodleMaster("4903085060531", "〇〇ラーメン", img,
-					180);
-			NoodleHistory nh = new NoodleHistory(nm, new Date());
-			list.add(nh);
-		}
-		return list;
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		// TODO Auto-generated method stub
+		super.onListItemClick(l, v, position, id);
+		
+		//押されたListItemに対応するNoodleMasterを取得
+		NoodleHistory nh = list.get(position);
+		NoodleMaster nm = nh.getNoodleMaster();
+		//タイマーを起動
+		Intent intent = new Intent(HistoryActivity.this, TimerActivity.class);
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
+		intent.putExtra(KEY_NOODLE_MASTER, nm);
+		startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
+		HistoryActivity.this.finish();
 	}
 
 	/**
@@ -141,14 +111,11 @@ public class HistoryActivity extends Activity {
 			// 日付をセット
 			TextView date;
 			date = (TextView) TableRowDate.findViewById(R.id.Date);
-			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH時mm分");
-			date.setText(format.format(item.getMeasureTime()));
-			// 時間をセット
-			TextView boilTime = (TextView) view.findViewById(R.id.BoilingTime);
-			boilTime.setText(Integer.toString(item.getNoodleMaster()
-					.getTimerLimit()));
+			date.setText(item.getMeasureTime().toString());
+
 			return view;
 		}
+
 	}
 
 	/**
