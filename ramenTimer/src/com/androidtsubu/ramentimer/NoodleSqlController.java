@@ -343,9 +343,10 @@ public class NoodleSqlController {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put("jancode", noodleMaster.getJanCode());
 		contentValues.put("name", noodleMaster.getName());
+		contentValues.put("boiltime", noodleMaster.getTimerLimit());
 		contentValues.put("measuretime", NoodleHistory.getSimpleDateFormat()
 				.format(measureTime));
-		long ret = database.insert(NOODLEMASTERTABLENAME, null, contentValues);
+		long ret = database.insert(NOODLEHISTORYTABLENAME, null, contentValues);
 		if (ret < 0) {
 			throw new SQLException("insert return value = " + ret);
 		}
