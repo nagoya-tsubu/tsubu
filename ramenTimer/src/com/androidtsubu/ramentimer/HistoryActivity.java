@@ -1,6 +1,7 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,7 +77,6 @@ public class HistoryActivity extends Activity {
 			intent.putExtra(KEY_NOODLE_MASTER, nm);
 			startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
 			HistoryActivity.this.finish();
-
 		}
 	};
 
@@ -141,8 +141,12 @@ public class HistoryActivity extends Activity {
 			// 日付をセット
 			TextView date;
 			date = (TextView) TableRowDate.findViewById(R.id.Date);
-			date.setText(item.getMeasureTime().toString());
-
+			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH時mm分");
+			date.setText(format.format(item.getMeasureTime()));
+			// 時間をセット
+			TextView boilTime = (TextView) view.findViewById(R.id.BoilingTime);
+			boilTime.setText(Integer.toString(item.getNoodleMaster()
+					.getTimerLimit()));
 			return view;
 		}
 	}
