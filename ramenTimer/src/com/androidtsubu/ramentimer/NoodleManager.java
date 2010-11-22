@@ -3,6 +3,7 @@ package com.androidtsubu.ramentimer;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -31,9 +32,9 @@ public class NoodleManager {
 	public NoodleManager(Context context) {
 		this.context = context;
 		checkExternalStorage();
-		noodleGaeController = new NoodleGaeController(context,directory);
-		noodleSqlController = new NoodleSqlController(context,directory);
-		
+		noodleGaeController = new NoodleGaeController(context, directory);
+		noodleSqlController = new NoodleSqlController(context, directory);
+
 	}
 
 	/**
@@ -88,9 +89,21 @@ public class NoodleManager {
 	 * @param noodleMaster
 	 * @throws SQLException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime) {
+	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime)
+			throws SQLException {
 		// 商品マスタは何かしら登録されてから使われているはずなのでGAEにマスタを登録することはしない
 		noodleSqlController.createNoodleHistory(noodleMaster, measureTime);
+	}
+
+	/**
+	 * 商品履歴を返す
+	 * 
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleHistory> getNoodleHistories() throws SQLException {
+		// とりあえず最新30件を返すようにしておく
+		return noodleSqlController.getNoodleHistories(30);
 	}
 
 	/**

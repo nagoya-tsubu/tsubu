@@ -21,7 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
-public class ReaderActivity extends Activity{
+public class ReaderActivity extends Activity {
 
 	// QRコードスキャナーのパッケージ名
 	private static final String QRCODE_PKG_NAME = "com.google.zxing.client.android";
@@ -122,15 +122,16 @@ public class ReaderActivity extends Activity{
 	 * アクティビティの実行結果処理
 	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
 
-		//アクティビティのリクエストコードで処理を分ける
+		// アクティビティのリクエストコードで処理を分ける
 		switch (requestCode) {
 		case EXECUTE_QR_CODE_SCANNER:
-			//QRコードスキャナー実行後
-			if(RESULT_OK == resultCode) {
-				//QRコードスキャナーからJANコードをスキャンできた場合は、
-				//ラーメン情報を履歴またはGAEから取得してみる
+			// QRコードスキャナー実行後
+			if (RESULT_OK == resultCode) {
+				// QRコードスキャナーからJANコードをスキャンできた場合は、
+				// ラーメン情報を履歴またはGAEから取得してみる
 				_janCode = intent.getStringExtra("SCAN_RESULT");
 				_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
 			} else {
@@ -143,23 +144,23 @@ public class ReaderActivity extends Activity{
 			break;
 
 		case DOWNLOAD_QR_CODE_SCANNER:
-			//Android Market実行後
-			if(RESULT_OK == resultCode) {
-				//ダウンロードが完了したら、QRコードスキャナーを実行する
+			// Android Market実行後
+			if (RESULT_OK == resultCode) {
+				// ダウンロードが完了したら、QRコードスキャナーを実行する
 				_handler.sendEmptyMessage(EXECUTE_QR_CODE_SCANNER);
 			} else {
-				//ダウンロード失敗(or しない)場合は、Dashboardに遷移する
+				// ダウンロード失敗(or しない)場合は、Dashboardに遷移する
 				finish();
 			}
 			break;
 
 		default:
 			// 呼び出したインテントが空の場合は、処理を終了する
-			if(RESULT_OK ==resultCode){
-				setResult(RESULT_OK,intent);
+			if (RESULT_OK == resultCode) {
+				setResult(RESULT_OK, intent);
 				finish();
 			}
-				
+
 			break;
 		}
 
@@ -183,14 +184,16 @@ public class ReaderActivity extends Activity{
 				// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
 				_noodleMaster = new NoodleMaster(_janCode, "", null, 0);
 			}
-		}catch(SQLException e){
-			Toast.makeText(this, getExceptionDetail(e), Toast.LENGTH_LONG).show();
-			//エラーが発生したのでDashBoardへ戻る
+		} catch (SQLException e) {
+			Toast.makeText(this, ExceptionToStringConverter.convert(e),
+					Toast.LENGTH_LONG).show();
+			// エラーが発生したのでDashBoardへ戻る
 			finish();
 			return;
 		} catch (GaeException e) {
-			Toast.makeText(this, getExceptionDetail(e), Toast.LENGTH_LONG).show();
-			//エラーが発生したのでDashBoardへ戻る
+			Toast.makeText(this, ExceptionToStringConverter.convert(e),
+					Toast.LENGTH_LONG).show();
+			// エラーが発生したのでDashBoardへ戻る
 			finish();
 			return;
 		}
@@ -207,26 +210,27 @@ public class ReaderActivity extends Activity{
 		// QRコードをAndroid Marketからダウンロードしてよいか
 		// ダイアログを表示して問い合わせる
 		new AlertDialog.Builder(this)
-		.setTitle("QR Code Scanner not found.")
-		.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
-		.setPositiveButton("いいえ", new DialogInterface.OnClickListener() {
-			//「いいえ」押下時は、ダッシュボードに戻る
-			public void onClick(DialogInterface dialog, int which) {
-				finish();
-			}
-		})
-		.setNegativeButton("はい", new DialogInterface.OnClickListener() {
-			//「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
-			//ダウンロードページを表示する
-			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
-				final Intent intent = new Intent(
-						Intent.ACTION_VIEW,
-						Uri.parse("market://search?q=pname:" + QRCODE_PKG_NAME));
-				startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
-			}
-		})
-		.create().show();
+				.setTitle("QR Code Scanner not found.")
+				.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
+				.setPositiveButton("いいえ",
+						new DialogInterface.OnClickListener() {
+							// 「いいえ」押下時は、ダッシュボードに戻る
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						})
+				.setNegativeButton("はい", new DialogInterface.OnClickListener() {
+					// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
+					// ダウンロードページを表示する
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						final Intent intent = new Intent(Intent.ACTION_VIEW,
+								Uri.parse("market://search?q=pname:"
+										+ QRCODE_PKG_NAME));
+						startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
+					}
+				}).create().show();
 	}
 
 	// 商品情報(NoodleMaster)のキー
@@ -240,28 +244,31 @@ public class ReaderActivity extends Activity{
 
 		// 次の画面へ遷移する
 		// (1)ダッシュボード→商品読込みの場合
-		//    →タイマー画面へ遷移する
+		// →タイマー画面へ遷移する
 		// (2)ダッシュボード→商品登録の場合
-		//    →登録画面へ遷移する
-		
+		// →登録画面へ遷移する
+
 		// 商品情報オブジェクトが空の場合は、ダッシュボードに戻る
 		// ※通常はありえない
 		if (null == _noodleMaster) {
 			finish();
 			return;
 		}
-		
+
 		// (1)ダッシュボード→商品読込みの場合
-		if(RequestCode.values()[_requestCode].equals(RequestCode.DASHBORAD2READER)) {
+		if (RequestCode.values()[_requestCode]
+				.equals(RequestCode.DASHBORAD2READER)) {
 			// →タイマー画面へ遷移する
 			intent = new Intent(this, TimerActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2TIMER.ordinal());
+			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+					RequestCode.READER2TIMER.ordinal());
 		}
 		// (2)ダッシュボード→商品登録の場合
 		else {
 			// →登録画面へ遷移する
 			intent = new Intent(this, CreateActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.READER2CREATE.ordinal());
+			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+					RequestCode.READER2CREATE.ordinal());
 		}
 
 		// NoodleMaster情報もインテントに情報を送る
@@ -284,19 +291,5 @@ public class ReaderActivity extends Activity{
 		_handler.removeMessages(RECEIVE_NOODLE_DATA);
 		_handler.removeMessages(GOTO_NEXT_INTENT);
 	}
-	
-	/**
-	 * Exceptionの内容を文字列にする
-	 * @param ex
-	 * @return
-	 */
-	private String getExceptionDetail(Exception ex){
-	    CharArrayWriter buf = new CharArrayWriter();
-	    PrintWriter writer = new PrintWriter(buf);
-	    //コンソールにエラー内容を書く
-	    ex.printStackTrace();
-	    //ログ保存用の出力先にエラー内容を書く
-	    ex.printStackTrace(writer);
-	    return buf.toString();
-	}
+
 }

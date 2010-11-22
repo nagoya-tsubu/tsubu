@@ -1,5 +1,6 @@
 package com.androidtsubu.ramentimer;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,9 +27,9 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class HistoryActivity extends Activity {
-	//履歴情報のリスト
-	private List<NoodleHistory> list = null;
-	
+	// 履歴情報のリスト
+	private List<NoodleHistory> list = new ArrayList<NoodleHistory>();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,10 +37,12 @@ public class HistoryActivity extends Activity {
 
 		// 履歴の呼び出し
 		NoodleManager manager = new NoodleManager(this);
-		// list = manager.getNoodleHistories();
-		//とりあえずダミーリストいれておく
-		list = dummyList();
-
+		try {
+			list = manager.getNoodleHistories();
+		} catch (SQLException e) {
+			Toast.makeText(this, ExceptionToStringConverter.convert(e),
+					Toast.LENGTH_LONG).show();
+		}
 
 		if (list != null) {
 			// RamenListItemAdapterを生成
@@ -51,31 +54,33 @@ public class HistoryActivity extends Activity {
 			listView.setAdapter(adapter);
 		}
 	}
-	
+
 	/**
 	 * リストがクリックされた時の動作
 	 */
-	class HistoryItemClick implements OnItemClickListener
-	{
+	class HistoryItemClick implements OnItemClickListener {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			NoodleHistory nm = list.get(position);
-			Toast.makeText(HistoryActivity.this,position+"", Toast.LENGTH_SHORT)
-			.show();
-			Log.i("HistoryActivity","position:"+position);
+			Toast.makeText(HistoryActivity.this, position + "",
+					Toast.LENGTH_SHORT).show();
+			Log.i("HistoryActivity", "position:" + position);
 		}
 	};
-	
+
 	/**
 	 * ダミーデータ
+	 * 
 	 * @return
 	 */
-	private List<NoodleHistory> dummyList(){
-		Bitmap img = BitmapFactory.decodeResource(getResources(), R.drawable.app_logo);
+	private List<NoodleHistory> dummyList() {
+		Bitmap img = BitmapFactory.decodeResource(getResources(),
+				R.drawable.app_logo);
 		List<NoodleHistory> list = new ArrayList<NoodleHistory>();
-		for(int i=0;i<10;++i){
-			NoodleMaster nm = new NoodleMaster("4903085060531", "〇〇ラーメン", img, 180);
-			NoodleHistory nh = new NoodleHistory(nm, new Date() );
+		for (int i = 0; i < 10; ++i) {
+			NoodleMaster nm = new NoodleMaster("4903085060531", "〇〇ラーメン", img,
+					180);
+			NoodleHistory nh = new NoodleHistory(nm, new Date());
 			list.add(nh);
 		}
 		return list;
