@@ -29,6 +29,8 @@ import android.widget.AdapterView.OnItemClickListener;
 public class HistoryActivity extends Activity {
 	// 履歴情報のリスト
 	private List<NoodleHistory> list = new ArrayList<NoodleHistory>();
+	// 商品情報(NoodleMaster)のキー
+	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,10 +63,20 @@ public class HistoryActivity extends Activity {
 	class HistoryItemClick implements OnItemClickListener {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			NoodleHistory nm = list.get(position);
 			Toast.makeText(HistoryActivity.this, position + "",
 					Toast.LENGTH_SHORT).show();
 			Log.i("HistoryActivity", "position:" + position);
+			
+			//押されたListItemに対応するNoodleMasterを取得
+			NoodleHistory nh = list.get(position);
+			NoodleMaster nm = nh.getNoodleMaster();
+			//タイマーを起動
+			Intent intent = new Intent(HistoryActivity.this, TimerActivity.class);
+			intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
+			intent.putExtra(KEY_NOODLE_MASTER, nm);
+			startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
+			HistoryActivity.this.finish();
+
 		}
 	};
 
@@ -152,19 +164,19 @@ public class HistoryActivity extends Activity {
 	public void onTimerButtonClick(View v) {
 		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-				RequestCode.ACTION_HISTORY.ordinal());
+				RequestCode.ACTION＿TIMER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
 	/**
-	 * バーコードリーダーを起動し、Timerを終了する
+	 * アクションバーの読込みボタンが押されたとき
 	 */
 	public void onReaderButtonClick(View v) {
-		Intent intent = new Intent(this, ReaderActivity.class);
+		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-				RequestCode.DASHBORAD2READER.ordinal());
-		startActivity(intent);
+				RequestCode.ACTION_READER.ordinal());
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 }
