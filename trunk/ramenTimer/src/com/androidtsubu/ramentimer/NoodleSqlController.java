@@ -11,17 +11,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import java.sql.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -31,7 +32,7 @@ import java.io.File;
  * @author hide
  */
 public class NoodleSqlController {
-	private static final int DB_VERSION = 7;
+	private static final int DB_VERSION = 8;
 	private static final String NOODLEMASTERTABLENAME = "NoodleMaster";
 	private static final String NOODLEHISTORYTABLENAME = "NoodleHistory";
 
@@ -39,10 +40,11 @@ public class NoodleSqlController {
 	private static final String CREATE_NOODLEMASTER_TABLE = "CREATE TABLE "
 			+ NOODLEMASTERTABLENAME + "(" + "jancode TEXT PRIMARY KEY,"
 			+ "name TEXT ,boiltime INTEGER ,image TEXT )";
+
 	private static final String CREATE_NOODLEHISTORY_TABLE = "CREATE TABLE "
 			+ NOODLEHISTORYTABLENAME + "("
 			+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, jancode TEXT,"
-			+ "name TEXT ,measuretime TEXT)";
+			+ "name TEXT ,boiltime INTEGER ,measuretime TEXT)";
 
 	/** DB読み書きクラス */
 	private SQLiteDatabase database = null;
@@ -102,7 +104,7 @@ public class NoodleSqlController {
 	 * @return
 	 * @throws SQLException
 	 */
-	public NoodleMaster getNoodleMaster(String janCode) {
+	public NoodleMaster getNoodleMaster(String janCode) throws SQLException{
 		String[] columns = { "jancode", "name", "boiltime", "image" };
 		String where = "jancode = ?";
 		String[] args = { janCode };
@@ -111,6 +113,9 @@ public class NoodleSqlController {
 			// 検索
 			cursor = database.query(NOODLEMASTERTABLENAME, columns, where,
 					args, null, null, null);
+			if(cursor == null){
+				throw new SQLException("cursor is null");
+			}
 			while (cursor.moveToNext()) {
 				// カーソルから商品マスタを生成する
 				return createNoodleMaster(cursor);
@@ -130,7 +135,7 @@ public class NoodleSqlController {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> getNoodleMasters() {
+	public List<NoodleMaster> getNoodleMasters() throws SQLException {
 		List<NoodleMaster> noodleMasters = new ArrayList<NoodleMaster>();
 		String[] columns = { "jancode", "name", "boiltime", "image" };
 		String orderby = "jancode";
@@ -139,6 +144,9 @@ public class NoodleSqlController {
 			// 検索
 			cursor = database.query(NOODLEMASTERTABLENAME, columns, null, null,
 					null, null, orderby);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
 			while (cursor.moveToNext()) {
 				// カーソルから商品マスタを生成してlistに追加する
 				noodleMasters.add(createNoodleMaster(cursor));
@@ -149,40 +157,30 @@ public class NoodleSqlController {
 				cursor.close();
 			}
 		}
-
 	}
 
 	/**
-	 * SQLiteからすべての商品履歴を得ます
+	 * SQLiteから最新の引数件数の商品履歴を得ます
 	 * 
+	 * @param rows
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleHistory> getNoodleHistories() {
+	public List<NoodleHistory> getNoodleHistories(int rows)
+			throws SQLException {
 		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
 		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
-		String orderby = "measuretime";
+		String orderby = "measuretime desc";
 		Cursor cursor = null;
 		try {
 			// 検索
 			cursor = database.query(NOODLEHISTORYTABLENAME, columns, null,
-					null, null, null, orderby);
+					null, null, null, orderby, Integer.toString(rows));
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
 			while (cursor.moveToNext()) {
-				String jancode = cursor.getString(cursor
-						.getColumnIndex("jancode"));
-				String measuretimeString = cursor.getString(cursor
-						.getColumnIndex("measuretime"));
-				Date measuretime = null;
-				try {
-					measuretime = NoodleHistory.getSimpleDateFormat().parse(
-							measuretimeString);
-				} catch (ParseException e) {
-					// 絶対にExceptionは出ない
-					e.printStackTrace();
-				}
-				NoodleMaster noodleMaster = getNoodleMaster(jancode);
-
-				histories.add(new NoodleHistory(noodleMaster, measuretime));
+				histories.add(createNoodleHistory(cursor));
 			}
 			return histories;
 		} finally {
@@ -193,9 +191,96 @@ public class NoodleSqlController {
 	}
 
 	/**
-	 * SQLiteに商品マスタを追加作成します
+	 * SQLiteから指定日付から指定日付までの最新の商品履歴を得ます
+	 * 
+	 * @param start end
+	 * @return
+	 * @throws SQLiteException
+	 */
+	public List<NoodleHistory> getNoodleHistories(Date start, Date end)
+			throws SQLException {
+		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
+		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
+		String where = "measuretime >= ? and measuretime < ?";
+		String[] whereArgs = {
+				NoodleHistory.getSimpleDateFormat().format(start),
+				NoodleHistory.getSimpleDateFormat().format(end) };
+		String orderby = "measuretime desc";
+		Cursor cursor = null;
+		try {
+			// 検索
+			cursor = database.query(NOODLEHISTORYTABLENAME, columns, where,
+					whereArgs, null, null, orderby);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
+			while (cursor.moveToNext()) {
+				histories.add(createNoodleHistory(cursor));
+			}
+			return histories;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+
+	/**
+	 * SQLiteからすべての商品履歴を得ます
+	 * 
+	 * @return
+	 * @throws SQLiteException
+	 */
+	public List<NoodleHistory> getNoodleHistories() throws SQLException {
+		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
+		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
+		String orderby = "measuretime desc";
+		Cursor cursor = null;
+		try {
+			// 検索
+			cursor = database.query(NOODLEHISTORYTABLENAME, columns, null,
+					null, null, null, orderby);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
+			while (cursor.moveToNext()) {
+				histories.add(createNoodleHistory(cursor));
+			}
+			return histories;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+
+	/**
+	 * カーソルから履歴を作成する
+	 * 
+	 * @param cursor
+	 * @return
+	 */
+	private NoodleHistory createNoodleHistory(Cursor cursor) throws SQLException{
+		String jancode = cursor.getString(cursor.getColumnIndex("jancode"));
+		String measuretimeString = cursor.getString(cursor
+				.getColumnIndex("measuretime"));
+		Date measuretime = null;
+		try {
+			measuretime = NoodleHistory.getSimpleDateFormat().parse(
+					measuretimeString);
+		} catch (ParseException e) {
+			// 絶対にExceptionは出ない
+			e.printStackTrace();
+		}
+		NoodleMaster noodleMaster = getNoodleMaster(jancode);
+		return new NoodleHistory(noodleMaster, measuretime);
+	}
+
+	/**
+	 * SQLiteに商品マスタを追加します
 	 * 
 	 * @param noodleMaster
+	 * @throws SQLiteException
 	 */
 	public void createNoodleMater(NoodleMaster noodleMaster)
 			throws SQLException {
@@ -210,8 +295,8 @@ public class NoodleSqlController {
 			contentValues.put("image", filename);
 		}
 		long ret = database.insert(NOODLEMASTERTABLENAME, null, contentValues);
-		if (ret == -1) {
-			throw new SQLException();
+		if (ret < 0) {
+			throw new SQLException("insert return value = " + ret);
 		}
 	}
 
@@ -233,16 +318,14 @@ public class NoodleSqlController {
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
 		} catch (FileNotFoundException e) {
-			Log.d("err", e.getMessage(), e);
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
 		} catch (IOException e) {
-			Log.d("err", e.getMessage(), e);
+			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
 		} finally {
 			if (fileOutputStream != null) {
 				try {
 					fileOutputStream.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					Log.d("err", e.getMessage(), e);
 				}
 			}
 		}
@@ -253,14 +336,19 @@ public class NoodleSqlController {
 	 * 
 	 * @param noodleMaster
 	 * @param measureTime
+	 * @throws SQLiteException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime) {
+	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime)
+			throws SQLException {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put("jancode", noodleMaster.getJanCode());
 		contentValues.put("name", noodleMaster.getName());
 		contentValues.put("measuretime", NoodleHistory.getSimpleDateFormat()
 				.format(measureTime));
-		database.insert(NOODLEMASTERTABLENAME, null, contentValues);
+		long ret = database.insert(NOODLEMASTERTABLENAME, null, contentValues);
+		if (ret < 0) {
+			throw new SQLException("insert return value = " + ret);
+		}
 	}
 
 	/**
