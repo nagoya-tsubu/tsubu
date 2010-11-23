@@ -1,6 +1,7 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,18 +102,20 @@ public class HistoryActivity extends ListActivity {
 			TextView jancode;
 			jancode = (TextView) view.findViewById(R.id.JanText);
 			jancode.setText("" + item.getJanCode());
-
+			// 時間をセット
+			TextView boilTime = (TextView) view.findViewById(R.id.BoilingTime);
+			boilTime.setText(Integer.toString(item.getNoodleMaster()
+					.getTimerLimit()));
 			// 日付部分は回数と共有なのでViewStubで実装されてるので置き換える
 			ViewStub stub = (ViewStub) view.findViewById(R.id.DateOrNumber);
 			stub.setLayoutResource(R.layout.history_date);
 			View inflated = stub.inflate();
 			TableRow TableRowDate = (TableRow) inflated;
-
 			// 日付をセット
 			TextView date;
 			date = (TextView) TableRowDate.findViewById(R.id.Date);
-			date.setText(item.getMeasureTime().toString());
-
+			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH時mm分");
+			date.setText(format.format(item.getMeasureTime()));
 			return view;
 		}
 
