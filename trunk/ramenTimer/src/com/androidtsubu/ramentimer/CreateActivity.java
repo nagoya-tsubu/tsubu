@@ -185,33 +185,93 @@ public class CreateActivity extends Activity {
 				if (requestCode == REQUEST_GALLERY) {// ギャラリー
 					mPictureUri = intent.getData();
 				}else{
-					// getData()だとNexusOneとかはnullが買ってくるので、callCamera()の中で代入してる
-					Uri uri = intent.getData();
+					// NexusOneとかは、getData()からnullが買ってくるので、callCamera()の中で代入してる
+					Uri uri=null;
+					if(intent!=null)
+						uri = intent.getData();
 					if(uri!=null)
 						mPictureUri = uri;
 				}
 				try {
-					// メモリを大量に使うのでガベコレ これしておかないと、何回か呼び出されるとエラーで止まる
-					System.gc();
-					// UriからBitmapクラスを取得
-					InputStream is = getContentResolver().openInputStream(
-							mPictureUri);
-					Bitmap tmp = BitmapFactory.decodeStream(is);
-					is.close();
-					// 縦横比を固定したままリサイズ
-					noodleImage = resizeImage(tmp, resizeLength);
+					// 画像の取得
+					// URI -> image size -> small bitmap
+					noodleImage = getImageFromUriUsingBitmapFactoryOptions(mPictureUri,resizeLength);
+//					// URI -> bitmap -> small bitmap
+//					noodleImage = getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
 					// ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
 					// 背景の削除
 					noodleImageView
 							.setBackgroundColor(android.R.color.transparent);
+					
 				} catch (IOException e) {
 					Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT)
 							.show();
+				} catch (NullPointerException e){
+					Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT)
+					.show();					
+				} catch (OutOfMemoryError e){
+					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
+					.show();					
 				}
 			}
+			// 繰り返し呼ばれたときに前のUriが使われてしまうかもしれないので、念のため
+			mPictureUri = null;
 		}
 	}
+	/**
+	 * UriからBitmapを取得する
+	 * @param uri
+	 * @param resizeLength　リサイズパラメータ
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public Bitmap getImageFromUriUsingBitmapFactoryOptions(Uri uri, int resizeLength) throws FileNotFoundException, IOException {
+		if(uri==null) 
+			throw new NullPointerException();
+		// UriからBitmapクラスを取得
+		InputStream is = getContentResolver().openInputStream(uri);
+		// オプション
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		// 画像サイズだけを取得するように設定　デコードはされない
+		opts.inJustDecodeBounds = true;
+		Bitmap image = BitmapFactory.decodeStream(is,null,opts);
+		is.close();
+		// デコードするように設定
+		opts.inJustDecodeBounds = false;
+		// 縦横比を固定したままリサイズ
+		resizeOptions(opts, resizeLength);
+
+		if(uri==null) Toast.makeText(this, "uri == null", Toast.LENGTH_SHORT).show();
+		is = getContentResolver().openInputStream(uri);
+		if(is==null) Toast.makeText(this, "is == null", Toast.LENGTH_SHORT).show();
+		image = BitmapFactory.decodeStream(is,null,opts);
+		is.close();
+		return image;
+	}
+
+	/**
+	 * UriからBitmapを取得する
+	 * @param uri
+	 * @param resizeLength　リサイズパラメータ
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public Bitmap getImageFromUriUsingResizeImage(Uri uri, int resizeLength) throws FileNotFoundException, IOException {
+		// UriからBitmapクラスを取得
+		InputStream is = getContentResolver().openInputStream(uri);
+		// メモリを大量に使うのでガベコレ これしておかないと、何回か呼び出されるとエラーで止まる
+		System.gc();					
+		Bitmap tmp = BitmapFactory.decodeStream(is);
+		is.close();
+		// 縦横比を固定したままリサイズ
+		Bitmap image = resizeImage(tmp, resizeLength);
+		return image;
+	}
+
+	
 
 	/**
 	 * 縦横比を維持したまま画像をリサイズするメソッド 長い方の辺が引数のlengthの長さなる
@@ -234,7 +294,23 @@ public class CreateActivity extends Activity {
 				.createBitmap(img, 0, 0, width, height, matrix, true);
 		return dst;
 	}
-
+	/**
+	 * 縦横比を維持したまま画像をリサイズするメソッド 長い方の辺が引数のlengthの長さなる
+	 * 
+	 * @param opts
+	 * @param length
+	 */
+	public void resizeOptions(BitmapFactory.Options opts, int length) {
+		int height = opts.outWidth;
+		int width = opts.outHeight;
+		// 縦、横の長い方
+		float longer = height < width ? (float) width : (float) height;
+		// 伸縮するスケール
+		float scale = length / longer;
+		//置き換え
+		opts.outHeight = Math.round(height*scale);
+		opts.outWidth = Math.round(width*scale);	
+	}
 	/**
 	 * アクションバーの履歴ボタンが押されたとき インテントに（RequestCode）をセットしてfinish()
 	 * 
