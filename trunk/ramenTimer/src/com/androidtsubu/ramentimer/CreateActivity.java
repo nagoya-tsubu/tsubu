@@ -184,6 +184,11 @@ public class CreateActivity extends Activity {
 			if (requestCode == REQUEST_CAMERA || requestCode == REQUEST_GALLERY) {
 				if (requestCode == REQUEST_GALLERY) {// ギャラリー
 					mPictureUri = intent.getData();
+				}else{
+					// getData()だとNexusOneとかはnullが買ってくるので、callCamera()の中で代入してる
+					Uri uri = intent.getData();
+					if(uri!=null)
+						mPictureUri = uri;
 				}
 				try {
 					// メモリを大量に使うのでガベコレ これしておかないと、何回か呼び出されるとエラーで止まる
