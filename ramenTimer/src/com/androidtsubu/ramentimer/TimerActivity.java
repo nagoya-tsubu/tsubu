@@ -57,6 +57,8 @@ public class TimerActivity extends Activity {
 	// 登録フラグ
 	private boolean registrationFlg = false;
 	// private boolean registrationFlg = true; //表示テスト用にTrue
+	// 履歴作成フラグ
+	private boolean createHistoryFlg = false;
 
 	// 商品情報(NoodleMaster)のキー
 	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
@@ -115,21 +117,23 @@ public class TimerActivity extends Activity {
 				}
 			}).start();
 
-			// 履歴を登録する
-			new Thread(new Runnable() {
-				public void run() {
-					NoodleManager noodleManager = new NoodleManager(
-							TimerActivity.this);
-					try {
-						noodleManager.createNoodleHistory(noodleMaster,
-								new Date());
-					} catch (SQLException e) {
-						Toast.makeText(getThis(),
-								ExceptionToStringConverter.convert(e),
-								Toast.LENGTH_LONG).show();
+			// GAEに情報が存在した場合、履歴を登録する
+			if(createHistoryFlg){
+				new Thread(new Runnable() {
+					public void run() {
+						NoodleManager noodleManager = new NoodleManager(
+								TimerActivity.this);
+						try {
+							noodleManager.createNoodleHistory(noodleMaster,
+									new Date());
+						} catch (SQLException e) {
+							Toast.makeText(getThis(),
+									ExceptionToStringConverter.convert(e),
+									Toast.LENGTH_LONG).show();
+						}
 					}
-				}
-			}).start();
+				}).start();
+			}
 		}
 	}
 
@@ -344,8 +348,9 @@ public class TimerActivity extends Activity {
 			//
 		} else if (id == RequestCode.READER2TIMER.ordinal()) { // ReaderActivityから呼ばれた場合
 			//
-			if (noodleMaster.getTimerLimit() != 0) {
-
+			if (noodleMaster.getName() != null) {
+				// 履歴作成フラグをたてる
+				createHistoryFlg = true;
 			} else { // ラーメン情報が存在しない場合
 						// 登録フラグをたてる
 				registrationFlg = true;
