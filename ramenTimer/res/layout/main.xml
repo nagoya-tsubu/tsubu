@@ -38,30 +38,27 @@
 
 	<LinearLayout 
 		android:layout_width="fill_parent" 
-		android:layout_weight="2" 
 		android:orientation="horizontal" 
-		android:layout_height="fill_parent" 
-		style="@style/InformationForm" android:gravity="center">
+		style="@style/InformationForm" android:gravity="center" android:layout_height="wrap_content">
 		
 		<TableLayout android:layout_height="wrap_content" 
 			android:layout_gravity="center_vertical" 
 			android:stretchColumns="2" 
-			android:layout_weight="1" 
-			android:orientation="horizontal" android:layout_width="fill_parent">
+			android:orientation="horizontal" android:layout_width="wrap_content">
 				
-			<TableRow android:id="@+id/JanCodeTableRow" android:visibility="gone">
+			<TableRow android:id="@+id/JanCodeTableRow" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
 					<TextView style="@style/InformationFormText" 
 						android:text="JANコード" />
-					<TextView android:layout_width="fill_parent" 
-						android:layout_height="wrap_content" 
+					<TextView android:layout_height="wrap_content" 
 						android:text="JanCode" 
 						style="@style/InformationFormText" 
-						android:id="@+id/JanCodeTextView"/>			
+						android:id="@+id/JanCodeTextView" android:layout_width="wrap_content"/>			
 			</TableRow>
 			
 			<TextView style="@style/InformationFormText" android:hint="商品名" android:id="@+id/NameTextView" android:visibility="gone"/>
 			
-			<TableRow android:id="@+id/TimerLimitTableRow" android:visibility="gone">
+			<TableRow android:id="@+id/TimerLimitTableRow" 
+				android:visibility="gone">
 				<TextView style="@style/InformationFormText" 
 					android:text="時間（秒）" />
 				<TextView style="@style/InformationFormText" 
@@ -88,12 +85,12 @@
 		
 		<ImageView 
 			style="@style/InformationFormImage"
-			android:id="@+id/NoodleImageView">
+			android:id="@+id/NoodleImageView" android:layout_width="wrap_content" android:layout_height="wrap_content">
 		</ImageView>
 	</LinearLayout>
 	
 	<LinearLayout android:layout_width="fill_parent" 
-		android:layout_height="fill_parent" android:layout_weight="2" android:gravity="center">
+		android:gravity="center" android:layout_height="wrap_content">
 	
 		<LinearLayout android:layout_height="wrap_content" 
 			android:layout_width="fill_parent" 
@@ -194,10 +191,14 @@
 	
 	<LinearLayout android:layout_width="fill_parent" 
 		android:gravity="center" 
-		android:layout_weight="2" 
-		android:orientation="vertical" 
-		android:layout_height="fill_parent">
+		android:orientation="vertical" android:layout_height="wrap_content">
 	
+		<ImageView android:layout_width="wrap_content" 
+			android:layout_height="wrap_content" 
+			android:id="@+id/TimerImageView" 
+			android:src="@drawable/home_btn_timer_g">
+		</ImageView>
+		
 		<Button android:layout_width="wrap_content" 
 			android:text="開始" 
 			android:layout_height="wrap_content" 
@@ -205,11 +206,7 @@
 			style="@style/ButtonStyle">
 		</Button>
 
-		<ImageView android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:id="@+id/TimerImageView" 
-			android:src="@drawable/ic_title_timer">
-		</ImageView>
+		
 		
 		<Button android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 

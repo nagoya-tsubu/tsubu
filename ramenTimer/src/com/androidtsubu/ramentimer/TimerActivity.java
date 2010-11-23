@@ -177,8 +177,7 @@ public class TimerActivity extends Activity {
 				.getParcelableExtra(KEY_NOODLE_MASTER);
 
 		// 情報表示用にダミー情報をset
-		// noodleMaster = new NoodleMaster("49xxxxxxxxxxxxx", "太麺堂々", null,
-		// 245);
+		// noodleMaster = new NoodleMaster("49xxxxxxxxxxxxx", "太麺堂々", null, 245);
 
 		// 呼び出し元に応じて表示を切り替える
 		displaySetting(requestCode);
@@ -399,7 +398,7 @@ public class TimerActivity extends Activity {
 	 */
 	private void showStartButton() {
 		startButton.setVisibility(View.VISIBLE);
-		timerImage.setVisibility(View.GONE);
+
 		endButton.setVisibility(View.GONE);
 	}
 
@@ -408,7 +407,8 @@ public class TimerActivity extends Activity {
 	 */
 	private void hideStartButton() {
 		startButton.setVisibility(View.GONE);
-		timerImage.setVisibility(View.GONE);
+		// タイマー画像を差し替える(黄色)
+		timerImage.setImageResource(R.drawable.home_btn_timer_y);
 		endButton.setVisibility(View.GONE);
 	}
 
@@ -417,7 +417,8 @@ public class TimerActivity extends Activity {
 	 */
 	private void showEndButton() {
 		endButton.setVisibility(View.VISIBLE);
-		timerImage.setVisibility(View.VISIBLE);
+		// タイマー画像を差し替える(赤)
+		timerImage.setImageResource(R.drawable.home_btn_timer_r);		
 		startButton.setVisibility(View.GONE);
 	}
 
