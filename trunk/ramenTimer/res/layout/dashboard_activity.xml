@@ -69,21 +69,24 @@
 
     </LinearLayout>
 
-    <ImageView style="@style/HorizontalSeparator"/>
 
-    <LinearLayout style="@style/RaimonBar"
+	   <LinearLayout
+        android:id="@+id/now_playing_loading"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/now_playing_height"
+        android:background="@color/background1"
+        android:gravity="center_horizontal"
+        android:layout_weight="1">
+    
+	    <ImageView style="@style/HorizontalSeparator"/>
+
+    <LinearLayout
+             style="@style/RaimonBar"
     	android:background="@drawable/raimon"/>
 
     <ImageView style="@style/HorizontalSeparator"/>
 
-
-    <LinearLayout
-        android:id="@+id/now_playing_loading"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/now_playing_height"
-        android:orientation="horizontal"
-        android:background="@color/background1"
-        android:gravity="center">
         <ProgressBar
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
