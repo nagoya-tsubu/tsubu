@@ -2,16 +2,16 @@
 	<item 
 		android:state_focused="true" 
 		android:state_pressed="true"
-		android:drawable="@drawable/ic_timer_r" />
+		android:drawable="@drawable/home_btn_ramenadd_r" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="true"
-		android:drawable="@drawable/ic_timer_r" />
+		android:drawable="@drawable/home_btn_ramenadd_r" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/ic_timer_y" />
+		android:drawable="@drawable/home_btn_ramenadd_y" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"
-		android:drawable="@drawable/ic_timer_g" />
+		android:drawable="@drawable/home_btn_ramenadd_g" />
 </selector>

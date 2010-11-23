@@ -75,7 +75,7 @@ public class CreateActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.create_activity);
+		setContentView(R.layout.create_activity2);
 		// リクエストコードを保持
 		Intent intent = getIntent();
 		requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);

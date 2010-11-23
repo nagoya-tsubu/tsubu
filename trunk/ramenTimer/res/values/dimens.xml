@@ -11,6 +11,7 @@
     
     <dimen name="form_image_width">100dip</dimen>
     <dimen name="form_image_height">100dip</dimen>
+    <dimen name="form_edittext_height">50dip</dimen>
     <!--  縦横比を固定して画像をリサイズするときに、縦,横の長い方をこの値する -->
     <dimen name="image_longer_length">144px</dimen>
     

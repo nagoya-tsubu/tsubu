@@ -2,16 +2,16 @@
 	<item 
 		android:state_focused="true" 
 		android:state_pressed="true"
-		android:drawable="@drawable/icac_barcode_g" />
+		android:drawable="@drawable/home_btn_timer_r" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="true"
-		android:drawable="@drawable/icac_barcode_g" />
+		android:drawable="@drawable/home_btn_timer_r" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/icac_barcode_g" />
+		android:drawable="@drawable/home_btn_timer_y" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"
-		android:drawable="@drawable/icac_barcode_g" />
+		android:drawable="@drawable/home_btn_timer_g" />
 </selector>

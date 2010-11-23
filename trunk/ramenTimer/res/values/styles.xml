@@ -46,7 +46,7 @@
     <style name="TitleBarAction2">
         <item name="android:layout_width">@dimen/title_height</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@drawable/actionbar_button</item>
+        <item name="android:background">@drawable/ic_title_border</item>
     </style>
     
     <style name="TitleBarText">
@@ -189,10 +189,8 @@
  		<item name="android:textSize">@dimen/text_size_small</item>
     </style>
     <style name="InformationFormText2">
-   		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
- 		<item name="android:layout_gravity">center_vertical</item>
- 		<item name="android:textColor">@color/secondary_text</item>
+  		<item name="android:layout_gravity">center_vertical</item>
+ 		<item name="android:textColor">@color/primary_text</item>
  		<item name="android:textSize">@dimen/text_size_small</item>
     </style>
     <style name="InformationFormEdit">
@@ -201,9 +199,19 @@
  		<item name="android:layout_gravity">center_vertical</item>
  		<item name="android:textSize">@dimen/text_size_large</item>
     </style>
+    <style name="InformationFormEdit2">
+ 		<item name="android:textSize">@dimen/text_size_large</item>
+    </style>    
     <style name="InformationFormImage">
 		<item name="android:layout_width">@dimen/form_image_width</item>
 		<item name="android:layout_height">@dimen/form_image_height</item>
+		<item name="android:layout_margin">0dip</item>
+		<item name="android:padding">10dip</item>
+		<item name="android:visibility">visible</item>
+		<item name="android:scaleType">centerCrop</item>
+<!-- 		<item name="android:background">#00000000</item> -->
+    </style>
+    <style name="InformationFormImage2">
 		<item name="android:layout_margin">0dip</item>
 		<item name="android:padding">10dip</item>
 		<item name="android:visibility">visible</item>

@@ -12,7 +12,7 @@
 		<ImageButton
 			style="@style/TitleBarAction"
 			android:onClick="onLogoClick"
-			android:src="@drawable/acic_home"/>
+			android:src="@drawable/ic_title_home"/>
 		<ImageView style="@style/TitleBarSeparator" />
        <TextView 
        	style="@style/TitleBarText" 
@@ -21,12 +21,12 @@
 		<ImageButton 
 			style="@style/TitleBarAction2" 
 			android:onClick="onHistoryButtonClick"
-			android:src="@drawable/acic_history" />
+			android:src="@drawable/ic_title_history" />
 
 		<ImageButton 
 			style="@style/TitleBarAction2" 
 			android:onClick="onTimerButtonClick"
-			android:src="@drawable/acic_timer" />
+			android:src="@drawable/ic_title_timer" />
  
 		<requestFocus />
 	</LinearLayout>  
@@ -54,7 +54,7 @@
 				<ImageButton 
 					style="@style/InformationFormImage"
 					android:onClick="onLoadImageClick"
-					android:src="@drawable/home_ic_ramenadd"
+					android:src="@drawable/home_btn_ramenadd"
 					android:id="@+id/NoodleImageButton"/>
 		</TableRow>
 		
