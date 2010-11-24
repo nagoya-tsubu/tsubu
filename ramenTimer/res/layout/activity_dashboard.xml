@@ -81,22 +81,29 @@
     
 	    <ImageView style="@style/HorizontalSeparator"/>
 
-    <LinearLayout
-             style="@style/RaimonBar"
-    	android:background="@drawable/raimon"/>
+	    <LinearLayout
+	        style="@style/RaimonBar"
+	    	android:background="@drawable/raimon"/>
 
-    <ImageView style="@style/HorizontalSeparator"/>
+	    <ImageView style="@style/HorizontalSeparator"/>
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleSmall"
+	    <LinearLayout
+		    android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="6dip"
-            android:indeterminate="true"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_small"
-            android:text="なんだろにゃ"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+
+			<ImageView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/tsubu_logo"/>
+	        
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="@dimen/text_size_small"
+	            android:text="なんだろにゃ"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
