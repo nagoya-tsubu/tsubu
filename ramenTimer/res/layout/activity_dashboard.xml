@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+ 	xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_root"
+    android:orientation="vertical"
+    android:background="@color/background1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout style="@style/TitleBar">
+        <ImageView 
+        	style="@style/TitleBarLogo"
+          	android:src="@drawable/icon_alt" />
+        <ImageView 
+        	style="@style/TitleBarLogo"
+        	android:src="@drawable/title_logo"/>
+    </LinearLayout>
+
+    <ImageView style="@style/HorizontalSeparator"/>
+
+    <LinearLayout style="@style/RaimonBar"
+    	android:background="@drawable/raimon"/>
+    	
+
+    <ImageView style="@style/HorizontalSeparator"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="6dip">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+            <Button android:id="@+id/Button02"
+                style="@style/HomeButton"
+                android:onClick="onReaderButtonClick"
+                android:text="読込"
+                android:drawableTop="@drawable/home_btn_barcode"/>
+            <Button android:id="@+id/Button01"
+                style="@style/HomeButton"
+                android:onClick="onTimerButtonClick"
+                android:text="タイマー"
+                android:drawableTop="@drawable/home_btn_timer"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1">
+            <Button android:id="@+id/Button03"
+                style="@style/HomeButton"
+                android:onClick="onCreateButtonClick"
+                android:text="登録"
+                android:drawableTop="@drawable/home_btn_ramenadd"/>
+            <Button android:id="@+id/Button04"
+                style="@style/HomeButton"
+                android:onClick="onHistoryButtonClick"
+                android:text="履歴"
+                android:drawableTop="@drawable/home_btn_history"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+	   <LinearLayout
+        android:id="@+id/now_playing_loading"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/now_playing_height"
+        android:background="@color/background1"
+        android:gravity="center_horizontal"
+        android:layout_weight="1">
+    
+	    <ImageView style="@style/HorizontalSeparator"/>
+
+    <LinearLayout
+             style="@style/RaimonBar"
+    	android:background="@drawable/raimon"/>
+
+    <ImageView style="@style/HorizontalSeparator"/>
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="6dip"
+            android:indeterminate="true"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_small"
+            android:text="なんだろにゃ"/>
+    </LinearLayout>
 </LinearLayout>
