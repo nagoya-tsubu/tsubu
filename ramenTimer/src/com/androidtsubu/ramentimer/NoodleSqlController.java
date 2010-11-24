@@ -347,20 +347,20 @@ public class NoodleSqlController {
 	 * 引数の商品マスタと計測時間、計測日時をもとに履歴を作成します
 	 * 
 	 * @param noodleMaster
+	 * @param boilTime
 	 * @param measureTime
-	 * @param measureDate
 	 * @throws SQLException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster, int measureTime,
-			Date measureDate) throws SQLException {
+	public void createNoodleHistory(NoodleMaster noodleMaster, int boilTime,
+			Date measureTime) throws SQLException {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put("jancode", noodleMaster.getJanCode());
 			contentValues.put("name", noodleMaster.getName());
 			// 実際に計測した時間を入力します
-			contentValues.put("boiltime", measureTime);
+			contentValues.put("boiltime", boilTime);
 			contentValues.put("measuretime", NoodleHistory
-					.getSimpleDateFormat().format(measureDate));
+					.getSimpleDateFormat().format(measureTime));
 			long ret = database.insert(NOODLEHISTORYTABLENAME, null,
 					contentValues);
 			if (ret < 0) {
