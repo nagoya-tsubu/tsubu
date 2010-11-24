@@ -89,10 +89,11 @@ public class NoodleManager {
 	 * @param noodleMaster
 	 * @throws SQLException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime)
-			throws SQLException {
+	public void createNoodleHistory(NoodleMaster noodleMaster, int measureTime,
+			Date measureDate) throws SQLException {
 		// 商品マスタは何かしら登録されてから使われているはずなのでGAEにマスタを登録することはしない
-		noodleSqlController.createNoodleHistory(noodleMaster, measureTime);
+		noodleSqlController.createNoodleHistory(noodleMaster, measureTime,
+				measureDate);
 	}
 
 	/**

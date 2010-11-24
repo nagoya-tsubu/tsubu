@@ -104,8 +104,7 @@ public class HistoryActivity extends ListActivity {
 			jancode.setText("" + item.getJanCode());
 			// 時間をセット
 			TextView boilTime = (TextView) view.findViewById(R.id.BoilingTime);
-			boilTime.setText(Integer.toString(item.getNoodleMaster()
-					.getTimerLimit()));
+			boilTime.setText(Integer.toString(item.getBoilTime()));
 			// 日付部分は回数と共有なのでViewStubで実装されてるので置き換える
 			ViewStub stub = (ViewStub) view.findViewById(R.id.DateOrNumber);
 			stub.setLayoutResource(R.layout.history_date);
@@ -115,7 +114,7 @@ public class HistoryActivity extends ListActivity {
 			TextView date;
 			date = (TextView) TableRowDate.findViewById(R.id.Date);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH時mm分");
-			date.setText(format.format(item.getMeasureTime()));
+			date.setText(format.format(item.getBoilTime()));
 			return view;
 		}
 

@@ -69,6 +69,26 @@ public class NoodleMaster implements Parcelable{
 		return Integer.toString(getTimerLimit());
 	}
 
+	/**
+	 * 完全なデータかどうかを返す
+	 * @return
+	 */
+	public boolean isCompleteData(){
+		if(janCode == null || janCode.equals("")){
+			return false;
+		}
+		if(name == null || name.equals("")){
+			return false;
+		}
+		if(image == null){
+			return false;
+		}
+		if(timerLimit <= 0){
+			return false;
+		}
+		return true;
+	}
+	
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;

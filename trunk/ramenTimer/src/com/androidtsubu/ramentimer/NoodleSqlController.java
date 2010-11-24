@@ -17,6 +17,7 @@ import android.content.Context;
 import android.database.Cursor;
 import java.sql.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -104,7 +105,7 @@ public class NoodleSqlController {
 	 * @return
 	 * @throws SQLException
 	 */
-	public NoodleMaster getNoodleMaster(String janCode) throws SQLException{
+	public NoodleMaster getNoodleMaster(String janCode) throws SQLException {
 		String[] columns = { "jancode", "name", "boiltime", "image" };
 		String where = "jancode = ?";
 		String[] args = { janCode };
@@ -113,7 +114,7 @@ public class NoodleSqlController {
 			// 検索
 			cursor = database.query(NOODLEMASTERTABLENAME, columns, where,
 					args, null, null, null);
-			if(cursor == null){
+			if (cursor == null) {
 				throw new SQLException("cursor is null");
 			}
 			while (cursor.moveToNext()) {
@@ -166,8 +167,7 @@ public class NoodleSqlController {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleHistory> getNoodleHistories(int rows)
-			throws SQLException {
+	public List<NoodleHistory> getNoodleHistories(int rows) throws SQLException {
 		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
 		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
 		String orderby = "measuretime desc";
@@ -193,7 +193,8 @@ public class NoodleSqlController {
 	/**
 	 * SQLiteから指定日付から指定日付までの最新の商品履歴を得ます
 	 * 
-	 * @param start end
+	 * @param start
+	 *            end
 	 * @return
 	 * @throws SQLiteException
 	 */
@@ -260,20 +261,26 @@ public class NoodleSqlController {
 	 * @param cursor
 	 * @return
 	 */
-	private NoodleHistory createNoodleHistory(Cursor cursor) throws SQLException{
-		String jancode = cursor.getString(cursor.getColumnIndex("jancode"));
-		String measuretimeString = cursor.getString(cursor
-				.getColumnIndex("measuretime"));
-		Date measuretime = null;
+	private NoodleHistory createNoodleHistory(Cursor cursor)
+			throws SQLException {
 		try {
-			measuretime = NoodleHistory.getSimpleDateFormat().parse(
-					measuretimeString);
-		} catch (ParseException e) {
-			// 絶対にExceptionは出ない
-			e.printStackTrace();
+			String jancode = cursor.getString(cursor.getColumnIndex("jancode"));
+			String measuretimeString = cursor.getString(cursor
+					.getColumnIndex("measuretime"));
+			Date measuretime = null;
+			try {
+				measuretime = NoodleHistory.getSimpleDateFormat().parse(
+						measuretimeString);
+			} catch (ParseException e) {
+				// 絶対にExceptionは出ない
+				e.printStackTrace();
+			}
+			int boiltime = cursor.getInt(cursor.getColumnIndex("boiltime"));
+			NoodleMaster noodleMaster = getNoodleMaster(jancode);
+			return new NoodleHistory(noodleMaster, boiltime, measuretime);
+		} catch (SQLiteException ex) {
+			throw new SQLException(ExceptionToStringConverter.convert(ex));
 		}
-		NoodleMaster noodleMaster = getNoodleMaster(jancode);
-		return new NoodleHistory(noodleMaster, measuretime);
 	}
 
 	/**
@@ -284,19 +291,24 @@ public class NoodleSqlController {
 	 */
 	public void createNoodleMater(NoodleMaster noodleMaster)
 			throws SQLException {
-		ContentValues contentValues = new ContentValues();
-		contentValues.put("jancode", noodleMaster.getJanCode());
-		contentValues.put("name", noodleMaster.getName());
-		contentValues.put("boiltime", noodleMaster.getTimerLimit());
-		if (noodleMaster.getImage() != null) {
-			// バーコードをファイル名としてファイルを作成する
-			String filename = noodleMaster.getJanCode() + ".jpg";
-			createImageFile(filename, noodleMaster.getImage());
-			contentValues.put("image", filename);
-		}
-		long ret = database.insert(NOODLEMASTERTABLENAME, null, contentValues);
-		if (ret < 0) {
-			throw new SQLException("insert return value = " + ret);
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("jancode", noodleMaster.getJanCode());
+			contentValues.put("name", noodleMaster.getName());
+			contentValues.put("boiltime", noodleMaster.getTimerLimit());
+			if (noodleMaster.getImage() != null) {
+				// バーコードをファイル名としてファイルを作成する
+				String filename = noodleMaster.getJanCode() + ".jpg";
+				createImageFile(filename, noodleMaster.getImage());
+				contentValues.put("image", filename);
+			}
+			long ret = database.insert(NOODLEMASTERTABLENAME, null,
+					contentValues);
+			if (ret < 0) {
+				throw new SQLException("insert return value = " + ret);
+			}
+		} catch (SQLiteException ex) {
+			throw new SQLException(ExceptionToStringConverter.convert(ex));
 		}
 	}
 
@@ -332,23 +344,30 @@ public class NoodleSqlController {
 	}
 
 	/**
-	 * 引数の商品マスタと計測時間をもとに履歴を追加します
+	 * 引数の商品マスタと計測時間、計測日時をもとに履歴を作成します
 	 * 
 	 * @param noodleMaster
 	 * @param measureTime
-	 * @throws SQLiteException
+	 * @param measureDate
+	 * @throws SQLException
 	 */
-	public void createNoodleHistory(NoodleMaster noodleMaster, Date measureTime)
-			throws SQLException {
-		ContentValues contentValues = new ContentValues();
-		contentValues.put("jancode", noodleMaster.getJanCode());
-		contentValues.put("name", noodleMaster.getName());
-		contentValues.put("boiltime", noodleMaster.getTimerLimit());
-		contentValues.put("measuretime", NoodleHistory.getSimpleDateFormat()
-				.format(measureTime));
-		long ret = database.insert(NOODLEHISTORYTABLENAME, null, contentValues);
-		if (ret < 0) {
-			throw new SQLException("insert return value = " + ret);
+	public void createNoodleHistory(NoodleMaster noodleMaster, int measureTime,
+			Date measureDate) throws SQLException {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("jancode", noodleMaster.getJanCode());
+			contentValues.put("name", noodleMaster.getName());
+			// 実際に計測した時間を入力します
+			contentValues.put("boiltime", measureTime);
+			contentValues.put("measuretime", NoodleHistory
+					.getSimpleDateFormat().format(measureDate));
+			long ret = database.insert(NOODLEHISTORYTABLENAME, null,
+					contentValues);
+			if (ret < 0) {
+				throw new SQLException("insert return value = " + ret);
+			}
+		} catch (SQLiteException ex) {
+			throw new SQLException(ExceptionToStringConverter.convert(ex));
 		}
 	}
 

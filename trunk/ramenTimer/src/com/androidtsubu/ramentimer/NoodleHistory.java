@@ -1,5 +1,6 @@
 package com.androidtsubu.ramentimer;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,6 +19,8 @@ public class NoodleHistory implements Parcelable {
 	/** 商品マスタ */
 	private NoodleMaster noodleMaster;
 	/** 計測時間 */
+	private int boilTime;
+	/** 計測日時 */
 	private Date measureTime;
 	/** マスタのJANコード */
 	private String janCode; // janCodeの型をintからStringに変更 by leibun date
@@ -31,11 +34,14 @@ public class NoodleHistory implements Parcelable {
 	 * コンストラクタ
 	 * 
 	 * @param noodleMaster
+	 * @param boilTime
 	 * @param measureTime
 	 */
-	public NoodleHistory(NoodleMaster noodleMaster, Date measureTime) {
+	public NoodleHistory(NoodleMaster noodleMaster, int boilTime,
+			Date measureTime) {
 		this.noodleMaster = noodleMaster;
 		this.measureTime = measureTime;
+		this.boilTime = boilTime;
 		this.janCode = noodleMaster.getJanCode();
 		this.name = noodleMaster.getName();
 		this.image = noodleMaster.getImage();
@@ -49,6 +55,7 @@ public class NoodleHistory implements Parcelable {
 	public NoodleHistory(Parcel parcel) {
 		this.noodleMaster = parcel.readParcelable(NoodleMaster.class
 				.getClassLoader());
+		this.boilTime = parcel.readInt();
 		this.measureTime = new Date(parcel.readLong());
 		this.janCode = parcel.readString();
 		this.name = parcel.readString();
@@ -62,13 +69,34 @@ public class NoodleHistory implements Parcelable {
 
 	public void writeToParcel(Parcel dest, int flags) {
 		dest.writeParcelable(noodleMaster, 0);
+		dest.writeInt(boilTime);
 		dest.writeLong(measureTime.getTime());
 		dest.writeString(janCode);
 		dest.writeString(name);
 		dest.writeParcelable(image, 0);
 	}
 
-
+	public int getBoilTime(){
+		return boilTime;
+	}
+	
+	/**
+	 * 茹で時間を文字列（分、秒）で返します
+	 * @return
+	 */
+	public String getBoilTimeString(){
+		DecimalFormat df = new DecimalFormat("00");
+		int min = boilTime / 60;
+		int sec = boilTime % 60;
+		StringBuilder buf = new StringBuilder(df.format(min));
+		buf.append("分");
+		if(sec != 0){
+			buf.append(df.format(sec));
+			buf.append("秒");
+		}
+		return buf.toString();
+	}
+	
 	/**
 	 * 計測時間を文字列で返す
 	 * 
@@ -78,12 +106,11 @@ public class NoodleHistory implements Parcelable {
 		return getSimpleDateFormat().format(getMeasureTime());
 	}
 
-	
 	public static SimpleDateFormat getSimpleDateFormat() {
 		return new SimpleDateFormat("yyyyMMddHHmm");
 	}
-	
-	//ゲッター
+
+	// ゲッター
 	public NoodleMaster getNoodleMaster() {
 		return noodleMaster;
 	}
