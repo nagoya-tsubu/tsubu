@@ -1,22 +1,23 @@
 package com.androidtsubu.ramentimer;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +56,7 @@ public class CreateActivity extends Activity {
 	// カップラーメン情報
 	private NoodleMaster noodleMaster = null;
 	// カメラ撮影用
-	private Uri mPictureUri;
+	private String mPicturePath;
 
 	// QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
@@ -167,6 +168,18 @@ public class CreateActivity extends Activity {
 			}
 		});
 	}
+	
+	
+	/**
+	 * 画面が回転時に呼び出される
+	 */
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		// TODO Auto-generated method stub
+		super.onConfigurationChanged(newConfig);
+	}
+
+
 
 	/**
 	 * インテントがもどってきた時の動作
@@ -181,54 +194,67 @@ public class CreateActivity extends Activity {
 		int resizeLength = (int) getResources().getDimension(
 				R.dimen.image_longer_length);
 		if (resultCode == RESULT_OK) {
+			Uri uri = null;
 			if (requestCode == REQUEST_CAMERA || requestCode == REQUEST_GALLERY) {
 				if (requestCode == REQUEST_GALLERY) {// ギャラリー
-					mPictureUri = intent.getData();
-				}else{
-					// NexusOneとかは、getData()からnullが買ってくるので、callCamera()の中で代入してる
-					Uri uri=null;
-					if(intent!=null)
-						uri = intent.getData();
-					if(uri!=null)
-						mPictureUri = uri;
+					uri = intent.getData();
+				} else {
+					/*
+					 * カメラの動作
+					 * GalaxyS対策：uriをPath(String)から生成　
+					 * callCamera側でセットしたUriはnullになってしまうらしい。
+					 * Xperia対策：セットしたファイル名の通りに画像が作られないので、getData()からUriを取得
+					 */					
+					File file = new File(mPicturePath);
+					uri = Uri.fromFile(file);
+					// Experia 2.1対策
+					if (intent != null){
+						Uri _uri = intent.getData();
+						if(_uri != null)
+							uri = intent.getData();
+					}
 				}
 				try {
 					// 画像の取得
 					// URI -> image size -> small bitmap
-					noodleImage = getImageFromUriUsingBitmapFactoryOptions(mPictureUri,resizeLength);
-//					// URI -> bitmap -> small bitmap
-//					noodleImage = getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
+					noodleImage = getImageFromUriUsingBitmapFactoryOptions(uri,
+							resizeLength);
+					// // URI -> bitmap -> small bitmap
+					// noodleImage =
+					// getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
 					// ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
 					// 背景の削除
 					noodleImageView
 							.setBackgroundColor(android.R.color.transparent);
-					
+
 				} catch (IOException e) {
-					Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT)
-							.show();
-				} catch (NullPointerException e){
-					Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT)
-					.show();					
-				} catch (OutOfMemoryError e){
 					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
-					.show();					
+							.show();
+				} catch (NullPointerException e) {
+					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
+							.show();
+				} catch (OutOfMemoryError e) {
+					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
+							.show();
 				}
 			}
-			// 繰り返し呼ばれたときに前のUriが使われてしまうかもしれないので、念のため
-			mPictureUri = null;
 		}
 	}
+
 	/**
 	 * UriからBitmapを取得する
+	 * 
 	 * @param uri
-	 * @param resizeLength　リサイズパラメータ
+	 * @param resizeLength
+	 *            　リサイズパラメータ
 	 * @return
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public Bitmap getImageFromUriUsingBitmapFactoryOptions(Uri uri, int resizeLength) throws FileNotFoundException, IOException {
-		if(uri==null) 
+	public Bitmap getImageFromUriUsingBitmapFactoryOptions(Uri uri,
+			int resizeLength) throws FileNotFoundException, IOException {
+		if (uri == null)
 			throw new NullPointerException();
 		// UriからBitmapクラスを取得
 		InputStream is = getContentResolver().openInputStream(uri);
@@ -236,42 +262,45 @@ public class CreateActivity extends Activity {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		// 画像サイズだけを取得するように設定　デコードはされない
 		opts.inJustDecodeBounds = true;
-		Bitmap image = BitmapFactory.decodeStream(is,null,opts);
+		Bitmap image = BitmapFactory.decodeStream(is, null, opts);
 		is.close();
 		// デコードするように設定
 		opts.inJustDecodeBounds = false;
 		// 縦横比を固定したままリサイズ
 		resizeOptions(opts, resizeLength);
 
-		if(uri==null) Toast.makeText(this, "uri == null", Toast.LENGTH_SHORT).show();
+		if (uri == null)
+			Toast.makeText(this, "uri == null", Toast.LENGTH_SHORT).show();
 		is = getContentResolver().openInputStream(uri);
-		if(is==null) Toast.makeText(this, "is == null", Toast.LENGTH_SHORT).show();
-		image = BitmapFactory.decodeStream(is,null,opts);
+		if (is == null)
+			Toast.makeText(this, "is == null", Toast.LENGTH_SHORT).show();
+		image = BitmapFactory.decodeStream(is, null, opts);
 		is.close();
 		return image;
 	}
 
 	/**
 	 * UriからBitmapを取得する
+	 * 
 	 * @param uri
-	 * @param resizeLength　リサイズパラメータ
+	 * @param resizeLength
+	 *            　リサイズパラメータ
 	 * @return
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public Bitmap getImageFromUriUsingResizeImage(Uri uri, int resizeLength) throws FileNotFoundException, IOException {
+	public Bitmap getImageFromUriUsingResizeImage(Uri uri, int resizeLength)
+			throws FileNotFoundException, IOException {
 		// UriからBitmapクラスを取得
 		InputStream is = getContentResolver().openInputStream(uri);
 		// メモリを大量に使うのでガベコレ これしておかないと、何回か呼び出されるとエラーで止まる
-		System.gc();					
+		System.gc();
 		Bitmap tmp = BitmapFactory.decodeStream(is);
 		is.close();
 		// 縦横比を固定したままリサイズ
 		Bitmap image = resizeImage(tmp, resizeLength);
 		return image;
 	}
-
-	
 
 	/**
 	 * 縦横比を維持したまま画像をリサイズするメソッド 長い方の辺が引数のlengthの長さなる
@@ -294,6 +323,7 @@ public class CreateActivity extends Activity {
 				.createBitmap(img, 0, 0, width, height, matrix, true);
 		return dst;
 	}
+
 	/**
 	 * 縦横比を維持したまま画像をリサイズするメソッド 長い方の辺が引数のlengthの長さなる
 	 * 
@@ -307,10 +337,11 @@ public class CreateActivity extends Activity {
 		float longer = height < width ? (float) width : (float) height;
 		// 伸縮するスケール
 		float scale = length / longer;
-		//置き換え
-		opts.outHeight = Math.round(height*scale);
-		opts.outWidth = Math.round(width*scale);	
+		// 置き換え
+		opts.outHeight = Math.round(height * scale);
+		opts.outWidth = Math.round(width * scale);
 	}
+
 	/**
 	 * アクションバーの履歴ボタンが押されたとき インテントに（RequestCode）をセットしてfinish()
 	 * 
@@ -365,15 +396,13 @@ public class CreateActivity extends Activity {
 	 * カメラをインテントで起動
 	 */
 	private void callCamera() {
-		String filename = "Recipe_" + System.currentTimeMillis() + ".jpg";
-		ContentValues values = new ContentValues();
-		values.put(MediaStore.Images.Media.TITLE, filename);
-		values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-		mPictureUri = getContentResolver().insert(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+		String filename = "RamenTimer_" + System.currentTimeMillis() + ".jpg";
+		File file = new File(Environment.getExternalStorageDirectory(),filename);
+		mPicturePath = file.getPath();
+		
 		Intent intent = new Intent();
 		intent.setAction("android.media.action.IMAGE_CAPTURE");
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, mPictureUri);
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
 		startActivityForResult(intent, REQUEST_CAMERA);
 	}
 
