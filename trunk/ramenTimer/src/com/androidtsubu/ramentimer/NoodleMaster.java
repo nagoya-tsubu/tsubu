@@ -1,5 +1,7 @@
 package com.androidtsubu.ramentimer;
 
+import java.text.DecimalFormat;
+
 import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -66,7 +68,17 @@ public class NoodleMaster implements Parcelable{
 	}
 	
 	public String getTimerLimitString(){
-		return Integer.toString(getTimerLimit());
+		DecimalFormat df = new DecimalFormat("00");
+		int min = getTimerLimit() / 60;
+		int sec = getTimerLimit() % 60;
+		StringBuilder buf = new StringBuilder(df.format(min));
+		buf.append("分");
+		if(sec != 0){
+			buf.append(df.format(sec));
+			buf.append("秒");
+		}
+		
+		return buf.toString();
 	}
 
 	/**
