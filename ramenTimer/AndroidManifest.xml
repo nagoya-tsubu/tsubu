@@ -21,7 +21,7 @@
 		<activity 
 			android:name="CreateActivity" 
 	    	android:screenOrientation="portrait"
-	    	android:configChanges="orientation"/>
+	    	android:configChanges="orientation|keyboardHidden"/>
 		<activity 
 			android:name="HistoryActivity" 
 			android:screenOrientation="portrait"/>
