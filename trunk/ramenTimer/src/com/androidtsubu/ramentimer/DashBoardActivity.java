@@ -5,14 +5,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
+
 
 public class DashBoardActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard_activity);
+        setContentView(R.layout.activity_dashboard);
 	}
 	/**
 	 * タイマーのボタンが押されたとき
