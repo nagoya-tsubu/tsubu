@@ -91,19 +91,21 @@
 		    android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="left"
             android:layout_weight="1">
 
 			<ImageView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:background="@drawable/tsubu_logo"/>
+	            android:background="@drawable/tsubu_logo"
+	            android:layout_gravity="center_vertical"/>
 	        
 	        <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
 	            android:textSize="@dimen/text_size_small"
-	            android:text="なんだろにゃ"/>
+	            android:text="mogmog"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
