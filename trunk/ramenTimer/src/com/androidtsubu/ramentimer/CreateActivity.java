@@ -575,8 +575,24 @@ public class CreateActivity extends Activity {
 			if(verificationDialog!=null)
 				verificationDialog.cancel();
 		}
-	}; 
-
+	};
+	
+	/**
+	 * 時間調整ボタンを非表示にする
+	 */
+	private void hidePickerButton() {
+		Button minUpButton = (Button) findViewById(R.id.MinUpButton);
+		Button minDownButton = (Button) findViewById(R.id.MinDownButton);
+		Button secUpButton = (Button) findViewById(R.id.SecUpButton);
+		Button secDownButton = (Button) findViewById(R.id.SecDownButton);
+		Button createButton = (Button) findViewById(R.id.CreateButton);
+		minUpButton.setVisibility(View.INVISIBLE);
+		minDownButton.setVisibility(View.INVISIBLE);
+		secUpButton.setVisibility(View.INVISIBLE);
+		secDownButton.setVisibility(View.INVISIBLE);
+		createButton.setVisibility(View.GONE);
+	}
+	
 	/**
 	 * logoボタンが押された時の動作
 	 * 
