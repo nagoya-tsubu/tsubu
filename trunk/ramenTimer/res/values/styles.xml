@@ -46,7 +46,7 @@
     <style name="TitleBarAction2">
         <item name="android:layout_width">@dimen/title_height</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@drawable/ic_title_border</item>
+        <item name="android:background">@drawable/btn_block_border</item>
     </style>
     
     <style name="TitleBarText">
@@ -165,21 +165,6 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_margin">10dip</item>
 	</style>
-
-    <style name="InformationFormOuter">
-   		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:padding">2dip</item>
-		<item name="android:background">@color/red</item>
-    </style>
-    
-    <style name="InformationFormInner">
-   		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:padding">5dip</item>
-		<item name="android:background">@color/background1</item>
-    </style>
-
     
     <style name="InformationFormText">
    		<item name="android:layout_width">wrap_content</item>
@@ -229,8 +214,14 @@
 		<item name="android:onClick">onCreateClick</item>
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="PlusButton">
+		<item name="android:background">@drawable/timer_btn_plus</item>
+	</style>
+	<style name="MinusButton">
+		<item name="android:background">@drawable/timer_btn_minus</item>
+	</style>
     	
-    </style>
     
 	<!-- QuickAction styles -->
 	<style name="Animations" />
@@ -290,6 +281,7 @@
 	<style name="TimeTextView">
 		<item name="android:textSize">50px</item>
 		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@color/primary_text</item>
 	</style>
 
 <style name="ButtonStyle"><item name="android:width">100dip</item>

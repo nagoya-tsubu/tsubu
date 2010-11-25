@@ -33,9 +33,17 @@ import com.androidtsubu.ramentimer.quickaction.ActionItem;
 import com.androidtsubu.ramentimer.quickaction.QuickAction;
 
 public class CreateActivity extends Activity {
-
+	// RequestCode
 	private static final int REQUEST_GALLERY = 1;
 	private static final int REQUEST_CAMERA = 2;
+	
+	// 秒の増減間隔
+	private static final int SEC_INTERVALS = 10;
+	// 分の上限値
+	private static final int MIN_UPPEL_LIMIT = 9;
+	// 分の下限値
+	private static final int MIN_LOWER_LIMIT = 0;
+
 
 	// 商品情報(NoodleMaster)のキー
 	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
@@ -44,8 +52,10 @@ public class CreateActivity extends Activity {
 	private TextView janText = null;
 	// 商品名
 	private EditText nameEdit = null;
-	// ゆで時間
-	private EditText boilTimeEdit = null;
+	// ゆで時間(分）	
+	private TextView minTextView = null;
+	// ゆで時間(秒)
+	private TextView secTextView = null;
 	// //麺の種類
 	// private RadioGroup noodleTypeRadioGroup = null;
 	// 商品の画像
@@ -76,7 +86,7 @@ public class CreateActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.create_activity);
+		setContentView(R.layout.activity_create);
 		// リクエストコードを保持
 		Intent intent = getIntent();
 		requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
@@ -90,27 +100,30 @@ public class CreateActivity extends Activity {
 		// ボタンとかエディットボックスとかのUIを取ってくる
 		janText = (TextView) findViewById(R.id.JanEdit);
 		nameEdit = (EditText) findViewById(R.id.NameEdit);
-		boilTimeEdit = (EditText) findViewById(R.id.BoilingTimeEdit);
+		minTextView = (TextView) findViewById(R.id.MinTextView);
+		secTextView = (TextView) findViewById(R.id.SecTextView);
 		// noodleTypeRadioGroup = (RadioGroup)
 		// findViewById(R.id.NoodleTypeRadioGroup);
 		noodleImageView = (ImageButton) findViewById(R.id.NoodleImageButton);
 		// NoodleMasterから情報を取り出す
 		String nmJancode = noodleMaster.getJanCode();
 		String nmName = noodleMaster.getName();
-		String nmTimerLimit = noodleMaster.getTimerLimitString();
+		String nmTimerLimitString = noodleMaster.getTimerLimitString();
+		int nmTimerLimitInt=noodleMaster.getTimerLimit();
 		Bitmap nmImage = noodleMaster.getImage();
 
 		if (nmJancode != null)
 			janText.setText(nmJancode);
 		if (nmName != null)
 			nameEdit.setText(nmName);
-		if (nmTimerLimit != null)
-			boilTimeEdit.setText(nmTimerLimit);
+		if (nmTimerLimitString != null){
+			updateTimerTextView(nmTimerLimitInt);
+		}
 		if (nmImage != null)
 			noodleImageView.setImageBitmap(nmImage);
 
 		// 全部埋まっている場合は、既に登録されている
-		if (nmJancode != null && nmName != null && nmTimerLimit != null
+		if (nmJancode != null && nmName != null && nmTimerLimitString != null
 				&& nmImage != null) {
 			Toast.makeText(this, "既に登録されています", Toast.LENGTH_LONG).show();
 			finish();
@@ -220,13 +233,9 @@ public class CreateActivity extends Activity {
 					noodleImage = getImageFromUriUsingBitmapFactoryOptions(uri,
 							resizeLength);
 					// // URI -> bitmap -> small bitmap
-					// noodleImage =
-					// getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
+					// noodleImage = getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
 					// ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
-					// 背景の削除
-					noodleImageView
-							.setBackgroundColor(android.R.color.transparent);
 
 				} catch (IOException e) {
 					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
@@ -383,6 +392,78 @@ public class CreateActivity extends Activity {
 	}
 
 	/**
+	 * 分の＋ボタンが押されたとき
+	 * @param v
+	 */
+	public void onMinUpClick(View v){
+		addTimerCount(60);
+	}
+	
+	/**
+	 * 分のーボタンが押されたとき
+	 * @param v
+	 */
+	public void onMinDownClick(View v){
+		addTimerCount(-60);
+	}
+	
+	/**
+	 * 秒の＋ボタンが押されたとき 
+	 * ※分も変わる場合がある
+	 * @param v
+	 */
+	public void onSecUpClick(View v){
+		addTimerCount(SEC_INTERVALS);
+	}
+	
+	/**
+	 * 秒のーボタンが押されたとき
+	 * ※分も変わる場合がある
+	 * @param v
+	 */
+	public void onSecDownClick(View v){
+		addTimerCount(-SEC_INTERVALS);
+	}
+	
+	/**
+	 * タイマーに時間を足す
+	 * @param sec
+	 */
+	private void addTimerCount(int sec){
+		int setTime = (Integer.valueOf(minTextView.getText().toString()) * 60 )+ Integer.valueOf(secTextView.getText().toString());
+		setTime = setTime + sec ;
+		// 上限値または下限値を超える場合は処理しない
+		if(setTime > MIN_UPPEL_LIMIT * 60 || setTime < MIN_LOWER_LIMIT){
+			return;
+		}
+		updateTimerTextView(setTime);
+	}
+
+	/**
+	 * タイマーの残り時間を更新する
+	 * @param time
+	 */
+	private void updateTimerTextView(long sec) {
+		minTextView.setText(String.valueOf(sec / 60));
+		secTextView.setText(getSecText(sec % 60));
+	}
+	
+	/**
+	 * 引数が有効値でなければ有効値を戻す。 1桁の場合は前0を付加する。
+	 */
+	private String getSecText(long sec) {
+		if (sec >= 60) {
+			sec = sec - 60;
+		} else if (sec < 0) {
+			sec = sec + 60;
+		}
+		String secText = String.valueOf(sec);
+		if (sec < 10) { // 一桁の場合は前0を表示
+			secText = "0" + sec;
+		}
+		return secText;
+	}	
+	/**
 	 * ギャラリーをインテントで起動
 	 */
 	private void callGallery() {
@@ -494,9 +575,17 @@ public class CreateActivity extends Activity {
 		// EditTextやRadioGroupから状態を取得
 		String jancode = janText.getText().toString();
 		String name = nameEdit.getText().toString();
-		int boilTime = new Integer(boilTimeEdit.getText().toString())
-				.intValue();
-		Bitmap image = noodleImage;
+		// 分と秒を取得
+		int min = Integer.parseInt(minTextView.getText().toString());
+		int sec = Integer.parseInt(secTextView.getText().toString());
+		// 秒に変換
+		int boilTime = min*60 + sec;
+		// 画像の取得
+		Bitmap image;
+		if(noodleImage==null) // セットされていない場合なダミー画像を入れる
+			image = BitmapFactory.decodeResource(getResources(), R.drawable.img_ramen_noimage);
+		else
+			image = noodleImage;
 		// NoodleType noodleType =
 		// NoodleType.values()[noodleTypeRadioGroup.getCheckedRadioButtonId()];
 		NoodleMaster noodle = new NoodleMaster(jancode, name, image, boilTime);

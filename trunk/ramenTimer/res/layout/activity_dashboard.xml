@@ -14,7 +14,7 @@
           	android:src="@drawable/icon_alt" />
         <ImageView 
         	style="@style/TitleBarLogo"
-        	android:src="@drawable/title_logo"/>
+        	android:src="@drawable/title_home"/>
     </LinearLayout>
 
     <ImageView style="@style/HorizontalSeparator"/>

@@ -14,5 +14,7 @@
     <dimen name="form_edittext_height">50dip</dimen>
     <!--  縦横比を固定して画像をリサイズするときに、縦,横の長い方をこの値する -->
     <dimen name="image_longer_length">144px</dimen>
+    <!-- 時間設定の部分の数字とボタンの距離 -->
+    <dimen name="number_to_button">15dip</dimen>
     
 </resources>
