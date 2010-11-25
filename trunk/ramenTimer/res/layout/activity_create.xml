@@ -18,12 +18,12 @@
       		android:text="登録画面"/>
 				
 		<ImageButton 
-			style="@style/TitleBarAction2" 
+			style="@style/TitleBarAction" 
 			android:onClick="onHistoryButtonClick"
 			android:src="@drawable/ic_title_history" />
 
 		<ImageButton 
-			style="@style/TitleBarAction2" 
+			style="@style/TitleBarAction" 
 			android:onClick="onTimerButtonClick"
 			android:src="@drawable/ic_title_timer" />
  
@@ -184,6 +184,8 @@
 		android:layout_gravity="center_horizontal"
 		android:onClick="onCreateClick"
 		android:textSize="@dimen/text_size_large"
+		android:background="@drawable/btn_bg"
+		android:textColor="@color/primary_text"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		/>
