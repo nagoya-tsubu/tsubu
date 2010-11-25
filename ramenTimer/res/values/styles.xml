@@ -46,7 +46,7 @@
     <style name="TitleBarAction2">
         <item name="android:layout_width">@dimen/title_height</item>
         <item name="android:layout_height">fill_parent</item>
-        <item name="android:background">@drawable/btn_block_border</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
     
     <style name="TitleBarText">
@@ -159,12 +159,6 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:background">@drawable/img_borderitem</item>
     </style>
-
-	<style name="MarginFrame">
-   		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_margin">10dip</item>
-	</style>
     
     <style name="InformationFormText">
    		<item name="android:layout_width">wrap_content</item>
@@ -208,13 +202,6 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:orientation">horizontal</item>
     </style>
-    <style name="CreateButton">
-    	<item name="android:text">登録</item>
-		<item name="android:layout_gravity">center_horizontal</item>
-		<item name="android:onClick">onCreateClick</item>
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-	</style>
 	<style name="PlusButton">
 		<item name="android:background">@drawable/timer_btn_plus</item>
 	</style>

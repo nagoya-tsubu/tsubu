@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -68,6 +69,10 @@ public class CreateActivity extends Activity {
 	// カメラ撮影用
 	private String mPicturePath;
 
+	// 確認ダイアログ
+	AlertDialog verificationDialog =null;
+	
+	
 	// QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
 	// QuickAction のアイテム ギャラリー
@@ -462,7 +467,8 @@ public class CreateActivity extends Activity {
 			secText = "0" + sec;
 		}
 		return secText;
-	}	
+	}
+
 	/**
 	 * ギャラリーをインテントで起動
 	 */
@@ -511,15 +517,15 @@ public class CreateActivity extends Activity {
 			return;
 		}
 		entry = new EntryAsyncTask(this);
-
+		// 登録ボタンを無効化
+		v.setEnabled(false);
 		// 確認ダイアログの作成
 		AlertDialog.Builder builder;
-		AlertDialog alertDialog;
 
 		LayoutInflater inflater = (LayoutInflater) this
 				.getSystemService(this.LAYOUT_INFLATER_SERVICE);
-		View layout = inflater.inflate(R.layout.ramen_list_item,
-				(ViewGroup) findViewById(R.id.layout_root));
+		View layout = inflater.inflate(R.layout.dialog_create_verification,
+				(ViewGroup) findViewById(R.id.layout_verification_root));
 		TextView jan_text = (TextView) layout.findViewById(R.id.JanText);
 		jan_text.setText(noodleMaster.getJanCode());
 		TextView name_text = (TextView) layout.findViewById(R.id.RamenName);
@@ -528,21 +534,15 @@ public class CreateActivity extends Activity {
 		time_text.setText(noodleMaster.getTimerLimitString());
 		ImageView image = (ImageView) layout.findViewById(R.id.NoodleImage);
 		image.setImageBitmap(noodleMaster.getImage());
+		Button okButton = (Button) layout.findViewById(R.id.CreateDialogCancelButton);
+		okButton.setOnClickListener(dialogOkClick);
+		Button cancelButton = (Button) layout.findViewById(R.id.CreateDialogCancelButton);
+		cancelButton.setOnClickListener(dialogCancelClick);
 
 		builder = new AlertDialog.Builder(this);
-		builder.setMessage("これで登録しますか？").setView(layout).setCancelable(false)
-				.setPositiveButton("登録", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						entry.execute(noodleMaster);
-					}
-				}).setNegativeButton("キャンセル",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
-		alertDialog = builder.create();
-		alertDialog.show();
+		builder.setMessage("これで登録しますか？").setView(layout).setCancelable(false);
+		verificationDialog = builder.create();
+		verificationDialog.show();
 
 		// //リーダーアクティビティから起動された場合
 		// if(requestCode == RequestCode.READER2CREATE.ordinal()){
@@ -556,6 +556,26 @@ public class CreateActivity extends Activity {
 		// entry.execute(noodleMaster);
 		// }
 	}
+	
+	/**
+	 * ダイアログでOKがクリックされたとき
+	 */
+	OnClickListener dialogOkClick = new OnClickListener() {
+		public void onClick(View v) {
+			if(entry!=null && verificationDialog!=null)
+				entry.execute(noodleMaster);			
+		}
+	}; 
+
+	/**
+	 * ダイアログでキャンセルがクリックされたとき
+	 */
+	OnClickListener dialogCancelClick = new OnClickListener() {
+		public void onClick(View v) {
+			if(verificationDialog!=null)
+				verificationDialog.cancel();
+		}
+	}; 
 
 	/**
 	 * logoボタンが押された時の動作

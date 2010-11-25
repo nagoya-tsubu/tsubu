@@ -16,5 +16,4 @@
     <dimen name="image_longer_length">144px</dimen>
     <!-- 時間設定の部分の数字とボタンの距離 -->
     <dimen name="number_to_button">15dip</dimen>
-    
 </resources>

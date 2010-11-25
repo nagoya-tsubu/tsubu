@@ -31,7 +31,7 @@ public class HistoryActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.history_activity);
+		setContentView(R.layout.activity_history);
 
 		// 履歴の呼び出し
 		NoodleManager manager = new NoodleManager(this);
@@ -89,7 +89,7 @@ public class HistoryActivity extends ListActivity {
 			// データを取り出す
 			NoodleHistory item = (NoodleHistory) getItem(position);
 			// レイアウトファイルからViewを生成
-			View view = mInflater.inflate(R.layout.ramen_list_item, null);
+			View view = mInflater.inflate(R.layout.list_item_ramen, null);
 			// 画像をセット
 			ImageView image;
 			image = (ImageView) view.findViewById(R.id.NoodleImage);
@@ -105,16 +105,13 @@ public class HistoryActivity extends ListActivity {
 			// 時間をセット
 			TextView boilTime = (TextView) view.findViewById(R.id.BoilingTime);
 			boilTime.setText(item.getBoilTimeString());
-			// 日付部分は回数と共有なのでViewStubで実装されてるので置き換える
-			ViewStub stub = (ViewStub) view.findViewById(R.id.DateOrNumber);
-			stub.setLayoutResource(R.layout.history_date);
-			View inflated = stub.inflate();
-			TableRow TableRowDate = (TableRow) inflated;
 			// 日付をセット
 			TextView date;
-			date = (TextView) TableRowDate.findViewById(R.id.Date);
+			date = (TextView) view.findViewById(R.id.date);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH時mm分");
 			date.setText(format.format(item.getMeasureTime()));
+			// 初期値は不可視（GONE）なので見えるように変更
+			date.setVisibility(TextView.VISIBLE);
 			return view;
 		}
 
