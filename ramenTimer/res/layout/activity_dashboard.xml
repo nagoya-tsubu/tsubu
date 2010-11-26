@@ -11,7 +11,7 @@
     <LinearLayout style="@style/TitleBar">
         <ImageView 
         	style="@style/TitleBarLogo"
-          	android:src="@drawable/icon_alt" />
+          	android:src="@drawable/icon" />
         <ImageView 
         	style="@style/TitleBarLogo"
         	android:src="@drawable/title_home"/>
