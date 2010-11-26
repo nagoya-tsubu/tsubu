@@ -6,8 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -23,10 +24,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +61,15 @@ public class CreateActivity extends Activity {
 	private TextView minTextView = null;
 	// ゆで時間(秒)
 	private TextView secTextView = null;
+	// 登録ボタン
+	private Button createButton = null;
+	// プログレスアイコン
+	private ImageView progressIcon = null;
+	// 時間設定のボタン
+	private Button minUpButton = null;
+	private Button minDownButton = null;
+	private Button secUpButton = null;	
+	private Button secDownButton = null;
 	// //麺の種類
 	// private RadioGroup noodleTypeRadioGroup = null;
 	// 商品の画像
@@ -68,7 +81,7 @@ public class CreateActivity extends Activity {
 	private NoodleMaster noodleMaster = null;
 	// カメラ撮影用
 	private String mPicturePath;
-
+	
 	// 確認ダイアログ
 	AlertDialog verificationDialog =null;
 	
@@ -87,29 +100,27 @@ public class CreateActivity extends Activity {
 
 	/**
 	 * CreateActivityがインテントで呼び出されたときに呼ばれる
+	 * リクエストコードとNoodleMasterがセットされていないと終了します
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_create);
-		// リクエストコードを保持
+
+		// リクエストコードを取得
 		Intent intent = getIntent();
 		requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 		// リクエストコードがセットされてない場合は終了
 		if (requestCode == -1)
 			finish();
+		
+		// ボタンとかエディットボックスとかのViewをメンバー変数に格納
+		initUi();
+		
 		// カップラーメン情報の取得
 		noodleMaster = (NoodleMaster) intent
 				.getParcelableExtra(KEY_NOODLE_MASTER);
-
-		// ボタンとかエディットボックスとかのUIを取ってくる
-		janText = (TextView) findViewById(R.id.JanEdit);
-		nameEdit = (EditText) findViewById(R.id.NameEdit);
-		minTextView = (TextView) findViewById(R.id.MinTextView);
-		secTextView = (TextView) findViewById(R.id.SecTextView);
-		// noodleTypeRadioGroup = (RadioGroup)
-		// findViewById(R.id.NoodleTypeRadioGroup);
-		noodleImageView = (ImageButton) findViewById(R.id.NoodleImageButton);
+		
 		// NoodleMasterから情報を取り出す
 		String nmJancode = noodleMaster.getJanCode();
 		String nmName = noodleMaster.getName();
@@ -117,22 +128,25 @@ public class CreateActivity extends Activity {
 		int nmTimerLimitInt=noodleMaster.getTimerLimit();
 		Bitmap nmImage = noodleMaster.getImage();
 
+		// UIにNoodleMasterの情報をセット
 		if (nmJancode != null)
 			janText.setText(nmJancode);
 		if (nmName != null)
 			nameEdit.setText(nmName);
-		if (nmTimerLimitString != null){
+		if (nmTimerLimitString != null)
 			updateTimerTextView(nmTimerLimitInt);
-		}
 		if (nmImage != null)
 			noodleImageView.setImageBitmap(nmImage);
 
-		// 全部埋まっている場合は、既に登録されている
+		// NoodleMasterが全部埋まっている場合は、既に登録されているので終了
 		if (nmJancode != null && nmName != null && nmTimerLimitString != null
 				&& nmImage != null) {
 			Toast.makeText(this, "既に登録されています", Toast.LENGTH_LONG).show();
 			finish();
 		}
+		
+		// QuickAction用のItemを初期化
+		initActionItem();
 
 		// //麺の種類をラジオボタンで作成
 		// final NoodleType NoodleTypeValues[] = NoodleType.values();
@@ -143,8 +157,30 @@ public class CreateActivity extends Activity {
 		// radioButton.setTextColor(R.color.information_form_text2);
 		// noodleTypeRadioGroup.addView(radioButton);
 		// }
+	}
+	/**
+	 * ボタンとかエディットボックスとかのUIを取ってくる
+	 */
+	private void initUi(){
+		janText = (TextView) findViewById(R.id.JanEdit);
+		nameEdit = (EditText) findViewById(R.id.NameEdit);
+		minTextView = (TextView) findViewById(R.id.MinTextView);
+		secTextView = (TextView) findViewById(R.id.SecTextView);
+		createButton = (Button) findViewById(R.id.CreateButton);
+		progressIcon = (ImageView) findViewById(R.id.ProgressIcon);
+		minUpButton = (Button) findViewById(R.id.MinUpButton);
+		minDownButton = (Button) findViewById(R.id.MinDownButton);
+		secUpButton = (Button) findViewById(R.id.SecUpButton);
+		secDownButton = (Button) findViewById(R.id.SecDownButton);
+		// noodleTypeRadioGroup = (RadioGroup)
+		// findViewById(R.id.NoodleTypeRadioGroup);
+		noodleImageView = (ImageButton) findViewById(R.id.NoodleImageButton);
+	}
 
-		// QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
+	/**
+	 *  QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
+	 */
+	private void initActionItem(){
 		itemCamera = new ActionItem();
 		itemCamera.setTitle("カメラ");
 		itemCamera.setIcon(getResources().getDrawable(
@@ -184,9 +220,8 @@ public class CreateActivity extends Activity {
 				callTimerActivity();
 				finish();
 			}
-		});
+		});		
 	}
-	
 	
 	/**
 	 * 画面が回転時に呼び出される
@@ -363,7 +398,7 @@ public class CreateActivity extends Activity {
 	 */
 	public void onHistoryButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION＿TIMER
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.ACTION_HISTORY
 				.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
@@ -377,7 +412,7 @@ public class CreateActivity extends Activity {
 	public void onTimerButtonClick(View v) {
 		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-				RequestCode.ACTION_HISTORY.ordinal());
+				RequestCode.ACTION＿TIMER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
@@ -517,13 +552,9 @@ public class CreateActivity extends Activity {
 			return;
 		}
 		entry = new EntryAsyncTask(this);
-		// 登録ボタンを無効化
-		v.setEnabled(false);
-		// 確認ダイアログの作成
-		AlertDialog.Builder builder;
 
 		LayoutInflater inflater = (LayoutInflater) this
-				.getSystemService(this.LAYOUT_INFLATER_SERVICE);
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View layout = inflater.inflate(R.layout.dialog_create_verification,
 				(ViewGroup) findViewById(R.id.layout_verification_root));
 		TextView jan_text = (TextView) layout.findViewById(R.id.JanText);
@@ -534,27 +565,22 @@ public class CreateActivity extends Activity {
 		time_text.setText(noodleMaster.getTimerLimitString());
 		ImageView image = (ImageView) layout.findViewById(R.id.NoodleImage);
 		image.setImageBitmap(noodleMaster.getImage());
-		Button okButton = (Button) layout.findViewById(R.id.CreateDialogCancelButton);
+		Button okButton = (Button) layout.findViewById(R.id.CreateDialogOkButton);
 		okButton.setOnClickListener(dialogOkClick);
 		Button cancelButton = (Button) layout.findViewById(R.id.CreateDialogCancelButton);
 		cancelButton.setOnClickListener(dialogCancelClick);
+
+		// 確認ダイアログの作成
+		AlertDialog.Builder builder;
 
 		builder = new AlertDialog.Builder(this);
 		builder.setMessage("これで登録しますか？").setView(layout).setCancelable(false);
 		verificationDialog = builder.create();
 		verificationDialog.show();
-
-		// //リーダーアクティビティから起動された場合
-		// if(requestCode == RequestCode.READER2CREATE.ordinal()){
-		// entry.execute(noodleMaster);
-		// // QuickAction qa = new QuickAction(v);
-		// // qa.addActionItem(itemHome);
-		// // qa.addActionItem(itemTimer);
-		// // qa.show();
-		// //タイマーから起動された場合
-		// }else if(requestCode == RequestCode.TIMER2CREATE.ordinal()){
-		// entry.execute(noodleMaster);
-		// }
+//		PopupWindow popupWindow = new PopupWindow(this);  
+//		popupWindow.setWindowLayoutMode(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
+//		popupWindow.setContentView(layout);
+//		popupWindow.showAsDropDown(noodleImageView);
 	}
 	
 	/**
@@ -562,8 +588,11 @@ public class CreateActivity extends Activity {
 	 */
 	OnClickListener dialogOkClick = new OnClickListener() {
 		public void onClick(View v) {
-			if(entry!=null && verificationDialog!=null)
+			if(entry!=null && verificationDialog!=null){
 				entry.execute(noodleMaster);			
+				progressMode();
+				verificationDialog.dismiss();
+			}
 		}
 	}; 
 
@@ -576,21 +605,58 @@ public class CreateActivity extends Activity {
 				verificationDialog.cancel();
 		}
 	};
+	/**
+	 * 登録ボタンとかタイマーボタンを消してプログレスアイコンを表示する
+	 */
+	private void progressMode(){
+		// 登録ボタンを消す (GONEなので空間ごと消える)
+		createButton.setVisibility(View.GONE);
+		// ImageButtonを無効化する
+		noodleImageView.setClickable(false);
+		// EditTextを無効化する
+		nameEdit.setEnabled(false);
+		// pickerButtonを隠す
+		hidePickerButton();
+		// プログレスアイコンの表示とアニメーションのセット
+		progressIcon.setVisibility(ImageView.VISIBLE);
+		progressIcon.startAnimation(AnimationUtils.loadAnimation(this, R.anim.progress_icon));		
+	}
+	/**
+	 * 登録ボタンとかタイマーボタンを表示してプログレスアイコンを非表示にする
+	 */
+	private void inputMode(){
+		// 登録ボタンを消す (GONEなので空間ごと消える)
+		createButton.setVisibility(View.VISIBLE);
+		// ImageButtonを押せるようにする
+		noodleImageView.setClickable(true);
+		// EditTextを入力可能にする
+		nameEdit.setEnabled(true);
+		// pickerButtonを表示する
+		showPickerButton();
+		// プログレスアイコンの表示とアニメーションのセット
+		progressIcon.setVisibility(ImageView.GONE);
+		progressIcon.clearAnimation();
+		
+	}
 	
 	/**
 	 * 時間調整ボタンを非表示にする
 	 */
 	private void hidePickerButton() {
-		Button minUpButton = (Button) findViewById(R.id.MinUpButton);
-		Button minDownButton = (Button) findViewById(R.id.MinDownButton);
-		Button secUpButton = (Button) findViewById(R.id.SecUpButton);
-		Button secDownButton = (Button) findViewById(R.id.SecDownButton);
-		Button createButton = (Button) findViewById(R.id.CreateButton);
 		minUpButton.setVisibility(View.INVISIBLE);
 		minDownButton.setVisibility(View.INVISIBLE);
 		secUpButton.setVisibility(View.INVISIBLE);
 		secDownButton.setVisibility(View.INVISIBLE);
-		createButton.setVisibility(View.GONE);
+	}
+	
+	/**
+	 * 時間調整ボタンを表示する
+	 */
+	private void showPickerButton() {
+		minUpButton.setVisibility(View.VISIBLE);
+		minDownButton.setVisibility(View.VISIBLE);
+		secUpButton.setVisibility(View.VISIBLE);
+		secDownButton.setVisibility(View.VISIBLE);
 	}
 	
 	/**
@@ -681,36 +747,72 @@ public class CreateActivity extends Activity {
 			switch (result) {
 			case RESULT_CREATE_OK:
 				Toast.makeText(activity, "登録完了", Toast.LENGTH_LONG).show();
+				// アニメーションの停止
+				progressIcon.clearAnimation();
 				break;
 			case RESULT_ERROR_GAE:
 				Toast.makeText(activity, "サーバーへの登録に失敗しました", Toast.LENGTH_LONG)
 						.show();
+				// UIを入力可能モードにする
+				inputMode();
 				return;
 			case RESULT_ERROR_SQLITE:
 				Toast.makeText(activity, "ローカルへの登録に失敗しました", Toast.LENGTH_LONG)
 						.show();
+				// UIを入力可能モードにする
+				inputMode();
 				return;
 			}
 			// リーダーから呼び出された場合
 			if (requestCode == RequestCode.READER2CREATE.ordinal()) {
 				// ダイアログで選択させる
-				final CharSequence[] items = { "タイマーを起動", "ダッシュボードに戻る" };
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-				builder.setTitle("タイマーを動かしますか？");
-				builder.setItems(items, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int item) {
-						if (item == 0)
-							callTimerActivity();
-						activity.finish();
-					}
-				});
-				builder.show();
-
+				AlertDialog dialog = getGotoDialog();
+				dialog.show();
 				// タイマーから呼び出された場合
 			} else if (requestCode == RequestCode.TIMER2CREATE.ordinal()) {
 				activity.finish();
 			}
 		}
+		/**
+		 * ダイアログを返す。レイアウトはdialog_create_goto.xmlを参照
+		 * @return
+		 */
+		private AlertDialog getGotoDialog(){
+			// レイアウトの呼び出し
+			LayoutInflater inflater = (LayoutInflater) activity
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View layout = inflater.inflate(R.layout.dialog_create_goto,
+					(ViewGroup) findViewById(R.id.layout_create_goto_root));
+			// ボタンの動作を設定
+			Button timerButton = (Button) layout.findViewById(R.id.GotoDialogTimerButton);
+			timerButton.setOnClickListener(onTimerClick);
+			Button homeButton = (Button) layout.findViewById(R.id.GotoDialogHomeButton);
+			homeButton.setOnClickListener(onHomeClick);
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+			builder.setTitle("タイマーを動かしますか？")
+				.setView(layout);
+			return builder.create();
+			
+		}
+		/**
+		 * タイマーを起動のボタンが押されたとき
+		 */
+		private OnClickListener onTimerClick = new OnClickListener() {
+			public void onClick(View v) {
+				callTimerActivity();
+				activity.finish();
+			}
+		};
+		/**
+		 * ホームに戻るのボタンが押されたとき
+		 */
+		private OnClickListener onHomeClick = new OnClickListener() {
+			public void onClick(View v) {
+				activity.finish();
+			}
+		};
+			
 	}
 
 }
