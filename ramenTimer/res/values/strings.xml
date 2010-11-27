@@ -16,6 +16,8 @@
   
   <!-- クリエイトで利用の文字列 -->
   <string name="create_products">商品 </string>
+  <string name="create_time">時間</string>
+  <string name="create_create">登録 </string>
   
   <!-- クリエイトで利用の文字列 -->
 </resources>
