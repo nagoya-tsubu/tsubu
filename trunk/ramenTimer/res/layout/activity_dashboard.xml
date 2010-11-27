@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout
- 	xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_root"
     android:orientation="vertical"
-    android:background="@color/background1" 
+    android:background="@color/background1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <LinearLayout style="@style/TitleBar">
-        <ImageView 
-        	style="@style/TitleBarLogo"
-          	android:src="@drawable/icon"/>
-        <ImageView 
-        	style="@style/TitleBarLogo"
-        	android:src="@drawable/title_home"/>
+        <ImageView
+            style="@style/TitleBarAction"
+            android:src="@drawable/ic_title_home" />
+        <ImageView
+            style="@style/TitleBarLogo"
+            android:src="@drawable/title_home"/>
     </LinearLayout>
 
     <ImageView style="@style/HorizontalSeparator"/>
 
     <LinearLayout style="@style/RaimonBar"
-    	android:background="@drawable/raimon"/>
+        android:background="@drawable/raimon"/>
 
     <ImageView style="@style/HorizontalSeparator"/>
 
@@ -69,41 +69,41 @@
     </LinearLayout>
 
 
-	   <LinearLayout
+       <LinearLayout
         android:id="@+id/now_playing_loading"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/now_ramen"
         android:background="@color/background1"
         android:gravity="center_horizontal">
-    
-	    <ImageView style="@style/HorizontalSeparator"/>
 
-	    <LinearLayout
-	        style="@style/RaimonBar"
-	    	android:background="@drawable/raimon"/>
+        <ImageView style="@style/HorizontalSeparator"/>
 
-	    <ImageView style="@style/HorizontalSeparator"/>
+        <LinearLayout
+            style="@style/RaimonBar"
+            android:background="@drawable/raimon"/>
 
-	    <LinearLayout
-		    android:orientation="horizontal"
+        <ImageView style="@style/HorizontalSeparator"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_weight="1">
 
-			<ImageView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:background="@drawable/tsubu_logo"
-	            android:layout_gravity="center_vertical"/>
-	        
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_vertical"
-	            android:textSize="@dimen/text_size_small"
-	            android:text="mogmog"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tsubu_logo"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_size_small"
+                android:text="mogmog"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
