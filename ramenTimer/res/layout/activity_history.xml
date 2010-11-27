@@ -14,9 +14,8 @@
 			android:src="@drawable/ic_title_home"/>
 		<ImageView style="@style/TitleBarSeparator" />
        <TextView 
-       	style="@style/TitleBarText" 
-      		android:text="履歴"/>
-				
+       		style="@style/TitleBarText" 
+      		android:text="@string/history_history"/>
 
 		<ImageButton 
 			style="@style/TitleBarAction2" 
