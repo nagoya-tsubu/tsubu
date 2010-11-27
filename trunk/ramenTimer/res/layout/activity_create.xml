@@ -13,9 +13,6 @@
 			style="@style/TitleBarLogo"
 			android:onClick="onLogoClick"
 			android:background="@drawable/title_logo"/>
-       <TextView 
-       	style="@style/TitleBarText" 
-      		android:text="登録画面"/>
 				
 		<ImageButton 
 			style="@style/TitleBarAction" 

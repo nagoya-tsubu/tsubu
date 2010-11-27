@@ -420,10 +420,10 @@ public class TimerActivity extends Activity {
 	 * 時間調整ボタンを非表示にする
 	 */
 	private void hidePickerButton() {
-		minUpButton.setVisibility(View.GONE);
-		minDownButton.setVisibility(View.GONE);
-		secUpButton.setVisibility(View.GONE);
-		secDownButton.setVisibility(View.GONE);
+		minUpButton.setVisibility(View.INVISIBLE);
+		minDownButton.setVisibility(View.INVISIBLE);
+		secUpButton.setVisibility(View.INVISIBLE);
+		secDownButton.setVisibility(View.INVISIBLE);
 	}
 
 	/**
