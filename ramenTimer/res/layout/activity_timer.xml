@@ -12,19 +12,11 @@
             style="@style/TitleBarAction"
             android:onClick="onLogoClick"
             android:src="@drawable/ic_title_home"/>
-        <ImageView style="@style/TitleBarSeparator" />
-       <TextView
-        style="@style/TitleBarText"
-            android:text="タイマー"/>
-
-        <ImageView style="@style/TitleBarSeparator" />
-
+        
         <ImageButton
             style="@style/TitleBarAction"
             android:onClick="onReaderButtonClick"
             android:src="@drawable/ic_title_barcode" />
-        <ImageView style="@style/TitleBarSeparator" />
-
         <ImageButton
             style="@style/TitleBarAction"
             android:onClick="onHistoryButtonClick"
@@ -37,88 +29,47 @@
     <!-- ActionBar End -->
 
     <LinearLayout
-        android:layout_width="fill_parent"
         android:orientation="horizontal"
-        style="@style/InformationForm" 
+        style="@style/InformationForm"
+        android:id="@+id/TimerInfoFrame"
         android:gravity="center" 
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <TableLayout 
-        	android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:stretchColumns="2"
-            android:orientation="horizontal" android:layout_width="wrap_content">
-
-            <TableRow android:id="@+id/JanCodeTableRow" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content">
-                    <TextView style="@style/InformationFormText"
-                        android:text="JANコード" />
-                    <TextView android:layout_height="wrap_content"
-                        android:text="JanCode"
-                        style="@style/InformationFormText"
-                        android:id="@+id/JanCodeTextView" android:layout_width="wrap_content"/>
-            </TableRow>
-
-            <TextView style="@style/InformationFormText" android:hint="商品名" android:id="@+id/NameTextView" android:visibility="gone"/>
-
-            <TableRow android:id="@+id/TimerLimitTableRow"
-                android:visibility="gone">
-                <TextView style="@style/InformationFormText"
-                    android:text="時間（秒）" />
-                <TextView style="@style/InformationFormText"
-                    android:hint="時間"
-                    android:inputType="number"
-                    android:id="@+id/TimerLimitTextView"/>
-            </TableRow>
-
-            <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical" android:id="@+id/ConfirmCreationLinearLayout" android:visibility="gone">
-
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/InformationFormText" android:text="この商品は登録されていません。\n商品の登録を行いますか？">
-                    </TextView>
-
-                    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center">
-
-                        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Yes" android:id="@+id/ConfirmCreationYesButton" style="@style/ButtonStyle">
-                        </Button>
-
-                        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="No" android:id="@+id/ConfirmCreationNoButton" style="@style/ButtonStyle">
-                        </Button>
-                    </LinearLayout>
-            </LinearLayout>
-        </TableLayout>
-
-        <ImageView
-            style="@style/InformationFormImage"
-            android:id="@+id/NoodleImageView" android:layout_width="wrap_content" android:layout_height="wrap_content">
-        </ImageView>
+		<ViewStub 
+			android:id="@+id/NoodleInfoViewStub"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"/>
+			
     </LinearLayout>
 
 	<include layout="@layout/timer_set"/>
 		
-    <LinearLayout android:layout_width="fill_parent"
+    <LinearLayout 
+    	android:layout_width="fill_parent"
         android:gravity="center"
-        android:orientation="vertical" android:layout_height="wrap_content">
+        android:orientation="vertical" 
+        android:layout_height="wrap_content">
 
-        <ImageView android:layout_width="wrap_content"
+        <ImageView 
+        	android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TimerImageView"
-            android:src="@drawable/home_btn_timer">
-        </ImageView>
+            android:src="@drawable/home_btn_timer"/>
 
-        <Button android:layout_width="wrap_content"
+        <Button 
+        	android:layout_width="wrap_content"
             android:text="開始"
             android:layout_height="wrap_content"
             android:id="@+id/TimerStartButton"
-            style="@style/ButtonStyle">
-        </Button>
+            style="@style/ButtonStyle"/>
 
-
-
-        <Button android:layout_width="wrap_content"
+        <Button 
+        	android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TimerEndButton"
             android:text="終了"
             style="@style/ButtonStyle"
-            android:visibility="visible">
-        </Button>
+            android:visibility="visible"/>
     </LinearLayout>
 </LinearLayout>
