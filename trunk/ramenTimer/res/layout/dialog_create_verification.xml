@@ -15,7 +15,7 @@
 		android:orientation="horizontal">
 		<Button
 			android:id="@+id/CreateDialogOkButton"
-			android:text="登録"
+			android:text="@string/dialog_create_verification_create"
 			android:textSize="@dimen/text_size_large"
 			android:textColor="@color/primary_text"
 			android:background="@drawable/btn_bg"
@@ -24,7 +24,7 @@
 			android:layout_height="wrap_content"/>
 		<Button
 			android:id="@+id/CreateDialogCancelButton"
-			android:text="戻る"
+			android:text="@string/dialog_create_verification_back"
 			android:textSize="@dimen/text_size_large"
 			android:textColor="@color/primary_text"
 			android:background="@drawable/btn_bg"
