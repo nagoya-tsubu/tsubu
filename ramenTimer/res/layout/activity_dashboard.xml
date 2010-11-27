@@ -4,7 +4,7 @@
  	xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_root"
     android:orientation="vertical"
-    android:background="@color/background1"
+    android:background="@color/background1" 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -33,10 +33,10 @@
         android:padding="6dip">
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1">
+            android:paddingTop="6dip">
             <Button android:id="@+id/Button02"
                 style="@style/HomeButton"
                 android:onClick="onReaderButtonClick"
@@ -51,10 +51,10 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="1">
+            android:paddingTop="12dip">
             <Button android:id="@+id/Button03"
                 style="@style/HomeButton"
                 android:onClick="onCreateButtonClick"
@@ -74,10 +74,9 @@
         android:id="@+id/now_playing_loading"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/now_playing_height"
+        android:layout_height="@dimen/now_ramen"
         android:background="@color/background1"
-        android:gravity="center_horizontal"
-        android:layout_weight="1">
+        android:gravity="center_horizontal">
     
 	    <ImageView style="@style/HorizontalSeparator"/>
 
