@@ -7,6 +7,11 @@
   <string name="description_refresh">Refresh</string>
   <string name="description_search">Search</string>
   
-  
-  
+  <!-- ダッシュボードで利用の文字列 -->
+  <string name="dashboard_barcode"> </string>
+  <string name="dashboard_timer"> </string>
+  <string name="dashboard_register"> </string>
+  <string name="dashboard_history"> </string>
+  <!-- ダッシュボードで利用の文字列 -->
+   
 </resources>

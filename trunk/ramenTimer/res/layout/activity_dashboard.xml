@@ -11,7 +11,7 @@
     <LinearLayout style="@style/TitleBar">
         <ImageView 
         	style="@style/TitleBarLogo"
-          	android:src="@drawable/icon" />
+          	android:src="@drawable/icon"/>
         <ImageView 
         	style="@style/TitleBarLogo"
         	android:src="@drawable/title_home"/>
@@ -21,7 +21,6 @@
 
     <LinearLayout style="@style/RaimonBar"
     	android:background="@drawable/raimon"/>
-    	
 
     <ImageView style="@style/HorizontalSeparator"/>
 
@@ -40,12 +39,12 @@
             <Button android:id="@+id/Button02"
                 style="@style/HomeButton"
                 android:onClick="onReaderButtonClick"
-                android:text="読込"
+                android:text="@string/dashboard_barcode"
                 android:drawableTop="@drawable/home_btn_barcode"/>
             <Button android:id="@+id/Button01"
                 style="@style/HomeButton"
                 android:onClick="onTimerButtonClick"
-                android:text="タイマー"
+                android:text="@string/dashboard_timer"
                 android:drawableTop="@drawable/home_btn_timer"/>
         </LinearLayout>
 
@@ -58,12 +57,12 @@
             <Button android:id="@+id/Button03"
                 style="@style/HomeButton"
                 android:onClick="onCreateButtonClick"
-                android:text="登録"
+                android:text="@string/dashboard_register"
                 android:drawableTop="@drawable/home_btn_ramenadd"/>
             <Button android:id="@+id/Button04"
                 style="@style/HomeButton"
                 android:onClick="onHistoryButtonClick"
-                android:text="履歴"
+                android:text="@string/dashboard_history"
                 android:drawableTop="@drawable/home_btn_history"/>
         </LinearLayout>
 
