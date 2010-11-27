@@ -57,7 +57,7 @@
             <Button android:id="@+id/Button03"
                 style="@style/HomeButton"
                 android:onClick="onCreateButtonClick"
-                android:text="@string/dashboard_register"
+                android:text="@string/dashboard_create"
                 android:drawableTop="@drawable/home_btn_ramenadd"/>
             <Button android:id="@+id/Button04"
                 style="@style/HomeButton"

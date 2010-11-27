@@ -76,13 +76,13 @@
 			android:layout_height="wrap_content" 
 			android:layout_width="fill_parent"
 			android:gravity="center_vertical"
-			android:text="商品名"/>
+			android:text="@string/create_products"/>
 
 		<EditText 
 			style="@style/InformationFormEdit2"
 			android:layout_width="fill_parent"
 			android:layout_height="@dimen/form_edittext_height"
-			android:hint="商品名" 
+			android:hint="@string/create_products" 
 			android:id="@+id/NameEdit"
 			android:gravity="center_vertical"/>
 						
