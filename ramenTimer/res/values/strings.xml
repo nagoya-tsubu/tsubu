@@ -24,6 +24,14 @@
   <string name="history_history">履歴</string>
   <!-- ヒストリーで利用の文字列 -->
   
+  <!-- ダイアログクリエイトgotoで利用の文字列 -->
+  <string name="dialog_create_goto_timer">タイマー</string>
+  <string name="dialog_create_goto_back">戻る</string>
+  <!-- ダイアログクリエイトgotoで利用の文字列 -->
   
+  <!-- ダイアログクリエイト確認画面で利用の文字列 -->
+  <string name="dialog_create_verification_create">登録</string>
+  <string name="dialog_create_verification_back">戻る</string>  
+  <!-- ダイアログクリエイト確認画面で利用の文字列 -->
   
 </resources>
