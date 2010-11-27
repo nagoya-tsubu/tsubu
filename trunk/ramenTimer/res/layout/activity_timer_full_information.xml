@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_timer_full_information"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    
+	<LinearLayout 
+	    android:layout_gravity="center_vertical"
+	    android:orientation="horizontal" 
+		android:layout_height="wrap_content"
+	    android:layout_width="wrap_content">
+	    
+		<LinearLayout 
+		    android:layout_gravity="center_vertical"
+		    android:orientation="vertical"
+			android:layout_height="wrap_content"
+		    android:layout_width="wrap_content">
+
+			<LinearLayout
+				android:id="@+id/JanCodeTableRow" 
+				android:orientation="horizontal"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content">
+
+				<TextView 
+					style="@style/InformationFormText"
+				    android:text="JANコード" />
+				    
+				<TextView
+					android:layout_height="wrap_content"
+				    android:text="JanCode"
+				    style="@style/InformationFormText"
+				    android:id="@+id/JanCodeTextView" 
+				    android:layout_width="wrap_content"/>
+				    
+			</LinearLayout>
+		
+	        <TextView 
+	        	style="@style/InformationFormText" 
+	        	android:hint="商品名" 
+	        	android:id="@+id/NameTextView" />
+	        	
+			<LinearLayout 
+				android:id="@+id/TimerLimitTableRow"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content">
+
+				<TextView 
+					style="@style/InformationFormText"
+					android:text="時間（秒）" />
+
+				<TextView 
+					style="@style/InformationFormText"
+					android:hint="時間"
+					android:inputType="number"
+					android:id="@+id/TimerLimitTextView"/>
+					
+			</LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+	<ImageView
+	    style="@style/InformationFormImage"
+	    android:id="@+id/NoodleImageView" 
+	    android:layout_width="wrap_content" 
+	    android:layout_height="wrap_content"/>
+	    
+</LinearLayout>
