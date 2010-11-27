@@ -35,8 +35,8 @@ public class ReaderActivity extends Activity {
 	private String _janCode;
 	// 呼び出し元インテント
 	private int _requestCode;
-	// QRコードスキャナーのエラー判定
-	private boolean _qrcodeException = false;
+	// QRコードスキャナー例外フラグ
+	private boolean _qrException = false;
 
 	// ReaderActivityの状態
 	private static final int EXECUTE_QR_CODE_SCANNER = 100; // QRコードスキャナの実行
@@ -113,7 +113,6 @@ public class ReaderActivity extends Activity {
 		final Intent intent = new Intent(QRCODE_PKG_NAME + ".SCAN");
 		// JANコードを読み取る
 		intent.putExtra("SCAN_MODE", "ONE_D_MODE");
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		// QRコードスキャナーを呼び出す
 		try {
@@ -122,7 +121,7 @@ public class ReaderActivity extends Activity {
 			// アクティビティが存在しない(=インテントの開始に失敗した)場合は、
 			// Android Marketからダウンロードするか問い合わせる
 			_handler.sendEmptyMessage(DOWNLOAD_QR_CODE_SCANNER);
-			_qrcodeException = true;
+			_qrException = true;
 		}
 	}
 
@@ -142,19 +141,16 @@ public class ReaderActivity extends Activity {
 				// ラーメン情報を履歴またはGAEから取得してみる
 				_janCode = intent.getStringExtra("SCAN_RESULT");
 				_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
-			} 
+			}
 			else {
-				// QRコードが実行されなかった(キャンセルされた、または
-				// インストールされていない)
-				if(false == _qrcodeException) {
+				if(false == _qrException) {
 					// 「Back」キー等でJANコードをスキャンできなかった場合は、
 					// JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
 					_janCode = null;
 					_noodleMaster = null;
 					_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
 				} else {
-					// QRコードがインストールされていない場合
-					_qrcodeException = false;
+					_qrException = false;
 				}
 			}
 			break;
