@@ -91,7 +91,7 @@
 			android:layout_height="wrap_content" 
 			android:layout_width="fill_parent"
 			android:gravity="center_vertical"
-			android:text="時間"/>			
+			android:text="@string/create_time"/>			
 			
 		<include layout="@layout/timer_set"/>
 	</LinearLayout> 
@@ -99,7 +99,7 @@
 
 	<Button
 		android:id="@+id/CreateButton"
-		android:text="登録"
+		android:text="@string/create_create"
 		android:layout_gravity="center_horizontal"
 		android:onClick="onCreateClick"
 		android:textSize="@dimen/text_size_large"
