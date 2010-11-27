@@ -6,9 +6,6 @@
 
 package com.androidtsubu.ramentimer;
 
-import java.io.CharArrayWriter;
-import java.io.PrintWriter;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,6 +18,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+/**
+ * JANコード読み取り
+ * @author Ikuo Tansho(@tan1234jp)
+ *
+ */
 public class ReaderActivity extends Activity {
 
 	// QRコードスキャナーのパッケージ名
@@ -33,6 +35,8 @@ public class ReaderActivity extends Activity {
 	private String _janCode;
 	// 呼び出し元インテント
 	private int _requestCode;
+	// QRコードスキャナーのエラー判定
+	private boolean _qrcodeException = false;
 
 	// ReaderActivityの状態
 	private static final int EXECUTE_QR_CODE_SCANNER = 100; // QRコードスキャナの実行
@@ -40,7 +44,9 @@ public class ReaderActivity extends Activity {
 	private static final int RECEIVE_NOODLE_DATA = 300; // ラーメン情報受信
 	private static final int GOTO_NEXT_INTENT = 400; // 次のインテントへ処理を移す
 
-	// メッセージハンドラーに対する処理
+	/**
+	 * メッセージハンドラーに対する処理
+	 */
 	private final Handler _handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -89,8 +95,8 @@ public class ReaderActivity extends Activity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		
 		// どのボタンからこのインテントが呼び出されたかを取得する
 		Intent intent = getIntent();
 		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
@@ -107,6 +113,7 @@ public class ReaderActivity extends Activity {
 		final Intent intent = new Intent(QRCODE_PKG_NAME + ".SCAN");
 		// JANコードを読み取る
 		intent.putExtra("SCAN_MODE", "ONE_D_MODE");
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		// QRコードスキャナーを呼び出す
 		try {
@@ -115,6 +122,7 @@ public class ReaderActivity extends Activity {
 			// アクティビティが存在しない(=インテントの開始に失敗した)場合は、
 			// Android Marketからダウンロードするか問い合わせる
 			_handler.sendEmptyMessage(DOWNLOAD_QR_CODE_SCANNER);
+			_qrcodeException = true;
 		}
 	}
 
@@ -134,12 +142,20 @@ public class ReaderActivity extends Activity {
 				// ラーメン情報を履歴またはGAEから取得してみる
 				_janCode = intent.getStringExtra("SCAN_RESULT");
 				_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
-			} else {
-				// 「Back」キー等でJANコードをスキャンできなかった場合は、
-				// JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
-				_janCode = null;
-				_noodleMaster = null;
-				_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+			} 
+			else {
+				// QRコードが実行されなかった(キャンセルされた、または
+				// インストールされていない)
+				if(false == _qrcodeException) {
+					// 「Back」キー等でJANコードをスキャンできなかった場合は、
+					// JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
+					_janCode = null;
+					_noodleMaster = null;
+					_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+				} else {
+					// QRコードがインストールされていない場合
+					_qrcodeException = false;
+				}
 			}
 			break;
 
@@ -160,7 +176,6 @@ public class ReaderActivity extends Activity {
 				setResult(RESULT_OK, intent);
 				finish();
 			}
-
 			break;
 		}
 
@@ -210,27 +225,26 @@ public class ReaderActivity extends Activity {
 		// QRコードをAndroid Marketからダウンロードしてよいか
 		// ダイアログを表示して問い合わせる
 		new AlertDialog.Builder(this)
+				.setIcon(android.R.drawable.ic_dialog_alert)
 				.setTitle("QR Code Scanner not found.")
 				.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
-				.setPositiveButton("いいえ",
-						new DialogInterface.OnClickListener() {
-							// 「いいえ」押下時は、ダッシュボードに戻る
-							public void onClick(DialogInterface dialog,
-									int which) {
-								finish();
-							}
-						})
-				.setNegativeButton("はい", new DialogInterface.OnClickListener() {
-					// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
-					// ダウンロードページを表示する
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						final Intent intent = new Intent(Intent.ACTION_VIEW,
-								Uri.parse("market://search?q=pname:"
-										+ QRCODE_PKG_NAME));
-						startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
-					}
-				}).create().show();
+				.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+						// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
+						// ダウンロードページを表示する
+						public void onClick(DialogInterface dialog, int which) {
+							final Intent intent = new Intent(Intent.ACTION_VIEW,
+									Uri.parse("market://search?q=pname:" + QRCODE_PKG_NAME));
+							startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
+						}
+				})
+				.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+						// 「いいえ」押下時は、ダッシュボードに戻る
+						public void onClick(DialogInterface dialog, int which) {
+							finish();
+						}
+				})
+				.create()
+				.show();
 	}
 
 	// 商品情報(NoodleMaster)のキー
