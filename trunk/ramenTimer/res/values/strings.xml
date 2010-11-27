@@ -8,16 +8,22 @@
   <string name="description_search">Search</string>
   
   <!-- ダッシュボードで利用の文字列 -->
-  <string name="dashboard_barcode">読込 </string>
+  <string name="dashboard_barcode">読込</string>
   <string name="dashboard_timer"> タイマー</string>
   <string name="dashboard_create">登録</string>
   <string name="dashboard_history">履歴</string>
   <!-- ダッシュボードで利用の文字列 -->
   
   <!-- クリエイトで利用の文字列 -->
-  <string name="create_products">商品 </string>
+  <string name="create_products">商品</string>
   <string name="create_time">時間</string>
-  <string name="create_create">登録 </string>
-  
+  <string name="create_create">登録 </string>  
   <!-- クリエイトで利用の文字列 -->
+  
+  <!-- ヒストリーで利用の文字列 -->
+  <string name="history_history">履歴</string>
+  <!-- ヒストリーで利用の文字列 -->
+  
+  
+  
 </resources>
