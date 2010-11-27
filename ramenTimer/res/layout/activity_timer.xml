@@ -196,7 +196,7 @@
         <ImageView android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TimerImageView"
-            android:src="@drawable/home_btn_timer_g">
+            android:src="@drawable/home_btn_timer">
         </ImageView>
 
         <Button android:layout_width="wrap_content"

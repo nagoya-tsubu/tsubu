@@ -402,7 +402,7 @@ public class TimerActivity extends Activity {
 	private void setTimerRunningLayout() {
 		startButton.setVisibility(View.GONE);
 		// タイマー画像を差し替える(黄色)
-		timerImage.setImageResource(R.drawable.home_btn_timer_y);
+		timerImage.setImageResource(R.drawable.home_btn_timer_selected);
 		endButton.setVisibility(View.GONE);
 	}
 
@@ -412,7 +412,7 @@ public class TimerActivity extends Activity {
 	private void setTimerEndLayout() {
 		endButton.setVisibility(View.VISIBLE);
 		// タイマー画像を差し替える(赤)
-		timerImage.setImageResource(R.drawable.home_btn_timer_r);
+		timerImage.setImageResource(R.drawable.home_btn_timer_pressed);
 		startButton.setVisibility(View.GONE);
 	}
 
