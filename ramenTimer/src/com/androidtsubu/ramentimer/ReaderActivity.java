@@ -272,6 +272,7 @@ public class ReaderActivity extends Activity {
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 					RequestCode.READER2TIMER.ordinal());
+			_requestCode = RequestCode.READER2TIMER.ordinal();
 		}
 		// (2)ダッシュボード→商品登録の場合
 		else {
@@ -279,15 +280,13 @@ public class ReaderActivity extends Activity {
 			intent = new Intent(this, CreateActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 					RequestCode.READER2CREATE.ordinal());
+			_requestCode = RequestCode.READER2CREATE.ordinal();
 		}
 
 		// NoodleMaster情報もインテントに情報を送る
 		intent.putExtra(KEY_NOODLE_MASTER, _noodleMaster);
 		// インテントを発行する
-		startActivity(intent);
-
-		// 自分自身を終了する
-		finish();
+		startActivityForResult(intent,_requestCode);
 	}
 
 	/**
