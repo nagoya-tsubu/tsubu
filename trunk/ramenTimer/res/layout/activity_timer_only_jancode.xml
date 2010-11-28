@@ -33,13 +33,12 @@
 			android:layout_height="wrap_content" 
 			android:layout_width="fill_parent" 
 			android:orientation="vertical" 
-			android:visibility="invisible"
 			android:id="@+id/ConfirmCreationLinearLayout" >
 			<TextView 
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content" 
 				style="@style/InformationFormText" 
-				android:text="この商品は登録されていません。\n商品の登録を行いますか？"/>
+				android:text="この商品は登録されていません。\nみんなのラーメンデータベースに登録しますか？"/>
 	
 			<LinearLayout 
 				android:layout_height="wrap_content" 
@@ -48,18 +47,8 @@
 				android:gravity="center">
 	
 				<Button 
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" 
-					android:layout_weight="1"
 					android:text="Yes" 
 					android:id="@+id/ConfirmCreationYesButton" 
-					style="@style/ButtonStyle"/>
-				<Button 
-					android:layout_width="wrap_content" 
-					android:layout_height="wrap_content" 
-					android:layout_weight="1"
-					android:text="No" 
-					android:id="@+id/ConfirmCreationNoButton" 
 					style="@style/ButtonStyle"/>
 			</LinearLayout>
 		</LinearLayout>

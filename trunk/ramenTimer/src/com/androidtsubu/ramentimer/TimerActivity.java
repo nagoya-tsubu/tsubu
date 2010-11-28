@@ -329,13 +329,6 @@ public class TimerActivity extends Activity {
 						onCreateButtonClick(v);
 					}
 				});
-				// いいえボタン
-				Button noButton = (Button) timerInfoInView.findViewById(R.id.ConfirmCreationNoButton);
-				noButton.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						finish();
-					}
-				});
 			}
 			break;
 		}
@@ -423,7 +416,7 @@ public class TimerActivity extends Activity {
 	private void setTimerRunningLayout() {
 		startButton.setVisibility(View.GONE);
 		// タイマー画像を差し替える(黄色)
-		timerImage.setImageResource(R.drawable.home_btn_timer_selected);
+		timerImage.setImageResource(R.drawable.img_alarm_start);
 		endButton.setVisibility(View.GONE);
 		
 	}
@@ -434,7 +427,7 @@ public class TimerActivity extends Activity {
 	private void setTimerEndLayout() {
 		endButton.setVisibility(View.VISIBLE);
 		// タイマー画像を差し替える(赤)
-		timerImage.setImageResource(R.drawable.home_btn_timer_pressed);
+		timerImage.setImageResource(R.drawable.img_alarm_end);
 		startButton.setVisibility(View.GONE);
 	}
 
@@ -469,10 +462,10 @@ public class TimerActivity extends Activity {
 	 * バーコードリーダーを起動し、Timerを終了する
 	 */
 	public void onReaderButtonClick(View v) {
-		Intent intent = new Intent(this, ReaderActivity.class);
+		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-				RequestCode.DASHBORAD2READER.ordinal());
-		startActivity(intent);
+				RequestCode.ACTION_READER.ordinal());
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 
@@ -480,10 +473,10 @@ public class TimerActivity extends Activity {
 	 * 履歴を起動し、Timerを終了する
 	 */
 	public void onHistoryButtonClick(View v) {
-		Intent intent = new Intent(this, ReaderActivity.class);
+		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
-				RequestCode.DASHBORAD2HISTORY.ordinal());
-		startActivity(intent);
+				RequestCode.ACTION_HISTORY.ordinal());
+		setResult(RESULT_OK, intent);
 		finish();
 	}
 }
