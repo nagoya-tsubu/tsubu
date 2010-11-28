@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -389,10 +391,17 @@ public class TimerActivity extends Activity {
 		int min = Integer.valueOf(minTextView.getText().toString());
 		int sec = Integer.valueOf(secTextView.getText().toString());
 
+		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,TimerActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+		boilTime = min * 60 + sec;
+		Date date = new Date();
+		date.setSeconds(date.getSeconds()+ boilTime);
+		AlarmManager amng =(AlarmManager)getSystemService(Context.ALARM_SERVICE);
+		amng.set(amng.RTC_WAKEUP,date.getTime(),pi);
+		
 		// 終了時刻を設定する
 		startTime = System.currentTimeMillis();
 		// 茹で時間を保持しておく@hideponm
-		boilTime = min * 60 + sec;
+//		boilTime = min * 60 + sec;
 		waitTime = startTime + (boilTime * 1000);
 		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
 		// カウント中のレイアウトを表示する
