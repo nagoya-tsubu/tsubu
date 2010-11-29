@@ -13,15 +13,19 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
  * JANコード読み取り
+ * 
  * @author Ikuo Tansho(@tan1234jp)
- *
+ * 
  */
 public class ReaderActivity extends Activity {
 
@@ -29,14 +33,16 @@ public class ReaderActivity extends Activity {
 	private static final String QRCODE_PKG_NAME = "com.google.zxing.client.android";
 	// ラーメンデータ
 	private NoodleMaster _noodleMaster;
-	// ラーメンデータベース・マネージャ
-	private NoodleManager _noodleManager;
+	// // ラーメンデータベース・マネージャ
+	// private NoodleManager _noodleManager;
 	// JANコード
 	private String _janCode;
 	// 呼び出し元インテント
 	private int _requestCode;
 	// QRコードスキャナー例外フラグ
 	private boolean _qrException = false;
+	/** ProgressIcon */
+	private ImageView progressIcon = null;
 
 	// ReaderActivityの状態
 	private static final int EXECUTE_QR_CODE_SCANNER = 100; // QRコードスキャナの実行
@@ -86,7 +92,7 @@ public class ReaderActivity extends Activity {
 	public ReaderActivity() {
 		// 内部変数の初期化
 		_noodleMaster = null;
-		_noodleManager = null;
+		// _noodleManager = null;
 		_janCode = null;
 	}
 
@@ -96,7 +102,12 @@ public class ReaderActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		setContentView(R.layout.activity_reader);
+		progressIcon = (ImageView) findViewById(R.id.ReaderProgressIcon);
+		// アニメーションの開始
+		progressIcon.startAnimation(AnimationUtils.loadAnimation(this,
+				R.anim.progress_icon));
+
 		// どのボタンからこのインテントが呼び出されたかを取得する
 		Intent intent = getIntent();
 		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
@@ -141,9 +152,8 @@ public class ReaderActivity extends Activity {
 				// ラーメン情報を履歴またはGAEから取得してみる
 				_janCode = intent.getStringExtra("SCAN_RESULT");
 				_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
-			}
-			else {
-				if(false == _qrException) {
+			} else {
+				if (false == _qrException) {
 					// 「Back」キー等でJANコードをスキャンできなかった場合は、
 					// JANコード、ラーメン情報をNULLに設定して、次のインテントへ遷移する
 					_janCode = null;
@@ -181,35 +191,33 @@ public class ReaderActivity extends Activity {
 	 * QRコードスキャナーが受信したJANコードを検索キーとして 履歴・GAEから商品情報を取得する
 	 */
 	private void receiveNoodleData() {
-
-		// NoodleManagerクラスを実体化させる
-		if (null == _noodleManager) {
-			_noodleManager = new NoodleManager(this);
-		}
-		// JANコードを検索キーにして、履歴またはGAEから
-		// 商品を検索する
-		try {
-			_noodleMaster = _noodleManager.getNoodleMaster(_janCode);
-			// @hideponm
-			if (_noodleMaster == null) {
-				// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
-				_noodleMaster = new NoodleMaster(_janCode, "", null, 0);
-			}
-		} catch (SQLException e) {
-			Toast.makeText(this, ExceptionToStringConverter.convert(e),
-					Toast.LENGTH_LONG).show();
-			// エラーが発生したのでDashBoardへ戻る
-			finish();
-			return;
-		} catch (GaeException e) {
-			Toast.makeText(this, ExceptionToStringConverter.convert(e),
-					Toast.LENGTH_LONG).show();
-			// エラーが発生したのでDashBoardへ戻る
-			finish();
-			return;
-		}
-		// 次のインテントへ遷移する
-		_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+		//問い合わせ用AsyncTaskを起動する
+		ReadAsyncTask readAsyncTask = new ReadAsyncTask();
+		readAsyncTask.execute(_janCode);
+		// // JANコードを検索キーにして、履歴またはGAEから
+		// // 商品を検索する
+		// try {
+		// _noodleMaster = _noodleManager.getNoodleMaster(_janCode);
+		// // @hideponm
+		// if (_noodleMaster == null) {
+		// // 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
+		// _noodleMaster = new NoodleMaster(_janCode, "", null, 0);
+		// }
+		// } catch (SQLException e) {
+		// Toast.makeText(this, ExceptionToStringConverter.convert(e),
+		// Toast.LENGTH_LONG).show();
+		// // エラーが発生したのでDashBoardへ戻る
+		// finish();
+		// return;
+		// } catch (GaeException e) {
+		// Toast.makeText(this, ExceptionToStringConverter.convert(e),
+		// Toast.LENGTH_LONG).show();
+		// // エラーが発生したのでDashBoardへ戻る
+		// finish();
+		// return;
+		// }
+		// // 次のインテントへ遷移する
+		// _handler.sendEmptyMessage(GOTO_NEXT_INTENT);
 	}
 
 	/**
@@ -225,22 +233,23 @@ public class ReaderActivity extends Activity {
 				.setTitle("QR Code Scanner not found.")
 				.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
 				.setPositiveButton("はい", new DialogInterface.OnClickListener() {
-						// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
-						// ダウンロードページを表示する
-						public void onClick(DialogInterface dialog, int which) {
-							final Intent intent = new Intent(Intent.ACTION_VIEW,
-									Uri.parse("market://search?q=pname:" + QRCODE_PKG_NAME));
-							startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
-						}
+					// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
+					// ダウンロードページを表示する
+					public void onClick(DialogInterface dialog, int which) {
+						final Intent intent = new Intent(Intent.ACTION_VIEW,
+								Uri.parse("market://search?q=pname:"
+										+ QRCODE_PKG_NAME));
+						startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
+					}
 				})
-				.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
-						// 「いいえ」押下時は、ダッシュボードに戻る
-						public void onClick(DialogInterface dialog, int which) {
-							finish();
-						}
-				})
-				.create()
-				.show();
+				.setNegativeButton("いいえ",
+						new DialogInterface.OnClickListener() {
+							// 「いいえ」押下時は、ダッシュボードに戻る
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						}).create().show();
 	}
 
 	// 商品情報(NoodleMaster)のキー
@@ -299,6 +308,63 @@ public class ReaderActivity extends Activity {
 		_handler.removeMessages(EXECUTE_QR_CODE_SCANNER);
 		_handler.removeMessages(RECEIVE_NOODLE_DATA);
 		_handler.removeMessages(GOTO_NEXT_INTENT);
+	}
+
+	/**
+	 * GAE問い合わせ用のAsyncTask
+	 * 
+	 * @author hide
+	 * 
+	 */
+	private class ReadAsyncTask extends
+			AsyncTask<String, NoodleMaster, NoodleMaster> {
+		private NoodleManager noodleManager;
+
+		/**
+		 * コンストラクタ
+		 */
+		public ReadAsyncTask() {
+			noodleManager = new NoodleManager(ReaderActivity.this);
+		}
+
+		@Override
+		protected NoodleMaster doInBackground(String... params) {
+			NoodleMaster noodleMaster = null;
+			// JANコードを検索キーにして、履歴またはGAEから
+			// 商品を検索する
+			try {
+				noodleMaster = noodleManager.getNoodleMaster(params[0]);
+				// @hideponm
+				if (noodleMaster == null) {
+					// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
+					noodleMaster = new NoodleMaster(params[0], "", null, 0);
+				}
+				return noodleMaster;
+			} catch (SQLException e) {
+				Toast.makeText(ReaderActivity.this,
+						ExceptionToStringConverter.convert(e),
+						Toast.LENGTH_LONG).show();
+				return null;
+			} catch (GaeException e) {
+				Toast.makeText(ReaderActivity.this,
+						ExceptionToStringConverter.convert(e),
+						Toast.LENGTH_LONG).show();
+				return null;
+			}
+
+		}
+
+		protected void onPostExecute(NoodleMaster noodleMaster) {
+			if (noodleMaster == null) {
+				// エラーが発生したのでDashBoardへ戻る
+				finish();
+				return;
+			}
+			_noodleMaster = noodleMaster;
+			// 次のインテントへ遷移する
+			_handler.sendEmptyMessage(GOTO_NEXT_INTENT);
+		}
+
 	}
 
 }
