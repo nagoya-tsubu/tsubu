@@ -1,8 +1,13 @@
 package com.androidtsubu.ramentimer;
 
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -10,6 +15,13 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 public class RamenTimerService extends Service {
+	private NotificationManager notificationManager = null;
+	/**Notification*/
+	private Notification notification = null;
+	private PendingIntent contentIntent = null;
+	/**待ち時間*/
+	private long waitTime = 0;
+	
 	
 	class RamenTimerBinder extends Binder {
 		
@@ -68,8 +80,14 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 		return true; // 再度クライアントから接続された際に onRebind を呼び出させる場合は true を返す
 	}
 	
-	// クライアントから呼び出されるメソッド
-	public void schedule(long delay) {
+	/**
+	 * クライアントから呼び出されるメソッド
+	 * @param delay
+	 * @param showText
+	 */
+	public void schedule(long delay,long waitTime) {
+		this.waitTime = waitTime;
+		showNotification(getUpdateTimerString());
 		if (timer != null) {
 			timer.cancel();
 		}
@@ -77,6 +95,7 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 		TimerTask timerTask = new TimerTask() {
 			
 			public void run() {
+				showNotification(getUpdateTimerString());				
 				sendBroadcast(new Intent(ACTION));
 			}
 			
@@ -89,6 +108,51 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 			timer.cancel();
 			timer.purge();
 		}
+		notificationManager.cancel(1);
+		notificationManager = null;
+		notification = null;
+	}
+	
+	/**
+	 * Notification表示を行う
+	 * @param showText
+	 */
+	private void showNotification(String showText){
+		if(notificationManager == null){
+			notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);			
+		}
+		if(notification == null){
+			notification = new Notification(R.drawable.ic_stat_notify, "らーめんたいまーカウントダウン開始", System.currentTimeMillis());			
+		}
+		if(contentIntent == null){
+			contentIntent = PendingIntent.getActivity(this, 0,
+					new Intent(this, TimerActivity.class), 0);
+		}
+		notification.setLatestEventInfo(getApplicationContext(),
+				"らーめんたいまーカウント中", showText, contentIntent);		
+		notificationManager.notify(1, notification);
+		
+	}
+	
+	/**
+	 * 更新時間を文字列で返す
+	 * @return
+	 */
+	private String getUpdateTimerString(){
+		long currentTime = new Date().getTime();
+		long time = (waitTime - currentTime) / 1000 + 1;
+		if(time < 0){
+			return "0分00秒";
+		}
+		int min = (int)time / 60;
+		int sec = (int)time % 60;
+		DecimalFormat format = new DecimalFormat("00");
+		StringBuilder buf = new StringBuilder();
+		buf.append(min);
+		buf.append("分");
+		buf.append(format.format(sec));
+		buf.append("秒");
+		return buf.toString();
 	}
 	
 }
