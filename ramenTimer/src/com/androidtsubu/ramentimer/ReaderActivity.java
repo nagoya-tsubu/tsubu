@@ -268,6 +268,7 @@ public class ReaderActivity extends Activity {
 		// →登録画面へ遷移する
 
 		// 商品情報オブジェクトが空の場合は、ダッシュボードに戻る
+		// GAE問い合わせ、SQliteエラーの場合はnullが返ってきます @hideponm
 		// ※通常はありえない
 		if (null == _noodleMaster) {
 			finish();
@@ -296,6 +297,8 @@ public class ReaderActivity extends Activity {
 		intent.putExtra(KEY_NOODLE_MASTER, _noodleMaster);
 		// インテントを発行する
 		startActivityForResult(intent,_requestCode);
+		//お役ごめん @hideponm
+		finish();
 	}
 
 	/**
@@ -355,11 +358,6 @@ public class ReaderActivity extends Activity {
 		}
 
 		protected void onPostExecute(NoodleMaster noodleMaster) {
-			if (noodleMaster == null) {
-				// エラーが発生したのでDashBoardへ戻る
-				finish();
-				return;
-			}
 			_noodleMaster = noodleMaster;
 			// 次のインテントへ遷移する
 			_handler.sendEmptyMessage(GOTO_NEXT_INTENT);

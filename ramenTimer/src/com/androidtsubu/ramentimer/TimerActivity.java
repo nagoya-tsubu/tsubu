@@ -1,6 +1,7 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import android.app.Activity;
@@ -403,7 +404,7 @@ public class TimerActivity extends Activity {
 		// 茹で時間を保持しておく@hideponm
 //		boilTime = min * 60 + sec;
 		waitTime = startTime + (boilTime * 1000);
-		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS);
+		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS,waitTime);
 		// カウント中のレイアウトを表示する
 		setTimerRunningLayout();
 		// 時間調整ボタンを非表示にする
@@ -488,4 +489,5 @@ public class TimerActivity extends Activity {
 		setResult(RESULT_OK, intent);
 		finish();
 	}
+	
 }
