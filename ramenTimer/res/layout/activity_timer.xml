@@ -21,8 +21,6 @@
 			android:layout_height="fill_parent"
 			android:layout_weight="1"
 			/>
-			
-        
         <ImageButton
             style="@style/TitleBarAction"
             android:onClick="onReaderButtonClick"
@@ -42,9 +40,7 @@
         android:orientation="horizontal"
         style="@style/InformationForm"
         android:id="@+id/TimerInfoFrame"
-        android:gravity="center" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:gravity="center" >
 
 		<ViewStub 
 			android:id="@+id/NoodleInfoViewStub"
