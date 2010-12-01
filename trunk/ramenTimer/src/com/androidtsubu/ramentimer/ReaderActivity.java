@@ -177,11 +177,13 @@ public class ReaderActivity extends Activity {
 			break;
 
 		default:
-			// 呼び出したインテントが空の場合は、処理を終了する
+			// Intentをダッシュボードまで戻す。 TimerActivityやCreateActivityから戻ってくる。
 			if (RESULT_OK == resultCode) {
 				setResult(RESULT_OK, intent);
-				finish();
+//				finish(); //by @leibun 
 			}
+			// 呼び出したインテントが空の場合は、処理を終了する
+			finish(); //by @leibun ここで終了
 			break;
 		}
 
@@ -298,7 +300,8 @@ public class ReaderActivity extends Activity {
 		// インテントを発行する
 		startActivityForResult(intent,_requestCode);
 		//お役ごめん @hideponm
-		finish();
+		
+//		finish();	// 削除 by @leibun ここで終わられるとアクションバーのボタンの動作がダッシュボードに伝わらない onActivityForResultでfinish() 
 	}
 
 	/**

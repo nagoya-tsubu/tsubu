@@ -64,5 +64,4 @@
     <ImageView
         style="@style/InformationFormImage"
         android:id="@+id/NoodleImageView" />
-
 </LinearLayout>
