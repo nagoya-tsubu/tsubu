@@ -45,8 +45,8 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Toast toast = Toast.makeText(getApplicationContext(), "onDestroy()", Toast.LENGTH_SHORT);
-		toast.show();
+//		Toast toast = Toast.makeText(getApplicationContext(), "onDestroy()", Toast.LENGTH_SHORT);
+//		toast.show();
 		if (timer != null) {
 			timer.cancel();
 			timer = null;
