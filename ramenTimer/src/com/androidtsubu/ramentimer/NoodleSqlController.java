@@ -48,7 +48,7 @@ public class NoodleSqlController {
 			+ "name TEXT ,boiltime INTEGER ,measuretime TEXT)";
 
 	/** DB読み書きクラス */
-	private SQLiteDatabase database = null;
+	private static SQLiteDatabase database = null;
 	private Context context;
 	/** imageディレクトリ */
 	private File directory;
