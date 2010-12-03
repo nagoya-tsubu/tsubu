@@ -184,7 +184,7 @@ public class CreateActivity extends Activity {
 		itemCamera = new ActionItem();
 		itemCamera.setTitle("カメラ");
 		itemCamera.setIcon(getResources().getDrawable(
-				R.drawable.ic_quickaction_camera));
+				R.drawable.ic_popup_camera));
 		itemCamera.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				callCamera(); // カメラを起動
@@ -194,33 +194,12 @@ public class CreateActivity extends Activity {
 		itemGallery = new ActionItem();
 		itemGallery.setTitle("ギャラリー");
 		itemGallery.setIcon(getResources().getDrawable(
-				R.drawable.ic_quickaction_gallery));
+				R.drawable.ic_popup_photos));
 		itemGallery.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				callGallery(); // ギャラリーを起動
 			}
 		});
-		itemHome = new ActionItem();
-		itemHome.setTitle("ダッシュボード");
-		itemHome.setIcon(getResources().getDrawable(
-				R.drawable.ic_quickaction_home));
-		itemHome.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				entry.execute(noodleMaster);
-				finish();
-			}
-		});
-		itemTimer = new ActionItem();
-		itemTimer.setTitle("タイマー");
-		itemTimer.setIcon(getResources().getDrawable(
-				R.drawable.ic_quickaction_timer));
-		itemTimer.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				entry.execute(noodleMaster);
-				callTimerActivity();
-				finish();
-			}
-		});		
 	}
 	
 	/**
@@ -246,9 +225,9 @@ public class CreateActivity extends Activity {
 		// dimens.xmlから値を取得 リサイズのパラメータ
 		int resizeLength = (int) getResources().getDimension(
 				R.dimen.image_longer_length);
-		if (resultCode == RESULT_OK) {
-			Uri uri = null;
-			if (requestCode == REQUEST_CAMERA || requestCode == REQUEST_GALLERY) {
+		if (requestCode == REQUEST_CAMERA || requestCode == REQUEST_GALLERY) {
+			if (resultCode == RESULT_OK) {
+				Uri uri = null;
 				if (requestCode == REQUEST_GALLERY) {// ギャラリー
 					uri = intent.getData();
 				} else {
@@ -276,7 +255,7 @@ public class CreateActivity extends Activity {
 					// noodleImage = getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
 					// ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
-
+		
 				} catch (IOException e) {
 					Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
 							.show();
@@ -288,6 +267,11 @@ public class CreateActivity extends Activity {
 							.show();
 				}
 			}
+		}
+		// アクションバーのボタン動作をダッシュボードまで伝達させる
+		else if(requestCode == RequestCode.CREATE2TIMER.ordinal()){
+			setResult(resultCode, intent);
+			finish();
 		}
 	}
 
@@ -704,7 +688,8 @@ public class CreateActivity extends Activity {
 			AsyncTask<NoodleMaster, Integer, Integer> {
 		// 表示用にコンテキストを保持
 		private Activity activity = null;
-		NoodleManager nm;
+		private NoodleManager nm;
+		private AlertDialog dialog = null;
 
 		private static final int RESULT_CREATE_OK = 0; // 登録成功
 		private static final int RESULT_ERROR_SQLITE = 1;// SQLITEでエラー
@@ -766,7 +751,7 @@ public class CreateActivity extends Activity {
 			// リーダーから呼び出された場合
 			if (requestCode == RequestCode.READER2CREATE.ordinal()) {
 				// ダイアログで選択させる
-				AlertDialog dialog = getGotoDialog();
+				dialog = getGotoDialog();
 				dialog.show();
 				// タイマーから呼び出された場合
 			} else if (requestCode == RequestCode.TIMER2CREATE.ordinal()) {
@@ -800,8 +785,13 @@ public class CreateActivity extends Activity {
 		 */
 		private OnClickListener onTimerClick = new OnClickListener() {
 			public void onClick(View v) {
-				callTimerActivity();
-				activity.finish();
+				dialog.dismiss();
+				try{
+					callTimerActivity();
+				}catch(Exception e){
+					Toast.makeText(CreateActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+					activity.finish();					
+				}
 			}
 		};
 		/**
@@ -809,10 +799,11 @@ public class CreateActivity extends Activity {
 		 */
 		private OnClickListener onHomeClick = new OnClickListener() {
 			public void onClick(View v) {
+				dialog.dismiss();
 				activity.finish();
 			}
 		};
-			
+
 	}
 
 }
