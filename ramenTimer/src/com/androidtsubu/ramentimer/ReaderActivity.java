@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -196,30 +197,6 @@ public class ReaderActivity extends Activity {
 		//問い合わせ用AsyncTaskを起動する
 		ReadAsyncTask readAsyncTask = new ReadAsyncTask();
 		readAsyncTask.execute(_janCode);
-		// // JANコードを検索キーにして、履歴またはGAEから
-		// // 商品を検索する
-		// try {
-		// _noodleMaster = _noodleManager.getNoodleMaster(_janCode);
-		// // @hideponm
-		// if (_noodleMaster == null) {
-		// // 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
-		// _noodleMaster = new NoodleMaster(_janCode, "", null, 0);
-		// }
-		// } catch (SQLException e) {
-		// Toast.makeText(this, ExceptionToStringConverter.convert(e),
-		// Toast.LENGTH_LONG).show();
-		// // エラーが発生したのでDashBoardへ戻る
-		// finish();
-		// return;
-		// } catch (GaeException e) {
-		// Toast.makeText(this, ExceptionToStringConverter.convert(e),
-		// Toast.LENGTH_LONG).show();
-		// // エラーが発生したのでDashBoardへ戻る
-		// finish();
-		// return;
-		// }
-		// // 次のインテントへ遷移する
-		// _handler.sendEmptyMessage(GOTO_NEXT_INTENT);
 	}
 
 	/**
@@ -300,8 +277,8 @@ public class ReaderActivity extends Activity {
 		// インテントを発行する
 		startActivityForResult(intent,_requestCode);
 		//お役ごめん @hideponm
-		
-//		finish();	// 削除 by @leibun ここで終わられるとアクションバーのボタンの動作がダッシュボードに伝わらない onActivityForResultでfinish() 
+		progressIcon.clearAnimation();
+		//finish();	// 削除 by @leibun ここで終わられるとアクションバーのボタンの動作がダッシュボードに伝わらない onActivityForResultでfinish() 
 	}
 
 	/**
@@ -347,13 +324,21 @@ public class ReaderActivity extends Activity {
 				}
 				return noodleMaster;
 			} catch (SQLException e) {
+				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
 				Toast.makeText(ReaderActivity.this,
-						ExceptionToStringConverter.convert(e),
+						"ローカルデータ問い合わせでエラーが発生しました",
 						Toast.LENGTH_LONG).show();
 				return null;
 			} catch (GaeException e) {
+				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
 				Toast.makeText(ReaderActivity.this,
-						ExceptionToStringConverter.convert(e),
+						"サーバー問い合わせでエラーが発生しました",
+						Toast.LENGTH_LONG).show();
+				return null;
+			} catch(Exception e){
+				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+				Toast.makeText(ReaderActivity.this,
+						"原因不明のエラーが発生しました",
 						Toast.LENGTH_LONG).show();
 				return null;
 			}
