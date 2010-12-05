@@ -401,8 +401,6 @@ public class TimerActivity extends Activity {
 		
 		// 終了時刻を設定する
 		startTime = System.currentTimeMillis();
-		// 茹で時間を保持しておく@hideponm
-//		boilTime = min * 60 + sec;
 		waitTime = startTime + (boilTime * 1000);
 		ramenTimerService.schedule(TIMER_UPDATE_INTERVALS,waitTime);
 		// カウント中のレイアウトを表示する

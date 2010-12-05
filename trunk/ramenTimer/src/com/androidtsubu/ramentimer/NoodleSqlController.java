@@ -93,8 +93,11 @@ public class NoodleSqlController {
 		} catch (FileNotFoundException e) {
 			// ファイルが見つからなかった
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.d("ramentimerbug",ExceptionToStringConverter.convert(e));
+		}catch(Exception e){
+			Log.d("ramentimerbug",ExceptionToStringConverter.convert(e));
 		}
+		
 		return new NoodleMaster(jancode, name, image, boilTime);
 	}
 
