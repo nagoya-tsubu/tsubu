@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">＼ｵｸｻｰﾝ／</string>
+    <string name="app_name">＼ｵｸｻｰﾝ／ &amp; ＼ﾀﾞﾝﾅｻｰﾝ／</string>
+    <string name="button_okusan">＼ｵｸｻｰﾝ／</string>
+    <string name="button_dannasan">＼ﾀﾞﾝﾅｻｰﾝ／</string>
+    
 </resources>
