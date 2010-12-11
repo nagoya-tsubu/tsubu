@@ -12,6 +12,7 @@
   <string name="dashboard_timer"> タイマー</string>
   <string name="dashboard_create">登録</string>
   <string name="dashboard_history">履歴</string>
+  <string name="dashboard_text">みんなで作ろうラーメン茹で時間</string>
   <!-- ダッシュボードで利用の文字列 -->
   
   <!-- クリエイトで利用の文字列 -->
