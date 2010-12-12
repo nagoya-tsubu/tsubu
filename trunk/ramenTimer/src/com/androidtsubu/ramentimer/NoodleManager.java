@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Environment;
 
+
 /**
  * データの読み書きをするマネージャーです
  * 
