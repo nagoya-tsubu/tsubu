@@ -28,7 +28,7 @@ public class NoodleHistory implements Parcelable {
 	/** マスタの名称 */
 	private String name;
 	/** マスタの画像イメージ */
-	private Bitmap image;
+	private String imageFileName;
 
 	/**
 	 * コンストラクタ
@@ -44,7 +44,7 @@ public class NoodleHistory implements Parcelable {
 		this.boilTime = boilTime;
 		this.janCode = noodleMaster.getJanCode();
 		this.name = noodleMaster.getName();
-		this.image = noodleMaster.getImage();
+		this.imageFileName = noodleMaster.getImageFileName();
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class NoodleHistory implements Parcelable {
 		this.measureTime = new Date(parcel.readLong());
 		this.janCode = parcel.readString();
 		this.name = parcel.readString();
-		this.image = parcel.readParcelable(Bitmap.class.getClassLoader());
+		this.imageFileName = parcel.readString();
 	}
 
 	public int describeContents() {
@@ -73,18 +73,19 @@ public class NoodleHistory implements Parcelable {
 		dest.writeLong(measureTime.getTime());
 		dest.writeString(janCode);
 		dest.writeString(name);
-		dest.writeParcelable(image, 0);
+		dest.writeString(imageFileName);
 	}
 
-	public int getBoilTime(){
+	public int getBoilTime() {
 		return boilTime;
 	}
-	
+
 	/**
 	 * 茹で時間を文字列（分、秒）で返します
+	 * 
 	 * @return
 	 */
-	public String getBoilTimeString(){
+	public String getBoilTimeString() {
 		DecimalFormat df = new DecimalFormat("0");
 		int min = boilTime / 60;
 		int sec = boilTime % 60;
@@ -95,7 +96,7 @@ public class NoodleHistory implements Parcelable {
 		buf.append("秒");
 		return buf.toString();
 	}
-	
+
 	/**
 	 * 計測時間を文字列で返す
 	 * 
@@ -127,6 +128,17 @@ public class NoodleHistory implements Parcelable {
 	}
 
 	public Bitmap getImage() {
-		return image;
+		return noodleMaster.getImage();
 	}
+
+	public static final Parcelable.Creator<NoodleHistory> CREATOR = new Parcelable.Creator<NoodleHistory>() {
+		public NoodleHistory createFromParcel(Parcel in) {
+			return new NoodleHistory(in);
+		}
+
+		public NoodleHistory[] newArray(int size) {
+			return new NoodleHistory[size];
+		}
+	};
+
 }

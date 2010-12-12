@@ -320,7 +320,7 @@ public class ReaderActivity extends Activity {
 				// @hideponm
 				if (noodleMaster == null) {
 					// 該当商品がないのでJANコードだけ入れたNoodleMasterを作ってあげる
-					noodleMaster = new NoodleMaster(params[0], "", null, 0);
+					noodleMaster = new NoodleMaster(params[0], "", "", 0);
 				}
 				return noodleMaster;
 			} catch (SQLException e) {

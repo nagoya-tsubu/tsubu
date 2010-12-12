@@ -25,8 +25,6 @@ public class HistoryActivity extends ListActivity {
 
 	// 履歴情報のリスト
 	private List<NoodleHistory> list = new ArrayList<NoodleHistory>();
-	// 商品情報(NoodleMaster)のキー
-	private static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,9 @@ public class HistoryActivity extends ListActivity {
 		//タイマーを起動
 		Intent intent = new Intent(HistoryActivity.this, TimerActivity.class);
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
-		intent.putExtra(KEY_NOODLE_MASTER, nm);
+		intent.putExtra(TimerActivity.KEY_NOODLE_MASTER, nm);
+		//履歴も渡す @hideponm
+		intent.putExtra(TimerActivity.KEY_NOODLE_HISTORY, nh);
 		startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
 		HistoryActivity.this.finish();
 	}
