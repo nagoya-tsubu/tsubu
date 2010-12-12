@@ -23,7 +23,7 @@ public class NoodleManager {
 	private NoodleGaeController noodleGaeController;
 	private Context context;
 	/** image画像保存ディレクトリ */
-	private File directory;
+	public static File SAVE_IMAGE_DIRECTORY;
 
 	/**
 	 * コンストラクタ
@@ -33,8 +33,8 @@ public class NoodleManager {
 	public NoodleManager(Context context) {
 		this.context = context;
 		checkExternalStorage();
-		noodleGaeController = new NoodleGaeController(context, directory);
-		noodleSqlController = new NoodleSqlController(context, directory);
+		noodleGaeController = new NoodleGaeController(context, SAVE_IMAGE_DIRECTORY);
+		noodleSqlController = new NoodleSqlController(context, SAVE_IMAGE_DIRECTORY);
 
 	}
 
@@ -114,10 +114,10 @@ public class NoodleManager {
 	private void checkExternalStorage() {
 		String status = Environment.getExternalStorageState();
 		if (status.equals(Environment.MEDIA_MOUNTED)) {
-			directory = new File(Environment.getExternalStorageDirectory(),
+			SAVE_IMAGE_DIRECTORY = new File(Environment.getExternalStorageDirectory(),
 					context.getPackageName());
-			if (!directory.exists()) {
-				directory.mkdirs();
+			if (!SAVE_IMAGE_DIRECTORY.exists()) {
+				SAVE_IMAGE_DIRECTORY.mkdirs();
 			}
 		} else {
 			new AlertDialog.Builder(context).setMessage("SDカードを挿入してください")

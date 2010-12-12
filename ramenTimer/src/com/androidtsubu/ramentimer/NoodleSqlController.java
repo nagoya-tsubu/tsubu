@@ -78,27 +78,9 @@ public class NoodleSqlController {
 		String jancode = cursor.getString(cursor.getColumnIndex("jancode"));
 		String name = cursor.getString(cursor.getColumnIndex("name"));
 		int boilTime = cursor.getInt(cursor.getColumnIndex("boiltime"));
-		// byte[] imagebyte = cursor.getBlob(cursor
-		// .getColumnIndex("image"));
-		// Bitmap image = BitmapFactory.decodeByteArray(imagebyte, 0,
-		// imagebyte.length);
 		// 画像パス名を得る
-		String filename = cursor.getString(cursor.getColumnIndex("image"));
-		Bitmap image = null;
-		try {
-			// パス名からファイルのInputStreamを生成しBitmapにする。
-			// ファイルが見つからなかった場合はそのままnullが入る
-			File file = new File(directory, filename);
-			image = BitmapFactory.decodeStream(new FileInputStream(file));
-		} catch (FileNotFoundException e) {
-			// ファイルが見つからなかった
-			// TODO Auto-generated catch block
-			Log.d("ramentimerbug",ExceptionToStringConverter.convert(e));
-		}catch(Exception e){
-			Log.d("ramentimerbug",ExceptionToStringConverter.convert(e));
-		}
-		
-		return new NoodleMaster(jancode, name, image, boilTime);
+		String imagePath = cursor.getString(cursor.getColumnIndex("image")); 
+		return new NoodleMaster(jancode, name, imagePath, boilTime);
 	}
 
 	/**
@@ -299,12 +281,7 @@ public class NoodleSqlController {
 			contentValues.put("jancode", noodleMaster.getJanCode());
 			contentValues.put("name", noodleMaster.getName());
 			contentValues.put("boiltime", noodleMaster.getTimerLimit());
-			if (noodleMaster.getImage() != null) {
-				// バーコードをファイル名としてファイルを作成する
-				String filename = noodleMaster.getJanCode() + ".jpg";
-				createImageFile(filename, noodleMaster.getImage());
-				contentValues.put("image", filename);
-			}
+			contentValues.put("image", noodleMaster.getImageFileName());
 			long ret = database.insert(NOODLEMASTERTABLENAME, null,
 					contentValues);
 			if (ret < 0) {
@@ -315,36 +292,6 @@ public class NoodleSqlController {
 		}
 	}
 
-	/**
-	 * Imageをfileにします
-	 * 
-	 * @param filename
-	 * @param bitmap
-	 */
-	private void createImageFile(String filename, Bitmap bitmap) {
-		// jpgファイルを作る
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		FileOutputStream fileOutputStream = null;
-		try {
-			bitmap.compress(CompressFormat.JPEG, 100, bos);
-			// ファイルを書き出す
-			File file = new File(directory, filename);
-			fileOutputStream = new FileOutputStream(file);
-			fileOutputStream.write(bos.toByteArray());
-			fileOutputStream.flush();
-		} catch (FileNotFoundException e) {
-			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
-		} catch (IOException e) {
-			Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG);
-		} finally {
-			if (fileOutputStream != null) {
-				try {
-					fileOutputStream.close();
-				} catch (IOException e) {
-				}
-			}
-		}
-	}
 
 	/**
 	 * 引数の商品マスタと計測時間、計測日時をもとに履歴を作成します

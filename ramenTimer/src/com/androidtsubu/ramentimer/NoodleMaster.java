@@ -1,22 +1,34 @@
 package com.androidtsubu.ramentimer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * ラーメン商品マスタです
+ * 
  * @author hide
  */
-public class NoodleMaster implements Parcelable{
+public class NoodleMaster implements Parcelable {
 	/** JANコード */
-	private String janCode; //janCodeの型をintからStringに変更 by leibun  date 2010.11.01
+	private String janCode; // janCodeの型をintからStringに変更 by leibun date
+							// 2010.11.01
 	/** 名前 */
 	private String name;
-	/** 画像イメージ */
-	private Bitmap image;
+	/** 画像イメージファイル名 */
+	private String imageFileName;
 	/** ゆで時間 */
 	private int timerLimit;
 
@@ -29,45 +41,118 @@ public class NoodleMaster implements Parcelable{
 	 * @param timerLimit
 	 * @param noodleType
 	 */
-	public NoodleMaster(String janCode, String name, Bitmap image, int timerLimit) {
+	public NoodleMaster(String janCode, String name, Bitmap image,
+			int timerLimit) {
 		this.janCode = janCode;
 		this.name = name;
-		this.image = image;
+		setImage(image);
 		this.timerLimit = timerLimit;
 	}
-	
+
 	/**
 	 * コンストラクタ
+	 * 
+	 * @param janCode
+	 * @param name
+	 * @param imagePath
+	 * @param timerLimit
+	 */
+	public NoodleMaster(String janCode, String name, String imagePath,
+			int timerLimit) {
+		this.janCode = janCode;
+		this.name = name;
+		this.imageFileName = imagePath;
+		this.timerLimit = timerLimit;
+	}
+
+	/**
+	 * コンストラクタ
+	 * 
 	 * @param parcel
 	 */
-	public NoodleMaster(Parcel parcel){
+	public NoodleMaster(Parcel parcel) {
 		this.janCode = parcel.readString();
 		this.name = parcel.readString();
-		this.image = parcel.readParcelable(Bitmap.class.getClassLoader());
+		this.imageFileName = parcel.readString();
 		this.timerLimit = parcel.readInt();
 	}
-	
-	public String getJanCode(){
+
+	public String getJanCode() {
 		return janCode;
 	}
-	
-	public String getName(){
+
+	public String getName() {
 		return name;
 	}
-	
-	public Bitmap getImage(){
-		return image;
+
+	public Bitmap getImage() {
+		try {
+			// パス名からファイルのInputStreamを生成しBitmapにする。
+			// ファイルが見つからなかった場合はそのままnullが入る
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,
+					imageFileName);
+			return BitmapFactory.decodeStream(new FileInputStream(file));
+		} catch (FileNotFoundException e) {
+			// ファイルが見つからなかった
+			// TODO Auto-generated catch block
+			Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+		} catch (Exception e) {
+			Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+		}
+		return null;
 	}
-	
-	public void setImage(Bitmap image){
-		this.image = image;
+
+	public void setImage(Bitmap image) {
+		// バーコードをファイル名としてファイルを作成する
+		String filename = getJanCode() + ".jpg";
+		createImageFile(filename, image);
 	}
-	
-	public int getTimerLimit(){
+
+	/**
+	 * Imageをfileにします
+	 * 
+	 * @param filename
+	 * @param bitmap
+	 */
+	private void createImageFile(String filename, Bitmap bitmap) {
+		// jpgファイルを作る
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		FileOutputStream fileOutputStream = null;
+		try {
+			bitmap.compress(CompressFormat.JPEG, 100, bos);
+			// ファイルを書き出す
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY, filename);
+			fileOutputStream = new FileOutputStream(file);
+			fileOutputStream.write(bos.toByteArray());
+			fileOutputStream.flush();
+		} catch (FileNotFoundException e) {
+			Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+		} catch (IOException e) {
+			Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+		} finally {
+			if (fileOutputStream != null) {
+				try {
+					fileOutputStream.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+	}
+
+	/**
+	 * Imageファイル名を返す
+	 * 
+	 * @return
+	 */
+	public String getImageFileName() {
+		return imageFileName;
+	}
+
+	public int getTimerLimit() {
 		return timerLimit;
 	}
-	
-	public String getTimerLimitString(){
+
+	public String getTimerLimitString() {
 		DecimalFormat df = new DecimalFormat("0");
 		int min = getTimerLimit() / 60;
 		int sec = getTimerLimit() % 60;
@@ -76,30 +161,31 @@ public class NoodleMaster implements Parcelable{
 		df = new DecimalFormat("00");
 		buf.append(df.format(sec));
 		buf.append("秒");
-		
+
 		return buf.toString();
 	}
 
 	/**
 	 * 完全なデータかどうかを返す
+	 * 
 	 * @return
 	 */
-	public boolean isCompleteData(){
-		if(janCode == null || janCode.equals("")){
+	public boolean isCompleteData() {
+		if (janCode == null || janCode.equals("")) {
 			return false;
 		}
-		if(name == null || name.equals("")){
+		if (name == null || name.equals("")) {
 			return false;
 		}
-		if(image == null){
+		if (imageFileName == null || imageFileName.equals("")) {
 			return false;
 		}
-		if(timerLimit <= 0){
+		if (timerLimit <= 0) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public int describeContents() {
 		// TODO Auto-generated method stub
 		return 0;
@@ -108,10 +194,10 @@ public class NoodleMaster implements Parcelable{
 	public void writeToParcel(Parcel dest, int arg1) {
 		dest.writeString(janCode);
 		dest.writeString(name);
-		dest.writeParcelable(image, 0);
+		dest.writeString(imageFileName);
 		dest.writeInt(timerLimit);
 	}
-	
+
 	public static final Parcelable.Creator<NoodleMaster> CREATOR = new Parcelable.Creator<NoodleMaster>() {
 		public NoodleMaster createFromParcel(Parcel in) {
 			return new NoodleMaster(in);
