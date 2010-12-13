@@ -307,9 +307,6 @@ public class TimerActivity extends Activity {
 	 * @param id
 	 */
 	private void displaySetting(int id) {
-		if (noodleMaster == null)
-			return;
-
 		switch (RequestCode.values()[id]) {
 		case DASHBORAD2TIMER:
 			timerInfoViewStub

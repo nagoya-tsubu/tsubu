@@ -34,12 +34,10 @@
  
 		<requestFocus />
 	</LinearLayout>  
-	<ImageView style="@style/HorizontalSeparator"/>
-	
 	<!-- ActionBar End -->
-    <LinearLayout style="@style/RaimonBar"
-    	android:background="@drawable/raimon"/>
-    	
+	
+    <ImageView style="@style/HorizontalSeparator"/>
+    <LinearLayout style="@style/RaimonBar"/>
     <ImageView style="@style/HorizontalSeparator"/>
 	
 	<LinearLayout 
