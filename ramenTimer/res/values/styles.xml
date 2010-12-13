@@ -156,7 +156,7 @@
     <style name="InformationForm">
    		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:padding">20dip</item>
+ 		<item name="android:background">@drawable/img_borderitem</item>
     </style>
     
     <style name="InformationFormText">
@@ -213,6 +213,13 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:padding">6dip</item>
     </style>
+    
+    <style name="TimerInformationLayout">
+   		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:padding">20dip</item>
+    </style>
+    
 
     
 	<!-- QuickAction styles -->

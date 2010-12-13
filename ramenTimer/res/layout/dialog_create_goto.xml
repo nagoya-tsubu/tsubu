@@ -14,20 +14,12 @@
 		<Button
 			android:id="@+id/GotoDialogTimerButton"
 			android:text="@string/dialog_create_goto_timer"
-			android:textSize="@dimen/text_size_large"
-			android:textColor="@color/primary_text"
-			android:background="@drawable/btn_bg"
-			android:layout_weight="1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"/>
+	        style="@style/ButtonStyle"
+			android:layout_weight="1"/>
 		<Button
 			android:id="@+id/GotoDialogHomeButton"
 			android:text="@string/dialog_create_goto_back"
-			android:textSize="@dimen/text_size_large"
-			android:textColor="@color/primary_text"
-			android:background="@drawable/btn_bg"
-			android:layout_weight="1"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"/>
+	        style="@style/ButtonStyle"
+			android:layout_weight="1"/>
 	</LinearLayout>	
 </LinearLayout>

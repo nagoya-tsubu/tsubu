@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        style="@style/InformationForm"
+        style="@style/TimerInformationLayout"
         android:id="@+id/TimerInfoFrame"
         android:gravity="center" >
 
