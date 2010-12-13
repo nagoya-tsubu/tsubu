@@ -32,9 +32,11 @@
 
         <requestFocus />
     </LinearLayout>
-    <ImageView style="@style/HorizontalSeparator"/>
-
     <!-- ActionBar End -->
+
+    <ImageView style="@style/HorizontalSeparator"/>
+    <LinearLayout style="@style/RaimonBar"/>
+    <ImageView style="@style/HorizontalSeparator"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -64,15 +66,11 @@
             android:src="@drawable/img_alarm_default"/>
 
         <Button 
-        	android:layout_width="wrap_content"
             android:text="開始"
-            android:layout_height="wrap_content"
             android:id="@+id/TimerStartButton"
             style="@style/ButtonStyle"/>
 
         <Button 
-        	android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/TimerEndButton"
             android:text="終了"
             style="@style/ButtonStyle"

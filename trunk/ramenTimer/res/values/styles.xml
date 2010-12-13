@@ -33,8 +33,7 @@
         <item name="android:id">@id/title_container</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">@dimen/raimon_height</item>
-        <item name="android:orientation">horizontal</item>
-        <item name="android:background">@color/title_background</item>
+        <item name="android:background">@drawable/raimon</item>
     </style>
     
     <style name="TitleBarAction">
@@ -157,7 +156,7 @@
     <style name="InformationForm">
    		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:background">@drawable/img_borderitem</item>
+		<item name="android:padding">20dip</item>
     </style>
     
     <style name="InformationFormText">
@@ -209,6 +208,11 @@
 		<item name="android:background">@drawable/timer_btn_minus</item>
 	</style>
     	
+    <style name="ListItemLayout">
+   		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:padding">6dip</item>
+    </style>
 
     
 	<!-- QuickAction styles -->
@@ -273,10 +277,10 @@
 	</style>
 
 <style name="ButtonStyle">
-	<item name="android:layout_width">wrap_content</item> 
+	<item name="android:layout_width">90dip</item> 
 	<item name="android:layout_height">wrap_content</item> 
 	<item name="android:background">@drawable/btn_bg</item>
-	<item name="android:padding">10dip</item>
+<!-- <item name="android:padding">10dip</item> -->	
 	<item name="android:textSize">@dimen/text_size_medium</item>
 	<item name="android:layout_gravity">center</item>
 </style>
