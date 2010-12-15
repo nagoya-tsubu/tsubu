@@ -11,6 +11,7 @@
     <color name="primary_text">#ff333333</color>
     <color name="secondary_text">#ffcccccc</color>
 	<color name="red">#ffcc0000</color>
+	<color name="yellow">#ffffcc00</color>
     <color name="session_foreground_past">#ff999999</color>
 
     <color name="pinned_header_background">#ff202020</color>
