@@ -246,10 +246,10 @@ public class CreateActivity extends Activity {
 				try {
 					// 画像の取得
 					// URI -> image size -> small bitmap
-					noodleImage = getImageFromUriUsingBitmapFactoryOptions(uri,
-							resizeLength);
+//					noodleImage = getImageFromUriUsingBitmapFactoryOptions(uri,
+//							resizeLength);
 					// // URI -> bitmap -> small bitmap
-					// noodleImage = getImageFromUriUsingResizeImage(mPictureUri,resizeLength);
+					 noodleImage = getImageFromUriUsingResizeImage(uri,resizeLength);
 					// ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
 		

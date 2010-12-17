@@ -106,6 +106,15 @@ public class NoodleGaeController {
 			throw new GaeException(e);
 		} catch (IOException exception) {
 			throw new GaeException(exception);
+		}finally{
+			if(reader != null){
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -142,19 +151,29 @@ public class NoodleGaeController {
 	 */
 	private Bitmap getBitmap(String imageUrl) {
 		URL url;
+		InputStream input = null;
 		try {
 			url = new URL(address + imageUrl);
-			InputStream input;
 			input = url.openStream();
 			return BitmapFactory.decodeStream(input);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
+		}finally{
+			if(input != null){
+				try {
+					input.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		return null;
 	}
 
 	/**
@@ -173,7 +192,7 @@ public class NoodleGaeController {
 		// HTTPタイムアウトを設定
 		HttpConnectionParams.setSoTimeout(httpParams, 10000);
 		BufferedReader reader = null;
-
+		InputStream imageInputStream = null; 
 		// GAEへpost
 		HttpPost httpPost = new HttpPost(address + "api/ramens/create");
 
@@ -186,11 +205,12 @@ public class NoodleGaeController {
 			// 茹で時間
 			entity.addPart("boilTime",
 					new StringBody(noodleMaster.getTimerLimitString()));
+			imageInputStream = createImageInputStream(noodleMaster
+					.getImage());
 			// イメージ画像
 			entity.addPart(
 					"image",
-					new InputStreamBody(createImageInputStream(noodleMaster
-							.getImage()), "filename"));
+					new InputStreamBody(imageInputStream, "filename"));
 
 			httpPost.setEntity(entity);
 
@@ -223,6 +243,23 @@ public class NoodleGaeController {
 			throw new GaeException(e);
 		} catch (IOException e) {
 			throw new GaeException(e);
+		}finally{
+			if(reader != null){
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			if(imageInputStream != null){
+				try {
+					imageInputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -256,6 +293,14 @@ public class NoodleGaeController {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					Log.d("err", e.getMessage(), e);
+				}
+			}
+			if(bos != null){
+				try {
+					bos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
