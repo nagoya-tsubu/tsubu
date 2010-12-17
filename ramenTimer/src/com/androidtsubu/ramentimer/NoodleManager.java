@@ -24,7 +24,11 @@ public class NoodleManager {
 	private Context context;
 	/** image画像保存ディレクトリ */
 	public static File SAVE_IMAGE_DIRECTORY;
-
+	/**NoodleManager*/
+	private static NoodleManager noodleManager = null;
+	
+	
+	
 	/**
 	 * コンストラクタ
 	 * 
@@ -33,11 +37,12 @@ public class NoodleManager {
 	public NoodleManager(Context context) {
 		this.context = context;
 		checkExternalStorage();
-		noodleGaeController = new NoodleGaeController(context, SAVE_IMAGE_DIRECTORY);
-		noodleSqlController = new NoodleSqlController(context, SAVE_IMAGE_DIRECTORY);
-
+		noodleGaeController = new NoodleGaeController(context);
+		noodleSqlController = new NoodleSqlController(context);
 	}
 
+	
+	
 	/**
 	 * JANコードを引数にSQliteやGAEから商品マスタを得ます
 	 * 
@@ -112,6 +117,10 @@ public class NoodleManager {
 	 * 外部ストレージチェック
 	 */
 	private void checkExternalStorage() {
+		if(SAVE_IMAGE_DIRECTORY != null){
+			return;
+		}
+		
 		String status = Environment.getExternalStorageState();
 		if (status.equals(Environment.MEDIA_MOUNTED)) {
 			SAVE_IMAGE_DIRECTORY = new File(Environment.getExternalStorageDirectory(),

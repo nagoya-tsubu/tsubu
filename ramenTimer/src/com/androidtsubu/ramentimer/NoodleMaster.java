@@ -29,6 +29,9 @@ public class NoodleMaster implements Parcelable {
 	private String name;
 	/** 画像イメージファイル名 */
 	private String imageFileName;
+//	/**画像イメージ*/
+//	private Bitmap image = null;
+
 	/** ゆで時間 */
 	private int timerLimit;
 
@@ -86,26 +89,46 @@ public class NoodleMaster implements Parcelable {
 	}
 
 	public Bitmap getImage() {
+//		if(image != null){
+//			return image;
+//		}
+		FileInputStream in = null;
+		if(imageFileName == null || imageFileName.equals("")){
+			return null;
+		}
 		try {
 			// パス名からファイルのInputStreamを生成しBitmapにする。
 			// ファイルが見つからなかった場合はそのままnullが入る
 			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,
 					imageFileName);
-			return BitmapFactory.decodeStream(new FileInputStream(file));
+			in = new FileInputStream(file);
+			return BitmapFactory.decodeStream(in);
 		} catch (FileNotFoundException e) {
 			// ファイルが見つからなかった
 			// TODO Auto-generated catch block
 			Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+			return null;
 		} catch (Exception e) {
 			Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
+			return null;
+		}finally{
+			if(in != null){
+				try {
+					in.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		return null;
 	}
 
 	public void setImage(Bitmap image) {
 		// バーコードをファイル名としてファイルを作成する
-		String filename = getJanCode() + ".jpg";
-		createImageFile(filename, image);
+		imageFileName = getJanCode() + ".jpg";
+//		//画像も保持しておく
+//		this.image = image;
+		createImageFile(imageFileName, image);
 	}
 
 	/**
@@ -134,6 +157,14 @@ public class NoodleMaster implements Parcelable {
 				try {
 					fileOutputStream.close();
 				} catch (IOException e) {
+				}
+			}
+			if(bos != null){
+				try {
+					bos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
