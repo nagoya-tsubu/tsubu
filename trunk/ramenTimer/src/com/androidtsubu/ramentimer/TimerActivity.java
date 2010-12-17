@@ -18,6 +18,9 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -457,9 +460,36 @@ public class TimerActivity extends Activity {
 		endButton.setVisibility(View.VISIBLE);
 		// タイマー画像を差し替える(赤)
 		timerImage.setImageResource(R.drawable.img_alarm_end);
+		Animation timerAnim = AnimationUtils.loadAnimation(this, R.anim.timer_icon_action_start);
+		timerAnim.setAnimationListener(mAnimLeft2Right);
+		timerImage.startAnimation(timerAnim);
+		
 		startButton.setVisibility(View.GONE);
 	}
 
+	AnimationListener mAnimLeft2Right = new AnimationListener() {
+		public void onAnimationStart(Animation animation) {
+		}
+		public void onAnimationRepeat(Animation animation) {
+		}
+		public void onAnimationEnd(Animation animation) {
+			Animation timerAnim = AnimationUtils.loadAnimation(TimerActivity.this, R.anim.timer_icon_action);
+			timerAnim.setAnimationListener(mAnimRight2Center);
+			timerImage.startAnimation(timerAnim);
+		}
+	};
+	
+	AnimationListener mAnimRight2Center = new AnimationListener() {
+		public void onAnimationStart(Animation animation) {
+		}		
+		public void onAnimationRepeat(Animation animation) {
+		}
+		public void onAnimationEnd(Animation animation) {
+			Animation timerAnim = AnimationUtils.loadAnimation(TimerActivity.this, R.anim.timer_icon_action_end);
+			timerImage.startAnimation(timerAnim);
+		}
+	};
+	
 	/**
 	 * 時間調整ボタンを非表示にする
 	 */
