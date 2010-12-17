@@ -531,10 +531,14 @@ public class CreateActivity extends Activity {
              (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);  
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);  
        
+		//登録ボタンの二重押し防止
+		createButton.setEnabled(false);		
+		
 		try {
 			noodleMaster = getNoodleMaster();
 		} catch (Exception e) {
 			Toast.makeText(this, "入力項目を埋めてください", Toast.LENGTH_LONG).show();
+			createButton.setEnabled(true);		
 			return;
 		}
 		entry = new EntryAsyncTask(this);
@@ -589,6 +593,7 @@ public class CreateActivity extends Activity {
 		public void onClick(View v) {
 			if(verificationDialog!=null)
 				verificationDialog.cancel();
+			createButton.setEnabled(true);		
 		}
 	};
 	/**
@@ -613,6 +618,7 @@ public class CreateActivity extends Activity {
 	private void inputMode(){
 		// 登録ボタンを消す (GONEなので空間ごと消える)
 		createButton.setVisibility(View.VISIBLE);
+		createButton.setEnabled(true);		
 		// ImageButtonを押せるようにする
 		noodleImageView.setClickable(true);
 		// EditTextを入力可能にする
