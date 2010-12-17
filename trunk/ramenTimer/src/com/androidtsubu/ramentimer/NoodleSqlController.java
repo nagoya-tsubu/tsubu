@@ -50,8 +50,6 @@ public class NoodleSqlController {
 	/** DB読み書きクラス */
 	private static SQLiteDatabase database = null;
 	private Context context;
-	/** imageディレクトリ */
-	private File directory;
 
 	/**
 	 * コンストラクタ
@@ -59,9 +57,8 @@ public class NoodleSqlController {
 	 * @param context
 	 * @param directory
 	 */
-	public NoodleSqlController(Context context, File directory) {
+	public NoodleSqlController(Context context) {
 		this.context = context;
-		this.directory = directory;
 		if (database == null) {
 			DataBaseOpenHelper helper = new DataBaseOpenHelper(context);
 			database = helper.getWritableDatabase();

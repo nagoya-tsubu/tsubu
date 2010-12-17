@@ -49,18 +49,13 @@ public class NoodleGaeController {
 	/** すでに該当JANコードの商品があります */
 	private static final int DUPLICATE = 400;
 	private Context context;
-	/** imageディレクトリ */
-	private File directory;
 
 	/**
 	 * コンストラクタ
-	 * 
 	 * @param context
-	 * @param directory
 	 */
-	public NoodleGaeController(Context context, File directory) {
+	public NoodleGaeController(Context context) {
 		this.context = context;
-		this.directory = directory;
 	}
 
 	/**
@@ -244,7 +239,7 @@ public class NoodleGaeController {
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
 			// ファイルを書き出す
-			File file = new File(directory,"tmp.jpg");
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,"tmp.jpg");
 			fileOutputStream = new FileOutputStream(file);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
