@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 
 import android.graphics.Bitmap;
@@ -102,6 +103,14 @@ public class NoodleMaster implements Parcelable {
 			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,
 					imageFileName);
 			in = new FileInputStream(file);
+			// オプション
+			BitmapFactory.Options opts = new BitmapFactory.Options();
+			// 画像サイズだけを取得するように設定　デコードはされない
+			opts.inJustDecodeBounds = true;
+			Bitmap image = BitmapFactory.decodeStream(in, null, opts);
+			in.close();			
+			int height = opts.outWidth;
+			int width = opts.outHeight;			
 			return BitmapFactory.decodeStream(in);
 		} catch (FileNotFoundException e) {
 			// ファイルが見つからなかった

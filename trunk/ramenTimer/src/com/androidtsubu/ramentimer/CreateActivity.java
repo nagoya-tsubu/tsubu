@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -246,10 +247,11 @@ public class CreateActivity extends Activity {
 				try {
 					// 画像の取得
 					// URI -> image size -> small bitmap
-//					noodleImage = getImageFromUriUsingBitmapFactoryOptions(uri,
-//							resizeLength);
+					noodleImage = getImageFromUriUsingBitmapFactoryOptions(uri,
+							resizeLength);
 					// // URI -> bitmap -> small bitmap
-					 noodleImage = getImageFromUriUsingResizeImage(uri,resizeLength);
+//					 noodleImage = getImageFromUriUsingResizeImage(uri,resizeLength);
+
 					// ビューに画像をセット
 					noodleImageView.setImageBitmap(noodleImage);
 		
@@ -274,6 +276,9 @@ public class CreateActivity extends Activity {
 
 	/**
 	 * UriからBitmapを取得する
+	 * メモリを節約のために
+	 * 大まかに1/（2^n）にサイズを縮小してBitmapを読み込んで
+	 * さらに、Bitmap.createで微調整
 	 * 
 	 * @param uri
 	 * @param resizeLength
@@ -298,15 +303,15 @@ public class CreateActivity extends Activity {
 		opts.inJustDecodeBounds = false;
 		// 縦横比を固定したままリサイズ
 		resizeOptions(opts, resizeLength);
-
 		if (uri == null)
 			Toast.makeText(this, "uri == null", Toast.LENGTH_SHORT).show();
 		is = getContentResolver().openInputStream(uri);
 		if (is == null)
 			Toast.makeText(this, "is == null", Toast.LENGTH_SHORT).show();
 		image = BitmapFactory.decodeStream(is, null, opts);
-		is.close();
-		return image;
+		is.close();		
+		Bitmap rImage = resizeImage(image, resizeLength);
+		return rImage;
 	}
 
 	/**
@@ -366,10 +371,18 @@ public class CreateActivity extends Activity {
 		// 縦、横の長い方
 		float longer = height < width ? (float) width : (float) height;
 		// 伸縮するスケール
-		float scale = length / longer;
+		float scale = longer/length;
+		// inSampleSizeが2の倍数しか受付ないので、端数を切り捨て
+		// Log2(scale)を計算
+		int log2= (int)(Math.log10(scale)/Math.log10(2));
+		int scale_int = 1;
+		for(int i=0;i<log2;i++)
+			scale_int *= 2;
+			
 		// 置き換え
-		opts.outHeight = Math.round(height * scale);
-		opts.outWidth = Math.round(width * scale);
+		opts.outHeight = Math.round(height / scale_int);
+		opts.outWidth = Math.round(width / scale_int);
+		opts.inSampleSize=scale_int;
 	}
 
 	/**
@@ -724,8 +737,10 @@ public class CreateActivity extends Activity {
 				// カップラーメンの情報をWebとローカルに登録
 				nm.createNoodleMaster(params[0]);
 			} catch (GaeException e) {
+				Log.e("ramentimer.CreateActivity",ExceptionToStringConverter.convert(e));
 				return RESULT_ERROR_GAE;
 			} catch (java.sql.SQLException e) {
+				Log.e("ramentimer.CreateActivity",ExceptionToStringConverter.convert(e));
 				return RESULT_ERROR_SQLITE;
 			}
 			return RESULT_CREATE_OK;
