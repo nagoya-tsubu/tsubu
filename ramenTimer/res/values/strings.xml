@@ -35,4 +35,10 @@
   <string name="dialog_create_verification_back">戻る</string>  
   <!-- ダイアログクリエイト確認画面で利用の文字列 -->
   
+  <!-- バグレポート送信時のダイアログ文字列 -->
+  <string name="bugreport_title">バグレポート送信</string>
+  <string name="bugreport_message">バグレポートを開発者へ送信します。よろしいですか？</string>
+  <string name="dialog_yes">はい</string>
+  <string name="dialog_no">いいえ</string>
+  <!-- バグレポート送信時のダイアログ文字列 -->
 </resources>

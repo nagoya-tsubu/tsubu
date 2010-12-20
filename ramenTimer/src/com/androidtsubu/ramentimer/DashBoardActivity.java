@@ -1,8 +1,10 @@
 package com.androidtsubu.ramentimer;
 
+import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,6 +15,17 @@ public class DashBoardActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        //キャッチできない例外エラーが発生した場合に備え、例外ハンドラを設定する
+        Resources res = getResources();
+        Thread.setDefaultUncaughtExceptionHandler(
+        		new AppUncaughtExceptionHandler(this,
+	        		res.getString(R.string.bugreport_title),
+	        		res.getString(R.string.bugreport_message),
+	        		res.getString(R.string.dialog_yes),
+	        		res.getString(R.string.dialog_no)
+	        	)
+        );
 	}
 	/**
 	 * タイマーのボタンが押されたとき
@@ -106,6 +119,18 @@ public class DashBoardActivity extends Activity {
 					break;
 			}
 		}
+	}
+	
+	/**
+	 * アクティビティが表示される直前に呼び出される
+	 * ここでは、前回バグで強制終了した場合に、レポート送信を行うかどうか
+	 * 問い合わせる
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		//前回バグで強制終了した場合は、ダイアログを表示する
+		AppUncaughtExceptionHandler.showBugReportDialogIfExist();	
 	}
 }
 
