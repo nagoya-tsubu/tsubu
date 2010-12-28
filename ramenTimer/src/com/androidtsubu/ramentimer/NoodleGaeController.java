@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.DuplicateFormatFlagsException;
 
@@ -103,6 +104,8 @@ public class NoodleGaeController {
 			// 正常な結果が返ってきたので商品マスタを生成する
 			return createNoodleMaster(builder.toString());
 		} catch (ClientProtocolException e) {
+			throw new GaeException(e);
+		} catch(SocketTimeoutException e){
 			throw new GaeException(e);
 		} catch (IOException exception) {
 			throw new GaeException(exception);
