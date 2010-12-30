@@ -5,11 +5,14 @@ import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
 
 public class DashBoardActivity extends Activity {
+	
+	static final String TSUBU_WEB_ADDRESS="http://sites.google.com/site/androidnagoyatsubu/";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,13 @@ public class DashBoardActivity extends Activity {
 		int requestCode = RequestCode.DASHBORAD2READER.ordinal();
 		gotoReaderActivity(requestCode);
 	}
-	
+	/**
+	 * つ部のロゴが押されたとき
+	 * @param view
+	 */
+	public void onTsubuLogoClick(View view){
+		gotoTsubuSite();
+	}
 	/**
 	 * リーダーの起動 requestCodeでその後にTimerActivityかCreateActivityを選択
 	 * @param requestCode
@@ -99,7 +108,15 @@ public class DashBoardActivity extends Activity {
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
-	
+	/**
+	 * つ部のWebサイトを開く
+	 */
+	private void gotoTsubuSite(){
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(TSUBU_WEB_ADDRESS));
+		startActivity(intent);
+	}
 	/**
 	 * インテントがもどってきた時の動作
 	 * アクションバーが他のActivityで押さたときは
