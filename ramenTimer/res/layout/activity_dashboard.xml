@@ -84,9 +84,10 @@
             android:padding="6dip"
             android:gravity="center">
 
-            <ImageView
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onTsubuLogoClick"
                 android:background="@drawable/tsubu_logo"/>
 
             <TextView
