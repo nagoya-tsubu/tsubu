@@ -718,6 +718,7 @@ public class CreateActivity extends Activity {
 		private static final int RESULT_CREATE_OK = 0; // 登録成功
 		private static final int RESULT_ERROR_SQLITE = 1;// SQLITEでエラー
 		private static final int RESULT_ERROR_GAE = 2; // Webへの登録でエラー
+		private static final int RESULT_DUPLEX = 3; // 重複登録
 
 		/**
 		 * コンストラクタ
@@ -739,6 +740,9 @@ public class CreateActivity extends Activity {
 			try {
 				// カップラーメンの情報をWebとローカルに登録
 				nm.createNoodleMaster(params[0]);
+			} catch (DuplexNoodleMasterException e) {
+				Log.i("ramentimer.CreateActivity",ExceptionToStringConverter.convert(e));
+				return RESULT_DUPLEX;
 			} catch (GaeException e) {
 				Log.e("ramentimer.CreateActivity",ExceptionToStringConverter.convert(e));
 				return RESULT_ERROR_GAE;
@@ -758,6 +762,11 @@ public class CreateActivity extends Activity {
 			switch (result) {
 			case RESULT_CREATE_OK:
 				Toast.makeText(activity, "登録完了", Toast.LENGTH_LONG).show();
+				// アニメーションの停止
+				progressIcon.clearAnimation();
+				break;
+			case RESULT_DUPLEX:
+				Toast.makeText(activity, "既に登録されています", Toast.LENGTH_LONG).show();
 				// アニメーションの停止
 				progressIcon.clearAnimation();
 				break;

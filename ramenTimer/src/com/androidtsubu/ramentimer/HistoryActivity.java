@@ -3,12 +3,13 @@ package com.androidtsubu.ramentimer;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,7 @@ public class HistoryActivity extends ListActivity {
 		
 		// Viewの取得
 		searchEdit = (EditText)findViewById(R.id.title_edit);
-		titleText = (TextView)findViewById(R.id.title_text);		
+		titleText = (TextView)findViewById(R.id.title_text);
 	}
 
 	/**
@@ -105,6 +106,7 @@ public class HistoryActivity extends ListActivity {
 	public class RamenListItemAdapter extends ArrayAdapter<NoodleHistory> {
 		private LayoutInflater mInflater;
 		private View mViews[];
+		private Bitmap noImage=null;
 		/**
 		 * コンストラクタ
 		 * @param context
@@ -120,6 +122,9 @@ public class HistoryActivity extends ListActivity {
 			mViews = new View[list.size()];
 			for(int i=0;i<list.size();i++)
 				mViews[i]=null;
+			// 空のときの画像をロード
+			noImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_ramen_noimage);
+			
 		}
 		/**
 		 * リストのアイテムを表示する部分
@@ -145,7 +150,10 @@ public class HistoryActivity extends ListActivity {
 			// 画像をセット
 			ImageView image;
 			image = (ImageView) view.findViewById(R.id.NoodleImage);
-			image.setImageBitmap(item.getImage());
+			if(item.getImage()!=null) 
+				image.setImageBitmap(item.getImage());
+			else	// 空のとき
+				image.setImageBitmap(noImage);				
 			// カップラーメンの名前をセット
 			TextView name;
 			name = (TextView) view.findViewById(R.id.RamenName);

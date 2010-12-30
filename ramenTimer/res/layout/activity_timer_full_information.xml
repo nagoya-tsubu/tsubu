@@ -8,18 +8,20 @@
     <LinearLayout
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content">
 
         <LinearLayout
             android:layout_gravity="center_vertical"
             android:orientation="vertical"
-            android:layout_height="wrap_content"
+        	android:layout_height="@dimen/form_image_height"
             android:layout_width="wrap_content">
 
             <LinearLayout
                 android:id="@+id/JanCodeTableRow"
                 android:orientation="horizontal"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -38,26 +40,14 @@
 
             <TextView
                 style="@style/InformationFormText"
-                android:hint="商品名"
+                android:layout_weight="1"
                 android:id="@+id/NameTextView" />
 
-            <LinearLayout
-                android:id="@+id/TimerLimitTableRow"
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    style="@style/InformationFormText"
-                    android:text="時間（秒）" />
-
-                <TextView
-                    style="@style/InformationFormText"
-                    android:hint="時間"
-                    android:inputType="number"
-                    android:id="@+id/TimerLimitTextView"/>
-
-            </LinearLayout>
+            <TextView
+                style="@style/InformationFormText"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:id="@+id/TimerLimitTextView"/>
         </LinearLayout>
     </LinearLayout>
 

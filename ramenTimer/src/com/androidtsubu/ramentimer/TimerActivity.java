@@ -292,17 +292,13 @@ public class TimerActivity extends Activity {
 			name.setVisibility(View.VISIBLE);
 		}
 		if(noodleHistory != null && noodleHistory.getBoilTime() != 0){
-			timerLimit.setText("" + noodleHistory.getNoodleMaster().getTimerLimit());
-			LinearLayout timerLimitTableRow = (LinearLayout) findViewById(R.id.TimerLimitTableRow);
-			timerLimitTableRow.setVisibility(View.VISIBLE);
+			timerLimit.setText("" + noodleHistory.getNoodleMaster().getTimerLimitString());
 			// タイマーの時間をセットする
 			//履歴がある場合は履歴のゆで時間を利用する @hideponm
 			updateTimerTextView(Long.valueOf(noodleHistory.getBoilTime()));
 			
 		}else if (noodleMaster != null && noodleMaster.getTimerLimit() != 0) {
-			timerLimit.setText("" + noodleMaster.getTimerLimit());
-			LinearLayout timerLimitTableRow = (LinearLayout) findViewById(R.id.TimerLimitTableRow);
-			timerLimitTableRow.setVisibility(View.VISIBLE);
+			timerLimit.setText("" + noodleMaster.getTimerLimitString());
 			// タイマーの時間をセットする
 			updateTimerTextView(Long.valueOf(noodleMaster.getTimerLimit()));
 		}
