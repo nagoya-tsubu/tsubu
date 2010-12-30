@@ -60,13 +60,31 @@ public class HistoryActivity extends ListActivity {
 		NoodleMaster nm = nh.getNoodleMaster();
 		//タイマーを起動
 		Intent intent = new Intent(HistoryActivity.this, TimerActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.CREATE2TIMER.ordinal());
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, RequestCode.HISTORY2TIMER.ordinal());
 		intent.putExtra(TimerActivity.KEY_NOODLE_MASTER, nm);
 		//履歴も渡す @hideponm
 		intent.putExtra(TimerActivity.KEY_NOODLE_HISTORY, nh);
-		startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
-		HistoryActivity.this.finish();
+		startActivityForResult(intent, RequestCode.HISTORY2TIMER.ordinal());
+	}	
+	
+	/**
+	 * アクティビティの実行結果処理
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent intent) {
+
+		// アクティビティのリクエストコードで処理を分ける
+		if(requestCode == RequestCode.HISTORY2TIMER.ordinal()){
+			if (RESULT_OK == resultCode) {
+				setResult(RESULT_OK, intent);
+				// Intentをダッシュボードまで戻す。
+				// 呼び出したインテントが空の場合は、処理を終了する
+				finish(); 
+			}			
+		}
 	}
+
 
 	/**
 	 * リストアイテムを扱うためのアダプタークラス
