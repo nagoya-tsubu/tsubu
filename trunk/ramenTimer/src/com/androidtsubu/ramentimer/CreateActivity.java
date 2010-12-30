@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -78,7 +79,7 @@ public class CreateActivity extends Activity {
 	// カップラーメン情報
 	private NoodleMaster noodleMaster = null;
 	// カメラ撮影用
-	private String mPicturePath;
+	private Uri mPictureUri;
 	
 	// 確認ダイアログ
 	AlertDialog verificationDialog =null;
@@ -235,8 +236,7 @@ public class CreateActivity extends Activity {
 					 * callCamera側でセットしたUriはnullになってしまうらしい。
 					 * Xperia対策：セットしたファイル名の通りに画像が作られないので、getData()からUriを取得
 					 */					
-					File file = new File(mPicturePath);
-					uri = Uri.fromFile(file);
+					uri = mPictureUri;
 					// Experia 2.1対策
 					if (intent != null){
 						Uri _uri = intent.getData();
@@ -513,12 +513,15 @@ public class CreateActivity extends Activity {
 	 */
 	private void callCamera() {
 		String filename = "RamenTimer_" + System.currentTimeMillis() + ".jpg";
-		File file = new File(Environment.getExternalStorageDirectory(),filename);
-		mPicturePath = file.getPath();
+		
+		ContentValues values = new ContentValues();
+		values.put(MediaStore.Images.Media.TITLE, filename);
+		values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+		mPictureUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 		
 		Intent intent = new Intent();
 		intent.setAction("android.media.action.IMAGE_CAPTURE");
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, mPictureUri);
 		startActivityForResult(intent, REQUEST_CAMERA);
 	}
 
