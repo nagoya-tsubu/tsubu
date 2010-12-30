@@ -114,6 +114,15 @@ public class NoodleManager {
 	}
 
 	/**
+	 * マスタすべてを返す
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleMaster> getNoodleMastersForSqlite() throws SQLException{
+		return noodleSqlController.getNoodleMasters();
+	}
+	
+	/**
 	 * 外部ストレージチェック
 	 */
 	private void checkExternalStorage() {

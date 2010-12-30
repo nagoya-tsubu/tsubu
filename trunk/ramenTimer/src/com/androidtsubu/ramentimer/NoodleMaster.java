@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
@@ -94,6 +95,7 @@ public class NoodleMaster implements Parcelable {
 		FileInputStream in = null;
 		if(imageFileName == null || imageFileName.equals("")){
 			return null;
+			//return BitmapFactory.decodeResource(.getResources(), R.drawable.img_ramen_noimage);;
 		}
 		try {
 			// パス名からファイルのInputStreamを生成しBitmapにする。
