@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class FavoriteActivity extends ListActivity {
 
 
-	// 履歴情報のリスト
+	// 登録情報のリスト
 	private List<NoodleMaster> list = new ArrayList<NoodleMaster>();
 
 	@Override
@@ -31,9 +31,8 @@ public class FavoriteActivity extends ListActivity {
 
 		// 登録情報の呼び出し
 		NoodleManager manager = new NoodleManager(this);
-		NoodleSqlController controller = new NoodleSqlController(this);
 		try {
-			list = controller.getNoodleMasters();
+			list = manager.getNoodleMastersForSqlite();
 		} catch (SQLException e) {
 			Toast.makeText(this, ExceptionToStringConverter.convert(e),
 					Toast.LENGTH_LONG).show();
