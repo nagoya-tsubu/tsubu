@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/background1"
+	android:orientation="vertical">
+	
+	<!-- ActionBar -->
+	<LinearLayout style="@style/TitleBar">
+        <ImageButton
+            style="@style/TitleBarAction"
+            android:onClick="onLogoClick"
+            android:src="@drawable/ic_title_home"/>
+		<Button
+			style="@style/TitleBarLogo"
+			android:onClick="onLogoClick"
+			android:background="@drawable/title_logo"/>
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+			android:layout_weight="1"
+			/>
+		<ImageButton 
+			style="@style/TitleBarAction2" 
+			android:onClick="onReaderButtonClick"
+			android:src="@drawable/ic_title_barcode" />
+
+		<ImageButton 
+			style="@style/TitleBarAction2" 
+			android:onClick="onTimerButtonClick"
+			android:src="@drawable/ic_title_timer" />
+ 
+		<requestFocus />
+	</LinearLayout>  
+	<ImageView style="@style/HorizontalSeparator"/>
+	
+	<!-- ActionBar End -->
+	<LinearLayout style="@style/RaimonBar"
+    	android:background="@drawable/raimon"/>
+    <ImageView style="@style/HorizontalSeparator"/>
+	
+	
+	<ListView 
+		android:id="@android:id/list"
+		android:divider="@drawable/img_line_dotted"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent">
+	</ListView>
+</LinearLayout>

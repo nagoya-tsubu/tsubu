@@ -319,6 +319,7 @@ public class TimerActivity extends Activity {
 			break;
 		case CREATE2TIMER:
 		case HISTORY2TIMER:
+		case FAVORITE2TIMER:
 		case READER2TIMER:
 			if (noodleMaster.isCompleteData()) {
 				timerInfoViewStub
