@@ -3,6 +3,7 @@ package com.androidtsubu.ramentimer;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.ListActivity;
@@ -12,11 +13,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,17 +76,43 @@ public class HistoryActivity extends ListActivity {
 	 */
 	public class RamenListItemAdapter extends ArrayAdapter<NoodleHistory> {
 		private LayoutInflater mInflater;
-
+		private View mViews[];
+		/**
+		 * コンストラクタ
+		 * @param context
+		 * @param rid
+		 * @param list
+		 */
 		public RamenListItemAdapter(Context context, int rid,
 				List<NoodleHistory> list) {
 			super(context, rid, list);
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			// Viewをまとめてロード
+			mViews = new View[list.size()];
+			int i=0;
+			Iterator<NoodleHistory> itr=list.iterator();
+			while(itr.hasNext()){
+				NoodleHistory history =itr.next();
+				mViews[i]=getView(history);
+				i++;
+			}
 		}
-
+		/**
+		 * リストのアイテムを表示する部分
+		 * @param position
+		 * @param convertView
+		 * @param parent
+		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
-			// データを取り出す
-			NoodleHistory item = (NoodleHistory) getItem(position);
+			return mViews[position];
+		}
+		/**
+		 * NoodleHistoryからViewを作る関数
+		 * @param item
+		 * @return
+		 */
+		private View getView(NoodleHistory item){
 			// レイアウトファイルからViewを生成
 			View view = mInflater.inflate(R.layout.list_item_ramen, null);
 			// 画像をセット
@@ -112,7 +137,7 @@ public class HistoryActivity extends ListActivity {
 			date.setText(format.format(item.getMeasureTime()));
 			// 初期値は不可視（GONE）なので見えるように変更
 			date.setVisibility(TextView.VISIBLE);
-			return view;
+			return view;			
 		}
 
 	}
