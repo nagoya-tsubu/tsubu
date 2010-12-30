@@ -27,6 +27,9 @@
 			android:name="HistoryActivity" 
 			android:screenOrientation="portrait"/>
 		<activity 
+			android:name="FavoriteActivity" 
+			android:screenOrientation="portrait"/>
+		<activity 
 			android:name="ReaderActivity" 
 			android:screenOrientation="portrait"/>
 		<service android:enabled="true" android:name=".RamenTimerService" />

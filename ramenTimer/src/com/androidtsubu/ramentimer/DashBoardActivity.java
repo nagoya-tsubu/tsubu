@@ -39,8 +39,9 @@ public class DashBoardActivity extends Activity {
 	 * @param view
 	 */
 	public void onCreateButtonClick(View view) {
-		int requestCode = RequestCode.DASHBOARD2CREATE.ordinal();
-		gotoReaderActivity(requestCode);		
+//		int requestCode = RequestCode.DASHBOARD2CREATE.ordinal();
+//		gotoReaderActivity(requestCode);		
+		gotoMyListActivity();
 	}
 	/**
 	 * 履歴ボタンが押されたとき
@@ -79,6 +80,16 @@ public class DashBoardActivity extends Activity {
 		startActivityForResult(intent, requestCode);
 	}
 
+	/**
+	 * マイリストの起動
+	 */
+	private void gotoMyListActivity(){
+		Intent intent = new Intent(this, FavoriteActivity.class);
+		int requestCode = RequestCode.DASHBOARD2FAVORITE.ordinal();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		startActivityForResult(intent, requestCode);
+	}
+	
 	/**
 	 * タイマーの起動
 	 */
