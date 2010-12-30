@@ -8,6 +8,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,7 @@ public class FavoriteActivity extends ListActivity {
 	public class RamenListItemAdapter extends ArrayAdapter<NoodleMaster> {
 		private LayoutInflater mInflater;
 		private View mViews[];
+		private Bitmap noImage=null;
 		/**
 		 * コンストラクタ
 		 * @param context
@@ -118,6 +120,9 @@ public class FavoriteActivity extends ListActivity {
 			mViews = new View[list.size()];
 			for(int i=0;i<list.size();i++)
 				mViews[i]=null;
+			// 空のときの画像をロード
+			noImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.img_ramen_noimage);
+			
 		}
 		/**
 		 * リストのアイテムを表示する部分
@@ -143,8 +148,10 @@ public class FavoriteActivity extends ListActivity {
 			// 画像をセット
 			ImageView image;
 			image = (ImageView) view.findViewById(R.id.NoodleImage);
-			Bitmap bmp = item.getImage();
-			image.setImageBitmap(bmp);
+			if(item.getImage()!=null) 
+				image.setImageBitmap(item.getImage());
+			else	// 空のとき
+				image.setImageBitmap(noImage);				
 			// カップラーメンの名前をセット
 			TextView name;
 			name = (TextView) view.findViewById(R.id.RamenName);
