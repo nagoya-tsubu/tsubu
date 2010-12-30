@@ -6,6 +6,11 @@
   <string name="description_logo">RamenTimer</string>
   <string name="description_refresh">Refresh</string>
   <string name="description_search">Search</string>
+
+  <!-- タイマーで利用の文字列 -->
+  <string name="timer_timer"> タイマー</string>
+  <!-- タイマーで利用の文字列 -->
+
   
   <!-- ダッシュボードで利用の文字列 -->
   <string name="dashboard_barcode">読込</string>
@@ -23,8 +28,14 @@
   
   <!-- ヒストリーで利用の文字列 -->
   <string name="history_history">履歴</string>
+  <string name="history_search_hint">履歴検索</string>
   <!-- ヒストリーで利用の文字列 -->
-  
+
+  <!-- お気に入りで利用の文字列 -->
+  <string name="favorite_favorite">お気に入り</string>
+  <string name="favorite_search_hint">お気に入り検索</string>
+  <!-- お気に入りで利用の文字列 -->
+    
   <!-- ダイアログクリエイトgotoで利用の文字列 -->
   <string name="dialog_create_goto_timer">タイマー</string>
   <string name="dialog_create_goto_back">戻る</string>

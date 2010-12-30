@@ -54,7 +54,7 @@
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:paddingLeft">12dip</item>
         <item name="android:paddingRight">12dip</item>
         <item name="android:textStyle">bold</item>
@@ -63,6 +63,17 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="TitleBarEditText">
+        <item name="android:id">@id/title_edit</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:paddingLeft">12dip</item>
+        <item name="android:paddingRight">12dip</item>
+        <item name="android:textColor">@color/title_text_alt</item>
+    </style>
 
     <style name="TitleBarProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
         <item name="android:layout_width">wrap_content</item>
@@ -278,7 +289,7 @@
 	</style>
 
 	<style name="TimeTextView">
-		<item name="android:textSize">50px</item>
+		<item name="android:textSize">60sp</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@color/primary_text</item>
 	</style>

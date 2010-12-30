@@ -13,15 +13,9 @@
             style="@style/TitleBarAction"
             android:onClick="onLogoClick"
             android:src="@drawable/ic_title_home"/>
-		<Button
-			style="@style/TitleBarLogo"
-			android:onClick="onLogoClick"
-			android:background="@drawable/title_logo"/>
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			/>
+        <TextView 
+        	style="@style/TitleBarText"
+        	android:text="@string/create_create"/>	
 		<ImageButton 
 			style="@style/TitleBarAction" 
 			android:onClick="onHistoryButtonClick"

@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,6 +22,10 @@ import android.widget.Toast;
 
 public class FavoriteActivity extends ListActivity {
 
+	// 検索用EditText
+	EditText searchEdit = null;
+	// タイトルテキストビュー
+	TextView titleText = null;
 
 	// 登録情報のリスト
 	private List<NoodleMaster> list = new ArrayList<NoodleMaster>();
@@ -44,6 +50,10 @@ public class FavoriteActivity extends ListActivity {
 			adapter = new RamenListItemAdapter(this, 0, list);
 			setListAdapter(adapter);
 		}
+		// Viewの取得
+		searchEdit = (EditText)findViewById(R.id.title_edit);
+		titleText = (TextView)findViewById(R.id.title_text);
+
 	}
 
 	/**
@@ -190,4 +200,21 @@ public class FavoriteActivity extends ListActivity {
 		setResult(RESULT_OK, intent);
 		finish();
 	}
+	/**
+	 * アクションバーの検索ボタンが押されたとき
+	 */
+	public void onSearchButtonClick(View v) {
+		if(searchEdit.getVisibility()==View.GONE){
+			searchEdit.setVisibility(View.VISIBLE);
+			titleText.setVisibility(View.GONE);
+		}else{
+			searchEdit.setVisibility(View.GONE);
+			titleText.setVisibility(View.VISIBLE);
+			// ソフトウェアキーボードを非表示にする
+			InputMethodManager inputMethodManager =   
+	             (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);  
+			inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);  
+		}
+	}
+	
 }
