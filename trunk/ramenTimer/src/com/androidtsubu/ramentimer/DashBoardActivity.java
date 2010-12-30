@@ -111,6 +111,9 @@ public class DashBoardActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_OK) {
+			if(intent == null){
+				return;
+			}
 			//戻り値のREQUEST_CODEに応じてActivityを選択する
 			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 			//エラー処理
