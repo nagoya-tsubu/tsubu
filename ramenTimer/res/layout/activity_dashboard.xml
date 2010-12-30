@@ -12,7 +12,7 @@
     	style="@style/TitleBar">
         <ImageButton
             style="@style/TitleBarAction"
-            android:src="@drawable/ic_title_home" />
+            android:src="@drawable/home_icon"/>
         <ImageView
             style="@style/TitleBarLogo"
             android:src="@drawable/title_home"/>
@@ -22,54 +22,48 @@
     <LinearLayout style="@style/RaimonBar"/>
     <ImageView style="@style/HorizontalSeparator"/>
 
-	<ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
-	    <LinearLayout
-	        android:orientation="vertical"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="6dip">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
 	        android:layout_weight="1"
-	        android:padding="6dip">
-	        <LinearLayout
-	            android:orientation="horizontal"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_horizontal"
-	            android:paddingTop="6dip">
-	            <Button android:id="@+id/Button02"
-	                style="@style/HomeButton"
-	                android:onClick="onReaderButtonClick"
-	                android:text="@string/dashboard_barcode"
-	                android:drawableTop="@drawable/home_btn_barcode"/>
-	            <Button android:id="@+id/Button01"
-	                style="@style/HomeButton"
-	                android:onClick="onTimerButtonClick"
-	                android:text="@string/dashboard_timer"
-	                android:drawableTop="@drawable/home_btn_timer"/>
-	        </LinearLayout>
+            android:paddingTop="6dip">
+            <Button android:id="@+id/Button02"
+                style="@style/HomeButton"
+                android:onClick="onReaderButtonClick"
+                android:text="@string/dashboard_barcode"
+                android:drawableTop="@drawable/home_btn_barcode"/>
+            <Button android:id="@+id/Button01"
+                style="@style/HomeButton"
+                android:onClick="onTimerButtonClick"
+                android:text="@string/dashboard_timer"
+                android:drawableTop="@drawable/home_btn_timer"/>
+        </LinearLayout>
 	
-	        <LinearLayout
-	            android:orientation="horizontal"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_horizontal"
-	            android:paddingTop="12dip">
-	            <Button android:id="@+id/Button03"
-	                style="@style/HomeButton"
-	                android:onClick="onCreateButtonClick"
-	                android:text="@string/dashboard_create"
-	                android:drawableTop="@drawable/home_btn_ramenadd"/>
-	            <Button android:id="@+id/Button04"
-	                style="@style/HomeButton"
-	                android:onClick="onHistoryButtonClick"
-	                android:text="@string/dashboard_history"
-	                android:drawableTop="@drawable/home_btn_history"/>
-	        </LinearLayout>
-	    </LinearLayout>
-	</ScrollView>		
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+	        android:layout_weight="1"
+            android:paddingTop="12dip">
+		<Button android:id="@+id/Button03"
+	    	style="@style/HomeButton"
+			android:onClick="onCreateButtonClick"
+	        android:text="@string/dashboard_create"
+	        android:drawableTop="@drawable/home_btn_ramenadd"/>
+		<Button android:id="@+id/Button04"
+            style="@style/HomeButton"
+            android:onClick="onHistoryButtonClick"
+            android:text="@string/dashboard_history"
+            android:drawableTop="@drawable/home_btn_history"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/now_playing_loading"
@@ -77,7 +71,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/now_ramen"
         android:background="@color/background1"
-        android:layout_gravity="bottom">
+        android:gravity="bottom|center">
 
         <ImageView style="@style/HorizontalSeparator"/>
         <LinearLayout style="@style/RaimonBar"/>
@@ -87,24 +81,23 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="left"
-            android:padding="6dip">
+            android:padding="6dip"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/tsubu_logo"
-				android:layout_marginLeft="6dip"
-                />
+                android:background="@drawable/tsubu_logo"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="6dip"
+	            android:paddingLeft="12dip"
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/text_size_small"
                 android:textColor="@color/primary_text"
                 android:text="@string/dashboard_text"/>                
         </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>
