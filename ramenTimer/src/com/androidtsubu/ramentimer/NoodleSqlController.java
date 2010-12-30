@@ -111,7 +111,70 @@ public class NoodleSqlController {
 		}
 
 	}
+	
+	/**
+	 * JANコードのLIKE検索で商品マスタを得ます
+	 * @param janCode
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleMaster> getNoodleMastersLikeJanCode(String janCode) throws SQLException{
+		List<NoodleMaster> noodleMasters = new ArrayList<NoodleMaster>();
+		String[] columns = { "jancode", "name", "boiltime", "image" };
+		String where = "jancode LIKE ?";
+		String[] args = { "%" + janCode + "%" };
+		Cursor cursor = null;
+		try {
+			// 検索
+			cursor = database.query(NOODLEMASTERTABLENAME, columns, where,
+					args, null, null, null);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
+			while (cursor.moveToNext()) {
+				// カーソルから商品マスタを生成する
+				noodleMasters.add(createNoodleMaster(cursor));
+			}
+			return noodleMasters;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
 
+	/**
+	 * 名称のLIKE検索で商品マスタを得ます
+	 * @param janCode
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleMaster> getNoodleMastersLikeName(String name) throws SQLException{
+		List<NoodleMaster> noodleMasters = new ArrayList<NoodleMaster>();
+		String[] columns = { "jancode", "name", "boiltime", "image" };
+		String where = "name LIKE ?";
+		String[] args = { "%" + name + "%" };
+		Cursor cursor = null;
+		try {
+			// 検索
+			cursor = database.query(NOODLEMASTERTABLENAME, columns, where,
+					args, null, null, null);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
+			while (cursor.moveToNext()) {
+				// カーソルから商品マスタを生成する
+				noodleMasters.add(createNoodleMaster(cursor));
+			}
+			return noodleMasters;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+
+	
 	/**
 	 * SQLiteからすべての商品マスタを得ます
 	 * 
@@ -237,6 +300,70 @@ public class NoodleSqlController {
 		}
 	}
 
+	/**
+	 * SQLiteからJanCodeのLIKE検索で履歴を得ます
+	 * @param janCode
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleHistory> getNoodleHistoriesLikeJanCode(String janCode)
+			throws SQLException {
+		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
+		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
+		String where = "jancode LIKE ?";
+		String[] whereArgs = {"%" + janCode + "%"};
+		String orderby = "measuretime desc";
+		Cursor cursor = null;
+		try {
+			// 検索
+			cursor = database.query(NOODLEHISTORYTABLENAME, columns, where,
+					whereArgs, null, null, orderby);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
+			while (cursor.moveToNext()) {
+				histories.add(createNoodleHistory(cursor));
+			}
+			return histories;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+
+	/**
+	 * SQLiteから名称のLIKE検索で履歴を得ます
+	 * @param name
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleHistory> getNoodleHistoriesLikeName(String name)
+			throws SQLException {
+		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
+		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
+		String where = "name LIKE ?";
+		String[] whereArgs = {"%" + name + "%"};
+		String orderby = "measuretime desc";
+		Cursor cursor = null;
+		try {
+			// 検索
+			cursor = database.query(NOODLEHISTORYTABLENAME, columns, where,
+					whereArgs, null, null, orderby);
+			if (cursor == null) {
+				throw new SQLException("cursor is null");
+			}
+			while (cursor.moveToNext()) {
+				histories.add(createNoodleHistory(cursor));
+			}
+			return histories;
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+	}
+	
 	/**
 	 * カーソルから履歴を作成する
 	 * 

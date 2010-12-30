@@ -123,6 +123,47 @@ public class NoodleManager {
 	}
 	
 	/**
+	 * 商品マスタを検索する
+	 * @param keyword
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleMaster> searchNoodleMaster(String keyword) throws SQLException{
+		List<NoodleMaster> noodleMasters;
+		//JANコードで探してみる
+		noodleMasters = noodleSqlController.getNoodleMastersLikeJanCode(keyword);
+		//名称で探してみる
+		List<NoodleMaster> noodleMasters2 = noodleSqlController.getNoodleMastersLikeName(keyword);
+		for(NoodleMaster n2 : noodleMasters2){
+			if(!noodleMasters.contains(n2)){
+				noodleMasters.add(n2);
+			}
+		}
+		return noodleMasters;
+	}
+
+	/**
+	 * 商品履歴を検索する
+	 * @param keyword
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleHistory> searchNoodleHistories(String keyword) throws SQLException{
+		List<NoodleHistory> noodleHistories;
+		//JANコードで探してみる
+		noodleHistories = noodleSqlController.getNoodleHistoriesLikeJanCode(keyword);
+		//名称で探してみる
+		List<NoodleHistory> noodleHisotHistories2 = noodleSqlController.getNoodleHistoriesLikeName(keyword);
+		for(NoodleHistory n2 : noodleHisotHistories2){
+			if(!noodleHistories.contains(n2)){
+				noodleHistories.add(n2);
+			}
+		}
+		return noodleHistories;
+	}
+	
+	
+	/**
 	 * 外部ストレージチェック
 	 */
 	private void checkExternalStorage() {
