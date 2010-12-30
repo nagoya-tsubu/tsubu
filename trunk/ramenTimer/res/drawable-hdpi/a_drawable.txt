@@ -1,20 +1,20 @@
 ﻿drawable-hdpi
 
-
+// ボタン背景
 btn_bg_default.9.png
 btn_bg_pressed.9.png
 btn_bg_selected.9.png
-
+// ダイアログ用 ボタン背景
 btn_dialog_bg_default.9.png
 
-
+// 履歴用セレクター 単色（※現在未使用）
 btn_bg_slecter_pressed.9.png
 btn_bg_slecter_selected.9.png
-
+// 履歴用セレクター イラスト
 bg_selecter_pressed.9.png
 bg_selecter_selected.9.png
 
-
+// アクションバー用アイコン
 ic_title_home_default.png
 ic_title_home_pressed.png
 ic_title_home_selected.png
@@ -31,11 +31,12 @@ ic_title_timer_default.png
 ic_title_timer_pressed.png
 ic_title_timer_selected.png
 
+// アクションバー用ロゴ
 title_logo_default.png
 title_logo_pressed.png
 title_logo_selected.png
 
-
+// ダッシュボード用ボタン
 home_btn_barcode_default.png
 home_btn_barcode_pressed.png
 home_btn_barcode_selected.png
@@ -49,13 +50,16 @@ home_btn_timer_default.png
 home_btn_timer_pressed.png
 home_btn_timer_selected.png
 
+// タイトル用アイコン
+home_icon.png
+// アプリ名
 title_home_default.png
-
+// つ部ロゴ
 tsubu_logo_default.png
 tsubu_logo_pressed.png
 tsubu_logo_selected.png
 
-
+// タイマー画面用ボタン
 timer_btn_plus_default.png
 timer_btn_plus_pressed.png
 timer_btn_plus_selected.png
@@ -64,39 +68,37 @@ timer_btn_minus_default.png
 timer_btn_minus_pressed.png
 timer_btn_minus_selected.png
 timer_btn_minus_disable.png
-
+// タイマー画面用アラーム画像
 img_alarm_default.png
 img_alarm_start.png
 img_alarm_end.png
 
+// ステータスバー用アイコン
 ic_stat_notify.png
 
-
+// クイックアクション用アイコン
 ic_popup_camera_default.png
 ic_popup_camera_pressed.png
 ic_popup_camera_selected.png
 ic_popup_photos_default.png
 ic_popup_photos_pressed.png
 ic_popup_photos_selected.png
-
+// クイックアクション用吹き出し
 img_popup_balloon.9.png
 img_popup_balloon_up.png
 img_popup_balloon_down.png
 
-
+// らいもん画像
 img_raimon.png
+// プログレスバー なると
 img_progress.png
+// ラーメン画像なし
 img_ramen_noimage.png
+// 履歴用罫線
 img_line_dotted.png
+// 四角枠線
 img_block_border.9.png
 
-
-icon.png
-
---------------------------------------
-
-drawable-320dpi
-
-
+// ランチャー用アイコン
 icon.png
 

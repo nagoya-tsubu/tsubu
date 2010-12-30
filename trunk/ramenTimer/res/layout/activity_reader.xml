@@ -7,7 +7,7 @@
   android:orientation="vertical">
 	<ImageView
 		android:id="@+id/ReaderProgressIcon"
-		android:src="@drawable/img_loading2_r"
+		android:src="@drawable/img_progress"
 		android:layout_width="wrap_content"
 		android:layout_height="fill_parent"
 		android:layout_gravity="center_horizontal"
