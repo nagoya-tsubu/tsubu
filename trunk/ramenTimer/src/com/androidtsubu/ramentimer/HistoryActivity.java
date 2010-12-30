@@ -88,15 +88,10 @@ public class HistoryActivity extends ListActivity {
 			super(context, rid, list);
 			mInflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			// Viewをまとめてロード
+			// Viewの入れものを作っておく
 			mViews = new View[list.size()];
-			int i=0;
-			Iterator<NoodleHistory> itr=list.iterator();
-			while(itr.hasNext()){
-				NoodleHistory history =itr.next();
-				mViews[i]=getView(history);
-				i++;
-			}
+			for(int i=0;i<list.size();i++)
+				mViews[i]=null;
 		}
 		/**
 		 * リストのアイテムを表示する部分
@@ -105,6 +100,10 @@ public class HistoryActivity extends ListActivity {
 		 * @param parent
 		 */
 		public View getView(int position, View convertView, ViewGroup parent) {
+			if(null==mViews[position]){
+				NoodleHistory item = (NoodleHistory)getItem(position);
+				mViews[position]=getView(item);
+			}
 			return mViews[position];
 		}
 		/**
