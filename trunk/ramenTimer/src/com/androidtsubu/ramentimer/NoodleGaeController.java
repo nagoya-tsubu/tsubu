@@ -207,7 +207,7 @@ public class NoodleGaeController {
 			entity.addPart("jan", new StringBody(noodleMaster.getJanCode()));
 			// 茹で時間
 			entity.addPart("boilTime",
-					new StringBody(noodleMaster.getTimerLimitString()));
+					new StringBody(Integer.toString(noodleMaster.getTimerLimit())));
 			imageInputStream = createImageInputStream(noodleMaster
 					.getImage());
 			// イメージ画像
