@@ -29,12 +29,11 @@
 			style="@style/TitleBarAction2" 
 			android:onClick="onTimerButtonClick"
 			android:src="@drawable/ic_title_timer" />
-   -->
 		<ImageButton 
 			style="@style/TitleBarAction2" 
 			android:onClick="onSearchButtonClick"
 			android:src="@drawable/ic_title_search" />
-		<requestFocus />
+   -->
  
 		<requestFocus />
 	</LinearLayout>  

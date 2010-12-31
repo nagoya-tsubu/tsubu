@@ -52,11 +52,18 @@
             android:layout_height="wrap_content"
 	        android:layout_weight="1"
             android:paddingTop="12dip">
+<!--             
 		<Button android:id="@+id/Button03"
 	    	style="@style/HomeButton"
 			android:onClick="onCreateButtonClick"
 	        android:text="@string/dashboard_create"
 	        android:drawableTop="@drawable/home_btn_ramenadd"/>
+ -->	        
+		<Button android:id="@+id/Button03"
+            style="@style/HomeButton"
+            android:onClick="onFavoriteButtonClick"
+            android:text="@string/dashboard_favorite"
+            android:drawableTop="@drawable/home_btn_favorite"/>
 		<Button android:id="@+id/Button04"
             style="@style/HomeButton"
             android:onClick="onHistoryButtonClick"

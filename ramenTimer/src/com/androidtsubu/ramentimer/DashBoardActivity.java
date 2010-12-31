@@ -42,10 +42,18 @@ public class DashBoardActivity extends Activity {
 	 * @param view
 	 */
 	public void onCreateButtonClick(View view) {
-//		int requestCode = RequestCode.DASHBOARD2CREATE.ordinal();
-//		gotoReaderActivity(requestCode);		
-		gotoMyListActivity();
+		int requestCode = RequestCode.DASHBOARD2CREATE.ordinal();
+		gotoReaderActivity(requestCode);		
 	}
+	/**
+	 * お気に入りボタンが押されたとき
+	 * @param view
+	 */
+	public void onFavoriteButtonClick(View view) {
+		gotoFavoriteActivity();
+	}
+	
+	
 	/**
 	 * 履歴ボタンが押されたとき
 	 * @param view
@@ -92,7 +100,7 @@ public class DashBoardActivity extends Activity {
 	/**
 	 * マイリストの起動
 	 */
-	private void gotoMyListActivity(){
+	private void gotoFavoriteActivity(){
 		Intent intent = new Intent(this, FavoriteActivity.class);
 		int requestCode = RequestCode.DASHBOARD2FAVORITE.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
