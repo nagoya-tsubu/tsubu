@@ -2,6 +2,7 @@ package com.androidtsubu.ramentimer.server.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,7 +27,8 @@ public class RamenService {
     public Ramen create(HttpServletRequest request) {
         ApplicationMessage.setBundle(
             ControllerConstants.DEFAULT_LOCALIZATION_CONTEXT,
-            request.getLocale());
+            Locale.JAPAN); // TODO とりあえず日本語限定 Android側でLocaleがセットされているか調査
+//            request.getLocale());
 
         return create(new RequestMap(request));
     }
@@ -39,14 +41,15 @@ public class RamenService {
         v.add("boilTime", v.required(), v.integerType(), v.longRange(1, 300));
         v.add("image", v.required());
         if (v.validate() == false) {
-            throw new IllegalArgumentException(v
-                .getErrors()
-                .values()
-                .toString());
+            String msg = "";
+            for (String error : v.getErrors().values()) {
+                msg += error + "\n";
+            }
+            throw new IllegalArgumentException(msg);
         }
 
         if (findByJan(input.get("jan").toString()) != null) {
-            throw new IllegalArgumentException("JAN code already exists.");
+            throw new IllegalArgumentException("既に登録されています。");
         }
 
         Ramen ramen = new Ramen();
