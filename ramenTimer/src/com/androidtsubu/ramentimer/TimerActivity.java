@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -169,6 +170,10 @@ public class TimerActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		//ハードウェアキーによる音量設定を有効にする
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
 		setContentView(R.layout.activity_timer);
 
 		// レイアウトを取得
