@@ -17,6 +17,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.Animation;
@@ -112,15 +113,14 @@ public class TimerActivity extends Activity {
 				updateTimerTextView((waitTime - currentTime) / 1000 + 1);
 				return;
 			}
-			countdown = false;
 			// サービスを停止する
 			ramenTimerService.stop();
 			// 0秒TextView、終了ボタンを表示
 			updateTimerTextView(0);
 			setTimerEndLayout();
-			Toast toast = Toast.makeText(getApplicationContext(), "Time over!",
-					Toast.LENGTH_LONG);
-			toast.show();
+//			Toast toast = Toast.makeText(getApplicationContext(), "Time over!",
+//					Toast.LENGTH_LONG);
+//			toast.show();
 
 			// Mainスレッドでアラーム再生すると遅延が発生するため、スレッドで実行する
 			new Thread(new Runnable() {
@@ -153,6 +153,7 @@ public class TimerActivity extends Activity {
 					}
 				}).start();
 			}
+			countdown = false;			
 		}
 	}
 
@@ -273,6 +274,7 @@ public class TimerActivity extends Activity {
 		unbindService(serviceConnection); // バインド解除
 		unregisterReceiver(receiver); // 登録解除
 		ramenTimerService.stopSelf(); // サービスは必要ないので終了させる。
+		ramenTimerService = null;
 	}
 
 	/**
@@ -564,6 +566,21 @@ public class TimerActivity extends Activity {
 				RequestCode.ACTION_HISTORY.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
+	}
+	// 戻るキーの無効化
+	@Override
+	public boolean dispatchKeyEvent(KeyEvent event) {
+		if (!countdown) {
+			return true;
+		}
+
+		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			switch (event.getKeyCode()) {
+			case KeyEvent.KEYCODE_BACK:
+				return true;
+			}
+		}
+		return super.dispatchKeyEvent(event);
 	}
 
 }
