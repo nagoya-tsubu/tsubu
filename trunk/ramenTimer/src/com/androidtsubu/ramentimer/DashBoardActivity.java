@@ -1,13 +1,18 @@
 package com.androidtsubu.ramentimer;
 
+import com.androidtsubu.ramentimer.R.id;
 import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class DashBoardActivity extends Activity {
@@ -18,6 +23,17 @@ public class DashBoardActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+        
+        String packegeName = getPackageName();
+        try {
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(packegeName, PackageManager.GET_META_DATA);
+			TextView textView = (TextView) findViewById(id.ramen_version);
+			textView.setText(packageInfo.versionName + "杯");
+        } catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 
         //キャッチできない例外エラーが発生した場合に備え、例外ハンドラを設定する
         Resources res = getResources();
