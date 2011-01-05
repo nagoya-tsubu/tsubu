@@ -1,4 +1,28 @@
-﻿drawable-hdpi
+﻿drawable
+
+// 四角枠線 ← 以下のファイルをリネイムお願いします
+img_borderitem.9.png
+　↓
+img_block_border.9.png
+
+// クイックアクション用吹き出し
+img_popup_balloon.9.png
+img_popup_balloon_up.png
+img_popup_balloon_down.png
+
+
+//以下のファイル必要？
+action_item_btn.xml
+action_item_selected.9.png
+title_button.xml
+
+//以下のファイル画像とともに削除
+home_btn_ramenadd.xml
+title_home.xml
+titlebar.xml
+title_logo.xml
+
+drawable-hdpi
 
 // ボタン背景
 btn_bg_default.9.png
@@ -16,28 +40,36 @@ bg_selecter_pressed.9.png
 bg_selecter_selected.9.png
 
 // アクションバー用アイコン
-ic_title_home_default.png ← 修正版
-ic_title_home_pressed.png ← 修正版
-ic_title_home_selected.png ← 修正版
+ic_title_home_default.png
+ic_title_home_pressed.png
+ic_title_home_selected.png
+ic_title_home_disable.png ← 追加
 ic_title_barcode_default.png
 ic_title_barcode_pressed.png
 ic_title_barcode_selected.png
+ic_title_barcode_disable.png ← 追加
 ic_title_history_default.png
 ic_title_history_pressed.png
 ic_title_history_selected.png
-ic_title_ramenadd_default.png
-ic_title_ramenadd_pressed.png
-ic_title_ramenadd_selected.png
+ic_title_history_disable.png ← 追加
 ic_title_timer_default.png
 ic_title_timer_pressed.png
 ic_title_timer_selected.png
+ic_title_timer_disable.png ← 追加
 // アクションバー用アイコン 追加
 ic_title_favorite_default.png
 ic_title_favorite_pressed.png
 ic_title_favorite_selected.png
+ic_title_favorite_disable.png ← 追加
 ic_title_search_default.png
 ic_title_search_pressed.png
 ic_title_search_selected.png
+ic_title_search_disable.png ← 追加
+
+// アクションバー用アイコン 削除
+ic_title_ramenadd_default.png
+ic_title_ramenadd_pressed.png
+ic_title_ramenadd_selected.png
 
 // アクションバー用ロゴ ← 削除
 title_logo_default.png
@@ -51,9 +83,6 @@ home_btn_barcode_selected.png
 home_btn_history_default.png
 home_btn_history_pressed.png
 home_btn_history_selected.png
-home_btn_ramenadd_default.png ← 削除
-home_btn_ramenadd_pressed.png ← 削除
-home_btn_ramenadd_selected.png ← 削除
 home_btn_timer_default.png
 home_btn_timer_pressed.png
 home_btn_timer_selected.png
@@ -61,11 +90,19 @@ home_btn_timer_selected.png
 home_btn_favorite_default.png
 home_btn_favorite_pressed.png
 home_btn_favorite_selected.png
+// ダッシュボード用ボタン 削除
+home_btn_ramenadd_default.png
+home_btn_ramenadd_pressed.png
+home_btn_ramenadd_selected.png
+
 
 // タイトル用アイコン
 home_icon.png
-// アプリ名
-title_home_default.png
+
+// タイトル用アプリ名
+title_home_default.png ← 削除
+home_title_appname.png ← activity_dashboard.xml修正済み
+
 // つ部ロゴ
 tsubu_logo_default.png
 tsubu_logo_pressed.png
@@ -103,11 +140,6 @@ ic_popup_edit_default.png
 ic_popup_edit_pressed.png
 ic_popup_edit_selected.png
 
-// クイックアクション用吹き出し
-img_popup_balloon.9.png
-img_popup_balloon_up.png
-img_popup_balloon_down.png
-
 // らいもん画像
 img_raimon.png
 // プログレスバー なると
@@ -116,8 +148,6 @@ img_progress.png
 img_ramen_noimage.png
 // 履歴用罫線
 img_line_dotted.png
-// 四角枠線
-img_block_border.9.png
 
 // ランチャー用アイコン
 icon.png

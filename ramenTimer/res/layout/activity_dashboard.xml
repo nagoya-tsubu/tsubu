@@ -14,8 +14,10 @@
             style="@style/TitleBarAction"
             android:src="@drawable/home_icon"/>
         <ImageView
-            style="@style/TitleBarLogo"
-            android:src="@drawable/title_home"/>
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center_vertical"
+            android:src="@drawable/home_title_appname"/>
     </LinearLayout>
 
     <ImageView style="@style/HorizontalSeparator"/>
@@ -52,23 +54,16 @@
             android:layout_height="wrap_content"
 	        android:layout_weight="1"
             android:paddingTop="12dip">
-<!--             
-		<Button android:id="@+id/Button03"
-	    	style="@style/HomeButton"
-			android:onClick="onCreateButtonClick"
-	        android:text="@string/dashboard_create"
-	        android:drawableTop="@drawable/home_btn_ramenadd"/>
- -->	        
-		<Button android:id="@+id/Button03"
-            style="@style/HomeButton"
-            android:onClick="onFavoriteButtonClick"
-            android:text="@string/dashboard_favorite"
-            android:drawableTop="@drawable/home_btn_favorite"/>
-		<Button android:id="@+id/Button04"
-            style="@style/HomeButton"
-            android:onClick="onHistoryButtonClick"
-            android:text="@string/dashboard_history"
-            android:drawableTop="@drawable/home_btn_history"/>
+			<Button android:id="@+id/Button03"
+	            style="@style/HomeButton"
+	            android:onClick="onFavoriteButtonClick"
+	            android:text="@string/dashboard_favorite"
+	            android:drawableTop="@drawable/home_btn_favorite"/>
+			<Button android:id="@+id/Button04"
+	            style="@style/HomeButton"
+	            android:onClick="onHistoryButtonClick"
+	            android:text="@string/dashboard_history"
+	            android:drawableTop="@drawable/home_btn_history"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -100,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-	            android:paddingLeft="12dip"
+				android:paddingLeft="12dip"
                 android:layout_gravity="center_vertical"
                 android:textSize="@dimen/text_size_small"
                 android:textColor="@color/primary_text"
