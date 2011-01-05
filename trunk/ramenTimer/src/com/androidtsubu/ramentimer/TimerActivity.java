@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
@@ -97,6 +98,8 @@ public class TimerActivity extends Activity {
 	private int boilTime;
 	/**カウントダウンフラグ*/
 	private boolean countdown = false;
+	/**音*/
+	private MediaPlayer mediaPlayer = null;
 
 	private Context getThis() {
 		return this;
@@ -125,10 +128,10 @@ public class TimerActivity extends Activity {
 			// Mainスレッドでアラーム再生すると遅延が発生するため、スレッドで実行する
 			new Thread(new Runnable() {
 				public void run() {
-					MediaPlayer mp = MediaPlayer.create(TimerActivity.this,
+					mediaPlayer = MediaPlayer.create(TimerActivity.this,
 							R.raw.alarm);
 					try {
-						mp.start();
+						mediaPlayer.start();
 					} catch (Exception e) {
 						// 例外は発生しない
 					}
@@ -153,7 +156,7 @@ public class TimerActivity extends Activity {
 					}
 				}).start();
 			}
-			countdown = false;			
+			setCountdown(false);		
 		}
 	}
 
@@ -246,6 +249,9 @@ public class TimerActivity extends Activity {
 		endButton = (Button) findViewById(R.id.TimerEndButton);
 		endButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				if(mediaPlayer != null &&  mediaPlayer.isPlaying()){
+					mediaPlayer.stop();
+				}
 				setResult(RESULT_OK);
 				finish();
 			}
@@ -423,7 +429,7 @@ public class TimerActivity extends Activity {
 	 * 終了時間をセットし、サービスのタイマーを起動する
 	 */
 	private void startTimer() {
-		countdown = true;
+		setCountdown(true);
 		int min = Integer.valueOf(minTextView.getText().toString());
 		int sec = Integer.valueOf(secTextView.getText().toString());
 
@@ -581,6 +587,21 @@ public class TimerActivity extends Activity {
 			}
 		}
 		return super.dispatchKeyEvent(event);
+	}
+	
+	/**
+	 * カウントダウン中フラグを設定する
+	 * @param countdown
+	 */
+	private void setCountdown(boolean countdown){
+		this.countdown = countdown;
+		if(countdown){
+			//スリープを無効化する
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}else{
+			//スリープを有効化する
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
 	}
 
 }

@@ -122,14 +122,14 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 			notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);			
 		}
 		if(notification == null){
-			notification = new Notification(R.drawable.ic_stat_notify, "らーめんたいまーカウントダウン開始", System.currentTimeMillis());			
+			notification = new Notification(R.drawable.ic_stat_notify, "", System.currentTimeMillis());			
 		}
 		if(contentIntent == null){
 			contentIntent = PendingIntent.getActivity(this, 0,
 					new Intent(this, TimerActivity.class), 0);
 		}
 		notification.setLatestEventInfo(getApplicationContext(),
-				"らーめんたいまーカウント中", showText, contentIntent);		
+				"ラーメンタイマーカウント中", showText, contentIntent);		
 		notificationManager.notify(1, notification);
 		
 	}
