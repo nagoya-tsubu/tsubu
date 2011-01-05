@@ -20,9 +20,14 @@ title_button.xml
 home_btn_ramenadd.xml
 title_home.xml
 titlebar.xml
-title_logo.xml
+title_logo.xml ← value/ids.xml styles.xml 修正要
+
 
 drawable-hdpi
+
+//以下のファイル必要？
+action_item.xml
+
 
 // ボタン背景
 btn_bg_default.9.png
