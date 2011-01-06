@@ -1,7 +1,6 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 import android.app.Activity;
@@ -17,6 +16,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -100,6 +100,10 @@ public class TimerActivity extends Activity {
 	private boolean countdown = false;
 	/**音*/
 	private MediaPlayer mediaPlayer = null;
+	/**振動*/
+	private Vibrator vibrator = null;
+	/**振動パターン*/
+	private static long[] vibePattern = {500,500,500,500,500,500,500,500};
 
 	private Context getThis() {
 		return this;
@@ -125,6 +129,13 @@ public class TimerActivity extends Activity {
 //					Toast.LENGTH_LONG);
 //			toast.show();
 
+			//振動させる
+			new Thread(new Runnable() {
+				public void run() {
+					vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+					vibrator.vibrate(vibePattern, -1);
+				}
+			}).start();
 			// Mainスレッドでアラーム再生すると遅延が発生するため、スレッドで実行する
 			new Thread(new Runnable() {
 				public void run() {
@@ -137,6 +148,7 @@ public class TimerActivity extends Activity {
 					}
 				}
 			}).start();
+			
 
 			// GAEに情報が存在した場合、履歴を登録する
 			if (noodleMaster != null && noodleMaster.isCompleteData()) {
@@ -249,8 +261,13 @@ public class TimerActivity extends Activity {
 		endButton = (Button) findViewById(R.id.TimerEndButton);
 		endButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				//音がなってたら消す
 				if(mediaPlayer != null &&  mediaPlayer.isPlaying()){
 					mediaPlayer.stop();
+				}
+				//振動してたら消す
+				if(vibrator != null){
+					vibrator.cancel();					
 				}
 				setResult(RESULT_OK);
 				finish();
@@ -439,7 +456,7 @@ public class TimerActivity extends Activity {
 		Date date = new Date();
 		date.setSeconds(date.getSeconds() + boilTime);
 		AlarmManager amng = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		amng.set(amng.RTC_WAKEUP, date.getTime(), pi);
+		amng.set(AlarmManager.RTC_WAKEUP, date.getTime(), pi);
 
 		// 終了時刻を設定する
 		startTime = System.currentTimeMillis();
@@ -573,14 +590,15 @@ public class TimerActivity extends Activity {
 		setResult(RESULT_OK, intent);
 		finish();
 	}
-	// 戻るキーの無効化
+
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (!countdown) {
-			return true;
+			return super.dispatchKeyEvent(event);
 		}
 
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+			// カウントダウン中は戻るキーを無効にする
 			switch (event.getKeyCode()) {
 			case KeyEvent.KEYCODE_BACK:
 				return true;
