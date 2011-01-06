@@ -29,7 +29,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="6dip">
+        android:paddingTop="6dip">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
@@ -83,7 +83,7 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:padding="4dip"
+            android:paddingTop="4dip"
 	        android:layout_weight="1"
             android:gravity="center">
 
