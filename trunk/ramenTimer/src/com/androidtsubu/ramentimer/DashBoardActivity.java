@@ -175,6 +175,10 @@ public class DashBoardActivity extends Activity {
 					break;
 			}
 		} else if(RESULT_CANCELED == resultCode) {
+			//@leibun追加
+			if(null == intent) {
+				return;
+			}			
 			//@tan1234jp追加
 			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 			//エラー処理
