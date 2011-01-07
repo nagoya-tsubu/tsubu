@@ -20,7 +20,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 /**
  * JANコード読み取り
@@ -44,6 +43,8 @@ public class ReaderActivity extends Activity {
 	private boolean _qrException = false;
 	/** ProgressIcon */
 	private ImageView progressIcon = null;
+	// エラーコード(エラー文字列リソース値)
+	private int _errorResId = -1;
 
 	// ReaderActivityの状態
 	private static final int EXECUTE_QR_CODE_SCANNER = 100; // QRコードスキャナの実行
@@ -250,6 +251,11 @@ public class ReaderActivity extends Activity {
 		// GAE問い合わせ、SQliteエラーの場合はnullが返ってきます @hideponm
 		// ※通常はありえない
 		if (null == _noodleMaster) {
+			intent = getIntent();
+			//エラーコードをリクエストコードとして返す
+			intent.putExtra(RequestCode.KEY_RESUEST_CODE, _errorResId);
+			//処理失敗なのでRESULT_CANCELEDをダッシュボードに返す
+			setResult(RESULT_CANCELED, intent);
 			finish();
 			return;
 		}
@@ -302,6 +308,7 @@ public class ReaderActivity extends Activity {
 	private class ReadAsyncTask extends
 			AsyncTask<String, NoodleMaster, NoodleMaster> {
 		private NoodleManager noodleManager;
+		private int errorResId;
 
 		/**
 		 * コンストラクタ
@@ -325,27 +332,37 @@ public class ReaderActivity extends Activity {
 				return noodleMaster;
 			} catch (SQLException e) {
 				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
-				Toast.makeText(ReaderActivity.this,
-						"ローカルデータ問い合わせでエラーが発生しました",
-						Toast.LENGTH_LONG).show();
+				errorResId = R.string.sql_local_error;
+//				Toast.makeText(ReaderActivity.this,
+//						"ローカルデータ問い合わせでエラーが発生しました",
+//						Toast.LENGTH_LONG).show();
 				return null;
 			} catch (GaeException e) {
 				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
-				Toast.makeText(ReaderActivity.this,
-						"サーバー問い合わせでエラーが発生しました",
-						Toast.LENGTH_LONG).show();
+				errorResId = R.string.sql_gae_error;
+//				Toast.makeText(ReaderActivity.this,
+//						"サーバー問い合わせでエラーが発生しました",
+//						Toast.LENGTH_LONG).show();
 				return null;
 			} catch(Exception e){
 				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
-				Toast.makeText(ReaderActivity.this,
-						"原因不明のエラーが発生しました",
-						Toast.LENGTH_LONG).show();
+				errorResId = R.string.sql_unknown_error;
+//				Toast.makeText(ReaderActivity.this,
+//						"原因不明のエラーが発生しました",
+//						Toast.LENGTH_LONG).show();
 				return null;
 			}
 
 		}
 
 		protected void onPostExecute(NoodleMaster noodleMaster) {
+			//引数のnoodleMasterがnullの時はDBアクセス時のエラー
+			if(null == noodleMaster) {
+				//エラー文字列リソースを次のインテントへ渡す
+				_errorResId = errorResId;
+			} else {
+				_errorResId = -1;
+			}
 			_noodleMaster = noodleMaster;
 			// 次のインテントへ遷移する
 			_handler.sendEmptyMessage(GOTO_NEXT_INTENT);

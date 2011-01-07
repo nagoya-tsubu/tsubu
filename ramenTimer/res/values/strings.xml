@@ -54,4 +54,9 @@
   <string name="dialog_yes">はい</string>
   <string name="dialog_no">いいえ</string>
   <!-- バグレポート送信時のダイアログ文字列 -->
+  
+  <!-- GAE通信エラー文字列 -->
+  <string name="sql_local_error">ローカルデータ問い合わせでエラーが発生しました</string>
+  <string name="sql_gae_error">サーバー問い合わせでエラーが発生しました</string>
+  <string name="sql_unknown_error">原因不明のエラーが発生しました</string>
 </resources>
