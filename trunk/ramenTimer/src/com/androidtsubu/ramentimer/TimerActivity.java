@@ -142,6 +142,9 @@ public class TimerActivity extends Activity {
 				public void run() {
 					mediaPlayer = MediaPlayer.create(TimerActivity.this,
 							R.raw.alarm);
+					//チャルメラ試したい人はこっち
+//					mediaPlayer = MediaPlayer.create(TimerActivity.this,
+//							R.raw.charumera);
 					try {
 						mediaPlayer.start();
 					} catch (Exception e) {
@@ -561,10 +564,6 @@ public class TimerActivity extends Activity {
 	 * 
 	 */
 	public void onCreateButtonClick(View v) {
-		if(countdown){
-			//カウントダウン中は操作できなようにする
-			return;
-		}
 		Intent intent = new Intent(TimerActivity.this, CreateActivity.class);
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 				RequestCode.READER2CREATE.ordinal());
@@ -574,10 +573,6 @@ public class TimerActivity extends Activity {
 	}
 
 	public void onLogoClick(View v) {
-		if(countdown){
-			//カウントダウン中は操作できなようにする
-			return;
-		}		
 		setResult(RESULT_OK);
 		finish();
 	}
@@ -585,11 +580,7 @@ public class TimerActivity extends Activity {
 	/**
 	 * バーコードリーダーを起動し、Timerを終了する
 	 */
-	public void onReaderButtonClick(View v) {
-		if(countdown){
-			//カウントダウン中は操作できなようにする
-			return;
-		}		
+	public void onReaderButtonClick(View v) {	
 		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 				RequestCode.ACTION_READER.ordinal());
@@ -601,10 +592,6 @@ public class TimerActivity extends Activity {
 	 * 履歴を起動し、Timerを終了する
 	 */
 	public void onHistoryButtonClick(View v) {
-		if(countdown){
-			//カウントダウン中は操作できなようにする
-			return;
-		}		
 		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 				RequestCode.ACTION_HISTORY.ordinal());
