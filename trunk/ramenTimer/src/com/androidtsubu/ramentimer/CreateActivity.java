@@ -552,6 +552,10 @@ public class CreateActivity extends Activity {
 		
 		try {
 			noodleMaster = getNoodleMaster();
+		} catch (CreateNoImageException e) {
+			Toast.makeText(this, "画像をセットしてください\n（NoImageをタッチ）", Toast.LENGTH_LONG).show();
+			createButton.setEnabled(true);		
+			return;
 		} catch (Exception e) {
 			Toast.makeText(this, "入力項目を埋めてください", Toast.LENGTH_LONG).show();
 			createButton.setEnabled(true);		
@@ -680,8 +684,9 @@ public class CreateActivity extends Activity {
 	 * UIから登録情報を集めて返す
 	 * 
 	 * @return
+	 * @throws CreateNoImageException 
 	 */
-	NoodleMaster getNoodleMaster() {
+	NoodleMaster getNoodleMaster() throws CreateNoImageException {
 		// EditTextやRadioGroupから状態を取得
 		String jancode = janText.getText().toString();
 		String name = nameEdit.getText().toString();
@@ -693,7 +698,7 @@ public class CreateActivity extends Activity {
 		// 画像の取得
 		Bitmap image;
 		if(noodleImage==null) // セットされていない場合なダミー画像を入れる
-			image = BitmapFactory.decodeResource(getResources(), R.drawable.img_ramen_noimage);
+			throw new CreateNoImageException();
 		else
 			image = noodleImage;
 		// NoodleType noodleType =
