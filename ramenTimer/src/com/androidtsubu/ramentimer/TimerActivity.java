@@ -25,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -473,8 +474,9 @@ public class TimerActivity extends Activity {
 	 */
 	private void setTimerNotRunningLayout() {
 		startButton.setVisibility(View.VISIBLE);
-
 		endButton.setVisibility(View.GONE);
+		// ボタンを有効化（押せるようになる）
+		setOnClickEnable(true);
 	}
 
 	/**
@@ -485,6 +487,8 @@ public class TimerActivity extends Activity {
 		// タイマー画像を差し替える(黄色)
 		timerImage.setImageResource(R.drawable.img_alarm_start);
 		endButton.setVisibility(View.GONE);
+		// ボタンを無効化（押せないようになる）
+		setOnClickEnable(false);
 
 	}
 
@@ -500,7 +504,24 @@ public class TimerActivity extends Activity {
 		timerImage.startAnimation(timerAnim);
 		
 		startButton.setVisibility(View.GONE);
+		// ボタンを有効化（押せるようになる）
+		setOnClickEnable(true);
+
 	}
+	
+	/**
+	 * ボタンを無効化/有効化　するメソッド
+	 * @param enabled
+	 */
+	private void setOnClickEnable(boolean enabled){
+		ImageButton homeButton= (ImageButton) findViewById(R.id.TitleHomeButton);
+		ImageButton readerButton= (ImageButton) findViewById(R.id.TitleReaderButton);
+		ImageButton historyButton= (ImageButton) findViewById(R.id.TitleHistoryButton);
+		homeButton.setEnabled(enabled);
+		readerButton.setEnabled(enabled);
+		historyButton.setEnabled(enabled);
+	}
+
 
 	AnimationListener mAnimLeft2Right = new AnimationListener() {
 		public void onAnimationStart(Animation animation) {
@@ -590,7 +611,8 @@ public class TimerActivity extends Activity {
 		setResult(RESULT_OK, intent);
 		finish();
 	}
-
+	
+	
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (!countdown) {
