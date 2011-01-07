@@ -73,7 +73,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/now_ramen"
         android:background="@color/background1"
-        android:gravity="bottom|center">
+        android:gravity="bottom">
 
         <ImageView style="@style/HorizontalSeparator"/>
         <LinearLayout style="@style/RaimonBar"/>
@@ -106,6 +106,8 @@
 				android:id="@+id/ramen_version"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+                android:layout_gravity="right"
+				android:paddingRight="4dip"
 				android:paddingBottom="4dip"
 				android:textSize="12sp"
 				android:textColor="@color/primary_text"/>  
