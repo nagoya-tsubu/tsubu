@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class DashBoardActivity extends Activity {
@@ -173,6 +174,16 @@ public class DashBoardActivity extends Activity {
 					gotoReaderActivity(RequestCode.DASHBORAD2READER.ordinal());
 					break;
 			}
+		} else if(RESULT_CANCELED == resultCode) {
+			//@tan1234jp追加
+			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+			//エラー処理
+			if(-1 == rtn_code) {
+				return;
+			}
+			//エラーコード(エラー文字列リソースID)がrtn_codeに入っているので、
+			//トーストで表示する
+			Toast.makeText(this, getString(rtn_code), Toast.LENGTH_LONG).show();
 		}
 	}
 	
