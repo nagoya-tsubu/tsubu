@@ -12,102 +12,121 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnLongClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 public class DashBoardActivity extends Activity {
-	
-	static final String TSUBU_WEB_ADDRESS="http://sites.google.com/site/androidnagoyatsubu/";
+
+	static final String TSUBU_WEB_ADDRESS = "http://sites.google.com/site/androidnagoyatsubu/";
+	private Button buttonLogo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-        
-        String packegeName = getPackageName();
-        try {
-			PackageInfo packageInfo = getPackageManager().getPackageInfo(packegeName, PackageManager.GET_META_DATA);
+		setContentView(R.layout.activity_dashboard);
+		buttonLogo = (Button)findViewById(R.id.ButtonLogo);
+		buttonLogo.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		});
+		String packegeName = getPackageName();
+		try {
+			PackageInfo packageInfo = getPackageManager().getPackageInfo(
+					packegeName, PackageManager.GET_META_DATA);
 			TextView textView = (TextView) findViewById(id.ramen_version);
-			textView.setText(packageInfo.versionName + getString(R.string.dashboard_versionname_hai));
-        } catch (NameNotFoundException e) {
+			textView.setText(packageInfo.versionName
+					+ getString(R.string.dashboard_versionname_hai));
+		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
 
-        //キャッチできない例外エラーが発生した場合に備え、例外ハンドラを設定する
-        Resources res = getResources();
-        Thread.setDefaultUncaughtExceptionHandler(
-        		new AppUncaughtExceptionHandler(this,
-	        		res.getString(R.string.bugreport_title),
-	        		res.getString(R.string.bugreport_message),
-	        		res.getString(R.string.dialog_yes),
-	        		res.getString(R.string.dialog_no)
-	        	)
-        );
+		// キャッチできない例外エラーが発生した場合に備え、例外ハンドラを設定する
+		Resources res = getResources();
+		Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHandler(
+				this, res.getString(R.string.bugreport_title), res
+						.getString(R.string.bugreport_message), res
+						.getString(R.string.dialog_yes), res
+						.getString(R.string.dialog_no)));
 	}
+
 	/**
 	 * タイマーのボタンが押されたとき
+	 * 
 	 * @param view
 	 */
 	public void onTimerButtonClick(View view) {
 		gotoTimerActivity();
 	}
+
 	/**
 	 * 登録ボタンが押されたとき
+	 * 
 	 * @param view
 	 */
 	public void onCreateButtonClick(View view) {
 		int requestCode = RequestCode.DASHBOARD2CREATE.ordinal();
-		gotoReaderActivity(requestCode);		
+		gotoReaderActivity(requestCode);
 	}
+
 	/**
 	 * お気に入りボタンが押されたとき
+	 * 
 	 * @param view
 	 */
 	public void onFavoriteButtonClick(View view) {
 		gotoFavoriteActivity();
 	}
-	
-	
+
 	/**
 	 * 履歴ボタンが押されたとき
+	 * 
 	 * @param view
 	 */
 	public void onHistoryButtonClick(View view) {
 		gotoHistoryActivity();
 	}
+
 	/**
 	 * 読込ボタンが押されたとき
+	 * 
 	 * @param view
 	 */
-	public void onReaderButtonClick(View view){
-		
+	public void onReaderButtonClick(View view) {
+
 		int requestCode = RequestCode.DASHBORAD2READER.ordinal();
 		gotoReaderActivity(requestCode);
 	}
+
 	/**
 	 * つ部のロゴが押されたとき
+	 * 
 	 * @param view
 	 */
-	public void onTsubuLogoClick(View view){
+	public void onTsubuLogoClick(View view) {
 		gotoTsubuSite();
 	}
+
 	/**
 	 * リーダーの起動 requestCodeでその後にTimerActivityかCreateActivityを選択
+	 * 
 	 * @param requestCode
 	 */
-	private void gotoReaderActivity(int requestCode){
+	private void gotoReaderActivity(int requestCode) {
 		Intent intent = new Intent(this, ReaderActivity.class);
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * 履歴の起動
 	 */
-	private void gotoHistoryActivity(){
+	private void gotoHistoryActivity() {
 		Intent intent = new Intent(this, HistoryActivity.class);
 		int requestCode = RequestCode.DASHBORAD2HISTORY.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
@@ -117,35 +136,37 @@ public class DashBoardActivity extends Activity {
 	/**
 	 * マイリストの起動
 	 */
-	private void gotoFavoriteActivity(){
+	private void gotoFavoriteActivity() {
 		Intent intent = new Intent(this, FavoriteActivity.class);
 		int requestCode = RequestCode.DASHBOARD2FAVORITE.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * タイマーの起動
 	 */
-	private void gotoTimerActivity(){
+	private void gotoTimerActivity() {
 		Intent intent = new Intent(this, TimerActivity.class);
 		int requestCode = RequestCode.DASHBORAD2TIMER.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
+
 	/**
 	 * つ部のWebサイトを開く
 	 */
-	private void gotoTsubuSite(){
+	private void gotoTsubuSite() {
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(TSUBU_WEB_ADDRESS));
 		startActivity(intent);
 	}
+
 	/**
-	 * インテントがもどってきた時の動作
-	 * アクションバーが他のActivityで押さたときは
+	 * インテントがもどってきた時の動作 アクションバーが他のActivityで押さたときは
 	 * Dashboardまで戻って、目的のActivityを実行する
+	 * 
 	 * @param requestCode
 	 * @param resultCode
 	 * @param intent
@@ -153,54 +174,51 @@ public class DashBoardActivity extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (resultCode == RESULT_OK) {
-			if(intent == null){
+			if (intent == null) {
 				return;
 			}
-			//戻り値のREQUEST_CODEに応じてActivityを選択する
+			// 戻り値のREQUEST_CODEに応じてActivityを選択する
 			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
-			//エラー処理
-			if(rtn_code==-1){
+			// エラー処理
+			if (rtn_code == -1) {
 				return;
 			}
-			//アクションバーが他のActivityで押さたときはDashboardまで戻って、他のActivityを実行する
-			switch(RequestCode.values()[rtn_code]){
-				case ACTION_HISTORY:	//アクションバーの履歴ボタンが押された場合
-					gotoHistoryActivity();
-					break;
-				case ACTION＿TIMER:	//アクションバーのタイマーボタンが押された場合
-					gotoTimerActivity();
-					break;
-				case ACTION_READER:	//アクションバーの読込ボタンが押された場合
-					gotoReaderActivity(RequestCode.DASHBORAD2READER.ordinal());
-					break;
+			// アクションバーが他のActivityで押さたときはDashboardまで戻って、他のActivityを実行する
+			switch (RequestCode.values()[rtn_code]) {
+			case ACTION_HISTORY: // アクションバーの履歴ボタンが押された場合
+				gotoHistoryActivity();
+				break;
+			case ACTION＿TIMER: // アクションバーのタイマーボタンが押された場合
+				gotoTimerActivity();
+				break;
+			case ACTION_READER: // アクションバーの読込ボタンが押された場合
+				gotoReaderActivity(RequestCode.DASHBORAD2READER.ordinal());
+				break;
 			}
-		} else if(RESULT_CANCELED == resultCode) {
-			//@leibun追加
-			if(null == intent) {
+		} else if (RESULT_CANCELED == resultCode) {
+			// @leibun追加
+			if (null == intent) {
 				return;
-			}			
-			//@tan1234jp追加
+			}
+			// @tan1234jp追加
 			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
-			//エラー処理
-			if(-1 == rtn_code) {
+			// エラー処理
+			if (-1 == rtn_code) {
 				return;
 			}
-			//エラーコード(エラー文字列リソースID)がrtn_codeに入っているので、
-			//トーストで表示する
+			// エラーコード(エラー文字列リソースID)がrtn_codeに入っているので、
+			// トーストで表示する
 			Toast.makeText(this, getString(rtn_code), Toast.LENGTH_LONG).show();
 		}
 	}
-	
+
 	/**
-	 * アクティビティが表示される直前に呼び出される
-	 * ここでは、前回バグで強制終了した場合に、レポート送信を行うかどうか
-	 * 問い合わせる
+	 * アクティビティが表示される直前に呼び出される ここでは、前回バグで強制終了した場合に、レポート送信を行うかどうか 問い合わせる
 	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
-		//前回バグで強制終了した場合は、ダイアログを表示する
-		AppUncaughtExceptionHandler.showBugReportDialogIfExist();	
+		// 前回バグで強制終了した場合は、ダイアログを表示する
+		AppUncaughtExceptionHandler.showBugReportDialogIfExist();
 	}
 }
-

@@ -8,6 +8,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -77,7 +78,7 @@ public class TimerActivity extends Activity {
 
 	// 商品情報(NoodleMaster)のキー
 	public static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
-	//履歴のキー
+	// 履歴のキー
 	public static final String KEY_NOODLE_HISTORY = "NOODLE_HISTORY";
 	// 秒の増減間隔
 	private static final int SEC_INTERVALS = 10;
@@ -97,14 +98,15 @@ public class TimerActivity extends Activity {
 	private long waitTime = 0;
 	/** 茹で時間（履歴で使用する）@hideponm */
 	private int boilTime;
-	/**カウントダウンフラグ*/
+	/** カウントダウンフラグ */
 	private boolean countdown = false;
-	/**音*/
+	/** 音 */
 	private MediaPlayer mediaPlayer = null;
-	/**振動*/
+	/** 振動 */
 	private Vibrator vibrator = null;
-	/**振動パターン*/
-	private static long[] vibePattern = {500,500,500,500,500,500,500,500};
+	/** 振動パターン */
+	private static long[] vibePattern = { 500, 500, 500, 500, 500, 500, 500,
+			500 };
 
 	private Context getThis() {
 		return this;
@@ -126,25 +128,24 @@ public class TimerActivity extends Activity {
 			// 0秒TextView、終了ボタンを表示
 			updateTimerTextView(0);
 			setTimerEndLayout();
-//			Toast toast = Toast.makeText(getApplicationContext(), "Time over!",
-//					Toast.LENGTH_LONG);
-//			toast.show();
 
-			//振動させる
-			new Thread(new Runnable() {
-				public void run() {
-					vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
-					vibrator.vibrate(vibePattern, -1);
-				}
-			}).start();
+			if (isUseVibrate()) {
+				// バイブが必要な設定なら振動させる
+				new Thread(new Runnable() {
+					public void run() {
+						vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+						vibrator.vibrate(vibePattern, -1);
+					}
+				}).start();
+			}
 			// Mainスレッドでアラーム再生すると遅延が発生するため、スレッドで実行する
 			new Thread(new Runnable() {
 				public void run() {
 					mediaPlayer = MediaPlayer.create(TimerActivity.this,
 							R.raw.alarm);
-					//チャルメラ試したい人はこっち
-//					mediaPlayer = MediaPlayer.create(TimerActivity.this,
-//							R.raw.charumera);
+					// チャルメラ試したい人はこっち
+					// mediaPlayer = MediaPlayer.create(TimerActivity.this,
+					// R.raw.charumera);
 					try {
 						mediaPlayer.start();
 					} catch (Exception e) {
@@ -152,7 +153,6 @@ public class TimerActivity extends Activity {
 					}
 				}
 			}).start();
-			
 
 			// GAEに情報が存在した場合、履歴を登録する
 			if (noodleMaster != null && noodleMaster.isCompleteData()) {
@@ -172,8 +172,35 @@ public class TimerActivity extends Activity {
 					}
 				}).start();
 			}
-			setCountdown(false);		
+			setCountdown(false);
 		}
+	}
+
+	/**
+	 * バイブを使用するかどうか返す
+	 * @return
+	 */
+	private boolean isUseVibrate() {
+		AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+		int setting = audioManager
+				.getVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER);
+		if (setting == AudioManager.VIBRATE_SETTING_ON) {
+			//バイブ設定ONなら振動させる
+			return true;
+		}
+		if (setting == AudioManager.VIBRATE_SETTING_OFF) {
+			//バイブ設定OFFなら振動しない
+			return false;
+		}
+		if (setting == AudioManager.VIBRATE_SETTING_ONLY_SILENT) {
+			//サイレント時のみバイブ設定ならば音声モードがサイレントかバイブの時に振動させる
+			int ringerMode = audioManager.getRingerMode();
+			if (ringerMode == AudioManager.RINGER_MODE_SILENT
+					|| ringerMode == AudioManager.RINGER_MODE_VIBRATE) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -191,7 +218,7 @@ public class TimerActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//ハードウェアキーによる音量設定を有効にする
+		// ハードウェアキーによる音量設定を有効にする
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		setContentView(R.layout.activity_timer);
@@ -265,13 +292,13 @@ public class TimerActivity extends Activity {
 		endButton = (Button) findViewById(R.id.TimerEndButton);
 		endButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//音がなってたら消す
-				if(mediaPlayer != null &&  mediaPlayer.isPlaying()){
+				// 音がなってたら消す
+				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
 					mediaPlayer.stop();
 				}
-				//振動してたら消す
-				if(vibrator != null){
-					vibrator.cancel();					
+				// 振動してたら消す
+				if (vibrator != null) {
+					vibrator.cancel();
 				}
 				setResult(RESULT_OK);
 				finish();
@@ -325,13 +352,14 @@ public class TimerActivity extends Activity {
 			name.setText(noodleMaster.getName());
 			name.setVisibility(View.VISIBLE);
 		}
-		if(noodleHistory != null && noodleHistory.getBoilTime() != 0){
-			timerLimit.setText("" + noodleHistory.getNoodleMaster().getTimerLimitString());
+		if (noodleHistory != null && noodleHistory.getBoilTime() != 0) {
+			timerLimit.setText(""
+					+ noodleHistory.getNoodleMaster().getTimerLimitString());
 			// タイマーの時間をセットする
-			//履歴がある場合は履歴のゆで時間を利用する @hideponm
+			// 履歴がある場合は履歴のゆで時間を利用する @hideponm
 			updateTimerTextView(Long.valueOf(noodleHistory.getBoilTime()));
-			
-		}else if (noodleMaster != null && noodleMaster.getTimerLimit() != 0) {
+
+		} else if (noodleMaster != null && noodleMaster.getTimerLimit() != 0) {
 			timerLimit.setText("" + noodleMaster.getTimerLimitString());
 			// タイマーの時間をセットする
 			updateTimerTextView(Long.valueOf(noodleMaster.getTimerLimit()));
@@ -344,7 +372,7 @@ public class TimerActivity extends Activity {
 	 * @param id
 	 */
 	private void displaySetting(int id) {
-		if(id == -1){
+		if (id == -1) {
 			return;
 		}
 		switch (RequestCode.values()[id]) {
@@ -502,53 +530,60 @@ public class TimerActivity extends Activity {
 		endButton.setVisibility(View.VISIBLE);
 		// タイマー画像を差し替える(赤)
 		timerImage.setImageResource(R.drawable.img_alarm_end);
-		Animation timerAnim = AnimationUtils.loadAnimation(this, R.anim.timer_icon_action_start);
+		Animation timerAnim = AnimationUtils.loadAnimation(this,
+				R.anim.timer_icon_action_start);
 		timerAnim.setAnimationListener(mAnimLeft2Right);
 		timerImage.startAnimation(timerAnim);
-		
+
 		startButton.setVisibility(View.GONE);
 		// ボタンを有効化（押せるようになる）
 		setOnClickEnable(true);
 
 	}
-	
+
 	/**
 	 * ボタンを無効化/有効化　するメソッド
+	 * 
 	 * @param enabled
 	 */
-	private void setOnClickEnable(boolean enabled){
-		ImageButton homeButton= (ImageButton) findViewById(R.id.TitleHomeButton);
-		ImageButton readerButton= (ImageButton) findViewById(R.id.TitleReaderButton);
-		ImageButton historyButton= (ImageButton) findViewById(R.id.TitleHistoryButton);
+	private void setOnClickEnable(boolean enabled) {
+		ImageButton homeButton = (ImageButton) findViewById(R.id.TitleHomeButton);
+		ImageButton readerButton = (ImageButton) findViewById(R.id.TitleReaderButton);
+		ImageButton historyButton = (ImageButton) findViewById(R.id.TitleHistoryButton);
 		homeButton.setEnabled(enabled);
 		readerButton.setEnabled(enabled);
 		historyButton.setEnabled(enabled);
 	}
 
-
 	AnimationListener mAnimLeft2Right = new AnimationListener() {
 		public void onAnimationStart(Animation animation) {
 		}
+
 		public void onAnimationRepeat(Animation animation) {
 		}
+
 		public void onAnimationEnd(Animation animation) {
-			Animation timerAnim = AnimationUtils.loadAnimation(TimerActivity.this, R.anim.timer_icon_action);
+			Animation timerAnim = AnimationUtils.loadAnimation(
+					TimerActivity.this, R.anim.timer_icon_action);
 			timerAnim.setAnimationListener(mAnimRight2Center);
 			timerImage.startAnimation(timerAnim);
 		}
 	};
-	
+
 	AnimationListener mAnimRight2Center = new AnimationListener() {
 		public void onAnimationStart(Animation animation) {
-		}		
+		}
+
 		public void onAnimationRepeat(Animation animation) {
 		}
+
 		public void onAnimationEnd(Animation animation) {
-			Animation timerAnim = AnimationUtils.loadAnimation(TimerActivity.this, R.anim.timer_icon_action_end);
+			Animation timerAnim = AnimationUtils.loadAnimation(
+					TimerActivity.this, R.anim.timer_icon_action_end);
 			timerImage.startAnimation(timerAnim);
 		}
 	};
-	
+
 	/**
 	 * 時間調整ボタンを非表示にする
 	 */
@@ -580,7 +615,7 @@ public class TimerActivity extends Activity {
 	/**
 	 * バーコードリーダーを起動し、Timerを終了する
 	 */
-	public void onReaderButtonClick(View v) {	
+	public void onReaderButtonClick(View v) {
 		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 				RequestCode.ACTION_READER.ordinal());
@@ -598,8 +633,7 @@ public class TimerActivity extends Activity {
 		setResult(RESULT_OK, intent);
 		finish();
 	}
-	
-	
+
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
 		if (!countdown) {
@@ -615,19 +649,22 @@ public class TimerActivity extends Activity {
 		}
 		return super.dispatchKeyEvent(event);
 	}
-	
+
 	/**
 	 * カウントダウン中フラグを設定する
+	 * 
 	 * @param countdown
 	 */
-	private void setCountdown(boolean countdown){
+	private void setCountdown(boolean countdown) {
 		this.countdown = countdown;
-		if(countdown){
-			//スリープを無効化する
-			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		}else{
-			//スリープを有効化する
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		if (countdown) {
+			// スリープを無効化する
+			getWindow().clearFlags(
+					WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		} else {
+			// スリープを有効化する
+			getWindow()
+					.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
 	}
 
