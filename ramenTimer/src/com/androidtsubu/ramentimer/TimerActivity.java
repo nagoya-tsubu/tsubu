@@ -178,6 +178,7 @@ public class TimerActivity extends Activity {
 
 	/**
 	 * バイブを使用するかどうか返す
+	 * 
 	 * @return
 	 */
 	private boolean isUseVibrate() {
@@ -185,15 +186,15 @@ public class TimerActivity extends Activity {
 		int setting = audioManager
 				.getVibrateSetting(AudioManager.VIBRATE_TYPE_RINGER);
 		if (setting == AudioManager.VIBRATE_SETTING_ON) {
-			//バイブ設定ONなら振動させる
+			// バイブ設定ONなら振動させる
 			return true;
 		}
 		if (setting == AudioManager.VIBRATE_SETTING_OFF) {
-			//バイブ設定OFFなら振動しない
+			// バイブ設定OFFなら振動しない
 			return false;
 		}
 		if (setting == AudioManager.VIBRATE_SETTING_ONLY_SILENT) {
-			//サイレント時のみバイブ設定ならば音声モードがサイレントかバイブの時に振動させる
+			// サイレント時のみバイブ設定ならば音声モードがサイレントかバイブの時に振動させる
 			int ringerMode = audioManager.getRingerMode();
 			if (ringerMode == AudioManager.RINGER_MODE_SILENT
 					|| ringerMode == AudioManager.RINGER_MODE_VIBRATE) {
@@ -630,7 +631,12 @@ public class TimerActivity extends Activity {
 		Intent intent = new Intent();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 				RequestCode.ACTION_HISTORY.ordinal());
-		setResult(RESULT_OK, intent);
+		if (!RequestCode.values()[requestCode]
+				.equals(RequestCode.HISTORY2TIMER)) {
+			//履歴から来た場合以外はOKを返す。
+			//履歴から来た場合にOKを変えすと履歴も終了しダッシュボードへ戻ってしまうため
+			setResult(RESULT_OK, intent);
+		}
 		finish();
 	}
 

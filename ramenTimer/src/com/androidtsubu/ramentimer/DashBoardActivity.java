@@ -26,14 +26,14 @@ public class DashBoardActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
-		buttonLogo = (Button)findViewById(R.id.ButtonLogo);
-		buttonLogo.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
+//		buttonLogo = (Button)findViewById(R.id.ButtonLogo);
+//		buttonLogo.setOnLongClickListener(new OnLongClickListener() {
+//			@Override
+//			public boolean onLongClick(View v) {
+//				// TODO Auto-generated method stub
+//				return false;
+//			}
+//		});
 		String packegeName = getPackageName();
 		try {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
