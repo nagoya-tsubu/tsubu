@@ -60,6 +60,8 @@
         	android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/TimerImageView"
+	        android:onClick="onModeChangeClick"
+	        android:clickable="true"
             android:src="@drawable/img_alarm_default"/>
 
         <Button 
