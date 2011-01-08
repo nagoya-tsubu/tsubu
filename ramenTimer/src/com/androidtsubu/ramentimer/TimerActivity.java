@@ -100,6 +100,8 @@ public class TimerActivity extends Activity {
 	private int boilTime;
 	/** カウントダウンフラグ */
 	private boolean countdown = false;
+	/** チャルメラモードの切り替え **/
+	private int animationMode = 0;
 	/** 音 */
 	private MediaPlayer mediaPlayer = null;
 	/** 振動 */
@@ -107,7 +109,13 @@ public class TimerActivity extends Activity {
 	/** 振動パターン */
 	private static long[] vibePattern = { 500, 500, 500, 500, 500, 500, 500,
 			500 };
-
+	/** アラームの音のリソース**/
+	private int alarm_sound_resouse_id= R.raw.alarm;
+	/** アラームの画像のリソース**/
+	private int alarm_img_default_resouse_id= R.drawable.img_alarm_default;
+	private int alarm_img_start_resouse_id= R.drawable.img_alarm_start;
+	private int alarm_img_end_resouse_id= R.drawable.img_alarm_end;
+	
 	private Context getThis() {
 		return this;
 	}
@@ -142,7 +150,7 @@ public class TimerActivity extends Activity {
 			new Thread(new Runnable() {
 				public void run() {
 					mediaPlayer = MediaPlayer.create(TimerActivity.this,
-							R.raw.alarm);
+							alarm_sound_resouse_id);
 					// チャルメラ試したい人はこっち
 					// mediaPlayer = MediaPlayer.create(TimerActivity.this,
 					// R.raw.charumera);
@@ -517,7 +525,7 @@ public class TimerActivity extends Activity {
 	private void setTimerRunningLayout() {
 		startButton.setVisibility(View.GONE);
 		// タイマー画像を差し替える(黄色)
-		timerImage.setImageResource(R.drawable.img_alarm_start);
+		timerImage.setImageResource(alarm_img_start_resouse_id);
 		endButton.setVisibility(View.GONE);
 		// ボタンを無効化（押せないようになる）
 		setOnClickEnable(false);
@@ -530,7 +538,7 @@ public class TimerActivity extends Activity {
 	private void setTimerEndLayout() {
 		endButton.setVisibility(View.VISIBLE);
 		// タイマー画像を差し替える(赤)
-		timerImage.setImageResource(R.drawable.img_alarm_end);
+		timerImage.setImageResource(alarm_img_end_resouse_id);
 		Animation timerAnim = AnimationUtils.loadAnimation(this,
 				R.anim.timer_icon_action_start);
 		timerAnim.setAnimationListener(mAnimLeft2Right);
@@ -638,6 +646,27 @@ public class TimerActivity extends Activity {
 			setResult(RESULT_OK, intent);
 		}
 		finish();
+	}
+
+	/**
+	 * チャルメラモードと通常モードの切り替え
+	 */
+	public void onModeChangeClick(View v) {
+		animationMode = 1 - animationMode;
+		if(animationMode == 1){
+			alarm_sound_resouse_id = R.raw.charumera;
+			alarm_img_default_resouse_id = R.drawable.img_charumera_default;
+			alarm_img_start_resouse_id = R.drawable.img_charumera_start;
+			alarm_img_end_resouse_id = R.drawable.img_charumera_end;
+//			Toast.makeText(this, "チャルメラモード", Toast.LENGTH_SHORT).show();
+		}else{
+			alarm_sound_resouse_id = R.raw.alarm;
+			alarm_img_default_resouse_id = R.drawable.img_alarm_default;
+			alarm_img_start_resouse_id = R.drawable.img_alarm_start;
+			alarm_img_end_resouse_id = R.drawable.img_alarm_end;
+//			Toast.makeText(this, "ノーマルモード", Toast.LENGTH_SHORT).show();		
+		}
+		timerImage.setImageResource(alarm_img_default_resouse_id);		
 	}
 
 	@Override
