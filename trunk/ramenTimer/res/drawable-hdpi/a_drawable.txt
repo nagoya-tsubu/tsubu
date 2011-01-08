@@ -127,6 +127,11 @@ img_alarm_default.png
 img_alarm_start.png
 img_alarm_end.png
 
+// タイマー画面用チャルメラ画像
+img_charumera_default.png
+img_charumera_start.png
+img_charumera_end.png
+
 // ステータスバー用アイコン
 ic_stat_notify.png
 
