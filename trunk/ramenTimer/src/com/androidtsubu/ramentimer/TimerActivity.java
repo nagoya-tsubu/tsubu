@@ -111,13 +111,13 @@ public class TimerActivity extends Activity {
 	/** 振動パターン */
 	private static long[] vibePattern = { 500, 500, 500, 500, 500, 500, 500,
 			500 };
-	/** アラームの音のリソース**/
-	private int alarm_sound_resouse_id= R.raw.alarm;
-	/** アラームの画像のリソース**/
-	private int alarm_img_default_resouse_id= R.drawable.img_alarm_default;
-	private int alarm_img_start_resouse_id= R.drawable.img_alarm_start;
-	private int alarm_img_end_resouse_id= R.drawable.img_alarm_end;
-	
+	/** アラームの音のリソース **/
+	private int alarm_sound_resouse_id = R.raw.alarm;
+	/** アラームの画像のリソース **/
+	private int alarm_img_default_resouse_id = R.drawable.img_alarm_default;
+	private int alarm_img_start_resouse_id = R.drawable.img_alarm_start;
+	private int alarm_img_end_resouse_id = R.drawable.img_alarm_end;
+
 	private Context getThis() {
 		return this;
 	}
@@ -319,25 +319,27 @@ public class TimerActivity extends Activity {
 		resetButton = (Button) findViewById(R.id.TimerResetButton);
 		resetButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Toast.makeText(TimerActivity.this, "Pressed reset button.", Toast.LENGTH_SHORT).show();
+				// Timerをキャンセルする
+				resetTimer();
 			}
 		});
-
-		// 開始前の画面表示
-		setTimerNotRunningLayout();
-
-		// サービスを開始
-		Intent intent = new Intent(this, RamenTimerService.class);
-		startService(intent);
-		IntentFilter filter = new IntentFilter(RamenTimerService.ACTION);
-		registerReceiver(receiver, filter);
-
-		// サービスにバインド
-		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-
-		// いったんアンバインドしてから再度バインド
-		unbindService(serviceConnection);
-		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+		startRamenTimerService();
+		
+//		// 開始前の画面表示
+//		setTimerNotRunningLayout();
+//
+//		// サービスを開始
+//		Intent intent = new Intent(this, RamenTimerService.class);
+//		startService(intent);
+//		IntentFilter filter = new IntentFilter(RamenTimerService.ACTION);
+//		registerReceiver(receiver, filter);
+//
+//		// サービスにバインド
+//		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+//
+//		// いったんアンバインドしてから再度バインド
+//		unbindService(serviceConnection);
+//		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 	}
 
 	@Override
@@ -353,8 +355,11 @@ public class TimerActivity extends Activity {
 	 * ラーメン情報をレイアウトにセット、表示する
 	 */
 	private void setNoodleData() {
-		if (noodleMaster == null)
+		if (noodleMaster == null){
+			//デフォルト3分をいれておく
+			updateTimerTextView(180);
 			return;
+		}
 
 		// 設定されている項目を表示する
 		if (noodleImage != null && noodleMaster.getImage() != null) {
@@ -395,47 +400,51 @@ public class TimerActivity extends Activity {
 		}
 		switch (RequestCode.values()[id]) {
 		case DASHBORAD2TIMER:
-			timerInfoViewStub
-					.setLayoutResource(R.layout.activity_timer_only_jancode);
-			timerInfoInView = timerInfoViewStub.inflate();
+			if (!countdown) {
+				timerInfoViewStub
+						.setLayoutResource(R.layout.activity_timer_only_jancode);
+				timerInfoInView = timerInfoViewStub.inflate();
+			}
 			timerInfoFrame.setVisibility(View.INVISIBLE);
 			break;
 		case CREATE2TIMER:
 		case HISTORY2TIMER:
 		case FAVORITE2TIMER:
 		case READER2TIMER:
-			if (noodleMaster.isCompleteData()) {
-				timerInfoViewStub
-						.setLayoutResource(R.layout.activity_timer_full_information);
-				timerInfoInView = timerInfoViewStub.inflate();
+			if (!countdown) {
+				if (noodleMaster.isCompleteData()) {
+					timerInfoViewStub
+							.setLayoutResource(R.layout.activity_timer_full_information);
+					timerInfoInView = timerInfoViewStub.inflate();
 
-				noodleImage = (ImageView) timerInfoInView
-						.findViewById(R.id.NoodleImageView);
-				janCode = (TextView) timerInfoInView
-						.findViewById(R.id.JanCodeTextView);
-				name = (TextView) timerInfoInView
-						.findViewById(R.id.NameTextView);
-				timerLimit = (TextView) timerInfoInView
-						.findViewById(R.id.TimerLimitTextView);
-			} else {
-				// 登録フラグをたてる
-				registrationFlg = true;
-				// ActionBarのバーコードを登録と置き換える
-				timerInfoViewStub
-						.setLayoutResource(R.layout.activity_timer_only_jancode);
-				timerInfoInView = timerInfoViewStub.inflate();
+					noodleImage = (ImageView) timerInfoInView
+							.findViewById(R.id.NoodleImageView);
+					janCode = (TextView) timerInfoInView
+							.findViewById(R.id.JanCodeTextView);
+					name = (TextView) timerInfoInView
+							.findViewById(R.id.NameTextView);
+					timerLimit = (TextView) timerInfoInView
+							.findViewById(R.id.TimerLimitTextView);
+				} else {
+					// 登録フラグをたてる
+					registrationFlg = true;
+					// ActionBarのバーコードを登録と置き換える
+					timerInfoViewStub
+							.setLayoutResource(R.layout.activity_timer_only_jancode);
+					timerInfoInView = timerInfoViewStub.inflate();
 
-				janCode = (TextView) timerInfoInView
-						.findViewById(R.id.JanCodeTextView);
+					janCode = (TextView) timerInfoInView
+							.findViewById(R.id.JanCodeTextView);
 
-				// はいボタン
-				Button yesButton = (Button) timerInfoInView
-						.findViewById(R.id.ConfirmCreationYesButton);
-				yesButton.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View v) {
-						onCreateButtonClick(v);
-					}
-				});
+					// はいボタン
+					Button yesButton = (Button) timerInfoInView
+							.findViewById(R.id.ConfirmCreationYesButton);
+					yesButton.setOnClickListener(new View.OnClickListener() {
+						public void onClick(View v) {
+							onCreateButtonClick(v);
+						}
+					});
+				}
 			}
 			break;
 		}
@@ -525,6 +534,7 @@ public class TimerActivity extends Activity {
 		startButton.setVisibility(View.VISIBLE);
 		resetButton.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
+		timerImage.setImageResource(alarm_img_default_resouse_id);		
 		// ボタンを有効化（押せるようになる）
 		setOnClickEnable(true);
 	}
@@ -653,8 +663,8 @@ public class TimerActivity extends Activity {
 				RequestCode.ACTION_HISTORY.ordinal());
 		if (!RequestCode.values()[requestCode]
 				.equals(RequestCode.HISTORY2TIMER)) {
-			//履歴から来た場合以外はOKを返す。
-			//履歴から来た場合にOKを変えすと履歴も終了しダッシュボードへ戻ってしまうため
+			// 履歴から来た場合以外はOKを返す。
+			// 履歴から来た場合にOKを変えすと履歴も終了しダッシュボードへ戻ってしまうため
 			setResult(RESULT_OK, intent);
 		}
 		finish();
@@ -665,20 +675,20 @@ public class TimerActivity extends Activity {
 	 */
 	public void onModeChangeClick(View v) {
 		animationMode = 1 - animationMode;
-		if(animationMode == 1){
+		if (animationMode == 1) {
 			alarm_sound_resouse_id = R.raw.charumera;
 			alarm_img_default_resouse_id = R.drawable.img_charumera_default;
 			alarm_img_start_resouse_id = R.drawable.img_charumera_start;
 			alarm_img_end_resouse_id = R.drawable.img_charumera_end;
-//			Toast.makeText(this, "チャルメラモード", Toast.LENGTH_SHORT).show();
-		}else{
+			// Toast.makeText(this, "チャルメラモード", Toast.LENGTH_SHORT).show();
+		} else {
 			alarm_sound_resouse_id = R.raw.alarm;
 			alarm_img_default_resouse_id = R.drawable.img_alarm_default;
 			alarm_img_start_resouse_id = R.drawable.img_alarm_start;
 			alarm_img_end_resouse_id = R.drawable.img_alarm_end;
-//			Toast.makeText(this, "ノーマルモード", Toast.LENGTH_SHORT).show();		
+			// Toast.makeText(this, "ノーマルモード", Toast.LENGTH_SHORT).show();
 		}
-		timerImage.setImageResource(alarm_img_default_resouse_id);		
+		timerImage.setImageResource(alarm_img_default_resouse_id);
 	}
 
 	@Override
@@ -713,6 +723,52 @@ public class TimerActivity extends Activity {
 			getWindow()
 					.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		}
+	}
+
+	/**
+	 * Timerをキャンセルする
+	 */
+	private void resetTimer() {
+		if (ramenTimerService == null) {
+			return;
+		}
+		if (!countdown) {
+			return;
+		}
+		ramenTimerService.stop();
+		ramenTimerService = null;
+		//カウント前の画面に戻す
+		displaySetting(requestCode);
+		//ボタンを押せるようにする
+		setOnClickEnable(true);
+		startButton.setVisibility(View.VISIBLE);
+		resetButton.setVisibility(View.GONE);
+		//次のカウントダウンに備える
+		startRamenTimerService();		
+		//カウント中フラグを落とす
+		countdown = false;
+	}
+	
+	/**
+	 * RamenTimerServiceを開始する
+	 */
+	private void startRamenTimerService(){
+		// 開始前の画面表示
+		setTimerNotRunningLayout();
+
+		// サービスを開始
+		Intent intent = new Intent(this, RamenTimerService.class);
+		startService(intent);
+		IntentFilter filter = new IntentFilter(RamenTimerService.ACTION);
+		registerReceiver(receiver, filter);
+
+		// サービスにバインド
+		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+		// いったんアンバインドしてから再度バインド
+		unbindService(serviceConnection);
+		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+		
 	}
 
 }
