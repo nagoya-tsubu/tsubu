@@ -42,6 +42,8 @@ public class TimerActivity extends Activity {
 	private Button startButton = null;
 	// 終了ボタン
 	private Button endButton = null;
+	// リセットボタン
+	private Button resetButton = null;
 	// 分+ボタン
 	private Button minUpButton = null;
 	// 分-ボタン
@@ -313,6 +315,13 @@ public class TimerActivity extends Activity {
 				finish();
 			}
 		});
+		// リセットボタン
+		resetButton = (Button) findViewById(R.id.TimerResetButton);
+		resetButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Toast.makeText(TimerActivity.this, "Pressed reset button.", Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		// 開始前の画面表示
 		setTimerNotRunningLayout();
@@ -514,6 +523,7 @@ public class TimerActivity extends Activity {
 	 */
 	private void setTimerNotRunningLayout() {
 		startButton.setVisibility(View.VISIBLE);
+		resetButton.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
 		// ボタンを有効化（押せるようになる）
 		setOnClickEnable(true);
@@ -524,6 +534,7 @@ public class TimerActivity extends Activity {
 	 */
 	private void setTimerRunningLayout() {
 		startButton.setVisibility(View.GONE);
+		resetButton.setVisibility(View.VISIBLE);
 		// タイマー画像を差し替える(黄色)
 		timerImage.setImageResource(alarm_img_start_resouse_id);
 		endButton.setVisibility(View.GONE);
@@ -537,6 +548,7 @@ public class TimerActivity extends Activity {
 	 */
 	private void setTimerEndLayout() {
 		endButton.setVisibility(View.VISIBLE);
+		resetButton.setVisibility(View.GONE);
 		// タイマー画像を差し替える(赤)
 		timerImage.setImageResource(alarm_img_end_resouse_id);
 		Animation timerAnim = AnimationUtils.loadAnimation(this,

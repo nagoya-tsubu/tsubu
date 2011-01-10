@@ -68,7 +68,11 @@
             android:text="開始"
             android:id="@+id/TimerStartButton"
             style="@style/ButtonStyle"/>
-
+        <Button 
+            android:id="@+id/TimerResetButton"
+            android:text="リセット"
+            style="@style/ButtonStyle"
+            android:visibility="gone"/>
         <Button 
             android:id="@+id/TimerEndButton"
             android:text="終了"
