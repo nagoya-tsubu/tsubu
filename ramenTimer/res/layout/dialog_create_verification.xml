@@ -21,7 +21,7 @@
 		<Button
 			android:id="@+id/CreateDialogCancelButton"
 			android:text="@string/dialog_create_verification_back"
-	        style="@style/ButtonStyle"
+			style="@style/ButtonStyle"
 			android:layout_weight="1"/>
 	</LinearLayout>	
 </LinearLayout>
