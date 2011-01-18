@@ -5,14 +5,17 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -68,7 +71,10 @@ public class TimerActivity extends Activity {
 	private View timerInfoInView = null;
 	//
 	private LinearLayout timerInfoFrame = null;
-
+	// 確認用ダイアログ
+	private AlertDialog verificationDialog = null;
+	
+	
 	// Intentに付与している呼び出し元を保持する
 	private int requestCode = 0;
 	// ラーメン情報
@@ -319,8 +325,10 @@ public class TimerActivity extends Activity {
 		resetButton = (Button) findViewById(R.id.TimerResetButton);
 		resetButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// Timerをキャンセルする
-				resetTimer();
+				// ダイアログの表示
+				verificationDialog = getVerificationDialog(TimerActivity.this);
+				if(null!=verificationDialog)
+					verificationDialog.show();
 			}
 		});
 		startRamenTimerService();
@@ -341,6 +349,42 @@ public class TimerActivity extends Activity {
 //		unbindService(serviceConnection);
 //		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 	}
+	
+	/**
+	 * リセットボタンが押されたときの確認ダイアログを
+	 * @param context
+	 * @return
+	 */
+	private AlertDialog getVerificationDialog(Context context){
+
+		Resources resources = getResources();
+		final String DIALOG_TITLE = resources.getString(R.string.dialog_timer_verification_title);
+		final String DIALOG_BUTTON_OK = resources.getString(R.string.dialog_timer_verification_ok);
+		final String DIALOG_BUTTON_CANCEL = resources.getString(R.string.dialog_timer_verification_cancel);
+		
+		CustomAlertDialog dialog = new CustomAlertDialog(this, R.style.CustomDialog);
+		dialog.setTitle(DIALOG_TITLE);
+		dialog.setButton(DIALOG_BUTTON_OK, onResetOkClick);
+		dialog.setButton2(DIALOG_BUTTON_CANCEL, onResetCancelClick);
+		
+		return dialog;
+	}
+	/* 確認ダイアログの「はい」が押されたとき */
+	Dialog.OnClickListener onResetOkClick = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			resetTimer();
+			dialog.dismiss();
+		}
+	};
+	/* 確認ダイアログの「いいえ」が押されたとき */
+	Dialog.OnClickListener onResetCancelClick = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			dialog.cancel();
+		}
+	};
+	
 
 	@Override
 	public void onDestroy() {
@@ -524,7 +568,7 @@ public class TimerActivity extends Activity {
 		// カウント中のレイアウトを表示する
 		setTimerRunningLayout();
 		// 時間調整ボタンを非表示にする
-		hidePickerButton();
+		hidePickerButton(true);
 	}
 
 	/**
@@ -584,6 +628,8 @@ public class TimerActivity extends Activity {
 		homeButton.setEnabled(enabled);
 		readerButton.setEnabled(enabled);
 		historyButton.setEnabled(enabled);
+		// チャルメラモードと通常モードの切り替えボタンの無効化
+		timerImage.setClickable(enabled);
 	}
 
 	AnimationListener mAnimLeft2Right = new AnimationListener() {
@@ -617,12 +663,21 @@ public class TimerActivity extends Activity {
 
 	/**
 	 * 時間調整ボタンを非表示にする
+	 * 
+	 * @param hide true：ボタンを隠す false：表示する
 	 */
-	private void hidePickerButton() {
-		minUpButton.setVisibility(View.INVISIBLE);
-		minDownButton.setVisibility(View.INVISIBLE);
-		secUpButton.setVisibility(View.INVISIBLE);
-		secDownButton.setVisibility(View.INVISIBLE);
+	private void hidePickerButton(boolean hide) {
+		if(hide){
+			minUpButton.setVisibility(View.INVISIBLE);
+			minDownButton.setVisibility(View.INVISIBLE);
+			secUpButton.setVisibility(View.INVISIBLE);
+			secDownButton.setVisibility(View.INVISIBLE);
+		}else{
+			minUpButton.setVisibility(View.VISIBLE);
+			minDownButton.setVisibility(View.VISIBLE);
+			secUpButton.setVisibility(View.VISIBLE);
+			secDownButton.setVisibility(View.VISIBLE);
+		}
 	}
 
 	/**
@@ -747,6 +802,8 @@ public class TimerActivity extends Activity {
 		startRamenTimerService();		
 		//カウント中フラグを落とす
 		countdown = false;
+		//時間調節用のPickerボタンを表示する
+		hidePickerButton(false);
 	}
 	
 	/**

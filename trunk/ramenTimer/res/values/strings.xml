@@ -8,8 +8,14 @@
   <string name="description_search">Search</string>
 
   <!-- タイマーで利用の文字列 -->
-  <string name="timer_timer"> タイマー</string>
+  <string name="timer_timer"> タイマー</string>  
   <!-- タイマーで利用の文字列 -->
+
+  <!-- ダイアログ タイマー確認画面で利用の文字列 -->
+  <string name="dialog_timer_verification_title">リセットしますか？</string>
+  <string name="dialog_timer_verification_ok">リセット</string>
+  <string name="dialog_timer_verification_cancel">戻る</string>  
+  <!-- ダイアログ タイマー確認画面で利用の文字列 -->
 
   
   <!-- ダッシュボードで利用の文字列 -->
