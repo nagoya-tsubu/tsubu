@@ -163,13 +163,6 @@ public class FavoriteActivity extends ListActivity {
 			// 時間をセット
 			TextView boilTime = (TextView) view.findViewById(R.id.BoilingTime);
 			boilTime.setText(item.getTimerLimitString());
-//			// 日付をセット
-//			TextView date;
-//			date = (TextView) view.findViewById(R.id.date);
-//			SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日 HH時mm分");
-//			date.setText(format.format(item.getMeasureTime()));
-//			// 初期値は不可視（GONE）なので見えるように変更
-//			date.setVisibility(TextView.VISIBLE);
 			return view;			
 		}
 
