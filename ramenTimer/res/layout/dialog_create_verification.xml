@@ -4,10 +4,10 @@
 	android:id="@+id/layout_verification_root"
 	android:layout_width="fill_parent" 
 	android:layout_height="wrap_content"
-	android:background="@color/background1"
+	android:background="@android:color/transparent"
 	android:orientation="vertical">
 	
-	<include layout="@layout/list_item_ramen"/>	
+	<include layout="@layout/item_ramen"/>	
 			
 	<LinearLayout
 		android:layout_width="fill_parent"

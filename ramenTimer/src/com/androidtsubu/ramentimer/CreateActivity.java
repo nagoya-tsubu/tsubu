@@ -1,23 +1,24 @@
 package com.androidtsubu.ramentimer;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -581,16 +582,10 @@ public class CreateActivity extends Activity {
 		cancelButton.setOnClickListener(dialogCancelClick);
 
 		// 確認ダイアログの作成
-		AlertDialog.Builder builder;
-
-		builder = new AlertDialog.Builder(this);
-		builder.setMessage("これで登録しますか？").setView(layout).setCancelable(false);
-		verificationDialog = builder.create();
-		verificationDialog.show();
-//		PopupWindow popupWindow = new PopupWindow(this);  
-//		popupWindow.setWindowLayoutMode(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);  
-//		popupWindow.setContentView(layout);
-//		popupWindow.showAsDropDown(noodleImageView);
+		verificationDialog = new CustomAlertDialog(this, R.style.CustomDialog);
+		verificationDialog.setTitle(R.string.dialog_create_verification_title);
+		verificationDialog.setView(layout);
+		verificationDialog.show();		
 	}
 	
 	/**
@@ -803,28 +798,23 @@ public class CreateActivity extends Activity {
 		 * @return
 		 */
 		private AlertDialog getGotoDialog(){
-			// レイアウトの呼び出し
-			LayoutInflater inflater = (LayoutInflater) activity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			View layout = inflater.inflate(R.layout.dialog_create_goto,
-					(ViewGroup) findViewById(R.id.layout_create_goto_root));
-			// ボタンの動作を設定
-			Button timerButton = (Button) layout.findViewById(R.id.GotoDialogTimerButton);
-			timerButton.setOnClickListener(onTimerClick);
-			Button homeButton = (Button) layout.findViewById(R.id.GotoDialogHomeButton);
-			homeButton.setOnClickListener(onHomeClick);
+			Resources resources = getResources();
+			final String DIALOG_TIMERSTART_TITLE = resources.getString(R.string.dialog_create_goto_title);
+			final String DIALOG_TIMERSTART_TIMER = resources.getString(R.string.dialog_create_goto_timer);
+			final String DIALOG_TIMERSTART_BACK = resources.getString(R.string.dialog_create_goto_back);
 			
-			AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-			builder.setTitle("タイマーを動かしますか？")
-				.setView(layout);
-			return builder.create();
-			
+			CustomAlertDialog dialog = new CustomAlertDialog(activity,R.style.CustomDialog);
+			dialog.setTitle(DIALOG_TIMERSTART_TITLE);
+			dialog.setButton(DIALOG_TIMERSTART_TIMER, onTimerClick);
+			dialog.setButton2(DIALOG_TIMERSTART_BACK, onHomeClick);
+			return dialog;			
 		}
 		/**
 		 * タイマーを起動のボタンが押されたとき
 		 */
-		private OnClickListener onTimerClick = new OnClickListener() {
-			public void onClick(View v) {
+		private Dialog.OnClickListener onTimerClick = new Dialog.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int i) {
 				dialog.dismiss();
 				try{
 					callTimerActivity();
@@ -837,8 +827,9 @@ public class CreateActivity extends Activity {
 		/**
 		 * ホームに戻るのボタンが押されたとき
 		 */
-		private OnClickListener onHomeClick = new OnClickListener() {
-			public void onClick(View v) {
+		private Dialog.OnClickListener onHomeClick = new Dialog.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int i) {
 				dialog.dismiss();
 				activity.finish();
 			}

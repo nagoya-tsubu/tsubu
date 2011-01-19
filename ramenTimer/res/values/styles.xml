@@ -234,6 +234,7 @@
     <!-- カスタムダイアログのシーン（背景設定） -->
 	<style name="CustomTheme" parent="@android:style/Theme.Black">
 		<item name="android:alertDialogStyle">@style/AlertDialog</item>
+		<item name="android:windowNoTitle">true</item>
 	</style>
 	<style name="AlertDialog">
 		<item name="android:fullBright">@android:color/transparent</item>
