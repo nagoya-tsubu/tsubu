@@ -12,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -206,13 +207,16 @@ public class ReaderActivity extends Activity {
 	 */
 	private void getQrCodeScanner() {
 
+		//リソースを取得する
+		final Resources res = getResources();
+		
 		// QRコードをAndroid Marketからダウンロードしてよいか
 		// ダイアログを表示して問い合わせる
 		new AlertDialog.Builder(this)
 				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle("QR Code Scanner not found.")
-				.setMessage("QRコードスキャナーをAndroid Marketからインストールしますか？")
-				.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+				.setTitle(res.getString(R.string.no_qrcode_title))
+				.setMessage(res.getString(R.string.no_qrcode_message))
+				.setPositiveButton(res.getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
 					// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
 					// ダウンロードページを表示する
 					public void onClick(DialogInterface dialog, int which) {
@@ -222,7 +226,7 @@ public class ReaderActivity extends Activity {
 						startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
 					}
 				})
-				.setNegativeButton("いいえ",
+				.setNegativeButton(res.getString(R.string.dialog_no),
 						new DialogInterface.OnClickListener() {
 							// 「いいえ」押下時は、ダッシュボードに戻る
 							public void onClick(DialogInterface dialog,

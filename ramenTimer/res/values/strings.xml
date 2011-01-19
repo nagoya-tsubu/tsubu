@@ -80,4 +80,8 @@
 <string name="min_unit">分</string>
 <string name="sec_unit">秒</string>
 <string name="decimalformat">yyyy年MM月dd日 HH時mm分</string>
+
+<!-- QRコードスキャナーのインストール問合せダイアログ -->
+<string name="no_qrcode_title">QR Code Scanner not found</string>
+<string name="no_qrcode_message">QRコードスキャナーをAndroid Marketからインストールしますか？</string>
 </resources>
