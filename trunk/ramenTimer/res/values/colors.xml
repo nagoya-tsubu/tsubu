@@ -19,9 +19,9 @@
 	<color name="clear">#00000000</color>
 	
 	<!-- カスタムダイアログの背景のフレームの色 -->
-	<color name="dialog_frame">#ffcc0000</color>
+	<color name="dialog_frame">#ee880000</color>
 	<!-- カスタムダイアログの背景の色 グラデーションの上（top）と下（bottom） -->
 	<color name="dialog_gradient_top">#eef5f5f5</color>
-	<color name="dialog_gradient_bottom">#99d5d5d5</color>
+	<color name="dialog_gradient_bottom">#ccd5d5d5</color>
 
 </resources>
