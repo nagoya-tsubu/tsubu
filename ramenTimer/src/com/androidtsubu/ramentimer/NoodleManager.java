@@ -179,7 +179,7 @@ public class NoodleManager {
 				SAVE_IMAGE_DIRECTORY.mkdirs();
 			}
 		} else {
-			new AlertDialog.Builder(context).setMessage("SDカードを挿入してください")
+			new AlertDialog.Builder(context).setMessage(context.getString(R.string.No_Storage_Message))
 					.setPositiveButton("OK", null).show();
 		}
 	}
