@@ -24,6 +24,7 @@
 		<activity 
 			android:name="CreateActivity" 
 	    	android:screenOrientation="portrait"
+	    	android:theme="@style/CustomTheme"
 	    	android:configChanges="orientation|keyboardHidden"/>
 		<activity 
 			android:name="HistoryActivity" 
