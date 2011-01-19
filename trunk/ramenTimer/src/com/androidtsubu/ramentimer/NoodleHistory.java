@@ -85,15 +85,15 @@ public class NoodleHistory implements Parcelable {
 	 * 
 	 * @return
 	 */
-	public String getBoilTimeString() {
+	public String getBoilTimeString(String minString, String secString) {
 		DecimalFormat df = new DecimalFormat("0");
 		int min = boilTime / 60;
 		int sec = boilTime % 60;
 		StringBuilder buf = new StringBuilder(df.format(min));
-		buf.append("分");
+		buf.append(minString);
 		df = new DecimalFormat("00");
 		buf.append(df.format(sec));
-		buf.append("秒");
+		buf.append(secString);
 		return buf.toString();
 	}
 

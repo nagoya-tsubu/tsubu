@@ -73,8 +73,7 @@ public class TimerActivity extends Activity {
 	private LinearLayout timerInfoFrame = null;
 	// 確認用ダイアログ
 	private AlertDialog verificationDialog = null;
-	
-	
+
 	// Intentに付与している呼び出し元を保持する
 	private int requestCode = 0;
 	// ラーメン情報
@@ -327,48 +326,54 @@ public class TimerActivity extends Activity {
 			public void onClick(View v) {
 				// ダイアログの表示
 				verificationDialog = getVerificationDialog(TimerActivity.this);
-				if(null!=verificationDialog)
+				if (null != verificationDialog)
 					verificationDialog.show();
 			}
 		});
 		startRamenTimerService();
-		
-//		// 開始前の画面表示
-//		setTimerNotRunningLayout();
-//
-//		// サービスを開始
-//		Intent intent = new Intent(this, RamenTimerService.class);
-//		startService(intent);
-//		IntentFilter filter = new IntentFilter(RamenTimerService.ACTION);
-//		registerReceiver(receiver, filter);
-//
-//		// サービスにバインド
-//		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-//
-//		// いったんアンバインドしてから再度バインド
-//		unbindService(serviceConnection);
-//		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
+		// // 開始前の画面表示
+		// setTimerNotRunningLayout();
+		//
+		// // サービスを開始
+		// Intent intent = new Intent(this, RamenTimerService.class);
+		// startService(intent);
+		// IntentFilter filter = new IntentFilter(RamenTimerService.ACTION);
+		// registerReceiver(receiver, filter);
+		//
+		// // サービスにバインド
+		// bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+		//
+		// // いったんアンバインドしてから再度バインド
+		// unbindService(serviceConnection);
+		// bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 	}
-	
+
 	/**
 	 * リセットボタンが押されたときの確認ダイアログを
+	 * 
 	 * @param context
 	 * @return
 	 */
-	private AlertDialog getVerificationDialog(Context context){
+	private AlertDialog getVerificationDialog(Context context) {
 
 		Resources resources = getResources();
-		final String DIALOG_TITLE = resources.getString(R.string.dialog_timer_verification_title);
-		final String DIALOG_BUTTON_OK = resources.getString(R.string.dialog_timer_verification_ok);
-		final String DIALOG_BUTTON_CANCEL = resources.getString(R.string.dialog_timer_verification_cancel);
-		
-		CustomAlertDialog dialog = new CustomAlertDialog(this, R.style.CustomDialog);
+		final String DIALOG_TITLE = resources
+				.getString(R.string.dialog_timer_verification_title);
+		final String DIALOG_BUTTON_OK = resources
+				.getString(R.string.dialog_timer_verification_ok);
+		final String DIALOG_BUTTON_CANCEL = resources
+				.getString(R.string.dialog_timer_verification_cancel);
+
+		CustomAlertDialog dialog = new CustomAlertDialog(this,
+				R.style.CustomDialog);
 		dialog.setTitle(DIALOG_TITLE);
 		dialog.setButton(DIALOG_BUTTON_OK, onResetOkClick);
 		dialog.setButton2(DIALOG_BUTTON_CANCEL, onResetCancelClick);
-		
+
 		return dialog;
 	}
+
 	/* 確認ダイアログの「はい」が押されたとき */
 	Dialog.OnClickListener onResetOkClick = new Dialog.OnClickListener() {
 		@Override
@@ -384,7 +389,6 @@ public class TimerActivity extends Activity {
 			dialog.cancel();
 		}
 	};
-	
 
 	@Override
 	public void onDestroy() {
@@ -399,8 +403,8 @@ public class TimerActivity extends Activity {
 	 * ラーメン情報をレイアウトにセット、表示する
 	 */
 	private void setNoodleData() {
-		if (noodleMaster == null){
-			//デフォルト3分をいれておく
+		if (noodleMaster == null) {
+			// デフォルト3分をいれておく
 			updateTimerTextView(180);
 			return;
 		}
@@ -421,13 +425,18 @@ public class TimerActivity extends Activity {
 		}
 		if (noodleHistory != null && noodleHistory.getBoilTime() != 0) {
 			timerLimit.setText(""
-					+ noodleHistory.getNoodleMaster().getTimerLimitString());
+					+ noodleHistory.getNoodleMaster().getTimerLimitString(
+							getString(R.string.min_unit),
+							getString(R.string.sec_unit)));
 			// タイマーの時間をセットする
 			// 履歴がある場合は履歴のゆで時間を利用する @hideponm
 			updateTimerTextView(Long.valueOf(noodleHistory.getBoilTime()));
 
 		} else if (noodleMaster != null && noodleMaster.getTimerLimit() != 0) {
-			timerLimit.setText("" + noodleMaster.getTimerLimitString());
+			timerLimit.setText(""
+					+ noodleMaster.getTimerLimitString(
+							getString(R.string.min_unit),
+							getString(R.string.sec_unit)));
 			// タイマーの時間をセットする
 			updateTimerTextView(Long.valueOf(noodleMaster.getTimerLimit()));
 		}
@@ -578,7 +587,7 @@ public class TimerActivity extends Activity {
 		startButton.setVisibility(View.VISIBLE);
 		resetButton.setVisibility(View.GONE);
 		endButton.setVisibility(View.GONE);
-		timerImage.setImageResource(alarm_img_default_resouse_id);		
+		timerImage.setImageResource(alarm_img_default_resouse_id);
 		// ボタンを有効化（押せるようになる）
 		setOnClickEnable(true);
 	}
@@ -664,15 +673,16 @@ public class TimerActivity extends Activity {
 	/**
 	 * 時間調整ボタンを非表示にする
 	 * 
-	 * @param hide true：ボタンを隠す false：表示する
+	 * @param hide
+	 *            true：ボタンを隠す false：表示する
 	 */
 	private void hidePickerButton(boolean hide) {
-		if(hide){
+		if (hide) {
 			minUpButton.setVisibility(View.INVISIBLE);
 			minDownButton.setVisibility(View.INVISIBLE);
 			secUpButton.setVisibility(View.INVISIBLE);
 			secDownButton.setVisibility(View.INVISIBLE);
-		}else{
+		} else {
 			minUpButton.setVisibility(View.VISIBLE);
 			minDownButton.setVisibility(View.VISIBLE);
 			secUpButton.setVisibility(View.VISIBLE);
@@ -792,24 +802,24 @@ public class TimerActivity extends Activity {
 		}
 		ramenTimerService.stop();
 		ramenTimerService = null;
-		//カウント前の画面に戻す
+		// カウント前の画面に戻す
 		displaySetting(requestCode);
-		//ボタンを押せるようにする
+		// ボタンを押せるようにする
 		setOnClickEnable(true);
 		startButton.setVisibility(View.VISIBLE);
 		resetButton.setVisibility(View.GONE);
-		//次のカウントダウンに備える
-		startRamenTimerService();		
-		//カウント中フラグを落とす
+		// 次のカウントダウンに備える
+		startRamenTimerService();
+		// カウント中フラグを落とす
 		countdown = false;
-		//時間調節用のPickerボタンを表示する
+		// 時間調節用のPickerボタンを表示する
 		hidePickerButton(false);
 	}
-	
+
 	/**
 	 * RamenTimerServiceを開始する
 	 */
-	private void startRamenTimerService(){
+	private void startRamenTimerService() {
 		// 開始前の画面表示
 		setTimerNotRunningLayout();
 
@@ -825,7 +835,7 @@ public class TimerActivity extends Activity {
 		// いったんアンバインドしてから再度バインド
 		unbindService(serviceConnection);
 		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-		
+
 	}
 
 }

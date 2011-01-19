@@ -124,7 +124,7 @@ public class CreateActivity extends Activity {
 		// NoodleMasterから情報を取り出す
 		String nmJancode = noodleMaster.getJanCode();
 		String nmName = noodleMaster.getName();
-		String nmTimerLimitString = noodleMaster.getTimerLimitString();
+		String nmTimerLimitString = noodleMaster.getTimerLimitString(getString(R.string.min_unit),getString(R.string.sec_unit));
 		int nmTimerLimitInt=noodleMaster.getTimerLimit();
 		Bitmap nmImage = noodleMaster.getImage();
 
@@ -571,7 +571,7 @@ public class CreateActivity extends Activity {
 		TextView name_text = (TextView) layout.findViewById(R.id.RamenName);
 		name_text.setText(noodleMaster.getName());
 		TextView time_text = (TextView) layout.findViewById(R.id.BoilingTime);
-		time_text.setText(noodleMaster.getTimerLimitString());
+		time_text.setText(noodleMaster.getTimerLimitString(getString(R.string.min_unit),getString(R.string.sec_unit)));
 		ImageView image = (ImageView) layout.findViewById(R.id.NoodleImage);
 		image.setImageBitmap(noodleMaster.getImage());
 		Button okButton = (Button) layout.findViewById(R.id.CreateDialogOkButton);

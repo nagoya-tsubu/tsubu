@@ -184,15 +184,15 @@ public class NoodleMaster implements Parcelable {
 		return timerLimit;
 	}
 
-	public String getTimerLimitString() {
+	public String getTimerLimitString(String minString, String secString) {
 		DecimalFormat df = new DecimalFormat("0");
 		int min = getTimerLimit() / 60;
 		int sec = getTimerLimit() % 60;
 		StringBuilder buf = new StringBuilder(df.format(min));
-		buf.append("分");
+		buf.append(minString);
 		df = new DecimalFormat("00");
 		buf.append(df.format(sec));
-		buf.append("秒");
+		buf.append(secString);
 
 		return buf.toString();
 	}
