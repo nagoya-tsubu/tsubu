@@ -141,7 +141,7 @@ public class CreateActivity extends Activity {
 		// NoodleMasterが全部埋まっている場合は、既に登録されているので終了
 		if (nmJancode != null && nmName != null && nmTimerLimitString != null
 				&& nmImage != null) {
-			Toast.makeText(this, "既に登録されています", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.sql_already_created, Toast.LENGTH_LONG).show();
 			finish();
 		}
 		
@@ -181,8 +181,10 @@ public class CreateActivity extends Activity {
 	 *  QuickActionのためのItemを作成 QuickAction自体は onLoadImageClick()で作成
 	 */
 	private void initActionItem(){
+		Resources resources = getResources();
+		
 		itemCamera = new ActionItem();
-		itemCamera.setTitle("カメラ");
+		itemCamera.setTitle(resources.getString(R.string.create_quick_action_camera));
 		itemCamera.setIcon(getResources().getDrawable(
 				R.drawable.ic_popup_camera));
 		itemCamera.setOnClickListener(new OnClickListener() {
@@ -192,7 +194,7 @@ public class CreateActivity extends Activity {
 		});
 
 		itemGallery = new ActionItem();
-		itemGallery.setTitle("ギャラリー");
+		itemGallery.setTitle(resources.getString(R.string.create_quick_action_gallery));
 		itemGallery.setIcon(getResources().getDrawable(
 				R.drawable.ic_popup_photos));
 		itemGallery.setOnClickListener(new OnClickListener() {
@@ -304,11 +306,7 @@ public class CreateActivity extends Activity {
 		opts.inJustDecodeBounds = false;
 		// 縦横比を固定したままリサイズ
 		resizeOptions(opts, resizeLength);
-		if (uri == null)
-			Toast.makeText(this, "uri == null", Toast.LENGTH_SHORT).show();
 		is = getContentResolver().openInputStream(uri);
-		if (is == null)
-			Toast.makeText(this, "is == null", Toast.LENGTH_SHORT).show();
 		image = BitmapFactory.decodeStream(is, null, opts);
 		is.close();		
 		Bitmap rImage = resizeImage(image, resizeLength);
@@ -554,11 +552,11 @@ public class CreateActivity extends Activity {
 		try {
 			noodleMaster = getNoodleMaster();
 		} catch (CreateNoImageException e) {
-			Toast.makeText(this, "画像をセットしてください\n（NoImageをタッチ）", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.create_set_image_message, Toast.LENGTH_LONG).show();
 			createButton.setEnabled(true);		
 			return;
 		} catch (Exception e) {
-			Toast.makeText(this, "入力項目を埋めてください", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, R.string.create_fill_form_message, Toast.LENGTH_LONG).show();
 			createButton.setEnabled(true);		
 			return;
 		}
@@ -761,23 +759,23 @@ public class CreateActivity extends Activity {
 		protected void onPostExecute(Integer result) {
 			switch (result) {
 			case RESULT_CREATE_OK:
-				Toast.makeText(activity, "登録完了", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, R.string.sql_complete, Toast.LENGTH_LONG).show();
 				// アニメーションの停止
 				progressIcon.clearAnimation();
 				break;
 			case RESULT_DUPLEX:
-				Toast.makeText(activity, "既に登録されています", Toast.LENGTH_LONG).show();
+				Toast.makeText(activity, R.string.sql_already_created, Toast.LENGTH_LONG).show();
 				// アニメーションの停止
 				progressIcon.clearAnimation();
 				break;
 			case RESULT_ERROR_GAE:
-				Toast.makeText(activity, "サーバーへの登録に失敗しました", Toast.LENGTH_LONG)
+				Toast.makeText(activity, R.string.sql_gae_entry_error, Toast.LENGTH_LONG)
 						.show();
 				// UIを入力可能モードにする
 				inputMode();
 				return;
 			case RESULT_ERROR_SQLITE:
-				Toast.makeText(activity, "ローカルへの登録に失敗しました", Toast.LENGTH_LONG)
+				Toast.makeText(activity, R.string.sql_local_entry_error, Toast.LENGTH_LONG)
 						.show();
 				// UIを入力可能モードにする
 				inputMode();
