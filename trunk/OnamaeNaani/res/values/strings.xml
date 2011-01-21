@@ -2,4 +2,12 @@
 <resources>
     <string name="hello">Hello World, SplashActivity!</string>
     <string name="app_name">What is this?</string>
+
+	<string name="team_name">What is this? by</string>
+	<string name="team_menber01">Caldroid Asuma</string>
+	<string name="team_menber02">Samuel Yuusfact</string>
+	<string name="team_menber03">hiroii</string>
+	<string name="team_menber04">TAN</string>
+	<string name="team_menber05">leibun</string>
+	<string name="team_menber06">Mrs.Hiromi</string>
 </resources>

@@ -5,6 +5,23 @@
 	android:layout_width="fill_parent"
 	android:background="#FFD4EEF9"
 >
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/taiyo"
+		android:layout_gravity="right"
+		android:onClick="onClickTaiyo"
+		android:id="@+id/ImageViewTaiyo"
+		android:padding="20dip"
+	/>
+	<ImageView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/kumo"
+		android:id="@+id/ImageViewKumo"
+		android:paddingTop="50dip"
+		android:paddingLeft="20dip"
+	/>
 	<LinearLayout
 		android:id="@+id/LinearLayout01"
 		android:layout_width="fill_parent"
@@ -52,21 +69,4 @@
 		/>
 	</LinearLayout>
 -->
-	<ImageView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/taiyo"
-		android:layout_gravity="right"
-		android:onClick="onClickTaiyo"
-		android:id="@+id/ImageViewTaiyo"
-		android:padding="20dip"
-	/>
-	<ImageView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/kumo"
-		android:id="@+id/ImageViewKumo"
-		android:paddingTop="50dip"
-		android:paddingLeft="20dip"
-	/>
 </FrameLayout>

@@ -5,46 +5,6 @@
 	android:layout_width="fill_parent"
 	android:background="#FFD4EEF9"
 >
-	<LinearLayout
-		android:id="@+id/LinearLayout01"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:gravity="bottom|center_horizontal"
-	>
-		<ImageView
-			android:id="@+id/ImageView01"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/btn_cat04"
-			android:onClick="onClickCat"
-		/>
-	</LinearLayout>
-	<LinearLayout
-		android:id="@+id/LinearLayout02"
-		android:layout_height="fill_parent"
-		android:layout_width="fill_parent"
-		android:gravity="center"
-	>
-		<ImageView
-			android:id="@+id/ImageView02"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/btn_hukidashi03"
-			android:onClick="onClickMatane"
-		/>
-<!--
-		<TextView
-			android:id="@+id/TextView01"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="50sp"
-			android:textColor="#F00"
-			android:text="またね"
-			android:onClick="onClickMatane"
-			android:clickable="true"
-		/>
--->
-	</LinearLayout>
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -61,4 +21,76 @@
 		android:paddingTop="50dip"
 		android:id="@+id/ImageViewKumo"
 	/>
+	<LinearLayout
+		android:id="@+id/LinearLayout01"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="bottom|center_horizontal"
+		android:orientation="vertical"
+	>
+<LinearLayout style="@style/TeanInfo">		
+		<TextView
+			style="@style/TeanNameText"
+			android:text="@string/team_name"
+		/>
+		<TextView
+			style="@style/TeanMenberText"
+			android:text="@string/team_menber01"
+		/>
+		<TextView
+			style="@style/TeanMenberText"
+			android:text="@string/team_menber02"
+		/>
+		<TextView
+			style="@style/TeanMenberText"
+			android:text="@string/team_menber03"
+		/>
+		<TextView
+			style="@style/TeanMenberText"
+			android:text="@string/team_menber04"
+		/>
+		<TextView
+			style="@style/TeanMenberText"
+			android:text="@string/team_menber05"
+		/>
+		<TextView
+			style="@style/TeanMenberText"
+			android:text="@string/team_menber06"
+		/>
+</LinearLayout>
+		<ImageView
+			android:id="@+id/ImageView02"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_hukidashi03"
+			android:onClick="onClickMatane"
+		/>
+		<ImageView
+			android:id="@+id/ImageView01"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/btn_cat04"
+			android:onClick="onClickCat"
+		/>
+	
+</LinearLayout>
+<!--
+	<LinearLayout
+		android:id="@+id/LinearLayout02"
+		android:layout_height="fill_parent"
+		android:layout_width="fill_parent"
+		android:gravity="center"
+	>
+		<TextView
+			android:id="@+id/TextView01"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="50sp"
+			android:textColor="#F00"
+			android:text="またね"
+			android:onClick="onClickMatane"
+			android:clickable="true"
+		/>
+	</LinearLayout>
+-->
 </FrameLayout>
