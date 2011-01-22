@@ -116,6 +116,8 @@ public class TimerActivity extends Activity {
 	/** 振動パターン */
 	private static long[] vibePattern = { 500, 500, 500, 500, 500, 500, 500,
 			500 };
+	private AlarmManager alarmManager=null;	
+	private PendingIntent alarmPendingIntent=null;	
 	/** アラームの音のリソース **/
 	private int alarm_sound_resouse_id = R.raw.alarm;
 	/** アラームの画像のリソース **/
@@ -562,13 +564,13 @@ public class TimerActivity extends Activity {
 		int min = Integer.valueOf(minTextView.getText().toString());
 		int sec = Integer.valueOf(secTextView.getText().toString());
 
-		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this,
+		alarmPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
 				TimerActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 		boilTime = min * 60 + sec;
 		Date date = new Date();
 		date.setSeconds(date.getSeconds() + boilTime);
-		AlarmManager amng = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		amng.set(AlarmManager.RTC_WAKEUP, date.getTime(), pi);
+		alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, date.getTime(), alarmPendingIntent);
 
 		// 終了時刻を設定する
 		startTime = System.currentTimeMillis();
@@ -799,6 +801,9 @@ public class TimerActivity extends Activity {
 		}
 		if (!countdown) {
 			return;
+		}
+		if(alarmManager!=null){
+			alarmManager.cancel(alarmPendingIntent);
 		}
 		ramenTimerService.stop();
 		ramenTimerService = null;
