@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_timer_full_information"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    
+	<LinearLayout 
+	    android:layout_gravity="center_vertical"
+	    android:orientation="vertical"
+		android:layout_height="wrap_content"
+	    android:layout_width="wrap_content">
+
+		<LinearLayout
+			android:id="@+id/JanCodeTableRow" 
+			android:orientation="horizontal"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content">
+
+			<TextView 
+				style="@style/InformationFormText"
+			    android:text="JANコード" />
+
+			<TextView
+				android:layout_height="wrap_content"
+			    android:text="JanCode"
+			    style="@style/InformationFormText"
+			    android:id="@+id/JanCodeTextView" 
+			    android:layout_width="wrap_content"/>
+		</LinearLayout>
+
+		<LinearLayout 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:orientation="vertical" 
+			android:id="@+id/ConfirmCreationLinearLayout" >
+			<TextView 
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" 
+				style="@style/InformationFormText" 
+				android:text="この商品は登録されていません。\nみんなのラーメンデータベースに登録しますか？"/>
+	
+			<LinearLayout 
+				android:layout_height="wrap_content" 
+				android:layout_width="fill_parent" 
+				android:orientation="horizontal"
+				android:gravity="center">
+	
+				<Button 
+					android:text="Yes" 
+					android:id="@+id/ConfirmCreationYesButton" 
+					style="@style/ButtonStyle"/>
+			</LinearLayout>
+		</LinearLayout>
+    </LinearLayout>
+</LinearLayout>
