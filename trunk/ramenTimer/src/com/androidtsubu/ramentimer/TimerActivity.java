@@ -334,9 +334,7 @@ public class TimerActivity extends Activity {
 		resetButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				// ダイアログの表示
-				verificationDialog = getVerificationDialog(TimerActivity.this);
-				if (null != verificationDialog)
-					verificationDialog.show();
+				showVerificationDialog();
 			}
 		});
 		startRamenTimerService();
@@ -358,6 +356,15 @@ public class TimerActivity extends Activity {
 		// bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 	}
 
+	/**
+	 * リセット確認用ダイアログを表示する
+	 */
+	private void showVerificationDialog(){
+		verificationDialog = getVerificationDialog(TimerActivity.this);
+		if (null != verificationDialog)
+			verificationDialog.show();
+	}
+	
 	/**
 	 * リセットボタンが押されたときの確認ダイアログを
 	 * 
@@ -402,7 +409,7 @@ public class TimerActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		unbindService(serviceConnection); // バインド解除
+		//unbindService(serviceConnection); // バインド解除
 		unregisterReceiver(receiver); // 登録解除
 		ramenTimerService.stopSelf(); // サービスは必要ないので終了させる。
 		ramenTimerService = null;
@@ -773,10 +780,11 @@ public class TimerActivity extends Activity {
 		}
 
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
-			// カウントダウン中は戻るキーを無効にする
+			// カウントダウン中は戻るキーでリセットダイアログを出す
 			switch (event.getKeyCode()) {
 			case KeyEvent.KEYCODE_BACK:
-				return true;
+				showVerificationDialog();
+				//return true;
 			}
 		}
 		return super.dispatchKeyEvent(event);
