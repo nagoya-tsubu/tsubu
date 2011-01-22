@@ -84,4 +84,5 @@
 <!-- QRコードスキャナーのインストール問合せダイアログ -->
 <string name="no_qrcode_title">QR Code Scanner not found</string>
 <string name="no_qrcode_message">QRコードスキャナーをAndroid Marketからインストールしますか？</string>
+<string name="timer_notification_message">timer count</string>
 </resources>

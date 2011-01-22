@@ -132,7 +132,7 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 					new Intent(this, TimerActivity.class), 0);
 		}
 		notification.setLatestEventInfo(getApplicationContext(),
-				"ラーメンタイマーカウント中", showText, contentIntent);		
+				getString(R.string.timer_notification_message), showText, contentIntent);		
 		notificationManager.notify(1, notification);
 		
 	}
@@ -145,16 +145,16 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 		long currentTime = new Date().getTime();
 		long time = (waitTime - currentTime) / 1000 + 1;
 		if(time < 0){
-			return "0分00秒";
+			return "0" + getString(R.string.min_unit) + "00" + getString(R.string.sec_unit);
 		}
 		int min = (int)time / 60;
 		int sec = (int)time % 60;
 		DecimalFormat format = new DecimalFormat("00");
 		StringBuilder buf = new StringBuilder();
 		buf.append(min);
-		buf.append("分");
+		buf.append(getString(R.string.min_unit));
 		buf.append(format.format(sec));
-		buf.append("秒");
+		buf.append(getString(R.string.sec_unit));
 		return buf.toString();
 	}
 	
