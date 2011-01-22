@@ -1,88 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-  
-  <string name="app_name">みんなのラーメンタイマー</string>    
-  
-  <string name="description_logo">RamenTimer</string>
-  <string name="description_refresh">Refresh</string>
-  <string name="description_search">Search</string>
 
-  <!-- タイマーで利用の文字列 -->
-  <string name="timer_timer"> タイマー</string>  
-  <!-- タイマーで利用の文字列 -->
+	<string name="app_name">Social Noodle Timer</string>
+	<string name="description_logo">RamenTimer</string>
+	<string name="description_refresh">Refresh</string>
+	<string name="description_search">Search</string>
 
-  <!-- タイマーのリセット確認ダイアログで利用の文字列 -->
-  <string name="dialog_timer_verification_title">リセットしますか？</string>
-  <string name="dialog_timer_verification_ok">リセット</string>
-  <string name="dialog_timer_verification_cancel">戻る</string>  
-  <!-- タイマーのリセット確認ダイアログで利用の文字列 -->
-  
-  <!-- ダッシュボードで利用の文字列 -->
-  <string name="dashboard_barcode">読込</string>
-  <string name="dashboard_timer"> タイマー</string>
-  <string name="dashboard_create">登録</string>
-  <string name="dashboard_history">履歴</string>
-  <string name="dashboard_favorite">お気に入り</string>
-  <string name="dashboard_text">みんなで作ろうラーメン茹で時間</string>
-  <string name="dashboard_versionname_hai">杯</string>
-  <!-- ダッシュボードで利用の文字列 -->
-  
-  <!-- 登録画面で利用の文字列 -->
-  <string name="create_products">商品</string>
-  <string name="create_time">時間</string>
-  <string name="create_create">登録 </string>  
-  <string name="create_set_image_message">画像をセットしてください\n（NoImageをタッチ）</string>
-  <string name="create_fill_form_message">入力項目を埋めてください</string>
-  <string name="create_quick_action_gallery">ギャラリー</string>
-  <string name="create_quick_action_camera">カメラ</string>
-  <!-- 登録画面で利用の文字列 -->
-  
-  <!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
-  <string name="dialog_create_goto_title">タイマーを起動しますか？</string>
-  <string name="dialog_create_goto_timer">タイマー</string>
-  <string name="dialog_create_goto_back">戻る</string>
-  <!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
-  
-  <!-- 登録画面の登録情報確認ダイアログで利用の文字列 -->
-  <string name="dialog_create_verification_title">これで登録しますか？</string>
-  <string name="dialog_create_verification_create">登録</string>
-  <string name="dialog_create_verification_back">戻る</string>  
-  <!-- 登録画面の登録情報確認ダイアログで利用の文字列 -->
-  
-  <!-- 履歴で利用の文字列 -->
-  <string name="history_history">履歴</string>
-  <string name="history_search_hint">履歴検索</string>
-  <!-- 履歴で利用の文字列 -->
+	<!-- タイマーで利用の文字列 -->
+	<string name="timer_timer">Timer</string>
 
-  <!-- お気に入りで利用の文字列 -->
-  <string name="favorite_favorite">お気に入り</string>
-  <string name="favorite_search_hint">お気に入り検索</string>
-  <!-- お気に入りで利用の文字列 -->
-    
-  
-  <!-- バグレポート送信時のダイアログ文字列 -->
-  <string name="bugreport_title">バグレポート送信</string>
-  <string name="bugreport_message">バグレポートを開発者へ送信します。よろしいですか？</string>
-  <string name="dialog_yes">はい</string>
-  <string name="dialog_no">いいえ</string>
-  <!-- バグレポート送信時のダイアログ文字列 -->
-  
-  <!-- GAE通信文字列 -->
-  <string name="sql_local_error">ローカルデータ問い合わせでエラーが発生しました</string>
-  <string name="sql_gae_error">サーバー問い合わせでエラーが発生しました</string>
-  <string name="sql_unknown_error">原因不明のエラーが発生しました</string>
-  <string name="sql_complete">登録完了</string>
-  <string name="sql_already_created">既に登録されています</string>
-  <string name="sql_gae_entry_error">サーバーへの登録に失敗しました</string>
-  <string name="sql_local_entry_error">ローカルへの登録に失敗しましたた</string>
-  
-<string name="No_Storage_Message">SDカードを挿入してください</string>
-<string name="min_unit">分</string>
-<string name="sec_unit">秒</string>
-<string name="decimalformat">yyyy年MM月dd日 HH時mm分</string>
+	<!-- タイマーで利用の文字列 -->
 
-<!-- QRコードスキャナーのインストール問合せダイアログ -->
-<string name="no_qrcode_title">QR Code Scanner not found</string>
-<string name="no_qrcode_message">QRコードスキャナーをAndroid Marketからインストールしますか？</string>
-<string name="timer_notification_message">timer count</string>
+	<!-- タイマーのリセット確認ダイアログで利用の文字列 -->
+	<string name="dialog_timer_verification_title">Do you want to reset?</string>
+	<string name="dialog_timer_verification_ok">Reset</string>
+	<string name="dialog_timer_verification_cancel">Back</string>
+
+	<!-- タイマーのリセット確認ダイアログで利用の文字列 -->
+
+	<!-- ダッシュボードで利用の文字列 -->
+	<string name="dashboard_barcode">Load</string>
+	<string name="dashboard_timer">Timer</string>
+	<string name="dashboard_create">Register</string>
+	<string name="dashboard_history">History</string>
+	<string name="dashboard_favorite">Favorites</string>
+	<string name="dashboard_text">Share instant noodle cooking minutes with
+		everybody!</string>
+	<string name="dashboard_versionname_hai"> bowls</string>
+
+	<!-- ダッシュボードで利用の文字列 -->
+
+	<!-- 登録画面で利用の文字列 -->
+	<string name="create_products">Product</string>
+	<string name="create_time">Cooking minutes</string>
+	<string name="create_create">Register</string>
+	<string name="create_set_image_message">Please upload an image by tapping NoImage icon.
+	</string>
+	<string name="create_fill_form_message">Please fill out colums.</string>
+	<string name="create_quick_action_gallery">Gallery</string>
+	<string name="create_quick_action_camera">Camera</string>
+
+	<!-- 登録画面で利用の文字列 -->
+
+	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
+	<string name="dialog_create_goto_title">Start timer?</string>
+	<string name="dialog_create_goto_timer">Timer</string>
+	<string name="dialog_create_goto_back">Back</string>
+
+	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
+
+	<!-- 登録画面の登録情報確認ダイアログで利用の文字列 -->
+	<string name="dialog_create_verification_title">Ready for registration?</string>
+	<string name="dialog_create_verification_create">Register</string>
+	<string name="dialog_create_verification_back">Back</string>
+
+	<!-- 登録画面の登録情報確認ダイアログで利用の文字列 -->
+
+	<!-- 履歴で利用の文字列 -->
+	<string name="history_history">History</string>
+	<string name="history_search_hint">Search for products in history</string>
+
+	<!-- 履歴で利用の文字列 -->
+
+	<!-- お気に入りで利用の文字列 -->
+
+	<string name="favorite_favorite">Favorites</string>
+	<string name="favorite_search_hint">Search for products in favorites</string>
+
+	<!-- お気に入りで利用の文字列 -->
+
+	<!-- バグレポート送信時のダイアログ文字列 -->
+	<string name="bugreport_title">Transmit bug report</string>
+	<string name="bugreport_message">Please take a time to send a bug report to
+		developers. Thank you for your cooperations.</string>
+	<string name="dialog_yes">Yes</string>
+	<string name="dialog_no">No</string>
+
+	<!-- バグレポート送信時のダイアログ文字列 -->
+
+	<!-- GAE通信文字列 -->
+	<string name="sql_local_error">Error in transaction of local database.</string>
+	<string name="sql_gae_error">Error in transaction with server.</string>
+	<string name="sql_unknown_error">Unknown error.</string>
+	<string name="sql_complete">Registration success.</string>
+	<string name="sql_already_created">Already registered.</string>
+	<string name="sql_gae_entry_error">Registration to server failed.</string>
+	<string name="sql_local_entry_error">Registration to local database failed.</string>
+	<string name="No_Storage_Message">Please insert an SD card.</string>
+	<string name="min_unit">min</string>
+	<string name="sec_unit">sec</string>
+	<string name="decimalformat">yyyy/MM/dd HH:mm</string>
+	<!-- QRコードスキャナーのインストール問合せダイアログ -->
+	<string name="no_qrcode_title">Barcode scanner not found</string>
+	<string name="no_qrcode_message">Please install Barcode scanner from Android Market.</string>
+	<string name="timer_notification_message">Now counting...</string>
 </resources>

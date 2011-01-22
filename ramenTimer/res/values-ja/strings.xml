@@ -74,7 +74,7 @@
   <string name="sql_complete">登録完了</string>
   <string name="sql_already_created">既に登録されています</string>
   <string name="sql_gae_entry_error">サーバーへの登録に失敗しました</string>
-  <string name="sql_local_entry_error">ローカルへの登録に失敗しましたた</string>
+  <string name="sql_local_entry_error">ローカルへの登録に失敗しました</string>
   
 <string name="No_Storage_Message">SDカードを挿入してください</string>
 <string name="min_unit">分</string>
