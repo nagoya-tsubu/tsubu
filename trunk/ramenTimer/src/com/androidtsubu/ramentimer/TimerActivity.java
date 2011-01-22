@@ -135,6 +135,10 @@ public class TimerActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			long currentTime = System.currentTimeMillis();
 
+			//更新が重なって時間がリセットされないことがあるのでそれを回避
+			if(ramenTimerService == null)
+				return;
+
 			// 待ち時間を超えてない場合は、表示を更新し処理を終了する。
 			if (waitTime > currentTime) {
 				updateTimerTextView((waitTime - currentTime) / 1000 + 1);
