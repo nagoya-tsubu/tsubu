@@ -12,6 +12,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 public class RamenTimerService extends Service {
@@ -95,6 +96,7 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 		TimerTask timerTask = new TimerTask() {
 			
 			public void run() {
+				Log.d("ramentimer", "timer thread comming");
 				showNotification(getUpdateTimerString());				
 				sendBroadcast(new Intent(ACTION));
 			}
@@ -105,6 +107,7 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 	
 	public void stop(){
 		if (timer != null) {
+			
 			timer.cancel();
 			timer.purge();
 		}
