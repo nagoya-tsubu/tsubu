@@ -27,7 +27,7 @@
 
                 <TextView
                     style="@style/InformationFormText"
-                    android:text="JANコード" />
+                    android:text="@string/jan_code" />
 
                 <TextView
                     android:layout_height="wrap_content"

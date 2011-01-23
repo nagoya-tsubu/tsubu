@@ -20,7 +20,7 @@
 	   	android:layout_alignBottom="@+id/MinTextView"
 	   	android:textColor="@color/primary_text"
 	   	android:id="@+id/MinDiscriptionTextView"
-	   	android:text="分"/>
+	   	android:text="@string/min_unit"/>
 	<Button 
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 		android:layout_alignBottom="@+id/SecTextView"
 		android:layout_toLeftOf="@+id/SecDownButton"
 		android:textColor="@color/primary_text"
-		android:text="秒"/>
+		android:text="@string/sec_unit"/>
 	<Button 
       	android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
