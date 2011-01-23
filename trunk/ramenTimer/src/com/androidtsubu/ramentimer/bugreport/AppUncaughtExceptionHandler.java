@@ -40,6 +40,8 @@ public class AppUncaughtExceptionHandler implements UncaughtExceptionHandler {
 	private final static String	BUG_REPORT_FILE_NAME = "BugReport.txt";
 	//ファイル取り扱い
 	private static File			BUG_REPORT_FILE = null;
+	//バグレポート送信URI
+	private final static String	BUG_REPORT_URI = "http://ramentimer-bugreport.appspot.com";
 
 	//外部メディア上にバグレポートを配置するため、フルパス名を生成する
 	static {
@@ -89,8 +91,8 @@ public class AppUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		//進捗ダイアログを生成する
 		sDialog = new ProgressDialog(sActivity);
 		sDialog.setIndeterminate(true);
-		sDialog.setTitle("BUSY");
-		sDialog.setMessage("Now sending...");
+//		sDialog.setTitle("BUSY");
+//		sDialog.setMessage("Now sending...");
 	}
 	
 	/**
@@ -213,7 +215,7 @@ public class AppUncaughtExceptionHandler implements UncaughtExceptionHandler {
 		nvps.add(new BasicNameValuePair("bug", bug));
 		
 		try {
-			HttpPost httpPost = new HttpPost("http://ramentimer-bugreport.appspot.com");
+			HttpPost httpPost = new HttpPost(BUG_REPORT_URI);
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			httpClient.execute(httpPost);
