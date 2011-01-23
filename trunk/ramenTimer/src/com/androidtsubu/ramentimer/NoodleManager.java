@@ -7,7 +7,9 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Environment;
+import android.os.Handler;
 
 
 /**
@@ -179,8 +181,14 @@ public class NoodleManager {
 				SAVE_IMAGE_DIRECTORY.mkdirs();
 			}
 		} else {
-			new AlertDialog.Builder(context).setMessage(context.getString(R.string.No_Storage_Message))
-					.setPositiveButton("OK", null).show();
+			Handler handler = new Handler();
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					new AlertDialog.Builder(context).setMessage(context.getString(R.string.No_Storage_Message))
+							.setPositiveButton("OK", null).show();
+				}
+			});
 		}
 	}
 
