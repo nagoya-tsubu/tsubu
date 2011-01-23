@@ -44,9 +44,11 @@ public class TimerActivity extends Activity {
 	// 開始ボタン
 	private Button startButton = null;
 	// 終了ボタン
-	private Button endButton = null;
+	private Button endButton = null;	
 	// リセットボタン
 	private Button resetButton = null;
+	// 登録確認ボタン
+	private Button yesButton = null;
 	// 分+ボタン
 	private Button minUpButton = null;
 	// 分-ボタン
@@ -506,7 +508,7 @@ public class TimerActivity extends Activity {
 							.findViewById(R.id.JanCodeTextView);
 
 					// はいボタン
-					Button yesButton = (Button) timerInfoInView
+					yesButton = (Button) timerInfoInView
 							.findViewById(R.id.ConfirmCreationYesButton);
 					yesButton.setOnClickListener(new View.OnClickListener() {
 						public void onClick(View v) {
@@ -656,6 +658,11 @@ public class TimerActivity extends Activity {
 		historyButton.setEnabled(enabled);
 		// チャルメラモードと通常モードの切り替えボタンの無効化
 		timerImage.setClickable(enabled);
+		// 登録確認のボタンがあるとき
+		if(yesButton!=null){
+			yesButton.setEnabled(enabled);
+			yesButton.setFocusable(enabled);
+		}
 	}
 
 	AnimationListener mAnimLeft2Right = new AnimationListener() {

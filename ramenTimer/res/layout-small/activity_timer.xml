@@ -68,19 +68,18 @@
 	        android:onClick="onModeChangeClick"
 	        android:clickable="true"
             android:src="@drawable/img_alarm_default"/>
-
         <Button 
-            android:text="開始"
+            android:text="@string/start_button"
             android:id="@+id/TimerStartButton"
             style="@style/ButtonStyle"/>
         <Button 
             android:id="@+id/TimerResetButton"
-            android:text="リセット"
+            android:text="@string/reset_button"
             style="@style/ButtonStyle"
             android:visibility="gone"/>
         <Button 
             android:id="@+id/TimerEndButton"
-            android:text="終了"
+            android:text="@string/end_button"
             style="@style/ButtonStyle"
             android:visibility="visible"/>
     </LinearLayout>

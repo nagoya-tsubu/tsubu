@@ -19,7 +19,7 @@
 
 			<TextView 
 				style="@style/InformationFormText"
-			    android:text="JANコード" />
+			    android:text="@string/jan_code" />
 
 			<TextView
 				android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
 				android:layout_width="fill_parent" 
 				android:layout_height="wrap_content" 
 				style="@style/InformationFormText" 
-				android:text="この商品は登録されていません。\nみんなのラーメンデータベースに登録しますか？"/>
+				android:text="@string/create_verification_message"/>
 	
 			<LinearLayout 
 				android:layout_height="wrap_content" 
@@ -47,7 +47,7 @@
 				android:gravity="center">
 	
 				<Button 
-					android:text="Yes" 
+					android:text="@string/yes_button" 
 					android:id="@+id/ConfirmCreationYesButton" 
 					style="@style/ButtonStyle"/>
 			</LinearLayout>

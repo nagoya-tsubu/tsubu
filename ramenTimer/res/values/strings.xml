@@ -76,7 +76,6 @@
 		developers. Thank you for your cooperations.</string>
 	<string name="dialog_yes">Yes</string>
 	<string name="dialog_no">No</string>
-
 	<!-- バグレポート送信時のダイアログ文字列 -->
 
 	<!-- GAE通信文字列 -->
@@ -93,6 +92,15 @@
 	<string name="decimalformat">yyyy/MM/dd HH:mm</string>
 	<!-- QRコードスキャナーのインストール問合せダイアログ -->
 	<string name="no_qrcode_title">Barcode scanner not found</string>
-	<string name="no_qrcode_message">Please install Barcode scanner from Android Market.</string>
+	<string name="no_qrcode_message">Please install Barcode scanner from Android Market.
+	</string>
 	<string name="timer_notification_message">Now counting...</string>
+	<!-- ボタン文字列 -->
+	<string name="start_button">Start</string>
+	<string name="reset_button">Reset</string>
+	<string name="end_button">End</string>
+	<string name="yes_button">Yes</string>
+	
+	<string name="create_verification_message">This product is not registered on the server. Would you post it into the database of noodles?</string>
+	<string name="jan_code">EAN code</string>
 </resources>
