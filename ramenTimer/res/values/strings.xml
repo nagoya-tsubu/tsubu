@@ -103,4 +103,6 @@
 	
 	<string name="create_verification_message">This product is not registered on the server. Would you post it into the database of noodles?</string>
 	<string name="jan_code">EAN code</string>
+	<!-- 警告 -->
+	<string name="alert_messeage">Alert</string>
 </resources>

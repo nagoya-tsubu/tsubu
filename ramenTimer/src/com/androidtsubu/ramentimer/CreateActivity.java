@@ -416,12 +416,16 @@ public class CreateActivity extends Activity {
 	 * @param v
 	 */
 	public void onLoadImageClick(View v) {
-		// QuickAction
-		QuickAction qa = new QuickAction(v);
-
-		qa.addActionItem(itemCamera);
-		qa.addActionItem(itemGallery);
-		qa.show();
+		// ストレージが使えるか確認
+		NoodleManager noodleManager = new NoodleManager(this);
+		if(noodleManager.hasExternalStorage()){
+			// QuickAction
+			QuickAction qa = new QuickAction(v);
+	
+			qa.addActionItem(itemCamera);
+			qa.addActionItem(itemGallery);
+			qa.show();
+		}
 	}
 
 	/**

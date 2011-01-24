@@ -97,7 +97,9 @@ public class TimerActivity extends Activity {
 	private static final int MIN_LOWER_LIMIT = 0;
 	// タイマーの更新時間間隔(ms)
 	private static final int TIMER_UPDATE_INTERVALS = 200;
-
+	/** タイマーのデフォルトの設定時間*/
+	private static final long DEFAULT_SET_TIME = 180;
+	
 	private RamenTimerService ramenTimerService;
 	private final RamenTimerReceiver receiver = new RamenTimerReceiver();
 
@@ -107,6 +109,8 @@ public class TimerActivity extends Activity {
 	private long waitTime = 0;
 	/** 茹で時間（履歴で使用する）@hideponm */
 	private int boilTime;
+	/** タイマーリセット時に設定する時間 */
+	private int resetTime = 180;
 	/** カウントダウンフラグ */
 	private boolean countdown = false;
 	/** チャルメラモードの切り替え **/
@@ -423,7 +427,7 @@ public class TimerActivity extends Activity {
 	private void setNoodleData() {
 		if (noodleMaster == null) {
 			// デフォルト3分をいれておく
-			updateTimerTextView(180);
+			updateTimerTextView(DEFAULT_SET_TIME);
 			return;
 		}
 
@@ -582,7 +586,9 @@ public class TimerActivity extends Activity {
 
 		alarmPendingIntent = PendingIntent.getActivity(this, 0, new Intent(
 				this, TimerActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-		boilTime = min * 60 + sec;
+		// リセットしたときに戻す時間を保持
+		resetTime = min * 60 + sec;
+		boilTime = resetTime;
 		Date date = new Date();
 		date.setSeconds(date.getSeconds() + boilTime);
 		alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -832,8 +838,9 @@ public class TimerActivity extends Activity {
 		//サービスをアンバインドする
 		unbindService(serviceConnection);
 		ramenTimerService = null;
-		// カウント前の画面に戻す
-		displaySetting(requestCode);
+//		// カウント前の画面に戻す
+//		displaySetting(requestCode);
+		updateTimerTextView(resetTime);
 		// ボタンを押せるようにする
 		setOnClickEnable(true);
 		startButton.setVisibility(View.VISIBLE);
