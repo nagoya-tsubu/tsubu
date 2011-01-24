@@ -1,8 +1,5 @@
 package com.androidtsubu.ramentimer;
 
-import com.androidtsubu.ramentimer.R.id;
-import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -11,29 +8,33 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnLongClickListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidtsubu.ramentimer.R.id;
+import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
+
 public class DashBoardActivity extends Activity {
 
-	static final String TSUBU_WEB_ADDRESS = "http://sites.google.com/site/androidnagoyatsubu/";
+	private static String TSUBU_WEB_ADDRESS;
 	private Button buttonLogo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
-//		buttonLogo = (Button)findViewById(R.id.ButtonLogo);
-//		buttonLogo.setOnLongClickListener(new OnLongClickListener() {
-//			@Override
-//			public boolean onLongClick(View v) {
-//				// TODO Auto-generated method stub
-//				return false;
-//			}
-//		});
+		// ヘルプのURL取得
+		TSUBU_WEB_ADDRESS = getResources().getString(R.string.help_url);
+		// つ部ロゴを動かす
+		Button button = (Button) findViewById(R.id.ButtonLogo);
+		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
+		
 		String packegeName = getPackageName();
 		try {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
@@ -55,6 +56,31 @@ public class DashBoardActivity extends Activity {
 						.getString(R.string.dialog_no)));
 	}
 
+	/**
+	 *  メニュー内容を生成 
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_dashboard, menu);
+		return true;
+	}
+
+	/**
+	 * メニューのボタンを押した時の動作
+	 */
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		int id = item.getItemId();
+
+		//XML中のメニューボタンにアクセスするにはR.id以下を利用する
+		if (id == R.id.help) {
+			gotoTsubuSite();			
+		}
+		return true;
+	}
+	
+	
 	/**
 	 * タイマーのボタンが押されたとき
 	 * 
