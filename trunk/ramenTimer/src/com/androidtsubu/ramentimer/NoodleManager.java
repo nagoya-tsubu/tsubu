@@ -34,11 +34,20 @@ public class NoodleManager {
 	/**
 	 * コンストラクタ
 	 * 
-	 * @param context
+	 * @param _context
 	 */
-	public NoodleManager(Context context) {
-		this.context = context;
-		checkExternalStorage();
+	public NoodleManager(Context _context) {
+		this.context = _context;
+		if(!hasExternalStorage()){
+			Handler handler = new Handler();
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					new AlertDialog.Builder(context).setMessage(context.getString(R.string.No_Storage_Message))
+							.setPositiveButton("OK", null).show();
+				}
+			});
+		}
 		noodleGaeController = new NoodleGaeController(context);
 		noodleSqlController = new NoodleSqlController(context);
 	}
@@ -168,9 +177,9 @@ public class NoodleManager {
 	/**
 	 * 外部ストレージチェック
 	 */
-	private void checkExternalStorage() {
+	public boolean hasExternalStorage() {
 		if(SAVE_IMAGE_DIRECTORY != null){
-			return;
+			return true;
 		}
 		
 		String status = Environment.getExternalStorageState();
@@ -180,16 +189,9 @@ public class NoodleManager {
 			if (!SAVE_IMAGE_DIRECTORY.exists()) {
 				SAVE_IMAGE_DIRECTORY.mkdirs();
 			}
-		} else {
-			Handler handler = new Handler();
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					new AlertDialog.Builder(context).setMessage(context.getString(R.string.No_Storage_Message))
-							.setPositiveButton("OK", null).show();
-				}
-			});
+			return true;
 		}
+		return false;
 	}
 
 }
