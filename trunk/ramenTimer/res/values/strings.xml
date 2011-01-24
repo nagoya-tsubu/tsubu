@@ -105,4 +105,8 @@
 	<string name="jan_code">EAN code</string>
 	<!-- 警告 -->
 	<string name="alert_messeage">Alert</string>
+	<!-- ヘルプ -->
+	<string name="help">help</string>
+	<!-- ヘルプサイトURL -->
+	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help</string>
 </resources>

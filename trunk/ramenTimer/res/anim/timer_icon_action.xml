@@ -8,10 +8,5 @@
 		android:pivotX="50%" 
 		android:pivotY="100%"
 		android:repeatMode="reverse" 
-		android:repeatCount="29" />
-				
-	<translate 
-        android:fromXDelta="-30%"
-        android:toXDelta="30%"
-   		android:duration="3000" />
+		android:repeatCount="-1" />
 </set>
