@@ -769,21 +769,21 @@ public class TimerActivity extends Activity {
 	 * チャルメラモードと通常モードの切り替え
 	 */
 	public void onModeChangeClick(View v) {
-		animationMode = 1 - animationMode;
-		if (animationMode == 1) {
-			alarm_sound_resouse_id = R.raw.charumera;
-			alarm_img_default_resouse_id = R.drawable.img_charumera_default;
-			alarm_img_start_resouse_id = R.drawable.img_charumera_start;
-			alarm_img_end_resouse_id = R.drawable.img_charumera_end;
-			// Toast.makeText(this, "チャルメラモード", Toast.LENGTH_SHORT).show();
-		} else {
-			alarm_sound_resouse_id = R.raw.alarm;
-			alarm_img_default_resouse_id = R.drawable.img_alarm_default;
-			alarm_img_start_resouse_id = R.drawable.img_alarm_start;
-			alarm_img_end_resouse_id = R.drawable.img_alarm_end;
-			// Toast.makeText(this, "ノーマルモード", Toast.LENGTH_SHORT).show();
-		}
-		timerImage.setImageResource(alarm_img_default_resouse_id);
+//		animationMode = 1 - animationMode;
+//		if (animationMode == 1) {
+//			alarm_sound_resouse_id = R.raw.charumera;
+//			alarm_img_default_resouse_id = R.drawable.img_charumera_default;
+//			alarm_img_start_resouse_id = R.drawable.img_charumera_start;
+//			alarm_img_end_resouse_id = R.drawable.img_charumera_end;
+//			// Toast.makeText(this, "チャルメラモード", Toast.LENGTH_SHORT).show();
+//		} else {
+//			alarm_sound_resouse_id = R.raw.alarm;
+//			alarm_img_default_resouse_id = R.drawable.img_alarm_default;
+//			alarm_img_start_resouse_id = R.drawable.img_alarm_start;
+//			alarm_img_end_resouse_id = R.drawable.img_alarm_end;
+//			// Toast.makeText(this, "ノーマルモード", Toast.LENGTH_SHORT).show();
+//		}
+//		timerImage.setImageResource(alarm_img_default_resouse_id);
 	}
 
 	@Override
