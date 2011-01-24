@@ -212,11 +212,11 @@ public class ReaderActivity extends Activity {
 		
 		// QRコードをAndroid Marketからダウンロードしてよいか
 		// ダイアログを表示して問い合わせる
-		new AlertDialog.Builder(this)
-				.setIcon(android.R.drawable.ic_dialog_alert)
-				.setTitle(res.getString(R.string.no_qrcode_title))
-				.setMessage(res.getString(R.string.no_qrcode_message))
-				.setPositiveButton(res.getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+		CustomAlertDialog dialog = new CustomAlertDialog(this, R.style.CustomDialog);
+		dialog.setIcon(android.R.drawable.ic_dialog_alert);
+		dialog.setTitle(res.getString(R.string.no_qrcode_title));
+		dialog.setMessage(res.getString(R.string.no_qrcode_message));
+		dialog.setButton(res.getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
 					// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
 					// ダウンロードページを表示する
 					public void onClick(DialogInterface dialog, int which) {
@@ -225,15 +225,16 @@ public class ReaderActivity extends Activity {
 										+ QRCODE_PKG_NAME));
 						startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
 					}
-				})
-				.setNegativeButton(res.getString(R.string.dialog_no),
+				});
+		dialog.setButton2(res.getString(R.string.dialog_no),
 						new DialogInterface.OnClickListener() {
 							// 「いいえ」押下時は、ダッシュボードに戻る
 							public void onClick(DialogInterface dialog,
 									int which) {
 								finish();
 							}
-						}).create().show();
+						});
+		dialog.show();
 	}
 
 	// 商品情報(NoodleMaster)のキー

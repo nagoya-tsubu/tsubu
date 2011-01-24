@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface.OnClickListener;
 import android.content.res.Resources;
 import android.os.Environment;
 import android.os.Handler;
@@ -43,8 +44,11 @@ public class NoodleManager {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					new AlertDialog.Builder(context).setMessage(context.getString(R.string.No_Storage_Message))
-							.setPositiveButton("OK", null).show();
+					CustomAlertDialog dialog = new CustomAlertDialog(context, R.style.CustomDialog);
+					dialog.setTitle(R.string.alert_messeage);
+					dialog.setButton("OK",(OnClickListener)null);
+					dialog.setMessage(context.getString(R.string.No_Storage_Message));
+					dialog.show();
 				}
 			});
 		}

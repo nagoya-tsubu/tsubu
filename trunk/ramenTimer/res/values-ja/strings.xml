@@ -95,4 +95,7 @@
 	<string name="create_verification_message">この商品は登録されていません。\nみんなのラーメンデータベースに登録しますか？</string>
 	
 	<string name="jan_code">JANコード</string>
+	<!-- 警告 -->
+	<string name="alert_messeage">警告</string>
+	
 </resources>
