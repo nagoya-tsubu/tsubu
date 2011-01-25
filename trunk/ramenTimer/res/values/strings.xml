@@ -108,5 +108,5 @@
 	<!-- ヘルプ -->
 	<string name="help">help</string>
 	<!-- ヘルプサイトURL -->
-	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help</string>
+	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help_en</string>
 </resources>

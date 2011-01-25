@@ -223,7 +223,11 @@ public class ReaderActivity extends Activity {
 						final Intent intent = new Intent(Intent.ACTION_VIEW,
 								Uri.parse("market://search?q=pname:"
 										+ QRCODE_PKG_NAME));
-						startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
+						try{
+							startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
+						}catch(ActivityNotFoundException ex){
+							//通常使用ではありえない
+						}
 					}
 				});
 		dialog.setButton2(res.getString(R.string.dialog_no),
