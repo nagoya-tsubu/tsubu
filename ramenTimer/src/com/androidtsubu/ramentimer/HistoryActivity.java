@@ -89,7 +89,7 @@ public class HistoryActivity extends ListActivity {
 		// アクティビティのリクエストコードで処理を分ける
 		if (requestCode == RequestCode.HISTORY2TIMER.ordinal()) {
 			if (RESULT_OK == resultCode) {
-				setResult(RESULT_OK);
+				setResult(RESULT_OK, intent);
 				// Intentをダッシュボードまで戻す。
 				// 呼び出したインテントが空の場合は、処理を終了する
 				finish();
