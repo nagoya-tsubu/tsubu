@@ -68,7 +68,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/now_playing_loading"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/now_ramen"
