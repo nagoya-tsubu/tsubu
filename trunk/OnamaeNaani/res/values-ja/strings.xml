@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, SplashActivity!</string>
+    <string name="app_name">おなまえなあに？</string>
+
+	<string name="team_name">おなまえなあに？ 制作</string>
+	<string name="team_menber01">松田 幸一</string>
+	<string name="team_menber02">よこいど ゆうしぐ</string>
+	<string name="team_menber03">hiroii</string>
+	<string name="team_menber04">たた</string>
+	<string name="team_menber05">れいぶん</string>
+	<string name="team_menber06">弘味</string>
+</resources>
