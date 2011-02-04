@@ -6,14 +6,15 @@
     android:background="#FFD4EEF9"
     android:onClick="onClickFrame" >
     
-	<ImageView 
+ 	<ImageView 
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent" 
 		android:background="@drawable/topbg" />
-		
+ 		
 	<LinearLayout 
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent" 
+		android:orientation="vertical"
 		android:gravity="center">
 
 		<ImageView 
@@ -21,7 +22,23 @@
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content" 
 			android:onClick="onClickFrame"
-			android:src="@drawable/title" />
+			android:src="@drawable/title"/>
+
+	</LinearLayout>	
+
+	<LinearLayout
+		android:id="@+id/LinearLayout01"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:gravity="bottom|center_horizontal"
+		android:orientation="vertical"
+		android:paddingBottom="50dip">
+
+		<LinearLayout style="@style/TextInfo">		
+			<TextView
+				style="@style/TeanNameText"
+				android:text="@string/info_start"/>
+		</LinearLayout>
 	
 	</LinearLayout>
 

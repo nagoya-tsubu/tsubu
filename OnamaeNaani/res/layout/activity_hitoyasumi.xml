@@ -3,8 +3,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="fill_parent"
 	android:layout_width="fill_parent"
-	android:background="#FFD4EEF9"
->
+	android:background="#FFD4EEF9">
+
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -12,62 +12,35 @@
 		android:layout_gravity="right"
 		android:onClick="onClickTaiyo"
 		android:id="@+id/ImageViewTaiyo"
-		android:padding="20dip"
-	/>
+		android:padding="20dip"/>
 	<ImageView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:src="@drawable/kumo"
 		android:id="@+id/ImageViewKumo"
 		android:paddingTop="50dip"
-		android:paddingLeft="20dip"
-	/>
+		android:paddingLeft="20dip"/>
+
 	<LinearLayout
 		android:id="@+id/LinearLayout01"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:gravity="bottom|center_horizontal"
-		android:orientation="vertical"
-	>
+		android:orientation="vertical">
+
 		<ImageView
 			android:id="@+id/ImageView02"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@drawable/btn_hukidashi02"
-			android:onClick="onClickHitoyasumi"
-		/>
+			android:onClick="onClickHitoyasumi"/>
 		<ImageView
 			android:id="@+id/ImageView01"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:src="@drawable/btn_cat02"
-			android:onClick="onClickCat"
-		/>
+			android:onClick="onClickCat"/>
+
 	</LinearLayout>
-<!--
-	<LinearLayout
-		android:id="@+id/LinearLayout02"
-		android:layout_height="fill_parent"
-		android:layout_width="fill_parent"
-		android:gravity="center"
-	>
-		<ImageView
-			android:id="@+id/ImageView02"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/btn_hukidashi02"
-			android:onClick="onClickHitoyasumi"
-		/>
-	
-		<TextView
-			android:id="@+id/TextView01"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="50sp"
-			android:textColor="#F00"
-			android:clickable="true"
-			android:text="ひとやすみ"
-		/>
-	</LinearLayout>
--->
+
 </FrameLayout>
