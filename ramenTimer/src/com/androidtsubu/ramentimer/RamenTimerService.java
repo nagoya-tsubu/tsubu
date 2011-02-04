@@ -111,6 +111,9 @@ System.out.println("####### service onCreate() process:"+ android.os.Process.myP
 			timer.cancel();
 			timer.purge();
 		}
+		if(notificationManager == null){
+			return;
+		}
 		notificationManager.cancel(1);
 		notificationManager = null;
 		notification = null;
