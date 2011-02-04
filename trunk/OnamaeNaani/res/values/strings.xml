@@ -3,6 +3,10 @@
     <string name="hello">Hello World, SplashActivity!</string>
     <string name="app_name">What is this?</string>
 
+    <string name="info_start">Tap the screen.</string>
+    <string name="info_end01">When finished,</string>
+    <string name="info_end02"> the "sun" to tap.</string>
+
 	<string name="team_name">What is this? by</string>
 	<string name="team_menber01">Caldroid Asuma</string>
 	<string name="team_menber02">Samuel Yuusfact</string>

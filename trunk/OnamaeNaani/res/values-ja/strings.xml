@@ -2,6 +2,10 @@
 <resources>
     <string name="hello">Hello World, SplashActivity!</string>
     <string name="app_name">おなまえなあに？</string>
+    
+    <string name="info_start">タップしてはじめてね</string>
+    <string name="info_end01">おわるときは</string>
+    <string name="info_end02">「たいよう」をタップしてね</string>
 
 	<string name="team_name">おなまえなあに？ 制作</string>
 	<string name="team_menber01">松田 幸一</string>

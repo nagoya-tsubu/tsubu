@@ -11,14 +11,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-    
-<activity android:name="HajimeruActivity" android:screenOrientation="portrait"></activity>
-<activity android:name="MataneActivity" android:screenOrientation="portrait"></activity>
-<activity android:name="PlayActivity" android:screenOrientation="portrait"></activity>
-<activity android:name="AnimalActivity" android:screenOrientation="portrait"></activity>
-<activity android:name="HitoyasumiActivity" android:screenOrientation="portrait"></activity>
-</application>
+		<activity android:name="HajimeruActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name="MataneActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name="PlayActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name="AnimalActivity" android:screenOrientation="portrait"></activity>
+		<activity android:name="HitoyasumiActivity" android:screenOrientation="portrait"></activity>
+	</application>
     <uses-sdk android:minSdkVersion="4" />
-
 </manifest> 
