@@ -1,4 +1,4 @@
-package com.tsubu.Oryaaaa;
+package com.android.tsubu.oryaaaa;
 
 import android.app.Activity;
 import android.content.Intent;
