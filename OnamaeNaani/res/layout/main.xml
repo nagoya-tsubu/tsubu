@@ -3,43 +3,45 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFD4EEF9"
+	android:foreground="@drawable/main_titlebg"
+    android:foregroundGravity="center"
     android:onClick="onClickFrame" >
     
- 	<ImageView 
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent" 
-		android:background="@drawable/topbg" />
- 		
-	<LinearLayout 
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent" 
-		android:orientation="vertical"
-		android:gravity="center">
+        <ImageView 
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#FFD4EEF9"/>
 
-		<ImageView 
-			android:id="@+id/TitleLogo" 
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content" 
-			android:onClick="onClickFrame"
-			android:src="@drawable/title"/>
+        <LinearLayout
+                android:id="@+id/LinearLayout01"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="10dip">
 
-	</LinearLayout>	
+                <LinearLayout style="@style/TextInfo">          
+                	<TextView
+                		style="@style/TextComment"
+                		android:text="@string/info_start"/>
+                </LinearLayout>
+        
+        </LinearLayout>
 
-	<LinearLayout
-		android:id="@+id/LinearLayout01"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:gravity="bottom|center_horizontal"
-		android:orientation="vertical"
-		android:paddingBottom="50dip">
+        <LinearLayout 
+                android:id="@+id/LinearLayout02"
+                android:layout_width="fill_parent" 
+                android:layout_height="fill_parent" 
+                android:orientation="vertical"
+                android:gravity="center">
 
-		<LinearLayout style="@style/TextInfo">		
-			<TextView
-				style="@style/TeanNameText"
-				android:text="@string/info_start"/>
-		</LinearLayout>
-	
-	</LinearLayout>
+                <ImageView 
+                        android:id="@+id/TitleLogo" 
+                        android:layout_width="wrap_content" 
+                        android:layout_height="wrap_content" 
+                        android:onClick="onClickFrame"
+                        android:src="@drawable/main_title"/>
+
+        </LinearLayout> 
 
 </FrameLayout>

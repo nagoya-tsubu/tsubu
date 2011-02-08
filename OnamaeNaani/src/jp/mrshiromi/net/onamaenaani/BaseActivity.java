@@ -1,6 +1,6 @@
-package jp.caldroid.sample.hackathon.onamae;
+package jp.mrshiromi.net.onamaenaani;
 
-import jp.caldroid.sample.hackathon.onamae.util.OnamaeAnimUtil;
+import jp.mrshiromi.net.onamaenaani.util.OnamaeAnimUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;

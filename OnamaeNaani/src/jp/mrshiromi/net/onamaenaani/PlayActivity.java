@@ -1,8 +1,8 @@
-package jp.caldroid.sample.hackathon.onamae;
+package jp.mrshiromi.net.onamaenaani;
 
 import java.util.Random;
 
-import jp.caldroid.sample.hackathon.onamae.util.OnamaeAnimUtil;
+import jp.mrshiromi.net.onamaenaani.util.OnamaeAnimUtil;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
