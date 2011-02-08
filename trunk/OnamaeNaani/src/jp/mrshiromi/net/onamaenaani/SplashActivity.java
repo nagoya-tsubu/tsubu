@@ -1,4 +1,4 @@
-package jp.caldroid.sample.hackathon.onamae;
+package jp.mrshiromi.net.onamaenaani;
 
 import android.app.Activity;
 import android.content.Intent;

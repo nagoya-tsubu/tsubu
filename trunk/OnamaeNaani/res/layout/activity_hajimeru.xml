@@ -52,16 +52,14 @@
 		android:layout_width="fill_parent" 
 		android:orientation="vertical"
 		android:gravity="center">
-		
-<LinearLayout style="@style/TextInfo">		
-		<TextView
-			style="@style/TeanNameText"
-			android:text="@string/info_end01"/>
-		<TextView
-			style="@style/TeanNameText"
-			android:text="@string/info_end02"/>
-</LinearLayout>
-		
+		<LinearLayout style="@style/TextInfo">		
+			<TextView
+				style="@style/TextComment"
+				android:text="@string/info_end01"/>
+			<TextView
+				style="@style/TextComment"
+				android:text="@string/info_end02"/>
+		</LinearLayout>
 	</LinearLayout>
 
 </FrameLayout>

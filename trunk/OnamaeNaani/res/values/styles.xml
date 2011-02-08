@@ -1,33 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="TextInfo">
-		<item name="android:layout_width">wrap_content</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:gravity">center_vertical</item>
-		<item name="android:orientation">vertical</item>
-		<item name="android:background">@color/team_bg</item>
-		<item name="android:padding">10dip</item>
-	</style>
-
-    <style name="TeanNameText">
+    <style name="TextInfo">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/team_bg</item>
+        <item name="android:padding">10dip</item>
+    </style>
+
+    <style name="TextComment">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_horizontal</item>
-		<item name="android:padding">4dip</item>
+        <item name="android:padding">2dip</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/team_text</item>
         <item name="android:background">@null</item>
     </style>
 
-	<style name="TeanMenberText">
+    <style name="TeanNameText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:padding">4dip</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/team_text</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="TeanMenberText">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/team_text</item>
         <item name="android:background">@null</item>
-	</style>
+    </style>
 
 </resources>

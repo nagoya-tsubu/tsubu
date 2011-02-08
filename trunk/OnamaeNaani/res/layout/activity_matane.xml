@@ -48,7 +48,6 @@
 		android:layout_width="fill_parent" 
 		android:orientation="vertical"
 		android:gravity="center">
-		
 		<LinearLayout style="@style/TextInfo">		
 			<TextView
 				style="@style/TeanNameText"
@@ -72,7 +71,6 @@
 				style="@style/TeanMenberText"
 				android:text="@string/team_menber06"/>
 		</LinearLayout>
-
 	</LinearLayout>
 
 </FrameLayout>
