@@ -50,6 +50,7 @@ public class NoodleGaeController {
 	/** すでに該当JANコードの商品があります */
 	private static final int DUPLICATE = 400;
 	private Context context;
+	private static final String TMPFILENAME = "tmp.jpg"; 
 
 	/**
 	 * コンストラクタ
@@ -263,6 +264,12 @@ public class NoodleGaeController {
 					e.printStackTrace();
 				}
 			}
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,TMPFILENAME);
+			if(file.exists()){
+				//いらなくなったtmpファイルを削除する
+				file.delete();
+			}
+			
 		}
 	}
 
@@ -279,7 +286,7 @@ public class NoodleGaeController {
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
 			// ファイルを書き出す
-			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,"tmp.jpg");
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,TMPFILENAME);
 			fileOutputStream = new FileOutputStream(file);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
