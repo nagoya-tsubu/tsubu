@@ -71,6 +71,10 @@ public class RamenService {
         return Datastore.query(Ramen.class).asList();
     }
 
+    public int count() {
+        return Datastore.query().count();
+    }
+
     private byte[] resizeImage(byte[] src) {
         ImagesService imagesService = ImagesServiceFactory.getImagesService();
         Image oldImage = ImagesServiceFactory.makeImage(src);
