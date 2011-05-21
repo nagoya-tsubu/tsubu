@@ -138,6 +138,26 @@ public class NoodleManager {
 	}
 	
 	/**
+	 * JANコードで検索する
+	 * @param janCode
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleMaster> searchNoodleMastersLikeJanCode(String janCode) throws SQLException{
+		return noodleSqlController.getNoodleMastersLikeJanCode(janCode);
+	}
+	
+	/**
+	 * 名称で検索する
+	 * @param name
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoodleMaster> searchNoodleMastersLikeName(String name) throws SQLException{
+		return noodleSqlController.getNoodleMastersLikeName(name);
+	}
+	
+	/**
 	 * 商品マスタを検索する
 	 * @param keyword
 	 * @return
@@ -146,9 +166,9 @@ public class NoodleManager {
 	public List<NoodleMaster> searchNoodleMaster(String keyword) throws SQLException{
 		List<NoodleMaster> noodleMasters;
 		//JANコードで探してみる
-		noodleMasters = noodleSqlController.getNoodleMastersLikeJanCode(keyword);
+		noodleMasters =searchNoodleMastersLikeJanCode(keyword);
 		//名称で探してみる
-		List<NoodleMaster> noodleMasters2 = noodleSqlController.getNoodleMastersLikeName(keyword);
+		List<NoodleMaster> noodleMasters2 = searchNoodleMastersLikeName(keyword);
 		for(NoodleMaster n2 : noodleMasters2){
 			if(!noodleMasters.contains(n2)){
 				noodleMasters.add(n2);
@@ -196,6 +216,31 @@ public class NoodleManager {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * 商品マスタの登録件数を返す
+	 * @return
+	 * @throws GaeException
+	 */
+	public int getMasterCount() throws GaeException{
+		return noodleGaeController.getMasterCount();
+	}
+	
+	/**
+	 * GAEの情報でSQLiteの情報を上書きする
+	 * @throws SQLException 
+	 * @throws GaeException 
+	 */
+	public void synchronizeFromGaeToSqlite() throws SQLException, GaeException{
+		//SQLiteにある商品マスタリストを得る
+		List<NoodleMaster> masters = noodleSqlController.getNoodleMasters();
+		for(NoodleMaster n : masters){
+			//SQLiteにある商品マスタリストのバーコードから商品マスタを得る
+			NoodleMaster noodleMaster = noodleGaeController.getNoodleMaster(n.getJanCode());
+			noodleSqlController.updateNoodleMater(noodleMaster);
+		}
+		
 	}
 
 }

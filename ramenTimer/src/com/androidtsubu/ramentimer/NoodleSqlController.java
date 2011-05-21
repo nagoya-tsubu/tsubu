@@ -76,7 +76,7 @@ public class NoodleSqlController {
 		String name = cursor.getString(cursor.getColumnIndex("name"));
 		int boilTime = cursor.getInt(cursor.getColumnIndex("boiltime"));
 		// 画像パス名を得る
-		String imagePath = cursor.getString(cursor.getColumnIndex("image")); 
+		String imagePath = cursor.getString(cursor.getColumnIndex("image"));
 		return new NoodleMaster(jancode, name, imagePath, boilTime);
 	}
 
@@ -111,14 +111,16 @@ public class NoodleSqlController {
 		}
 
 	}
-	
+
 	/**
 	 * JANコードのLIKE検索で商品マスタを得ます
+	 * 
 	 * @param janCode
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> getNoodleMastersLikeJanCode(String janCode) throws SQLException{
+	public List<NoodleMaster> getNoodleMastersLikeJanCode(String janCode)
+			throws SQLException {
 		List<NoodleMaster> noodleMasters = new ArrayList<NoodleMaster>();
 		String[] columns = { "jancode", "name", "boiltime", "image" };
 		String where = "jancode LIKE ?";
@@ -145,11 +147,13 @@ public class NoodleSqlController {
 
 	/**
 	 * 名称のLIKE検索で商品マスタを得ます
+	 * 
 	 * @param janCode
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> getNoodleMastersLikeName(String name) throws SQLException{
+	public List<NoodleMaster> getNoodleMastersLikeName(String name)
+			throws SQLException {
 		List<NoodleMaster> noodleMasters = new ArrayList<NoodleMaster>();
 		String[] columns = { "jancode", "name", "boiltime", "image" };
 		String where = "name LIKE ?";
@@ -174,7 +178,6 @@ public class NoodleSqlController {
 		}
 	}
 
-	
 	/**
 	 * SQLiteからすべての商品マスタを得ます
 	 * 
@@ -302,6 +305,7 @@ public class NoodleSqlController {
 
 	/**
 	 * SQLiteからJanCodeのLIKE検索で履歴を得ます
+	 * 
 	 * @param janCode
 	 * @return
 	 * @throws SQLException
@@ -311,7 +315,7 @@ public class NoodleSqlController {
 		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
 		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
 		String where = "jancode LIKE ?";
-		String[] whereArgs = {"%" + janCode + "%"};
+		String[] whereArgs = { "%" + janCode + "%" };
 		String orderby = "measuretime desc";
 		Cursor cursor = null;
 		try {
@@ -334,6 +338,7 @@ public class NoodleSqlController {
 
 	/**
 	 * SQLiteから名称のLIKE検索で履歴を得ます
+	 * 
 	 * @param name
 	 * @return
 	 * @throws SQLException
@@ -343,7 +348,7 @@ public class NoodleSqlController {
 		List<NoodleHistory> histories = new ArrayList<NoodleHistory>();
 		String[] columns = { "jancode", "name", "boiltime", "measuretime" };
 		String where = "name LIKE ?";
-		String[] whereArgs = {"%" + name + "%"};
+		String[] whereArgs = { "%" + name + "%" };
 		String orderby = "measuretime desc";
 		Cursor cursor = null;
 		try {
@@ -363,7 +368,7 @@ public class NoodleSqlController {
 			}
 		}
 	}
-	
+
 	/**
 	 * カーソルから履歴を作成する
 	 * 
@@ -416,6 +421,31 @@ public class NoodleSqlController {
 		}
 	}
 
+	/**
+	 * SQLiteの商品マスタ情報を更新します
+	 * 
+	 * @param noodleMaster
+	 * @throws SQLException
+	 */
+	public void updateNoodleMater(NoodleMaster noodleMaster)
+			throws SQLException {
+		try {
+			String where = "jancode";
+			String[] whereArgs = { noodleMaster.getJanCode() };
+			ContentValues contentValues = new ContentValues();
+			contentValues.put("jancode", noodleMaster.getJanCode());
+			contentValues.put("name", noodleMaster.getName());
+			contentValues.put("boiltime", noodleMaster.getTimerLimit());
+			contentValues.put("image", noodleMaster.getImageFileName());
+			long ret = database.update(NOODLEMASTERTABLENAME, contentValues,
+					where, whereArgs);
+			if (ret < 0) {
+				throw new SQLException("insert return value = " + ret);
+			}
+		} catch (SQLiteException ex) {
+			throw new SQLException(ExceptionToStringConverter.convert(ex));
+		}
+	}
 
 	/**
 	 * 引数の商品マスタと計測時間、計測日時をもとに履歴を作成します
