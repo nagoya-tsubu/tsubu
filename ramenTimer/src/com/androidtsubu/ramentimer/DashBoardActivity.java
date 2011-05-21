@@ -1,5 +1,6 @@
 package com.androidtsubu.ramentimer;
 
+import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -23,6 +24,7 @@ import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
 public class DashBoardActivity extends Activity {
 
 	private static String TSUBU_WEB_ADDRESS;
+	private static String RAMEN_LIST_WEB_ADDRESS;
 	private Button buttonLogo;
 
 	@Override
@@ -31,6 +33,8 @@ public class DashBoardActivity extends Activity {
 		setContentView(R.layout.activity_dashboard);
 		// ヘルプのURL取得
 		TSUBU_WEB_ADDRESS = getResources().getString(R.string.help_url);
+		//ラーメンタイマーWebのURL取得
+		RAMEN_LIST_WEB_ADDRESS = getResources().getString(R.string.ramen_list_url);
 		// つ部ロゴを動かす
 		Button button = (Button) findViewById(R.id.ButtonLogo);
 		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
@@ -130,6 +134,26 @@ public class DashBoardActivity extends Activity {
 	}
 
 	/**
+	 * リストボタンが押されたとき
+	 * 
+	 * @param view
+	 */
+	public void onRamenListButtonClick(View view) {
+
+		gotoRamenListWeb();
+	}
+	
+	/**
+	 * 検索ボタンが押されたとき
+	 * 
+	 * @param view
+	 */
+	public void onSearchButtonClick(View view) {
+
+		gotoSerchActivity();
+	}
+	
+	/**
 	 * つ部のロゴが押されたとき
 	 * 
 	 * @param view
@@ -158,7 +182,14 @@ public class DashBoardActivity extends Activity {
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
-
+	
+	/**
+	 * 検索の起動
+	 */
+	private void gotoSerchActivity() {
+		
+	}
+	
 	/**
 	 * マイリストの起動
 	 */
@@ -179,6 +210,16 @@ public class DashBoardActivity extends Activity {
 		startActivityForResult(intent, requestCode);
 	}
 
+	/**
+	 * ラーメンタイマーWebサイトを開く
+	 */
+	private void gotoRamenListWeb() {
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(RAMEN_LIST_WEB_ADDRESS));
+		startActivity(intent);
+	}
+	
 	/**
 	 * つ部のWebサイトを開く
 	 */

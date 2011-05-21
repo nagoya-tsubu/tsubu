@@ -65,6 +65,24 @@
 	            android:text="@string/dashboard_history"
 	            android:drawableTop="@drawable/home_btn_history"/>
         </LinearLayout>
+        
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+	        android:layout_weight="1"
+            android:paddingTop="12dip">
+			<Button android:id="@+id/Button05"
+	            style="@style/HomeButton"
+	            android:onClick="onRamenListButtonClick"
+	            android:text="@string/dashboard_list"
+	            android:drawableTop="@drawable/home_btn_list"/>
+			<Button android:id="@+id/Button06"
+	            style="@style/HomeButton"
+	            android:onClick="onSearchButtonClick"
+	            android:text="@string/dashboard_search"
+	            android:drawableTop="@drawable/home_btn_search"/>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -110,6 +128,16 @@
 	                android:textColor="@color/primary_text"
 	                android:layout_weight="1"
 	                android:text="@string/dashboard_text"/>
+	            <TextView
+	            	android:id="@+id/ramen_count"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+	                android:layout_gravity="right"
+	                android:gravity="bottom"
+					android:paddingRight="4dip"
+					android:paddingBottom="4dip"
+					android:textSize="12sp"
+					android:textColor="@color/primary_text"/>    
 	            <TextView
 					android:id="@+id/ramen_version"
 					android:layout_width="wrap_content"

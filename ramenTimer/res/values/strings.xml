@@ -25,6 +25,8 @@
 	<string name="dashboard_create">Register</string>
 	<string name="dashboard_history">History</string>
 	<string name="dashboard_favorite">Favorites</string>
+	<string name="dashboard_list">List</string>
+	<string name="dashboard_search">Serch</string>
 	<string name="dashboard_text">Share instant noodle cooking minutes with
 		everybody!</string>
 	<string name="dashboard_versionname_hai"> bowls</string>
@@ -109,4 +111,6 @@
 	<string name="help">help</string>
 	<!-- ヘルプサイトURL -->
 	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help_en</string>
+	<!-- ラーメンタイマーリストページ URL -->
+	<string name="ramen_list_url">http://www.google.com</string>
 </resources>
