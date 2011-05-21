@@ -72,7 +72,7 @@ public class RamenService {
     }
 
     public int count() {
-        return Datastore.query().count();
+        return Datastore.query(Ramen.class).count();
     }
 
     private byte[] resizeImage(byte[] src) {
