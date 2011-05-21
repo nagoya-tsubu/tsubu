@@ -69,6 +69,11 @@
 	<string name="dialog_no">いいえ</string>
 	<!-- バグレポート送信時のダイアログ文字列 -->
 
+	<!-- 検索で利用の文字列 -->
+	<string name="search_search">検索</string>
+	<!-- 検索で利用の文字列 -->
+
+
 	<!-- GAE通信文字列 -->
 	<string name="sql_local_error">ローカルデータ問い合わせでエラーが発生しました</string>
 	<string name="sql_gae_error">サーバー問い合わせでエラーが発生しました</string>

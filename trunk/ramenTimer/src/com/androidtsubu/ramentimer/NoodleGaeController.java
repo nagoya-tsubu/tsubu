@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.DuplicateFormatFlagsException;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -36,6 +37,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.net.ParseException;
 import android.util.Log;
 
 /**
@@ -50,10 +52,11 @@ public class NoodleGaeController {
 	/** すでに該当JANコードの商品があります */
 	private static final int DUPLICATE = 400;
 	private Context context;
-	private static final String TMPFILENAME = "tmp.jpg"; 
+	private static final String TMPFILENAME = "tmp.jpg";
 
 	/**
 	 * コンストラクタ
+	 * 
 	 * @param context
 	 */
 	public NoodleGaeController(Context context) {
@@ -106,12 +109,12 @@ public class NoodleGaeController {
 			return createNoodleMaster(builder.toString());
 		} catch (ClientProtocolException e) {
 			throw new GaeException(e);
-		} catch(SocketTimeoutException e){
+		} catch (SocketTimeoutException e) {
 			throw new GaeException(e);
 		} catch (IOException exception) {
 			throw new GaeException(exception);
-		}finally{
-			if(reader != null){
+		} finally {
+			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
@@ -168,8 +171,8 @@ public class NoodleGaeController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}finally{
-			if(input != null){
+		} finally {
+			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
@@ -196,7 +199,7 @@ public class NoodleGaeController {
 		// HTTPタイムアウトを設定
 		HttpConnectionParams.setSoTimeout(httpParams, 10000);
 		BufferedReader reader = null;
-		InputStream imageInputStream = null; 
+		InputStream imageInputStream = null;
 		// GAEへpost
 		HttpPost httpPost = new HttpPost(address + "api/ramens/create");
 
@@ -207,14 +210,14 @@ public class NoodleGaeController {
 			// 商品名
 			entity.addPart("jan", new StringBody(noodleMaster.getJanCode()));
 			// 茹で時間
-			entity.addPart("boilTime",
-					new StringBody(Integer.toString(noodleMaster.getTimerLimit())));
-			imageInputStream = createImageInputStream(noodleMaster
-					.getImage());
-			// イメージ画像
 			entity.addPart(
-					"image",
-					new InputStreamBody(imageInputStream, "filename"));
+					"boilTime",
+					new StringBody(Integer.toString(noodleMaster
+							.getTimerLimit())));
+			imageInputStream = createImageInputStream(noodleMaster.getImage());
+			// イメージ画像
+			entity.addPart("image", new InputStreamBody(imageInputStream,
+					"filename"));
 
 			httpPost.setEntity(entity);
 
@@ -247,8 +250,8 @@ public class NoodleGaeController {
 			throw new GaeException(e);
 		} catch (IOException e) {
 			throw new GaeException(e);
-		}finally{
-			if(reader != null){
+		} finally {
+			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
@@ -256,7 +259,7 @@ public class NoodleGaeController {
 					e.printStackTrace();
 				}
 			}
-			if(imageInputStream != null){
+			if (imageInputStream != null) {
 				try {
 					imageInputStream.close();
 				} catch (IOException e) {
@@ -264,12 +267,13 @@ public class NoodleGaeController {
 					e.printStackTrace();
 				}
 			}
-			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,TMPFILENAME);
-			if(file.exists()){
-				//いらなくなったtmpファイルを削除する
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,
+					TMPFILENAME);
+			if (file.exists()) {
+				// いらなくなったtmpファイルを削除する
 				file.delete();
 			}
-			
+
 		}
 	}
 
@@ -286,7 +290,8 @@ public class NoodleGaeController {
 		try {
 			bitmap.compress(CompressFormat.JPEG, 100, bos);
 			// ファイルを書き出す
-			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,TMPFILENAME);
+			File file = new File(NoodleManager.SAVE_IMAGE_DIRECTORY,
+					TMPFILENAME);
 			fileOutputStream = new FileOutputStream(file);
 			fileOutputStream.write(bos.toByteArray());
 			fileOutputStream.flush();
@@ -305,7 +310,7 @@ public class NoodleGaeController {
 					Log.d("err", e.getMessage(), e);
 				}
 			}
-			if(bos != null){
+			if (bos != null) {
 				try {
 					bos.close();
 				} catch (IOException e) {
@@ -314,6 +319,73 @@ public class NoodleGaeController {
 				}
 			}
 		}
+		return null;
+	}
+
+	/**
+	 * 商品マスタの登録件数を返す
+	 * 
+	 * @return
+	 * @throws GaeException
+	 */
+	public int getMasterCount() throws GaeException {
+		// HTTPクライアントを生成
+		HttpClient client = new DefaultHttpClient();
+		// HTTPパラメーターを取得
+		HttpParams httpParams = client.getParams();
+		// HTTPタイムアウトを設定
+		HttpConnectionParams.setSoTimeout(httpParams, 10000);
+		HttpProtocolParams.setVersion(httpParams, HttpVersion.HTTP_1_1);
+		BufferedReader reader = null;
+
+		StringBuffer request = new StringBuffer(address);
+		request.append("api/ramens/count");
+		try {
+			HttpGet httpGet = new HttpGet(request.toString());
+			HttpResponse httpResponse = client.execute(httpGet);
+			int statusCode = httpResponse.getStatusLine().getStatusCode();
+			if (statusCode >= 400) {
+				// 400以上の場合はエラーなのでExceptionを投げる
+				throw new GaeException("Status Error = "
+						+ Integer.toString(statusCode));
+			}
+			// 正常返答レスポンスのContentStreamを読み出すBufferedReaderを生成する
+			reader = new BufferedReader(new InputStreamReader(httpResponse
+					.getEntity().getContent(), "UTF-8"));
+			// 結果文字列を溜め込むStringBuilderを生成する
+			StringBuilder builder = new StringBuilder();
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+			}
+			// 正常な結果が返ってきたので商品マスタを生成する
+			return Integer.parseInt(builder.toString());
+		} catch (ClientProtocolException e) {
+			throw new GaeException(e);
+		} catch (SocketTimeoutException e) {
+			throw new GaeException(e);
+		} catch (IOException exception) {
+			throw new GaeException(exception);
+		} catch (ParseException ex) {
+			throw new GaeException(ex);
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 名称の部分一致で商品マスタを返す
+	 * @param name
+	 * @return
+	 */
+	public List<NoodleMaster> searchNoodleMaster(String name){
 		return null;
 	}
 
