@@ -67,10 +67,6 @@ public class RamenService {
         return Datastore.query(meta).filter(meta.jan.equal(jan)).asSingle();
     }
 
-    public List<Ramen> getRamens() {
-        return Datastore.query(Ramen.class).asList();
-    }
-
     public int count() {
         return Datastore.query(Ramen.class).count();
     }
