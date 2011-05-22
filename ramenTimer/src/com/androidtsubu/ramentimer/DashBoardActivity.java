@@ -39,13 +39,16 @@ public class DashBoardActivity extends Activity {
 		Button button = (Button) findViewById(R.id.ButtonLogo);
 		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
 		
+		TextView textCountView = (TextView) findViewById(id.ramen_count);
+		textCountView.setText("000" + getString(R.string.dashboard_countu));
+		
 		String packegeName = getPackageName();
 		try {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
 					packegeName, PackageManager.GET_META_DATA);
 			TextView textView = (TextView) findViewById(id.ramen_version);
 			textView.setText(packageInfo.versionName
-					+ getString(R.string.dashboard_versionname_hai));
+					+ getString(R.string.dashboard_versionname_hai));			
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,7 +137,7 @@ public class DashBoardActivity extends Activity {
 	}
 
 	/**
-	 * リストボタンが押されたとき
+	 * ラーメン一覧ボタンが押されたとき
 	 * 
 	 * @param view
 	 */
@@ -148,9 +151,9 @@ public class DashBoardActivity extends Activity {
 	 * 
 	 * @param view
 	 */
-	public void onSearchButtonClick(View view) {
+	public void onRSearchButtonClick(View view) {
 
-		gotoSerchActivity();
+		gotoRSerchActivity();
 	}
 	
 	/**
@@ -186,7 +189,7 @@ public class DashBoardActivity extends Activity {
 	/**
 	 * 検索の起動
 	 */
-	private void gotoSerchActivity() {
+	private void gotoRSerchActivity() {
 		
 	}
 	
