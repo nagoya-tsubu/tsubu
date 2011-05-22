@@ -39,8 +39,16 @@ public class DashBoardActivity extends Activity {
 		Button button = (Button) findViewById(R.id.ButtonLogo);
 		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
 		
-		TextView textCountView = (TextView) findViewById(id.ramen_count);
-		textCountView.setText("000" + getString(R.string.dashboard_countu));
+		// 登録件数取得
+		NoodleManager noodleManager = new NoodleManager(this);
+			
+		try {
+			TextView textCountView = (TextView) findViewById(id.ramen_count);
+			textCountView.setText( getString(R.string.dashboard_toroku) + noodleManager.getMasterCount() + getString(R.string.dashboard_countu));
+		} catch (GaeException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		String packegeName = getPackageName();
 		try {
