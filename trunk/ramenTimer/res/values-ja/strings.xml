@@ -23,10 +23,12 @@
 	<string name="dashboard_create">登録</string>
 	<string name="dashboard_history">履歴</string>
 	<string name="dashboard_favorite">お気に入り</string>
-	<string name="dashboard_list">リスト</string>
-	<string name="dashboard_search">検索</string>
+	<string name="dashboard_rsearch">バーコード検索</string>
+	<string name="dashboard_ramenlist">ラーメン一覧</string>
 	<string name="dashboard_text">みんなで作ろうラーメン茹で時間</string>
 	<string name="dashboard_versionname_hai">杯</string>
+	<string name="dashboard_toroku">登録数</string>
+	<string name="dashboard_countu">軒</string>
 	<!-- ダッシュボードで利用の文字列 -->
 
 	<!-- 登録画面で利用の文字列 -->
@@ -109,5 +111,5 @@
 	<!-- ヘルプサイトURL -->
 	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help</string>
 	<!-- ラーメンタイマーリストページ URL -->
-	<string name="ramen_list_url">http://www.google.com</string>
+	<string name="ramen_list_url">http://sites.google.com/site/androidnagoyatsubu/</string>
 </resources>
