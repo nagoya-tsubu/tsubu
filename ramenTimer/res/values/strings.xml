@@ -69,6 +69,18 @@
 
 	<!-- お気に入りで利用の文字列 -->
 
+	<!-- 商品登録検索で利用の文字列 -->
+	<string name="ramensearch_ramensearch">Search for products</string>
+	<string name="ramensearch_search">Search</string>
+	<string name="ramensearch_jancode">EAN code</string>
+	<string name="ramensearch_jancodealert">Please input EAN code</string>
+	<!-- 商品登録検索で利用の文字列 -->
+
+
+	<!-- 検索で利用の文字列 -->
+	<string name="search_search">Search</string>
+	<!-- 検索で利用の文字列 -->
+
 	<string name="favorite_favorite">Favorites</string>
 	<string name="favorite_search_hint">Search for products in favorites</string>
 

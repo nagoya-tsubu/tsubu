@@ -19,6 +19,8 @@ public enum RequestCode {
 	HISTORY2TIMER,		//履歴からタイマー
 	FAVORITE2TIMER,		//お気に入りからタイマー
 	DASHBOARD2CREATE,		//ダッシュボードから登録
+	DASHBOARD2RAMENSEARCH,//ダッシュボードから商品検索
+	RAMENSEARCH2READER,	//手入力JANコードからリーダー
 	//ActionBar用
 	ACTION_READER,		//アクションバーの読込ボタンが押された場合
 	ACTION_HISTORY,		//アクションバーの履歴ボタンが押された場合

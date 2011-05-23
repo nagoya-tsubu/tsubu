@@ -58,6 +58,7 @@
 	<string name="history_search_hint">履歴検索</string>
 	<!-- 履歴で利用の文字列 -->
 
+
 	<!-- お気に入りで利用の文字列 -->
 	<string name="favorite_favorite">お気に入り</string>
 	<string name="favorite_search_hint">お気に入り検索</string>
@@ -70,6 +71,13 @@
 	<string name="dialog_yes">はい</string>
 	<string name="dialog_no">いいえ</string>
 	<!-- バグレポート送信時のダイアログ文字列 -->
+
+	<!-- 商品登録検索で利用の文字列 -->
+	<string name="ramensearch_ramensearch">登録商品検索</string>
+	<string name="ramensearch_search">検索</string>
+	<string name="ramensearch_jancode">JANコード</string>
+	<string name="ramensearch_jancodealert">JANコードを入力してください</string>
+	<!-- 商品登録検索で利用の文字列 -->
 
 	<!-- 検索で利用の文字列 -->
 	<string name="search_search">検索</string>

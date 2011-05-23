@@ -198,7 +198,10 @@ public class DashBoardActivity extends Activity {
 	 * 検索の起動
 	 */
 	private void gotoRSerchActivity() {
-		
+		Intent intent = new Intent(this,RamenSearchActivity.class);
+		int requestCode = RequestCode.DASHBOARD2RAMENSEARCH.ordinal();
+		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		startActivityForResult(intent, requestCode);
 	}
 	
 	/**
