@@ -52,6 +52,9 @@ public class ReaderActivity extends Activity {
 	private static final int DOWNLOAD_QR_CODE_SCANNER = 200; // QRコードスキャナーのダウンロード
 	private static final int RECEIVE_NOODLE_DATA = 300; // ラーメン情報受信
 	private static final int GOTO_NEXT_INTENT = 400; // 次のインテントへ処理を移す
+	
+	//intentでやってくるJANコードのキー
+	public static final String JANCODE = "jancode";
 
 	/**
 	 * メッセージハンドラーに対する処理
@@ -114,6 +117,12 @@ public class ReaderActivity extends Activity {
 		// どのボタンからこのインテントが呼び出されたかを取得する
 		Intent intent = getIntent();
 		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+		if(RequestCode.values()[_requestCode].equals(RequestCode.RAMENSEARCH2READER)){
+			//手入力の商品検索から飛んできた場合はIntentで飛んできたJANコードで商品検索を行う
+			_janCode = intent.getStringExtra(JANCODE);
+			_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
+			return;
+		}
 
 		// QRコードスキャナーを実行する
 		_handler.sendEmptyMessage(EXECUTE_QR_CODE_SCANNER);
@@ -269,9 +278,9 @@ public class ReaderActivity extends Activity {
 			return;
 		}
 
-		// (1)ダッシュボード→商品読込みの場合
-		if (RequestCode.values()[_requestCode]
-				.equals(RequestCode.DASHBORAD2READER)) {
+		// (1)ダッシュボード→商品読込みもしくは商品検索→商品読込の場合
+		RequestCode requestCode = RequestCode.values()[_requestCode];
+		if (requestCode.equals(RequestCode.DASHBORAD2READER) || requestCode.equals(RequestCode.RAMENSEARCH2READER)) {
 			// →タイマー画面へ遷移する
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
