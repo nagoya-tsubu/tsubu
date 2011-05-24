@@ -25,10 +25,9 @@
 	<string name="dashboard_create">Register</string>
 	<string name="dashboard_history">History</string>
 	<string name="dashboard_favorite">Favorites</string>
-	<string name="dashboard_rsearch">RSerch</string>
+	<string name="dashboard_rsearch">Manual Search</string>
 	<string name="dashboard_ramenlist">List</string>
-	<string name="dashboard_text">Share instant noodle cooking minutes with
-		everybody!</string>
+	<string name="dashboard_text">Share instant noodle cooking minutes with everybody!</string>
 	<string name="dashboard_versionname_hai"> bowls</string>
 	<string name="dashboard_toroku">entry</string>
 	<string name="dashboard_countu">items</string>
