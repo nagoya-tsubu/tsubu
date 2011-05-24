@@ -39,7 +39,7 @@ public class RamenSearchActivity extends Activity {
 		}
 		//バーコードをReadeActivityに渡す
 		Intent intent = new Intent(this,ReaderActivity.class);
-		intent.putExtra(ReaderActivity.JANCODE, jancode);
+		intent.putExtra(ReaderActivity.KEY_JANCODE, jancode);
 		int requestCode = RequestCode.RAMENSEARCH2READER.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
@@ -49,6 +49,14 @@ public class RamenSearchActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		finish();
+	}
+	
+	/**
+	 * HOMEロゴクリック
+	 * @param v
+	 */
+	public void onLogoClick(View v){
 		finish();
 	}
 

@@ -89,6 +89,7 @@ public class TimerActivity extends Activity {
 	public static final String KEY_NOODLE_MASTER = "NOODLE_MASTER";
 	// 履歴のキー
 	public static final String KEY_NOODLE_HISTORY = "NOODLE_HISTORY";
+	public static final String KEY_FROMRAMENSEARCH = "FROM_RAMENSEARCH";
 	// 秒の増減間隔
 	private static final int SEC_INTERVALS = 10;
 	// 分の上限値
@@ -130,6 +131,8 @@ public class TimerActivity extends Activity {
 	private int alarm_img_default_resouse_id = R.drawable.img_alarm_default;
 	private int alarm_img_start_resouse_id = R.drawable.img_alarm_start;
 	private int alarm_img_end_resouse_id = R.drawable.img_alarm_end;
+	
+	private boolean fromRamenSerach = false;
 
 	private Context getThis() {
 		return this;
@@ -279,7 +282,8 @@ public class TimerActivity extends Activity {
 		// 呼び出し元のラーメン履歴を取得する
 		noodleHistory = (NoodleHistory) requestIntent
 				.getParcelableExtra(KEY_NOODLE_HISTORY);
-
+		//商品検索から来たかどうかを取得する
+		fromRamenSerach = requestIntent.getBooleanExtra(KEY_FROMRAMENSEARCH, false);
 		// 呼び出し元に応じて表示を切り替える
 		displaySetting(requestCode);
 
@@ -501,24 +505,28 @@ public class TimerActivity extends Activity {
 					timerLimit = (TextView) timerInfoInView
 							.findViewById(R.id.TimerLimitTextView);
 				} else {
-					// 登録フラグをたてる
-					registrationFlg = true;
-					// ActionBarのバーコードを登録と置き換える
-					timerInfoViewStub
-							.setLayoutResource(R.layout.activity_timer_only_jancode);
-					timerInfoInView = timerInfoViewStub.inflate();
+					if(fromRamenSerach){
+						/**@todoActionBarのバーコードを該当商品がありませんでしたと書き換える*/						
+					}else{
+						// 登録フラグをたてる
+						registrationFlg = true;
+						// ActionBarのバーコードを登録と置き換える
+						timerInfoViewStub
+								.setLayoutResource(R.layout.activity_timer_only_jancode);
+						timerInfoInView = timerInfoViewStub.inflate();
 
-					janCode = (TextView) timerInfoInView
-							.findViewById(R.id.JanCodeTextView);
+						janCode = (TextView) timerInfoInView
+								.findViewById(R.id.JanCodeTextView);
 
-					// はいボタン
-					yesButton = (Button) timerInfoInView
-							.findViewById(R.id.ConfirmCreationYesButton);
-					yesButton.setOnClickListener(new View.OnClickListener() {
-						public void onClick(View v) {
-							onCreateButtonClick(v);
-						}
-					});
+						// はいボタン
+						yesButton = (Button) timerInfoInView
+								.findViewById(R.id.ConfirmCreationYesButton);
+						yesButton.setOnClickListener(new View.OnClickListener() {
+							public void onClick(View v) {
+								onCreateButtonClick(v);
+							}
+						});
+					}
 				}
 			}
 			break;
@@ -533,6 +541,7 @@ public class TimerActivity extends Activity {
 		LinearLayout confirmCreation = (LinearLayout) findViewById(R.id.ConfirmCreationLinearLayout);
 		confirmCreation.setVisibility(View.VISIBLE);
 	}
+	
 
 	/**
 	 * タイマーに時間を足す

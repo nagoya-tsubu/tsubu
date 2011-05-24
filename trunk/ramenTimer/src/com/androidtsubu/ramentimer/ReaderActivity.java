@@ -46,7 +46,9 @@ public class ReaderActivity extends Activity {
 	private ImageView progressIcon = null;
 	// エラーコード(エラー文字列リソース値)
 	private int _errorResId = -1;
-
+	/**商品検索からやってきたフラグ*/
+	private boolean _fromRamenSearch = false;
+	
 	// ReaderActivityの状態
 	private static final int EXECUTE_QR_CODE_SCANNER = 100; // QRコードスキャナの実行
 	private static final int DOWNLOAD_QR_CODE_SCANNER = 200; // QRコードスキャナーのダウンロード
@@ -54,7 +56,7 @@ public class ReaderActivity extends Activity {
 	private static final int GOTO_NEXT_INTENT = 400; // 次のインテントへ処理を移す
 	
 	//intentでやってくるJANコードのキー
-	public static final String JANCODE = "jancode";
+	public static final String KEY_JANCODE = "jancode";
 
 	/**
 	 * メッセージハンドラーに対する処理
@@ -119,7 +121,8 @@ public class ReaderActivity extends Activity {
 		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
 		if(RequestCode.values()[_requestCode].equals(RequestCode.RAMENSEARCH2READER)){
 			//手入力の商品検索から飛んできた場合はIntentで飛んできたJANコードで商品検索を行う
-			_janCode = intent.getStringExtra(JANCODE);
+			_janCode = intent.getStringExtra(KEY_JANCODE);
+			_fromRamenSearch = true;
 			_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
 			return;
 		}
@@ -285,6 +288,8 @@ public class ReaderActivity extends Activity {
 			intent = new Intent(this, TimerActivity.class);
 			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 					RequestCode.READER2TIMER.ordinal());
+			//手動検索かどうかを渡す
+			intent.putExtra(TimerActivity.KEY_FROMRAMENSEARCH, _fromRamenSearch);
 			_requestCode = RequestCode.READER2TIMER.ordinal();
 		}
 		// (2)ダッシュボード→商品登録の場合
