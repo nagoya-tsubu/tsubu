@@ -11,10 +11,10 @@
 		android:repeatCount="-1" />
 	<scale
 		android:duration="6000"
-		android:fromXScale="1"
-		android:toXScale="1.3"
-		android:fromYScale="1"
-		android:toYScale="1.3"
+		android:fromXScale="0.75"
+		android:toXScale="1"
+		android:fromYScale="0.75"
+		android:toYScale="1"
 		android:pivotX="50%" 
 		android:pivotY="10%"
 		android:repeatMode="reverse" 
