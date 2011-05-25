@@ -15,7 +15,7 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:gravity">center_horizontal</item>
-		<item name="android:textSize">@dimen/text_size_large</item>
+		<item name="android:textSize">@dimen/text_size_medium</item>
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@color/primary_text</item>
 		<item name="android:background">@null</item>
@@ -84,15 +84,17 @@
 		<item name="android:indeterminate">true</item>
 	</style>
 
-	<style name="TitleBarSeparator">
-		<item name="android:layout_width">1px</item>
-		<item name="android:layout_height">fill_parent</item>
+	<style name="HorizontalSeparator">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">1dip</item>
 		<item name="android:background">@color/title_separator</item>
 	</style>
 
-	<style name="HorizontalSeparator">
-		<item name="android:layout_width">fill_parent</item>
-		<item name="android:layout_height">1px</item>
+<!-- 以下利用されてないと思われる ↓↓ -->
+<!-- 削除予定 -->
+	<style name="TitleBarSeparator">
+		<item name="android:layout_width">1dip</item>
+		<item name="android:layout_height">fill_parent</item>
 		<item name="android:background">@color/title_separator</item>
 	</style>
 
@@ -108,7 +110,6 @@
 		<item name="android:layout_height">fill_parent</item>
 		<item name="android:layout_weight">1</item>
 	</style>
-
 
 	<style name="SessionTitle">
 		<item name="android:textStyle">bold</item>
@@ -137,6 +138,7 @@
 		<item name="android:textSize">13sp</item>
 		<item name="android:textColor">@color/secondary_text</item>
 	</style>
+<!-- ここまで ↑↑ -->
 
 	<style name="ListItem">
 		<item name="android:minHeight">?android:attr/listPreferredItemHeight</item>
@@ -167,7 +169,7 @@
 	<style name="InformationForm">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
-		<item name="android:background">@drawable/img_borderitem</item>
+		<item name="android:background">@drawable/img_block_border</item>
 	</style>
 
 	<style name="InformationFormText">
