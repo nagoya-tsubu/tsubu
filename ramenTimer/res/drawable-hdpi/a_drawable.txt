@@ -25,6 +25,16 @@ img_popup_balloon_up.png
 img_popup_balloon_down.png
 
 
+// アクションバー用ボタンxml追加 2011/05/27
+ic_title_hsearch.xml
+ic_title_rsearch.xml
+
+// アクションバー用ボタンxml
+// アクションバー修正後以下削除予定
+ic_title_history.xml
+ic_title_timer.xml
+
+
 
 drawable-hdpiにて
 
