@@ -30,9 +30,8 @@
 	</LinearLayout>  
 	<!-- ActionBar End -->
 	
-    <ImageView style="@style/HorizontalSeparator"/>
+<!-- edit -->
     <LinearLayout style="@style/RaimonBar"/>
-    <ImageView style="@style/HorizontalSeparator"/>
 
 	<ScrollView
 		style="@style/InformationForm"

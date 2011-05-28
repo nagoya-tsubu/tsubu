@@ -21,6 +21,8 @@
             android:id="@+id/TitleReaderButton"
             android:onClick="onReaderButtonClick"
             android:src="@drawable/ic_title_barcode" />
+<!-- edit Ramen Search -->
+<!-- @drawable/ic_title_rsearch -->
         <ImageButton
             style="@style/TitleBarAction"
             android:id="@+id/TitleHistoryButton"
@@ -31,9 +33,8 @@
     </LinearLayout>
     <!-- ActionBar End -->
 
-    <ImageView style="@style/HorizontalSeparator"/>
+<!-- edit -->
     <LinearLayout style="@style/RaimonBar"/>
-    <ImageView style="@style/HorizontalSeparator"/>
 
 	<ScrollView
 		android:layout_weight="1"
