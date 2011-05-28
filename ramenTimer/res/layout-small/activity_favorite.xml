@@ -19,16 +19,9 @@
         	style="@style/TitleBarEditText"
         	android:hint="@string/favorite_search_hint"
         	android:visibility="gone"/>
+<!-- add Favorite Search -->
+<!-- @drawable/ic_title_fsearch -->
     <!--     	
-		<ImageButton 
-			style="@style/TitleBarAction2" 
-			android:onClick="onReaderButtonClick"
-			android:src="@drawable/ic_title_barcode" />
-
-		<ImageButton 
-			style="@style/TitleBarAction2" 
-			android:onClick="onTimerButtonClick"
-			android:src="@drawable/ic_title_timer" />
 		<ImageButton 
 			style="@style/TitleBarAction2" 
 			android:onClick="onSearchButtonClick"
@@ -37,12 +30,10 @@
 			
 		<requestFocus />
 	</LinearLayout>  
-	<ImageView style="@style/HorizontalSeparator"/>
-	
 	<!-- ActionBar End -->
-	<LinearLayout style="@style/RaimonBar"
-    	android:background="@drawable/raimon"/>
-    <ImageView style="@style/HorizontalSeparator"/>
+
+<!-- edit -->
+    <LinearLayout style="@style/RaimonBar"/>
 	
 	
 	<ListView 
