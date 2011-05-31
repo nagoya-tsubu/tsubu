@@ -56,11 +56,11 @@
 
 	<include layout="@layout/timer_set"/>
 		
-    <LinearLayout 
-    	android:layout_width="fill_parent"
-        android:gravity="center"
-        android:orientation="vertical" 
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/TimerInformationLayout"
+        android:id="@+id/TimerInfoFrame"
+        android:gravity="center">
 
         <ImageView 
         	android:layout_width="wrap_content"
