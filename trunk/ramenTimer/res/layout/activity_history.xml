@@ -35,6 +35,30 @@
 <!-- edit -->
     <LinearLayout style="@style/RaimonBar"/>
 	
+<!-- add favorit serch -->
+	<LinearLayout style="@style/TitleBar">
+<!-- edit hint Barcode & Item Name -->
+		<EditText 
+			style="@style/InformationFormEdit3"
+			android:layout_width="0dip"
+			android:layout_weight="1"
+			android:layout_height="@dimen/form_edittext_height"
+			android:paddingLeft="4dip"
+			android:hint="@string/ramensearch_jancode" 
+			android:id="@+id/SearchBarcodeEdit"
+			android:gravity="center_vertical"
+			android:maxLength="13"
+			android:inputType="number"/>			
+	<!-- edit ImageButton -->
+        <ImageButton
+            style="@style/TitleBarAction"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="right"
+            android:src="@drawable/ic_title_hsearch"/>
+	</LinearLayout>
+<!-- add Raimon -->
+    <LinearLayout style="@style/RaimonBar"/>
 	
 	<ListView 
 		android:id="@android:id/list"

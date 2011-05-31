@@ -26,6 +26,7 @@
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">@dimen/title_height</item>
 		<item name="android:orientation">horizontal</item>
+		<item name="android:padding">4dip</item>
 		<item name="android:background">@color/title_background</item>
 	</style>
 
@@ -39,7 +40,7 @@
 
 	<style name="TitleBarAction">
 		<item name="android:layout_width">@dimen/title_height</item>
-		<item name="android:layout_height">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
 		<item name="android:background">@android:color/transparent</item>
 	</style>
 
@@ -52,12 +53,12 @@
 	<style name="TitleBarText">
 		<item name="android:id">@id/title_text</item>
 		<item name="android:layout_width">0dp</item>
-		<item name="android:layout_height">fill_parent</item>
 		<item name="android:layout_weight">1</item>
+		<item name="android:layout_height">fill_parent</item>
 		<item name="android:gravity">center_vertical</item>
 		<item name="android:textSize">@dimen/text_size_large</item>
-		<item name="android:paddingLeft">12dip</item>
-		<item name="android:paddingRight">12dip</item>
+<!-- 		<item name="android:paddingLeft">12dip</item> -->
+<!-- 		<item name="android:paddingRight">12dip</item> -->
 		<item name="android:textStyle">bold</item>
 		<item name="android:textColor">@color/title_text_alt</item>
 		<item name="android:singleLine">true</item>
@@ -66,7 +67,7 @@
 
 	<style name="TitleBarEditText">
 		<item name="android:id">@id/title_edit</item>
-		<item name="android:layout_width">0dp</item>
+		<item name="android:layout_width">0dip</item>
 		<item name="android:layout_height">fill_parent</item>
 		<item name="android:layout_weight">1</item>
 		<item name="android:layout_gravity">center</item>
@@ -85,7 +86,6 @@
 		<item name="android:indeterminate">true</item>
 	</style>
 
-<!-- らいもん画像に黄色横線上下追加したので現在利用してない -->
 	<style name="HorizontalSeparator">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">1dip</item>
@@ -194,6 +194,9 @@
 	</style>
 	<style name="InformationFormEdit2">
 		<item name="android:textSize">@dimen/text_size_large</item>
+	</style>
+	<style name="InformationFormEdit3">
+		<item name="android:textSize">@dimen/text_size_medium</item>
 	</style>
 	<style name="InformationFormImage">
 		<item name="android:layout_width">@dimen/form_image_width</item>
@@ -323,8 +326,7 @@
 		<item name="android:layout_width">90dip</item>
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:background">@drawable/btn_bg</item>
-		<!-- <item name="android:padding">10dip</item> -->
-		<item name="android:padding">4dip</item>
+<!-- 		<item name="android:padding">10dip</item> -->
 		<item name="android:textColor">@color/primary_text</item>
 		<item name="android:textSize">@dimen/text_size_medium</item>
 		<item name="android:layout_gravity">center</item>
