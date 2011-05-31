@@ -40,7 +40,7 @@
         android:orientation="horizontal"
         style="@style/TimerInformationLayout"
         android:id="@+id/TimerInfoFrame"
-        android:gravity="center" >
+        android:gravity="center">
 
 		<ViewStub 
 			android:id="@+id/NoodleInfoViewStub"
