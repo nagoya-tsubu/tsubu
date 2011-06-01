@@ -20,8 +20,13 @@
             android:src="@drawable/home_title_appname"/>
     </LinearLayout>
 
+<!-- RaimonBar -->
+<!--         <LinearLayout style="@style/RaimonBar"/> -->
 <!-- edit -->
-        <LinearLayout style="@style/RaimonBar"/>
+	<ImageView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/raimon"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -91,7 +96,7 @@
         android:background="@color/background1"
         android:gravity="bottom">
 
-<!-- edit -->
+<!-- RaimonBar -->
         <LinearLayout style="@style/RaimonBar"/>
 
         <LinearLayout
