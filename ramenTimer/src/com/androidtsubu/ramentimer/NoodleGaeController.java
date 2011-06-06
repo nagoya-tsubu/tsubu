@@ -358,6 +358,7 @@ public class NoodleGaeController {
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 			}
+			
 			// 正常な結果が返ってきたので商品マスタを生成する
 			return Integer.parseInt(builder.toString());
 		} catch (ClientProtocolException e) {

@@ -5,11 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +25,21 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.TextUtils;
+
 
 public class HistoryActivity extends ListActivity {
 
 	// 検索用EditText
-	EditText searchEdit = null;
+	private EditText searchEdit = null;
 	// タイトルテキストビュー
-	TextView titleText = null;
+	private TextView titleText = null;
+	private NoodleManager manager = null;
+	/**検索中ダイアログ*/
+	private ProgressDialog searchDialog;
 
+	
+	
 	// 履歴情報のリスト
 	private List<NoodleHistory> list = new ArrayList<NoodleHistory>();
 
@@ -36,25 +47,20 @@ public class HistoryActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
-
+		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
 		// 履歴の呼び出し
-		NoodleManager manager = new NoodleManager(this);
+		manager = new NoodleManager(this);
 		try {
 			list = manager.getNoodleHistories();
 		} catch (SQLException e) {
 			Toast.makeText(this, ExceptionToStringConverter.convert(e),
 					Toast.LENGTH_LONG).show();
 		}
-
-		if (list != null) {
-			// RamenListItemAdapterを生成
-			RamenListItemAdapter adapter;
-			adapter = new RamenListItemAdapter(this, 0, list);
-			setListAdapter(adapter);
-		}
+		//
+		draw();
 
 		// Viewの取得
-		searchEdit = (EditText) findViewById(R.id.title_edit);
+		//searchEdit = (EditText) findViewById(R.id.title_edit);
 		titleText = (TextView) findViewById(R.id.title_text);
 	}
 
@@ -221,6 +227,7 @@ public class HistoryActivity extends ListActivity {
 
 	/**
 	 * アクションバーの検索ボタンが押されたとき
+	 * これはleibunが作った方のクリックイベント。有効にする時までおいておく
 	 */
 	public void onSearchButtonClick(View v) {
 		if (searchEdit.getVisibility() == View.GONE) {
@@ -232,6 +239,100 @@ public class HistoryActivity extends ListActivity {
 			// ソフトウェアキーボードを非表示にする
 			InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		}
+		
+
+	}
+	
+	/**
+	 * listを描画する
+	 */
+	private void draw(){
+		if (list != null) {
+			// RamenListItemAdapterを生成
+			RamenListItemAdapter adapter;
+			adapter = new RamenListItemAdapter(this, 0, list);
+			setListAdapter(adapter);
+		}			
+	}
+	
+	/**
+	 * 検索ボタンが押された
+	 * @param v
+	 */
+	public void onSearchClick(View v){
+		// ソフトウェアキーボードを非表示にする
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		//検索文字列で検索する
+		String key = searchEdit.getText().toString();
+		if(key==null || key.equals("")){
+			//検索文字列が入っていないよ
+			Toast.makeText(this, R.string.search_alert, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		SearchTask task = new SearchTask();
+		task.execute(key);
+	}
+	
+	/**
+	 * 検索中ダイアログを作成する
+	 */
+	private void showSearchDialog(){
+		searchDialog = new CustomProgressDialog(this,R.style.CustomDialog);
+		searchDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		searchDialog.setTitle(R.string.search_search);
+		searchDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_icon));
+		searchDialog.show();
+	}
+
+	/**
+	 * 検索中ダイアログを消去する
+	 */
+	private void dismissSearchDialog(){
+		if(searchDialog != null){
+			searchDialog.dismiss();
+		}
+	}
+	
+	
+	/**
+	 * 検索用非同期Task
+	 * @author morikawa
+	 *
+	 */
+	private class SearchTask extends AsyncTask<String, Void, List<NoodleHistory>>{
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			showSearchDialog();
+		}
+
+		@Override
+		protected void onPostExecute(List<NoodleHistory> result) {
+			// TODO Auto-generated method stub
+			dismissSearchDialog();
+			list = result;
+			draw();
+		}
+
+		@Override
+		protected List<NoodleHistory> doInBackground(String... arg0) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				return manager.searchNoodleHistories(arg0[0]);
+			} catch (SQLException e) {
+				Toast.makeText(HistoryActivity.this, R.string.search_alert, Toast.LENGTH_LONG).show();
+				return null;
+			}
 		}
 	}
 }
