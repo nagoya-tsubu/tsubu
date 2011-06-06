@@ -9,7 +9,7 @@
 		android:drawable="@drawable/ic_title_history_pressed" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/ic_title_history_selected" />
+		android:drawable="@drawable/ic_title_history_pressed" />
 	<item 
 		android:state_enabled="false" 
 		android:drawable="@drawable/ic_title_history_disable" />
