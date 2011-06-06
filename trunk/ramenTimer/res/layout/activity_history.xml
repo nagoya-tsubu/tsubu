@@ -45,17 +45,16 @@
 			android:layout_height="@dimen/form_edittext_height"
 			android:paddingLeft="4dip"
 			android:hint="@string/ramensearch_jancode" 
-			android:id="@+id/SearchBarcodeEdit"
 			android:gravity="center_vertical"
 			android:maxLength="13"
-			android:inputType="number"/>			
+			android:id="@+id/SearchBarcodeEdit"/>			
 	<!-- edit ImageButton -->
         <ImageButton
             style="@style/TitleBarAction"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="right"
-            android:src="@drawable/ic_title_hsearch"/>
+            android:src="@drawable/ic_title_hsearch" android:onClick="onSearchClick"/>
 	</LinearLayout>
 <!-- add Raimon -->
     <LinearLayout style="@style/RaimonBar"/>

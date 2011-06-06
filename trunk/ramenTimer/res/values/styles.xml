@@ -27,7 +27,7 @@
 		<item name="android:layout_height">@dimen/title_height</item>
 		<item name="android:orientation">horizontal</item>
 		<item name="android:padding">4dip</item>
-		<item name="android:background">@color/title_background</item>
+		<item name="android:background">@color/title_background</item>id)
 	</style>
 
 	<style name="RaimonBar">

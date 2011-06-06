@@ -81,6 +81,8 @@
 
 	<!-- 検索で利用の文字列 -->
 	<string name="search_search">検索</string>
+	<string name="search_alert">検索文字列を入力してください</string>
+	<string name="search_seraching">検索中...</string>
 	<!-- 検索で利用の文字列 -->
 
 

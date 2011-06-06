@@ -78,6 +78,8 @@
 
 	<!-- 検索で利用の文字列 -->
 	<string name="search_search">Search</string>
+	<string name="search_alert">Please input Search Keyword</string>
+	<string name="search_seraching">Searching...</string>
 	<!-- 検索で利用の文字列 -->
 
 	<string name="favorite_favorite">Favorites</string>

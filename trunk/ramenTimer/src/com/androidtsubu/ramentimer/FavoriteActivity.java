@@ -4,11 +4,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Dialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +33,8 @@ public class FavoriteActivity extends ListActivity {
 
 	// 登録情報のリスト
 	private List<NoodleMaster> list = new ArrayList<NoodleMaster>();
+	private ProgressDialog dialog;
+	private NoodleManager manager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class FavoriteActivity extends ListActivity {
 		setContentView(R.layout.activity_favorite);
 
 		// 登録情報の呼び出し
-		NoodleManager manager = new NoodleManager(this);
+		manager = new NoodleManager(this);
 		try {
 			list = manager.getNoodleMastersForSqlite();
 		} catch (SQLException e) {
@@ -45,16 +50,24 @@ public class FavoriteActivity extends ListActivity {
 					Toast.LENGTH_LONG).show();
 		}
 
+		draw();
+		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
+		// Viewの取得
+		//searchEdit = (EditText) findViewById(R.id.title_edit);
+		titleText = (TextView) findViewById(R.id.title_text);
+
+	}
+	
+	/**
+	 * 描画する
+	 */
+	private void draw(){
 		if (list != null) {
 			// RamenListItemAdapterを生成
 			RamenListItemAdapter adapter;
 			adapter = new RamenListItemAdapter(this, 0, list);
 			setListAdapter(adapter);
-		}
-		// Viewの取得
-		searchEdit = (EditText) findViewById(R.id.title_edit);
-		titleText = (TextView) findViewById(R.id.title_text);
-
+		}		
 	}
 
 	/**
@@ -212,6 +225,8 @@ public class FavoriteActivity extends ListActivity {
 
 	/**
 	 * アクションバーの検索ボタンが押されたとき
+	 * これはleibunが作ったバージョン。
+	 * 実際使う時まで置いておく
 	 */
 	public void onSearchButtonClick(View v) {
 		if (searchEdit.getVisibility() == View.GONE) {
@@ -225,5 +240,82 @@ public class FavoriteActivity extends ListActivity {
 			inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		}
 	}
+	
+	public void onSearchClick(View v){
+		// ソフトウェアキーボードを非表示にする
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+		//検索文字列で検索する
+		String key = searchEdit.getText().toString();
+		if(key==null || key.equals("")){
+			//検索文字列が入っていないよ
+			Toast.makeText(this, R.string.search_alert, Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		SearchTask task = new SearchTask();
+		task.execute(key);
+	}
+	
+	/**
+	 * 検索中ダイアログを作成する
+	 */
+	private void showSearchDialog(){
+		dialog = new CustomProgressDialog(this,R.style.CustomDialog);
+		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_icon));
+		dialog.setTitle(getResources().getString(R.string.search_seraching));
+		dialog.show();
+	}
+
+	/**
+	 * 検索中ダイアログを消去する
+	 */
+	private void dismissSearchDialog(){
+		if(dialog != null){
+			dialog.dismiss();
+		}
+	}
+	
+	
+	/**
+	 * 検索用非同期Task
+	 * @author morikawa
+	 *
+	 */
+	private class SearchTask extends AsyncTask<String, Void, List<NoodleMaster>>{
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			showSearchDialog();
+		}
+
+		@Override
+		protected void onPostExecute(List<NoodleMaster> result) {
+			// TODO Auto-generated method stub
+			dismissSearchDialog();
+			list = result;
+			draw();
+		}
+
+		@Override
+		protected List<NoodleMaster> doInBackground(String... arg0) {
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try {
+				return manager.searchNoodleMaster(arg0[0]);
+			} catch (SQLException e) {
+				Toast.makeText(FavoriteActivity.this, R.string.search_alert, Toast.LENGTH_LONG).show();
+				return null;
+			}
+		}
+	}
+
 
 }
