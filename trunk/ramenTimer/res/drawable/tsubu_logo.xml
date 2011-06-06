@@ -9,7 +9,7 @@
 		android:drawable="@drawable/tsubu_logo_pressed" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/tsubu_logo_selected" />
+		android:drawable="@drawable/tsubu_logo_pressed" />
 	<item 
 		android:state_focused="false" 
 		android:state_pressed="false"

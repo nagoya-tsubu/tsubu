@@ -32,14 +32,13 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:padding="4dip">
+        android:layout_weight="1">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
 	        android:layout_weight="1"
-            android:paddingTop="6dip">
+            android:paddingTop="4dip">
             <Button android:id="@+id/Button01"
                 style="@style/HomeButton"
                 android:onClick="onReaderButtonClick"
@@ -75,7 +74,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
 	        android:layout_weight="1"
-            android:paddingTop="4dip">
+	        android:paddingTop="4dip">
 			<Button android:id="@+id/Button05"
 	            style="@style/HomeButton"
 	            android:onClick="onRamenListButtonClick"
@@ -89,15 +88,15 @@
         </LinearLayout>
     </LinearLayout>
 
+<!-- RaimonBar -->
+	<LinearLayout style="@style/RaimonBar"/>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/now_ramen"
         android:background="@color/background1"
         android:gravity="bottom">
-
-<!-- RaimonBar -->
-        <LinearLayout style="@style/RaimonBar"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -121,18 +120,18 @@
 	            android:paddingLeft="4dip">
 	            <TextView
 	                android:layout_width="fill_parent"
-	                android:layout_height="0dip"
+	                android:layout_height="wrap_content"
 	                android:layout_weight="1"
 	                android:layout_gravity="center_vertical"
 	                android:gravity="center"
-	                android:textSize="@dimen/text_size_small"
+	                android:textSize="12sp"
 	                android:textColor="@color/primary_text"
 	                android:text="@string/dashboard_text"/>
 	         
 		         <LinearLayout
 		            android:orientation="horizontal"
 		            android:layout_width="fill_parent"
-		            android:layout_height="0dip"
+		            android:layout_height="wrap_content"
 		            android:layout_weight="1"
 		            android:gravity="right">
 		            <TextView
@@ -140,18 +139,18 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 		                android:layout_gravity="center_vertical"
-						android:textSize="@dimen/text_size_small"
+						android:textSize="12sp"
 						android:textColor="@color/primary_text"
-						android:text="a"/>    
+						android:text="a"/>
 		            <TextView
 						android:id="@+id/ramen_version"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 		                android:layout_gravity="center_vertical"
-		                android:paddingLeft="4dip"
-						android:textSize="@dimen/text_size_small"
+		                android:paddingLeft="8dip"
+						android:textSize="12sp"
 						android:textColor="@color/primary_text"
-						android:text="b"/>  
+						android:text="b"/>
 	        	</LinearLayout>
 
 			</LinearLayout>

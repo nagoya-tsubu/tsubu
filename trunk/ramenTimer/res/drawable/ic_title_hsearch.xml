@@ -9,7 +9,7 @@
 		android:drawable="@drawable/ic_title_hsearch_pressed" />
 	<item 
 		android:state_focused="true" 
-		android:drawable="@drawable/ic_title_hsearch_selected" />
+		android:drawable="@drawable/ic_title_hsearch_pressed" />
 	<item 
 		android:state_enabled="false" 
 		android:drawable="@drawable/ic_title_hsearch_disable" />		
