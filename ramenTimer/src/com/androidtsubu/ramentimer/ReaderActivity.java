@@ -131,6 +131,7 @@ public class ReaderActivity extends Activity {
 		_handler.sendEmptyMessage(EXECUTE_QR_CODE_SCANNER);
 	}
 
+	
 	/**
 	 * QRコードスキャナを実行する
 	 */
