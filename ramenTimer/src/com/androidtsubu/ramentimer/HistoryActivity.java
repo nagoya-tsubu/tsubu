@@ -35,6 +35,8 @@ public class HistoryActivity extends ListActivity {
 	// タイトルテキストビュー
 	private TextView titleText = null;
 	private NoodleManager manager = null;
+	//データがない場合
+	private TextView emptyHistoryText = null;
 	/**検索中ダイアログ*/
 	private ProgressDialog searchDialog;
 
@@ -48,6 +50,7 @@ public class HistoryActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_history);
 		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
+		emptyHistoryText = (TextView)findViewById(R.id.TextViewEmptyHistory);
 		// 履歴の呼び出し
 		manager = new NoodleManager(this);
 		try {
@@ -248,12 +251,18 @@ public class HistoryActivity extends ListActivity {
 	 * listを描画する
 	 */
 	private void draw(){
-		if (list != null) {
+		if (list != null && list.size() > 0) {
+			getListView().setVisibility(View.VISIBLE);
+			emptyHistoryText.setVisibility(View.GONE);
 			// RamenListItemAdapterを生成
 			RamenListItemAdapter adapter;
 			adapter = new RamenListItemAdapter(this, 0, list);
 			setListAdapter(adapter);
-		}			
+			return;
+		}
+		
+		getListView().setVisibility(View.GONE);
+		emptyHistoryText.setVisibility(View.VISIBLE);
 	}
 	
 	/**
