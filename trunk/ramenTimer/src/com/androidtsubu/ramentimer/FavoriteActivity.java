@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +31,10 @@ public class FavoriteActivity extends ListActivity {
 	EditText searchEdit = null;
 	// タイトルテキストビュー
 	TextView titleText = null;
-
+	//リストビュー
+	ListView listView;
+	//空っぽ時に表示するTextView
+	TextView emptyFavoriteText;
 	// 登録情報のリスト
 	private List<NoodleMaster> list = new ArrayList<NoodleMaster>();
 	private ProgressDialog dialog;
@@ -40,6 +44,11 @@ public class FavoriteActivity extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_favorite);
+		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
+		// Viewの取得
+		//searchEdit = (EditText) findViewById(R.id.title_edit);
+		titleText = (TextView) findViewById(R.id.title_text);
+		emptyFavoriteText = (TextView)findViewById(R.id.TextViewEmptyFavorite);
 
 		// 登録情報の呼び出し
 		manager = new NoodleManager(this);
@@ -51,10 +60,6 @@ public class FavoriteActivity extends ListActivity {
 		}
 
 		draw();
-		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
-		// Viewの取得
-		//searchEdit = (EditText) findViewById(R.id.title_edit);
-		titleText = (TextView) findViewById(R.id.title_text);
 
 	}
 	
@@ -62,12 +67,17 @@ public class FavoriteActivity extends ListActivity {
 	 * 描画する
 	 */
 	private void draw(){
-		if (list != null) {
+		if (list != null && list.size() > 0) {
+			getListView().setVisibility(View.VISIBLE);
+			emptyFavoriteText.setVisibility(View.GONE);
 			// RamenListItemAdapterを生成
 			RamenListItemAdapter adapter;
 			adapter = new RamenListItemAdapter(this, 0, list);
 			setListAdapter(adapter);
-		}		
+			return;
+		}
+		getListView().setVisibility(View.GONE);
+		emptyFavoriteText.setVisibility(View.VISIBLE);
 	}
 
 	/**

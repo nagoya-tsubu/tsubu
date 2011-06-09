@@ -65,5 +65,15 @@
 		android:layout_width="fill_parent" 
 		android:layout_height="fill_parent">
 	</ListView>
+	<TextView
+		android:id="@+id/TextViewEmptyHistory"
+		android:text="@string/empty_history"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+       android:layout_gravity="center"
+       android:gravity="center"
+		android:visibility="gone" >
+	</TextView>
+	
 </LinearLayout>
 	

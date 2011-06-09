@@ -506,7 +506,12 @@ public class TimerActivity extends Activity {
 							.findViewById(R.id.TimerLimitTextView);
 				} else {
 					if(fromRamenSerach){
-						/**@todoActionBarのバーコードを該当商品がありませんでしたと書き換える*/						
+						timerInfoViewStub
+						.setLayoutResource(R.layout.activity_timer_only_jancode_fromserach);
+						timerInfoInView = timerInfoViewStub.inflate();
+						janCode = (TextView) timerInfoInView
+						.findViewById(R.id.JanCodeTextView);
+						
 					}else{
 						// 登録フラグをたてる
 						registrationFlg = true;

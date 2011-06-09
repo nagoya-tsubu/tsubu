@@ -63,10 +63,9 @@
 	<!-- 履歴で利用の文字列 -->
 	<string name="history_history">History</string>
 	<string name="history_search_hint">Search for products in history</string>
-
+	<string name="empty_history">Not Found</string>
 	<!-- 履歴で利用の文字列 -->
 
-	<!-- お気に入りで利用の文字列 -->
 
 	<!-- 商品登録検索で利用の文字列 -->
 	<string name="ramensearch_ramensearch">Search for products</string>
@@ -82,9 +81,10 @@
 	<string name="search_seraching">Searching...</string>
 	<!-- 検索で利用の文字列 -->
 
+	<!-- お気に入りで利用の文字列 -->
 	<string name="favorite_favorite">Favorites</string>
 	<string name="favorite_search_hint">Search for products in favorites</string>
-
+	<string name="empty_favorite">Not Found</string>
 	<!-- お気に入りで利用の文字列 -->
 
 	<!-- バグレポート送信時のダイアログ文字列 -->
@@ -118,7 +118,8 @@
 	<string name="end_button">End</string>
 	<string name="yes_button">Yes</string>
 	
-	<string name="create_verification_message">This product is not registered on the server. Would you post it into the database of noodles?</string>
+	<string name="create_verification_message">This product is not registered on the server. \nWould you post it into the database of noodles?</string>
+	<string name="nodata_message">This product is not registered on the server.</string>
 	<string name="jan_code">EAN code</string>
 	<!-- 警告 -->
 	<string name="alert_messeage">Alert</string>
