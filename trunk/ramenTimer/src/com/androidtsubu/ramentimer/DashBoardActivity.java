@@ -296,6 +296,9 @@ public class DashBoardActivity extends Activity {
 			case ACTION_READER: // アクションバーの読込ボタンが押された場合
 				gotoReaderActivity(RequestCode.DASHBORAD2READER.ordinal());
 				break;
+			case ACTION_SEARCH:// アクションバーの検索ボタンが押された場合
+				gotoRSerchActivity();
+				break;
 			}
 		} else if (RESULT_CANCELED == resultCode) {
 			// @leibun追加

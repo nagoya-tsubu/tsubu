@@ -25,9 +25,9 @@
 <!-- @drawable/ic_title_rsearch -->
         <ImageButton
             style="@style/TitleBarAction"
-            android:id="@+id/TitleHistoryButton"
-            android:onClick="onHistoryButtonClick"
-            android:src="@drawable/ic_title_history" />
+            android:id="@+id/TitleSearchButton"
+            android:onClick="onSearchButtonClick"
+            android:src="@drawable/ic_title_hsearch" />
 
         <requestFocus />
     </LinearLayout>
