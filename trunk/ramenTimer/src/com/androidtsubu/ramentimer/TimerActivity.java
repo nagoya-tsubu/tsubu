@@ -673,10 +673,10 @@ public class TimerActivity extends Activity {
 	private void setOnClickEnable(boolean enabled) {
 		ImageButton homeButton = (ImageButton) findViewById(R.id.TitleHomeButton);
 		ImageButton readerButton = (ImageButton) findViewById(R.id.TitleReaderButton);
-		ImageButton historyButton = (ImageButton) findViewById(R.id.TitleSearchButton);
+		ImageButton searchButton = (ImageButton) findViewById(R.id.TitleSearchButton);
 		homeButton.setEnabled(enabled);
 		readerButton.setEnabled(enabled);
-		historyButton.setEnabled(enabled);
+		searchButton.setEnabled(enabled);
 		// チャルメラモードと通常モードの切り替えボタンの無効化
 		timerImage.setClickable(enabled);
 		// 登録確認のボタンがあるとき
