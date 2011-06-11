@@ -7,7 +7,7 @@
 	<color name="background1">#fff5f5f5</color>
 	<color name="background2">#ffd5ddeb</color>
 
-<!-- らいもん画像に黄色横線上下追加したので現在利用してない -->
+	<!-- らいもん画像に黄色横線上下追加したので現在利用してない -->
 	<color name="title_separator">#ffffCC00</color>
 
 	<color name="primary_text">#ff333333</color>
@@ -25,5 +25,8 @@
 	<!-- カスタムダイアログの背景の色 グラデーションの上（top）と下（bottom） -->
 	<color name="dialog_gradient_top">#eef5f5f5</color>
 	<color name="dialog_gradient_bottom">#ccd5d5d5</color>
-
+	
+	<!-- 件数取得関連のメッセージ用 -->
+	<color name="count_message">#dddddd</color>
+	
 </resources>
