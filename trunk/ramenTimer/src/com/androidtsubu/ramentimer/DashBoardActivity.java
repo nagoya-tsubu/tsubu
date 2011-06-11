@@ -39,17 +39,9 @@ public class DashBoardActivity extends Activity {
 		Button button = (Button) findViewById(R.id.ButtonLogo);
 		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
 		
-		// 登録件数取得
-		NoodleManager noodleManager = new NoodleManager(this);
-			
-		try {
-			TextView textCountView = (TextView) findViewById(id.ramen_count);
-			textCountView.setText( getString(R.string.dashboard_toroku) + noodleManager.getMasterCount() + getString(R.string.dashboard_countu));
-		} catch (GaeException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+		// TODO とりあえず、改変
+		createCountMessage();
+						
 		String packegeName = getPackageName();
 		try {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
@@ -243,7 +235,36 @@ public class DashBoardActivity extends Activity {
 		intent.setData(Uri.parse(TSUBU_WEB_ADDRESS));
 		startActivity(intent);
 	}
+	
+	/**
+	 * GAEの登録件数表示
+	 * @return 
+	 */
+	private void createCountMessage() {
+		
+		TextView textCountView = (TextView) findViewById(id.ramen_count);
+		textCountView.setTextColor(R.color.count_message);
+		
+		
+		// 登録件数取得
+		NoodleManager noodleManager = new NoodleManager(this);
+		String GetCount = getString(R.string.dashboard_countu_get);
+		
+		try {
+			
+			GetCount = getString(R.string.dashboard_toroku) + Integer.toString(noodleManager.getMasterCount()) + getString(R.string.dashboard_countu); 
+		
+		} catch (GaeException e) {
+			// TODO Auto-generated catch block
+			GetCount = getString(R.string.dashboard_countu_fail);
+			e.printStackTrace();
+		}
 
+		textCountView.setText(GetCount);
+		textCountView.setTextColor(R.color.primary_text);
+		
+	}
+	
 	/**
 	 * インテントがもどってきた時の動作 アクションバーが他のActivityで押さたときは
 	 * Dashboardまで戻って、目的のActivityを実行する
