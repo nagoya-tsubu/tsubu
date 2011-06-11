@@ -16,6 +16,7 @@ public enum RequestCode {
 	READER2CREATE,		//リーダーから登録
 	CREATE2TIMER,			//登録からタイマー
 	TIMER2CREATE,			//タイマーから登録
+	TIMER2SEARCH,			//タイマーから登録
 	HISTORY2TIMER,		//履歴からタイマー
 	FAVORITE2TIMER,		//お気に入りからタイマー
 	DASHBOARD2CREATE,		//ダッシュボードから登録
@@ -24,6 +25,7 @@ public enum RequestCode {
 	//ActionBar用
 	ACTION_READER,		//アクションバーの読込ボタンが押された場合
 	ACTION_HISTORY,		//アクションバーの履歴ボタンが押された場合
+	ACTION_SEARCH,		//アクションバーの検索ボタンが押された場合
 	ACTION＿TIMER;			//アクションバーのタイマーボタンが押された場合
 	
 	//Intent.putExtra()の第１引数に利用
