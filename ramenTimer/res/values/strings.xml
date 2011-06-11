@@ -31,7 +31,8 @@
 	<string name="dashboard_versionname_hai"> bowls</string>
 	<string name="dashboard_toroku">entry</string>
 	<string name="dashboard_countu">items</string>
-
+	<string name="dashboard_countu_get">get</string>
+	<string name="dashboard_countu_fail">fail</string>
 	<!-- ダッシュボードで利用の文字列 -->
 
 	<!-- 登録画面で利用の文字列 -->
