@@ -97,6 +97,8 @@ public class CreateActivity extends Activity {
 
 	// WEB登録用スレッド
 	EntryAsyncTask entry = null;
+	
+	private String cameraFileName = null;
 
 	/**
 	 * CreateActivityがインテントで呼び出されたときに呼ばれる
@@ -515,10 +517,10 @@ public class CreateActivity extends Activity {
 	 * カメラをインテントで起動
 	 */
 	private void callCamera() {
-		String filename = "RamenTimer_" + System.currentTimeMillis() + ".jpg";
+		cameraFileName = "RamenTimer_" + System.currentTimeMillis() + ".jpg";
 		
 		ContentValues values = new ContentValues();
-		values.put(MediaStore.Images.Media.TITLE, filename);
+		values.put(MediaStore.Images.Media.TITLE, cameraFileName);
 		values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 		mPictureUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 		
