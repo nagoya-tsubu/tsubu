@@ -45,7 +45,7 @@ public class CreateActivity extends Activity {
 	// 秒の増減間隔
 	private static final int SEC_INTERVALS = 10;
 	// 分の上限値
-	private static final int MIN_UPPEL_LIMIT = 9;
+	private static final int MIN_UPPEL_LIMIT = 59;
 	// 分の下限値
 	private static final int MIN_LOWER_LIMIT = 0;
 
