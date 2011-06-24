@@ -1,0 +1,161 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+    font-size: 16px;
+    color: #333333;
+    background: #eeeeee;
+}
+
+p {
+    line-height: 1.5;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+a {
+    color: #4E6D0D;
+    font-size: large;
+}
+a:visited {
+    color: #9FB26D;
+}
+a:hover {
+    color: #f5f5f5;
+    text-decoration: none;
+    background: #618800;
+}
+
+img {
+    border-style: none;
+}
+
+
+h3 {
+    font-size: 150%;
+}
+
+table tr th {
+    background: #999999;
+    color: #f5f5f5;
+    padding: 7px;
+}
+
+table tr {
+    background: #eeeeee;
+    color: #333333;
+    border-top: 1px solid #f5f5f5;
+}
+table td {
+    padding: 7px;
+    white-space: nowrap;
+}
+
+.pagetop {
+    text-align: right;
+}
+
+#top {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+#container {
+    background: #f5f5f5;
+    margin: 0px auto;
+    width: 900px;
+}
+
+#header {
+    background: url(../img/web_header_bg.png) repeat-x 0px 0px;
+    position: relative;
+    height: 150px;
+}
+#header #logo {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+}
+#header #logo a {
+    text-decoration: none;
+    display: block;
+    background: none;
+}
+#header #logo a:hover {
+    text-decoration: none;
+    display: block;
+    background: none;
+}
+
+#header h2#tagline {
+    display:block;
+    position: absolute;
+    left: 20px;
+    top: 83px;
+    font-size: 120%;
+}
+
+#header ul#headernavi {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+#header #headernavi li a {
+    text-decoration: none;
+    display: block;
+}
+
+#contents {
+    width: 860px;
+    padding: 20px;
+    margin: 0px;
+}
+#contents #titleArea {
+    line-height: 120%;
+}
+
+#contents #listArea {
+    height: auto;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#contents #pagerArea {
+    text-align: center;
+}
+
+#contents #pagerArea ul {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#contents #pagerArea ul li {
+    display: inline;
+    margin-right: 5em;
+    margin-left: 5em;
+}
+
+#footer {
+    text-align: center;
+    padding: 10px;
+}
+#footer address {
+    font-style: normal;
+}
+
+
+* html body { /* for WinIE6*/
+    font-size: 100%;
+    font-family:Verdana, "ＭＳ Ｐゴシック", sans-serif;
+}
+*: first-child + html body { /* for WinIE7*/
+    font-size: 100%;
+    font-family:"メイリオ", Meiryo, sans-serif;
+}
+html {
+    overflow:scroll;
+    margin-bottom: 1px; /* for Opera*/
+}

@@ -1,7 +1,6 @@
 package com.androidtsubu.ramentimer.server.service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,18 +10,20 @@ import org.slim3.controller.upload.FileItem;
 import org.slim3.controller.validator.Errors;
 import org.slim3.controller.validator.Validators;
 import org.slim3.datastore.Datastore;
+import org.slim3.memcache.Memcache;
 import org.slim3.util.ApplicationMessage;
 import org.slim3.util.BeanUtil;
 import org.slim3.util.RequestMap;
 
+import com.androidtsubu.ramentimer.server.meta.RamenMeta;
 import com.androidtsubu.ramentimer.server.model.Ramen;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
-import com.androidtsubu.ramentimer.server.meta.RamenMeta;
 
 public class RamenService {
+    private static final String MEMCACHE_KEY_COUNT = "ramenCount";
 
     public Ramen create(HttpServletRequest request) {
         ApplicationMessage.setBundle(
@@ -68,7 +69,14 @@ public class RamenService {
     }
 
     public int count() {
-        return Datastore.query(Ramen.class).count();
+        int count = 0;
+        if (Memcache.contains(MEMCACHE_KEY_COUNT)) {
+            count = Memcache.get(MEMCACHE_KEY_COUNT);
+        } else {
+            count = Datastore.query(Ramen.class).count();
+            Memcache.put(MEMCACHE_KEY_COUNT, count);
+        }
+        return count;
     }
 
     private byte[] resizeImage(byte[] src) {
