@@ -129,5 +129,5 @@
 	<!-- ヘルプサイトURL -->
 	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help_en</string>
 	<!-- ラーメンタイマーリストページ URL -->
-	<string name="ramen_list_url">http://sites.google.com/site/androidnagoyatsubu/</string>
+	<string name="ramen_list_url">http://ramentimer.appspot.com/</string>
 </resources>
