@@ -79,7 +79,8 @@
 	<!-- 検索で利用の文字列 -->
 	<string name="search_search">Search</string>
 	<string name="search_alert">Please input Search Keyword</string>
-	<string name="search_seraching">Searching...</string>
+	<string name="search_searching">Searching...</string>
+	<string name="search_searchstring">EAN code or Name</string>
 	<!-- 検索で利用の文字列 -->
 
 	<!-- お気に入りで利用の文字列 -->

@@ -53,15 +53,9 @@ public class HistoryActivity extends ListActivity {
 		emptyHistoryText = (TextView)findViewById(R.id.TextViewEmptyHistory);
 		// 履歴の呼び出し
 		manager = new NoodleManager(this);
-		try {
-			list = manager.getNoodleHistories();
-		} catch (SQLException e) {
-			Toast.makeText(this, ExceptionToStringConverter.convert(e),
-					Toast.LENGTH_LONG).show();
-		}
-		//
-		draw();
-
+		SearchTask task = new SearchTask();
+		task.execute("");
+		
 		// Viewの取得
 		//searchEdit = (EditText) findViewById(R.id.title_edit);
 		titleText = (TextView) findViewById(R.id.title_text);
@@ -275,12 +269,6 @@ public class HistoryActivity extends ListActivity {
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		//検索文字列で検索する
 		String key = searchEdit.getText().toString();
-		if(key==null || key.equals("")){
-			//検索文字列が入っていないよ
-			Toast.makeText(this, R.string.search_alert, Toast.LENGTH_LONG).show();
-			return;
-		}
-		
 		SearchTask task = new SearchTask();
 		task.execute(key);
 	}
@@ -291,7 +279,7 @@ public class HistoryActivity extends ListActivity {
 	private void showSearchDialog(){
 		searchDialog = new CustomProgressDialog(this,R.style.CustomDialog);
 		searchDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		searchDialog.setTitle(R.string.search_search);
+		searchDialog.setTitle(getResources().getString(R.string.search_searching));
 		searchDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_icon));
 		searchDialog.show();
 	}
@@ -330,13 +318,16 @@ public class HistoryActivity extends ListActivity {
 
 		@Override
 		protected List<NoodleHistory> doInBackground(String... arg0) {
+//			try {
+//				Thread.sleep(5000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
+				if(arg0[0] == null || arg0[0].equals("")){
+					return manager.getNoodleHistories();
+				}
 				return manager.searchNoodleHistories(arg0[0]);
 			} catch (SQLException e) {
 				Toast.makeText(HistoryActivity.this, R.string.search_alert, Toast.LENGTH_LONG).show();
