@@ -44,7 +44,7 @@
 			android:layout_weight="1"
 			android:layout_height="@dimen/form_edittext_height"
 			android:paddingLeft="4dip"
-			android:hint="@string/ramensearch_jancode" 
+			android:hint="@string/search_searchstring" 
 			android:gravity="center_vertical"
 			android:maxLength="13"
 			android:id="@+id/SearchBarcodeEdit"/>			

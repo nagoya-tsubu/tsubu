@@ -52,15 +52,8 @@ public class FavoriteActivity extends ListActivity {
 
 		// 登録情報の呼び出し
 		manager = new NoodleManager(this);
-		try {
-			list = manager.getNoodleMastersForSqlite();
-		} catch (SQLException e) {
-			Toast.makeText(this, ExceptionToStringConverter.convert(e),
-					Toast.LENGTH_LONG).show();
-		}
-
-		draw();
-
+		SearchTask task = new SearchTask();
+		task.execute("");
 	}
 	
 	/**
@@ -257,12 +250,6 @@ public class FavoriteActivity extends ListActivity {
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		//検索文字列で検索する
 		String key = searchEdit.getText().toString();
-		if(key==null || key.equals("")){
-			//検索文字列が入っていないよ
-			Toast.makeText(this, R.string.search_alert, Toast.LENGTH_LONG).show();
-			return;
-		}
-		
 		SearchTask task = new SearchTask();
 		task.execute(key);
 	}
@@ -274,7 +261,7 @@ public class FavoriteActivity extends ListActivity {
 		dialog = new CustomProgressDialog(this,R.style.CustomDialog);
 		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_icon));
-		dialog.setTitle(getResources().getString(R.string.search_seraching));
+		dialog.setTitle(getResources().getString(R.string.search_searching));
 		dialog.show();
 	}
 
@@ -312,13 +299,18 @@ public class FavoriteActivity extends ListActivity {
 
 		@Override
 		protected List<NoodleMaster> doInBackground(String... arg0) {
+//			try {
+//				Thread.sleep(5000);
+//			} catch (InterruptedException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			try {
+				if(arg0[0] == null || arg0[0].equals("")){
+					//べたでひっぱってくる
+					return manager.getNoodleMastersForSqlite();
+				}
+				//キーで検索
 				return manager.searchNoodleMaster(arg0[0]);
 			} catch (SQLException e) {
 				Toast.makeText(FavoriteActivity.this, R.string.search_alert, Toast.LENGTH_LONG).show();
