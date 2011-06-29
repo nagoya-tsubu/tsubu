@@ -1,0 +1,59 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*#header #logo,#header h1 a#header #headernavi,#header ul#headernavi li a {
+    display:none;
+}
+*/
+
+#container {
+    width: 100%;
+}
+
+#contents {
+    margin: 10px;
+    padding: 0;
+    width: auto;
+}
+
+#header #logo {
+    position: absolute;
+    background: url(../img/web_logo_s.png) no-repeat;
+    padding-top: 10px;
+    padding-left: 20px;
+}
+#header h1 a {
+    position: absolute;
+    background: url(../img/web_logo_s.png) no-repeat;
+    top: 10px;
+    left: 10px;
+    height: 72px;
+    width: 240px;
+    display: block;
+    text-indent: -9999px;
+    overflow: hidden;
+}
+
+#header #headernavi {
+    position: absolute;
+    background: url(../img/30_avail_market_logo1.png) no-repeat;
+    top: 10px;
+    right: 88px;
+}
+#header ul#headernavi li a {
+    position: absolute;
+    background: url(../img/30_avail_market_logo1.png) no-repeat;
+    height: 30px;
+    width: 78px;
+    display: block;
+    text-indent: -9999px;
+    overflow: hidden;
+    list-style: none;
+    padding-top: 0px;
+    padding-left:0px;
+}
+
+table.listTable {
+/*	border-collapse:collapse;
+*/	width: 100%;
+}

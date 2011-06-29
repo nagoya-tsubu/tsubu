@@ -2,160 +2,155 @@
 /* CSS Document */
 
 body {
-    font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
-    font-size: 16px;
-    color: #333333;
-    background: #eeeeee;
+	font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+	font-size: 16px;
+	color: #333333;
+	background: #eeeeee;
 }
-
 p {
-    line-height: 1.5;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+	line-height: 1.5;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
-
 a {
-    color: #4E6D0D;
-    font-size: large;
+	color: #4E6D0D;
+	font-size: large;
 }
 a:visited {
-    color: #9FB26D;
+	color: #9FB26D;
 }
 a:hover {
-    color: #f5f5f5;
-    text-decoration: none;
-    background: #618800;
+	color: #f5f5f5;
+	text-decoration: none;
+	background: #618800;
 }
-
 img {
-    border-style: none;
+	border-style: none;
 }
-
-
 h3 {
-    font-size: 150%;
+	font-size: 150%;
+	line-height: 2em;
+}
+.listTable {
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
 }
 
-table tr th {
-    background: #999999;
-    color: #f5f5f5;
-    padding: 7px;
+table th {
+	background: #999999;
+	color: #f5f5f5;
+	padding:7px;
 }
-
 table tr {
-    background: #eeeeee;
-    color: #333333;
-    border-top: 1px solid #f5f5f5;
+	background: #eeeeee;
+	color: #333333;
+	border-top: 1px solid #f5f5f5;
 }
-table td {
-    padding: 7px;
-    white-space: nowrap;
+td {
+	padding:7px;
 }
-
+.seconds {
+	text-align: right;
+}
 .pagetop {
-    text-align: right;
+	text-align: right;
+	line-height: 3em;
 }
-
 #top {
-    position: absolute;
-    left: 0px;
-    top: 0px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
 }
-
 #container {
-    background: #f5f5f5;
-    margin: 0px auto;
-    width: 900px;
+	background: #f5f5f5;
+	margin: 0px auto;
+	width: 900px;
 }
-
 #header {
-    background: url(../img/web_header_bg.png) repeat-x 0px 0px;
-    position: relative;
-    height: 150px;
+	background: url(../img/web_header_bg.png) repeat-x 0px 0px;
+	position: relative;
+	height: 150px;
 }
 #header #logo {
-    position: absolute;
-    left: 20px;
-    top: 10px;
+	position: absolute;
+	background: url(../img/web_logo.png) no-repeat;
+	padding-top: 10px;
+	padding-left: 20px;
 }
-#header #logo a {
-    text-decoration: none;
-    display: block;
-    background: none;
+#header h1 a {
+	position: absolute;
+	background: url(../img/web_logo.png) no-repeat;
+	top: 10px;
+	left: 20px;
+	height: 72px;
+	width: 552px;
+	display: block;
+	text-indent: -9999px;
+	overflow: hidden;
 }
-#header #logo a:hover {
-    text-decoration: none;
-    display: block;
-    background: none;
-}
-
 #header h2#tagline {
-    display:block;
-    position: absolute;
-    left: 20px;
-    top: 83px;
-    font-size: 120%;
+	display:block;
+	position: absolute;
+	left: 20px;
+	top: 83px;
+	font-size: 120%;
 }
-
-#header ul#headernavi {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+#header #headernavi {
+	position: absolute;
+	background: url(../img/45_avail_market_logo1.png) no-repeat;
+	top: 10px;
+	right: 127px;
 }
-#header #headernavi li a {
-    text-decoration: none;
-    display: block;
+#header ul#headernavi li a {
+	position: absolute;
+	background: url(../img/45_avail_market_logo1.png) no-repeat;
+	height: 45px;
+	width: 117px;
+	display: block;
+	text-indent: -9999px;
+	overflow: hidden;
+	list-style: none;
+	padding-top: 0px;
+	padding-left:0px;
 }
-
 #contents {
-    width: 860px;
-    padding: 20px;
-    margin: 0px;
+	width: 860px;
+	margin: 0px;
+	padding-right: 20px;
+	padding-left: 20px;
 }
-#contents #titleArea {
-    line-height: 120%;
-}
-
-#contents #listArea {
-    height: auto;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
 #contents #pagerArea {
-    text-align: center;
+	text-align: center;
+	line-height: 3em;
 }
-
 #contents #pagerArea ul {
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 #contents #pagerArea ul li {
-    display: inline;
-    margin-right: 5em;
-    margin-left: 5em;
+	display: inline;
+	margin-right: 5em;
+	margin-left: 5em;
 }
-
 #footer {
-    text-align: center;
-    padding: 10px;
+	text-align: center;
+	padding: 10px;
 }
 #footer address {
-    font-style: normal;
+	font-style: normal;
+	line-height: 2em;
 }
-
-
 * html body { /* for WinIE6*/
-    font-size: 100%;
-    font-family:Verdana, "ＭＳ Ｐゴシック", sans-serif;
+	font-size: 100%;
+	font-family:Verdana, "ＭＳ Ｐゴシック", sans-serif;
 }
 *: first-child + html body { /* for WinIE7*/
-    font-size: 100%;
-    font-family:"メイリオ", Meiryo, sans-serif;
+	font-size: 100%;
+	font-family:"メイリオ", Meiryo, sans-serif;
 }
 html {
-    overflow:scroll;
-    margin-bottom: 1px; /* for Opera*/
+	overflow:scroll;
+	margin-bottom: 1px; /* for Opera*/
 }
