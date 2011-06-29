@@ -10,6 +10,8 @@ import org.slim3.controller.upload.FileItem;
 import org.slim3.controller.validator.Errors;
 import org.slim3.controller.validator.Validators;
 import org.slim3.datastore.Datastore;
+import org.slim3.datastore.ModelQuery;
+import org.slim3.datastore.S3QueryResultList;
 import org.slim3.memcache.Memcache;
 import org.slim3.util.ApplicationMessage;
 import org.slim3.util.BeanUtil;
@@ -77,6 +79,16 @@ public class RamenService {
             Memcache.put(MEMCACHE_KEY_COUNT, count);
         }
         return count;
+    }
+
+    public S3QueryResultList<Ramen> recentList(int limit, String encodedCursor) {
+        ModelQuery<Ramen> query = Datastore.query(Ramen.class)
+            .sort(RamenMeta.get().createdAt.desc)
+            .limit(limit);
+        if (encodedCursor != null) {
+            query.encodedStartCursor(encodedCursor);
+        }
+        return query.asQueryResultList();
     }
 
     private byte[] resizeImage(byte[] src) {
