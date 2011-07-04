@@ -1,18 +1,11 @@
 package com.androidtsubu.ramentimer;
 
-import java.sql.SQLException;
-import java.util.List;
-
-import android.R.color;
-import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +26,6 @@ public class DashBoardActivity extends Activity {
 
 	private static String TSUBU_WEB_ADDRESS;
 	private static String RAMEN_LIST_WEB_ADDRESS;
-	private Button buttonLogo;
 	private NoodleManager manager = null; 
 	
 	@Override
@@ -47,6 +39,11 @@ public class DashBoardActivity extends Activity {
 		// つ部ロゴを動かす
 		Button button = (Button) findViewById(R.id.ButtonLogo);
 		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
+		
+		// 登録件数の呼び出し
+		manager = new NoodleManager(this);
+		CountTask task = new CountTask();
+		task.execute();
 		
 		String packegeName = getPackageName();
 		try {
@@ -299,10 +296,6 @@ public class DashBoardActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		// 登録件数の呼び出し
-		manager = new NoodleManager(this);
-		CountTask task = new CountTask();
-		task.execute();
 		// 前回バグで強制終了した場合は、ダイアログを表示する
 		AppUncaughtExceptionHandler.showBugReportDialogIfExist();
 	}
@@ -318,20 +311,9 @@ public class DashBoardActivity extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-//			textCountView.setTextColor(Color.RED);
-			String GetCount = null;
-			
-			try {				
-				GetCount = getString(R.string.dashboard_toroku) + Integer.toString(manager.getMasterCount()) + getString(R.string.dashboard_countu);  
-			
-			} catch (GaeException e) {
-				// TODO Auto-generated catch block
-				GetCount = getString(R.string.dashboard_countu_fail);
-				e.printStackTrace();			
-			}
-
-			textCountView.setText(GetCount);
-			
+			textCountView.setTextColor(R.color.count_message_getorfail);
+			textCountView.setText(R.string.dashboard_countu_get); 
+			textCountView.setTextColor(R.color.count_message_getorfail);		
 		}
 		
 		@Override
@@ -343,7 +325,7 @@ public class DashBoardActivity extends Activity {
 				e.printStackTrace();
 			}
 			
-			try {				
+			try {
 				return getString(R.string.dashboard_toroku) + Integer.toString(manager.getMasterCount()) + getString(R.string.dashboard_countu);			
 			} catch (GaeException e) {
 				// TODO Auto-generated catch block
@@ -356,9 +338,11 @@ public class DashBoardActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 
-//			if (result != null){				
-//				textCountView.setTextColor(Color.GREEN);			
-//			}
+			if (result.equals(R.string.dashboard_countu_fail)){						
+				textCountView.setTextColor(R.color.count_message_getorfail);
+			}else{
+				textCountView.setTextColor(R.color.count_message);
+			}
 			textCountView.setText(result); 
 		}
 			 

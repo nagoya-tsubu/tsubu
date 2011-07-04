@@ -29,10 +29,10 @@
 	<string name="dashboard_ramenlist">List</string>
 	<string name="dashboard_text">Share instant noodle cooking minutes with everybody!</string>
 	<string name="dashboard_versionname_hai"> bowls</string>
-	<string name="dashboard_toroku">entry</string>
+	<string name="dashboard_toroku">Entry</string>
 	<string name="dashboard_countu">items</string>
-	<string name="dashboard_countu_get">get</string>
-	<string name="dashboard_countu_fail">fail</string>
+	<string name="dashboard_countu_get">Loading...</string>
+	<string name="dashboard_countu_fail">Fail</string>
 	<!-- ダッシュボードで利用の文字列 -->
 
 	<!-- 登録画面で利用の文字列 -->

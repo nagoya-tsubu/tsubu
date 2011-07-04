@@ -27,6 +27,7 @@
 	<color name="dialog_gradient_bottom">#ccd5d5d5</color>
 	
 	<!-- 件数取得関連のメッセージ用 -->
-	<color name="count_message">#dddddd</color>
-	
+	<color name="count_message_getorfail">#dddddddd</color>
+	<color name="count_message">#ff333333</color>
+		
 </resources>

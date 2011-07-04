@@ -29,7 +29,7 @@
 	<string name="dashboard_versionname_hai">杯</string>
 	<string name="dashboard_toroku">登録数</string>
 	<string name="dashboard_countu">軒</string>
-	<string name="dashboard_countu_get">問い合せ中</string>
+	<string name="dashboard_countu_get">問い合せ中...</string>
 	<string name="dashboard_countu_fail">取得失敗</string>
 	<!-- ダッシュボードで利用の文字列 -->
 
