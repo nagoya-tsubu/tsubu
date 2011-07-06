@@ -1,5 +1,6 @@
 package com.androidtsubu.ramentimer;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -311,9 +312,9 @@ public class DashBoardActivity extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			textCountView.setTextColor(R.color.count_message_getorfail);
+			textCountView.setTextColor(getResources().getColor(R.color.count_message_getorfail));
 			textCountView.setText(R.string.dashboard_countu_get); 
-			textCountView.setTextColor(R.color.count_message_getorfail);		
+					
 		}
 		
 		@Override
@@ -339,9 +340,9 @@ public class DashBoardActivity extends Activity {
 		protected void onPostExecute(String result) {
 
 			if (result.equals(R.string.dashboard_countu_fail)){						
-				textCountView.setTextColor(R.color.count_message_getorfail);
+				textCountView.setTextColor(getResources().getColor(R.color.count_message_getorfail));
 			}else{
-				textCountView.setTextColor(R.color.count_message);
+				textCountView.setTextColor(getResources().getColor(R.color.count_message));
 			}
 			textCountView.setText(result); 
 		}
