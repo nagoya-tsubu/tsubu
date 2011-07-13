@@ -27,7 +27,9 @@ public class DashBoardActivity extends Activity {
 
 	private static String TSUBU_WEB_ADDRESS;
 	private static String RAMEN_LIST_WEB_ADDRESS;
-	private NoodleManager manager = null; 
+	private NoodleManager manager = null;
+	private TextView textCountView;
+
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,14 +39,14 @@ public class DashBoardActivity extends Activity {
 		TSUBU_WEB_ADDRESS = getResources().getString(R.string.help_url);
 		//ラーメンタイマーWebのURL取得
 		RAMEN_LIST_WEB_ADDRESS = getResources().getString(R.string.ramen_list_url);
+		textCountView = (TextView) findViewById(id.ramen_count);
 		// つ部ロゴを動かす
 		Button button = (Button) findViewById(R.id.ButtonLogo);
 		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
 		
 		// 登録件数の呼び出し
 		manager = new NoodleManager(this);
-		CountTask task = new CountTask();
-		task.execute();
+		doCountTask();
 		
 		String packegeName = getPackageName();
 		try {
@@ -66,6 +68,8 @@ public class DashBoardActivity extends Activity {
 						.getString(R.string.dialog_no)));
 	}
 
+	
+	
 	/**
 	 *  メニュー内容を生成 
 	 */
@@ -249,6 +253,11 @@ public class DashBoardActivity extends Activity {
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if(textCountView.getText().equals(getString(R.string.dashboard_countu_fail))){
+			//軒数取得に失敗していたらもう一度取得にいってみる
+			doCountTask();
+		}
+		
 		if (resultCode == RESULT_OK) {
 			if (intent == null) {
 				return;
@@ -302,14 +311,19 @@ public class DashBoardActivity extends Activity {
 	}
 	
 	/**
+	 * 軒数取得Taskを起動する
+	 */
+	private void doCountTask(){
+		CountTask task = new CountTask();
+		task.execute();
+	}
+	
+	/**
 	 * 件数取得用非同期Task
 	 * @author miguse
 	 *
 	 */
 	private class CountTask extends AsyncTask<String, Void, String>{
-		
-		TextView textCountView = (TextView) findViewById(id.ramen_count);
-		
 		@Override
 		protected void onPreExecute() {
 			textCountView.setTextColor(getResources().getColor(R.color.count_message_getorfail));
@@ -319,12 +333,12 @@ public class DashBoardActivity extends Activity {
 		
 		@Override
 		protected String doInBackground(String... areg0) {
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(5000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			
 			try {
 				return getString(R.string.dashboard_toroku) + Integer.toString(manager.getMasterCount()) + getString(R.string.dashboard_countu);			
@@ -339,7 +353,7 @@ public class DashBoardActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 
-			if (result.equals(R.string.dashboard_countu_fail)){						
+			if (result.equals(getString(R.string.dashboard_countu_fail))){						
 				textCountView.setTextColor(getResources().getColor(R.color.count_message_getorfail));
 			}else{
 				textCountView.setTextColor(getResources().getColor(R.color.count_message));
