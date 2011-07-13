@@ -30,7 +30,7 @@
 	<string name="dashboard_toroku">登録数</string>
 	<string name="dashboard_countu">軒</string>
 	<string name="dashboard_countu_get">問い合せ中...</string>
-	<string name="dashboard_countu_fail">取得失敗</string>
+	<string name="dashboard_countu_fail">軒数取得失敗</string>
 	<!-- ダッシュボードで利用の文字列 -->
 
 	<!-- 登録画面で利用の文字列 -->
