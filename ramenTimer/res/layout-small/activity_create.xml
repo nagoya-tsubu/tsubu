@@ -16,15 +16,16 @@
         <TextView 
         	style="@style/TitleBarText"
         	android:text="@string/create_create"/>	
-		<ImageButton 
-			style="@style/TitleBarAction" 
-			android:onClick="onHistoryButtonClick"
-			android:src="@drawable/ic_title_history" />
+<!-- delete -->
+<!-- 		<ImageButton  -->
+<!-- 			style="@style/TitleBarAction"  -->
+<!-- 			android:onClick="onHistoryButtonClick" -->
+<!-- 			android:src="@drawable/ic_title_history" /> -->
 
-		<ImageButton 
-			style="@style/TitleBarAction" 
-			android:onClick="onTimerButtonClick"
-			android:src="@drawable/ic_title_timer" />
+<!-- 		<ImageButton  -->
+<!-- 			style="@style/TitleBarAction"  -->
+<!-- 			android:onClick="onTimerButtonClick" -->
+<!-- 			android:src="@drawable/ic_title_timer" /> -->
  
 		<requestFocus />
 	</LinearLayout>  
