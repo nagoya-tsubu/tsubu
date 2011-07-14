@@ -37,7 +37,7 @@ ic_title_hsearch.xml
 ic_title_rsearch.xml
 
 // アクションバー用ボタンxml
-// アクションバー修正後以下削除予定
+// アクションバー修正後以下削除 2011/07/14
 ic_title_history.xml
 ic_title_timer.xml
 
