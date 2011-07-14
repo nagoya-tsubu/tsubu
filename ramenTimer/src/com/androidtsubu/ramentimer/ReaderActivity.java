@@ -195,8 +195,7 @@ public class ReaderActivity extends Activity {
 		default:
 			// Intentをダッシュボードまで戻す。 TimerActivityやCreateActivityから戻ってくる。
 			if (RESULT_OK == resultCode) {
-				setResult(RESULT_OK, intent);
-//				finish(); //by @leibun 
+				setResult(RESULT_OK, intent);					
 			}
 			// 呼び出したインテントが空の場合は、処理を終了する
 			finish(); //by @leibun ここで終了
