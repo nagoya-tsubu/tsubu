@@ -43,6 +43,7 @@ public class FavoriteActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 		setContentView(R.layout.activity_favorite);
 		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
 		// Viewの取得
