@@ -50,7 +50,7 @@ public class HistoryActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.activity_history);
 		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
 		emptyHistoryText = (TextView)findViewById(R.id.TextViewEmptyHistory);

@@ -153,10 +153,10 @@ public class TimerActivity extends Activity {
 				updateTimerTextView((waitTime - currentTime) / 1000 + 1);
 				return;
 			}
-			// サービスを停止する
-			ramenTimerService.stop();
 			// アンバインドする
 			unbindService(serviceConnection);
+			// サービスを停止する
+			ramenTimerService.stop();
 
 			// 0秒TextView、終了ボタンを表示
 			updateTimerTextView(0);
