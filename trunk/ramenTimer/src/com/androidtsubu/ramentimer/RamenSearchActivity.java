@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class RamenSearchActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 		setContentView(R.layout.activity_ramensearch);
 		editTextJancode = (EditText)findViewById(R.id.SearchBarcodeEdit);
 	}
@@ -31,6 +33,11 @@ public class RamenSearchActivity extends Activity {
 	 * @param v
 	 */
 	public void onSearchClick(View v){
+		if(editTextJancode.getText() == null){
+			//バーコードを入力するように促す
+			Toast.makeText(this, R.string.ramensearch_jancodealert, Toast.LENGTH_LONG).show();
+			return;
+		}
 		String jancode = editTextJancode.getText().toString();
 		if(jancode == null || jancode.equals("")){
 			//バーコードを入力するように促す
