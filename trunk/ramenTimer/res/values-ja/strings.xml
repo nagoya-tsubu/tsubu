@@ -41,6 +41,7 @@
 	<string name="create_fill_form_message">入力項目を埋めてください</string>
 	<string name="create_quick_action_gallery">ギャラリー</string>
 	<string name="create_quick_action_camera">カメラ</string>
+	<string name="create_set_time_message">時間をセットしてください</string>
 	<!-- 登録画面で利用の文字列 -->
 
 	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->

@@ -92,7 +92,6 @@
 			android:layout_width="fill_parent"
 			android:gravity="center_vertical"
 			android:text="@string/create_time"/>			
-			
 		<include layout="@layout/timer_set"/>
 	</LinearLayout> 
 
