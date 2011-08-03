@@ -44,6 +44,7 @@
 	<string name="create_fill_form_message">Please fill out colums.</string>
 	<string name="create_quick_action_gallery">Gallery</string>
 	<string name="create_quick_action_camera">Camera</string>
+	<string name="create_set_time_message">Please set Cooking minutes</string>
 
 	<!-- 登録画面で利用の文字列 -->
 

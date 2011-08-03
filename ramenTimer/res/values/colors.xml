@@ -29,5 +29,9 @@
 	<!-- 件数取得関連のメッセージ用 -->
 	<color name="count_message_getorfail">#dddddddd</color>
 	<color name="count_message">#ff333333</color>
-		
+	<!-- ボタンのenable disable -->
+	<!-- 
+	<color name="button_disabled">#dddddddd</color>
+	<color name="button_enabled">#ff333333</color>
+	 -->	
 </resources>

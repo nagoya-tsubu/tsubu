@@ -95,13 +95,15 @@ public class NoodleManager {
 		NoodleMaster master = noodleSqlController.getNoodleMaster(noodleMaster
 				.getJanCode());
 		if (master != null) {
+			//削除する
+			
 			// 重複エラーを返す
 			throw new DuplexNoodleMasterException();
 		}
-		// SQliteに登録
-		noodleSqlController.createNoodleMater(noodleMaster);
 		// GAEに登録
 		noodleGaeController.create(noodleMaster);
+		// SQliteに登録
+		noodleSqlController.createNoodleMater(noodleMaster);
 	}
 
 	/**

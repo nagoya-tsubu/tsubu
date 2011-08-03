@@ -169,6 +169,11 @@ public class CreateActivity extends Activity {
 		minTextView = (TextView) findViewById(R.id.MinTextView);
 		secTextView = (TextView) findViewById(R.id.SecTextView);
 		createButton = (Button) findViewById(R.id.CreateButton);
+//		//0分0秒だと登録ボタンを押せないようにする
+//		createButton.setEnabled(false);
+//		//無効の時の字の色を変える
+//		createButton.setTextColor(R.color.button_disabled);
+		
 		progressIcon = (ImageView) findViewById(R.id.ProgressIcon);
 		minUpButton = (Button) findViewById(R.id.MinUpButton);
 		minDownButton = (Button) findViewById(R.id.MinDownButton);
@@ -485,6 +490,10 @@ public class CreateActivity extends Activity {
 	private void updateTimerTextView(long sec) {
 		minTextView.setText(String.valueOf(sec / 60));
 		secTextView.setText(getSecText(sec % 60));
+//		//0秒ならボタンを無効にする
+//		createButton.setEnabled(sec != 0);
+//		//ボタンが有効の時と無効の時の字の色を変える
+//		createButton.setTextColor(createButton.isEnabled() ? R.color.button_enabled : R.color.button_disabled);
 	}
 	
 	/**
@@ -559,6 +568,10 @@ public class CreateActivity extends Activity {
 			noodleMaster = getNoodleMaster();
 		} catch (CreateNoImageException e) {
 			Toast.makeText(this, R.string.create_set_image_message, Toast.LENGTH_LONG).show();
+			createButton.setEnabled(true);		
+			return;
+		}catch(CreateZeroException e){
+			Toast.makeText(this, R.string.create_set_time_message, Toast.LENGTH_LONG).show();
 			createButton.setEnabled(true);		
 			return;
 		} catch (Exception e) {
@@ -685,7 +698,7 @@ public class CreateActivity extends Activity {
 	 * @return
 	 * @throws CreateNoImageException 
 	 */
-	NoodleMaster getNoodleMaster() throws CreateNoImageException {
+	NoodleMaster getNoodleMaster() throws CreateNoImageException,CreateZeroException {
 		// EditTextやRadioGroupから状態を取得
 		String jancode = janText.getText().toString();
 		String name = nameEdit.getText().toString();
@@ -694,6 +707,9 @@ public class CreateActivity extends Activity {
 		int sec = Integer.parseInt(secTextView.getText().toString());
 		// 秒に変換
 		int boilTime = min*60 + sec;
+		if(boilTime == 0){
+			throw new CreateZeroException();
+		}
 		// 画像の取得
 		Bitmap image;
 		if(noodleImage==null) // セットされていない場合なダミー画像を入れる
@@ -838,7 +854,36 @@ public class CreateActivity extends Activity {
 				activity.finish();
 			}
 		};
+		
+		
 
+	}
+	
+	/**
+	 * 0分0秒Exception
+	 * @author hide
+	 *
+	 */
+	private class CreateZeroException extends Exception{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		/**
+		 * コンストラクタ
+		 */
+		public CreateZeroException(){
+			
+		}
+		/**
+		 * コンストラクタ
+		 * @param throwable
+		 */
+		public CreateZeroException(Throwable throwable){
+			super(throwable);
+		}			
+		
 	}
 
 }
