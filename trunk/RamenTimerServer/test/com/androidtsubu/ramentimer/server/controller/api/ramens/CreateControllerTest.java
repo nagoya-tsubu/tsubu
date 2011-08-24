@@ -23,6 +23,7 @@ public class CreateControllerTest extends ControllerTestCaseEx {
         String name = "ペヤングソースやきそば";
         String jan = "4902885000686";
         int boilTime = 180;
+        long twitterId = 14070046;
         byte[] image = TestImage.load("sample.jpg");
         byte[] resizedImage = TestImage.load("sample_resized.jpg");
 
@@ -32,14 +33,15 @@ public class CreateControllerTest extends ControllerTestCaseEx {
         tester.param("name", name);
         tester.param("jan", jan);
         tester.param("boilTime", boilTime);
+        tester.param("twitterId", twitterId);
         tester.requestScope("image", new FileItem("upload.jpg", "image/jpeg", image));
-        
+
         tester.start("/api/ramens/create");
         CreateController controller = tester.getController();
         assertThat(controller, is(notNullValue()));
         assertThat(tester.isRedirect(), is(false));
         assertThat(tester.getDestinationPath(), is(nullValue()));
-        
+
         assertThat(tester.response.getStatus(), is(200));
         assertThat(tester.count(Ramen.class), is(1));
         Ramen stored = Datastore.query(Ramen.class).asSingle();
