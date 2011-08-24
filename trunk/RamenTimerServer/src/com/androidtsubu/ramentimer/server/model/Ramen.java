@@ -26,25 +26,27 @@ public class Ramen implements Serializable {
     @Attribute(version = true)
     @JSONHint(ignore = true)
     private Long version;
-    
+
     @Attribute(listener = CreationDate.class)
     private Date createdAt;
 
     @Attribute(listener = ModificationDate.class)
     private Date updatedAt;
-    
+
     private String name;
-    
+
     private String jan;
-    
+
     private int boilTime;
-    
+
+    private long twitterId;
+
     @Attribute(lob = true)
     private byte[] imageData;
-    
+
     @Attribute(persistent = false)
     private String imageUrl;
-    
+
     /**
      * Returns the key.
      *
@@ -125,6 +127,14 @@ public class Ramen implements Serializable {
         this.boilTime = boilTime;
     }
 
+    public void setTwitterId(long twitterId) {
+        this.twitterId = twitterId;
+    }
+
+    public long getTwitterId() {
+        return twitterId;
+    }
+
     @JSONHint(ignore = true)
     public byte[] getImageData() {
         return imageData;
@@ -175,7 +185,7 @@ public class Ramen implements Serializable {
         }
         return true;
     }
-    
+
     public String toJson() {
         return JSON.encode(this);
     }
