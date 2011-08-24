@@ -41,7 +41,7 @@ public class RamenService {
         Validators v = new Validators(input);
         v.add("name", v.required(), v.maxlength(100));
         v.add("jan", v.required(), v.maxlength(13));
-        v.add("boilTime", v.required(), v.integerType(), v.longRange(1, 300));
+        v.add("boilTime", v.required(), v.integerType(), v.longRange(1, 3540));
         v.add("twitterId", v.required(), v.integerType());
         v.add("image", v.required());
         if (v.validate() == false) {
