@@ -132,9 +132,11 @@ public class TimerActivity extends Activity {
 	private int alarm_img_default_resouse_id = R.drawable.img_alarm_default;
 	private int alarm_img_start_resouse_id = R.drawable.img_alarm_start;
 	private int alarm_img_end_resouse_id = R.drawable.img_alarm_end;
-
+	/**手動検索から来たよ*/
 	private boolean fromRamenSerach = false;
-
+	/**twitter認証がキャンセルされた*/
+	private boolean twitterauthorizationcancel = false;
+	
 	private Context getThis() {
 		return this;
 	}
@@ -401,6 +403,46 @@ public class TimerActivity extends Activity {
 
 		return dialog;
 	}
+	
+	/**
+	 * twitter認証確認ダイアログを
+	 * @param context
+	 * @return
+	 */
+	private AlertDialog getAuthorizationTwitterDialog(Context context){
+		Resources resources = getResources();
+		final String DIALOG_TITLE = resources
+				.getString(R.string.dialog_authorization_twitter_title);
+		final String DIALOG_BUTTON_OK = resources
+				.getString(R.string.dialog_authorization_twitter_authorization);
+		final String DIALOG_BUTTON_CANCEL = resources
+				.getString(R.string.dialog_authorization_twitter_cancel);
+
+		CustomAlertDialog dialog = new CustomAlertDialog(this,
+				R.style.CustomDialog);
+		dialog.setTitle(DIALOG_TITLE);
+		dialog.setButton(DIALOG_BUTTON_OK, new Dialog.OnClickListener() {
+			//twitterに認証するがクリックされた
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Intent intent = new Intent();
+				intent.setClass(TimerActivity.this, AuthorizationActivity.class);
+				startActivityForResult(intent, RequestCode.TIMER2AUTHORIZATION.ordinal());
+			}
+		});
+		dialog.setButton2(DIALOG_BUTTON_CANCEL, new Dialog.OnClickListener() {
+			//twitterに認証するがキャンセルされた
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				twitterauthorizationcancel = true;
+				//もう一度画面設定する
+				displaySetting(RequestCode.READER2TIMER.ordinal());
+			}
+		});
+
+		return dialog;
+		
+	}
 
 	/* 確認ダイアログの「はい」が押されたとき */
 	Dialog.OnClickListener onResetOkClick = new Dialog.OnClickListener() {
@@ -421,7 +463,7 @@ public class TimerActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		// unbindService(serviceConnection); // バインド解除
+		//unbindService(serviceConnection); // バインド解除
 		unregisterReceiver(receiver); // 登録解除
 		ramenTimerService.stopSelf(); // サービスは必要ないので終了させる。
 		ramenTimerService = null;
@@ -507,7 +549,7 @@ public class TimerActivity extends Activity {
 					timerLimit = (TextView) timerInfoInView
 							.findViewById(R.id.TimerLimitTextView);
 				} else {
-					if (fromRamenSerach) {
+					if (fromRamenSerach || twitterauthorizationcancel) {
 						timerInfoViewStub
 								.setLayoutResource(R.layout.activity_timer_only_jancode_fromserach);
 						timerInfoInView = timerInfoViewStub.inflate();
@@ -515,6 +557,11 @@ public class TimerActivity extends Activity {
 								.findViewById(R.id.JanCodeTextView);
 
 					} else {
+						if(!TwitterManager.getInstance().isAuthorization(this)){
+							//まだtwitter認証されていないのでtwitter認証するように促す
+							getAuthorizationTwitterDialog(this).show();
+							return;
+						}
 						// 登録フラグをたてる
 						registrationFlg = true;
 						// ActionBarのバーコードを登録と置き換える
@@ -776,6 +823,19 @@ public class TimerActivity extends Activity {
 		finish();
 	}
 
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == RequestCode.TIMER2AUTHORIZATION.ordinal()){
+			if(resultCode == RESULT_CANCELED){
+				twitterauthorizationcancel = true;
+			}
+			displaySetting(RequestCode.READER2TIMER.ordinal());
+		}
+	}
+
 	/**
 	 * チャルメラモードと通常モードの切り替え
 	 */
@@ -879,7 +939,6 @@ public class TimerActivity extends Activity {
 
 		// サービスにバインド
 		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-
 		// いったんアンバインドしてから再度バインド
 		unbindService(serviceConnection);
 		bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);

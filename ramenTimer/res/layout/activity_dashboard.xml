@@ -12,12 +12,12 @@
     	style="@style/TitleBar">
         <ImageButton
             style="@style/TitleBarAction"
-            android:src="@drawable/home_icon"/>
+            android:src="@drawable/home_icon" android:onClick="onClickLogo"/>
         <ImageView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_vertical"
-            android:src="@drawable/home_title_appname"/>
+            android:src="@drawable/home_title_appname" android:onClick="onClickTitle"/>
     </LinearLayout>
 
 <!-- RaimonBar -->

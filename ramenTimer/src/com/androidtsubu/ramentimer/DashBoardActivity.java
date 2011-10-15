@@ -1,8 +1,16 @@
 package com.androidtsubu.ramentimer;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
 import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -10,6 +18,8 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +28,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.androidtsubu.ramentimer.R.id;
 import com.androidtsubu.ramentimer.bugreport.AppUncaughtExceptionHandler;
@@ -30,31 +39,32 @@ public class DashBoardActivity extends Activity {
 	private NoodleManager manager = null;
 	private TextView textCountView;
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_dashboard);
 		// ヘルプのURL取得
 		TSUBU_WEB_ADDRESS = getResources().getString(R.string.help_url);
-		//ラーメンタイマーWebのURL取得
-		RAMEN_LIST_WEB_ADDRESS = getResources().getString(R.string.ramen_list_url);
+		// ラーメンタイマーWebのURL取得
+		RAMEN_LIST_WEB_ADDRESS = getResources().getString(
+				R.string.ramen_list_url);
 		textCountView = (TextView) findViewById(id.ramen_count);
 		// つ部ロゴを動かす
 		Button button = (Button) findViewById(R.id.ButtonLogo);
-		button.setAnimation(AnimationUtils.loadAnimation(this, R.anim.dashboard_tsubu_icon_action));
-		
+		button.setAnimation(AnimationUtils.loadAnimation(this,
+				R.anim.dashboard_tsubu_icon_action));
+
 		// 登録件数の呼び出し
 		manager = new NoodleManager(this);
 		doCountTask();
-		
+
 		String packegeName = getPackageName();
 		try {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
 					packegeName, PackageManager.GET_META_DATA);
 			TextView textView = (TextView) findViewById(id.ramen_version);
 			textView.setText(packageInfo.versionName
-					+ getString(R.string.dashboard_versionname_hai));			
+					+ getString(R.string.dashboard_versionname_hai));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -68,10 +78,8 @@ public class DashBoardActivity extends Activity {
 						.getString(R.string.dialog_no)));
 	}
 
-	
-	
 	/**
-	 *  メニュー内容を生成 
+	 * メニュー内容を生成
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,14 +95,13 @@ public class DashBoardActivity extends Activity {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		int id = item.getItemId();
 
-		//XML中のメニューボタンにアクセスするにはR.id以下を利用する
+		// XML中のメニューボタンにアクセスするにはR.id以下を利用する
 		if (id == R.id.help) {
-			gotoTsubuSite();			
+			gotoTsubuSite();
 		}
 		return true;
 	}
-	
-	
+
 	/**
 	 * タイマーのボタンが押されたとき
 	 * 
@@ -152,7 +159,7 @@ public class DashBoardActivity extends Activity {
 
 		gotoRamenListWeb();
 	}
-	
+
 	/**
 	 * 検索ボタンが押されたとき
 	 * 
@@ -162,7 +169,7 @@ public class DashBoardActivity extends Activity {
 
 		gotoRSerchActivity();
 	}
-	
+
 	/**
 	 * つ部のロゴが押されたとき
 	 * 
@@ -192,17 +199,17 @@ public class DashBoardActivity extends Activity {
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * 検索の起動
 	 */
 	private void gotoRSerchActivity() {
-		Intent intent = new Intent(this,RamenSearchActivity.class);
+		Intent intent = new Intent(this, RamenSearchActivity.class);
 		int requestCode = RequestCode.DASHBOARD2RAMENSEARCH.ordinal();
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
-	
+
 	/**
 	 * マイリストの起動
 	 */
@@ -232,7 +239,7 @@ public class DashBoardActivity extends Activity {
 		intent.setData(Uri.parse(RAMEN_LIST_WEB_ADDRESS));
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * つ部のWebサイトを開く
 	 */
@@ -242,7 +249,7 @@ public class DashBoardActivity extends Activity {
 		intent.setData(Uri.parse(TSUBU_WEB_ADDRESS));
 		startActivity(intent);
 	}
-	
+
 	/**
 	 * インテントがもどってきた時の動作 アクションバーが他のActivityで押さたときは
 	 * Dashboardまで戻って、目的のActivityを実行する
@@ -253,11 +260,12 @@ public class DashBoardActivity extends Activity {
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if(textCountView.getText().equals(getString(R.string.dashboard_countu_fail))){
-			//軒数取得に失敗していたらもう一度取得にいってみる
+		if (textCountView.getText().equals(
+				getString(R.string.dashboard_countu_fail))) {
+			// 軒数取得に失敗していたらもう一度取得にいってみる
 			doCountTask();
 		}
-		
+
 		if (resultCode == RESULT_OK) {
 			if (intent == null) {
 				return;
@@ -309,58 +317,94 @@ public class DashBoardActivity extends Activity {
 		// 前回バグで強制終了した場合は、ダイアログを表示する
 		AppUncaughtExceptionHandler.showBugReportDialogIfExist();
 	}
-	
+
 	/**
 	 * 軒数取得Taskを起動する
 	 */
-	private void doCountTask(){
+	private void doCountTask() {
 		CountTask task = new CountTask();
 		task.execute();
 	}
-	
+
 	/**
-	 * 件数取得用非同期Task
-	 * @author miguse
-	 *
+	 * Logoがクリックされた
+	 * 
+	 * @param view
 	 */
-	private class CountTask extends AsyncTask<String, Void, String>{
-		@Override
-		protected void onPreExecute() {
-			textCountView.setTextColor(getResources().getColor(R.color.count_message_getorfail));
-			textCountView.setText(R.string.dashboard_countu_get); 
-					
+	public void onClickLogo(View view) {
+		// テストとしてtwitter認証画面を表示させる
+		Intent intent = new Intent();
+		intent.setClass(this, AuthorizationActivity.class);
+		startActivity(intent);
+	}
+
+	/**
+	 * Postしてみる
+	 * 
+	 * @param view
+	 */
+	public void onClickTitle(View view) {
+		try {
+			NoodleMaster master = new NoodleMaster("9999999999", "てすてすラーメン", "", 180);
+			TwitterManager.getInstance().post(this, master);
+			Toast.makeText(this, "つぶやきました！", Toast.LENGTH_LONG).show();
+		} catch (TwitterException e) {
+			Log.e(DashBoardActivity.class.getName(), e.getMessage());
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+		}catch(Exception e2){
+			Log.e(DashBoardActivity.class.getName(), e2.getMessage());
+			Toast.makeText(this, e2.getMessage(), Toast.LENGTH_LONG).show();			
 		}
 		
+	}
+
+	/**
+	 * 件数取得用非同期Task
+	 * 
+	 * @author miguse
+	 * 
+	 */
+	private class CountTask extends AsyncTask<String, Void, String> {
+		@Override
+		protected void onPreExecute() {
+			textCountView.setTextColor(getResources().getColor(
+					R.color.count_message_getorfail));
+			textCountView.setText(R.string.dashboard_countu_get);
+
+		}
+
 		@Override
 		protected String doInBackground(String... areg0) {
-//			try {
-//				Thread.sleep(5000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
+			// try {
+			// Thread.sleep(5000);
+			// } catch (InterruptedException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+
 			try {
-				return getString(R.string.dashboard_toroku) + Integer.toString(manager.getMasterCount()) + getString(R.string.dashboard_countu);			
+				return getString(R.string.dashboard_toroku)
+						+ Integer.toString(manager.getMasterCount())
+						+ getString(R.string.dashboard_countu);
 			} catch (GaeException e) {
 				// TODO Auto-generated catch block
-				return getString(R.string.dashboard_countu_fail);			
+				return getString(R.string.dashboard_countu_fail);
 			}
 
-				
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 
-			if (result.equals(getString(R.string.dashboard_countu_fail))){						
-				textCountView.setTextColor(getResources().getColor(R.color.count_message_getorfail));
-			}else{
-				textCountView.setTextColor(getResources().getColor(R.color.count_message));
+			if (result.equals(getString(R.string.dashboard_countu_fail))) {
+				textCountView.setTextColor(getResources().getColor(
+						R.color.count_message_getorfail));
+			} else {
+				textCountView.setTextColor(getResources().getColor(
+						R.color.count_message));
 			}
-			textCountView.setText(result); 
+			textCountView.setText(result);
 		}
-			 
-		
+
 	}
 }

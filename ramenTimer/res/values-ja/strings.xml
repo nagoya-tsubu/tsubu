@@ -50,11 +50,30 @@
 	<string name="dialog_create_goto_back">戻る</string>
 	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
 
+	<!-- 登録画面のtwitter認証確認ダイアログで利用の文字列 -->
+	<string name="dialog_authorization_twitter_title">twitter認証を行いますか？</string>
+	<string name="dialog_authorization_twitter_authorization">認証</string>
+	<string name="dialog_authorization_twitter_cancel">キャンセル</string>
+	<!-- 登録画面のtwitter認証確認ダイアログで利用の文字列 -->
+
+	<!-- 登録画面のtwitterpost確認ダイアログで利用の文字列 -->
+	<string name="dialog_post_twitter_title">twitterに投稿しますか？</string>
+	<string name="dialog_post_twitter_post">投稿</string>
+	<string name="dialog_post_twitter_cancel">キャンセル</string>
+	<!-- 登録画面のtwitterpost確認ダイアログで利用の文字列 -->
+
+	<!-- 登録画面のtwitterpostで利用の文字列 -->
+	<string name="post_twitter_success">twitterに投稿しました </string>
+	<string name="post_twitter_failure">twitterへの投稿が失敗しました </string>
+	<!-- 登録画面のtwitterpost確認ダイアログで利用の文字列 -->
+
 	<!-- 登録画面の登録情報確認ダイアログで利用の文字列 -->
 	<string name="dialog_create_verification_title">これで登録しますか？</string>
 	<string name="dialog_create_verification_create">登録</string>
 	<string name="dialog_create_verification_back">戻る</string>
 	<!-- 登録画面の登録情報確認ダイアログで利用の文字列 -->
+
+
 
 	<!-- 履歴で利用の文字列 -->
 	<string name="history_history">履歴</string>
