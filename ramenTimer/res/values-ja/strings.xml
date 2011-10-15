@@ -42,6 +42,7 @@
 	<string name="create_quick_action_gallery">ギャラリー</string>
 	<string name="create_quick_action_camera">カメラ</string>
 	<string name="create_set_time_message">時間をセットしてください</string>
+	<string name="checkbox_twitter">Twitterに投稿する</string>
 	<!-- 登録画面で利用の文字列 -->
 
 	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
