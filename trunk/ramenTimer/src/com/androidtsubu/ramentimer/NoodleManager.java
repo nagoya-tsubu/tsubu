@@ -70,7 +70,9 @@ public class NoodleManager {
 		NoodleMaster master = noodleSqlController.getNoodleMaster(janCode);
 		if (master != null) {
 			// SQliteの商品マスタを返す
-			return master;
+			//test
+			return null;
+			//return master;
 		}
 		// GAEに問い合わせる
 		master = noodleGaeController.getNoodleMaster(janCode);
@@ -94,12 +96,13 @@ public class NoodleManager {
 		// SQliteにすでに登録されていないか調べる
 		NoodleMaster master = noodleSqlController.getNoodleMaster(noodleMaster
 				.getJanCode());
-		if (master != null) {
-			//削除する
-			
-			// 重複エラーを返す
-			throw new DuplexNoodleMasterException();
-		}
+//test
+		//		if (master != null) {
+//			//削除する
+//			
+//			// 重複エラーを返す
+//			throw new DuplexNoodleMasterException();
+//		}
 		// GAEに登録
 		noodleGaeController.create(noodleMaster);
 		// SQliteに登録

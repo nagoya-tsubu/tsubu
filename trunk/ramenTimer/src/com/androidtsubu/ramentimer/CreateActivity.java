@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import twitter4j.TwitterException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,6 +21,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,7 +87,6 @@ public class CreateActivity extends Activity {
 	
 	// 確認ダイアログ
 	AlertDialog verificationDialog =null;
-	
 	
 	// QuickAction のアイテム カメラ
 	ActionItem itemCamera = null;
@@ -693,6 +695,32 @@ public class CreateActivity extends Activity {
 	}
 
 	/**
+	 * twitterへの投稿確認Dialog
+	 */
+	private void showPostTwitterDialog(){
+		// twitter投稿確認ダイアログの作成
+		AlertDialog postTwitterDialog = new CustomAlertDialog(this, R.style.CustomDialog);
+		postTwitterDialog.setTitle(R.string.dialog_post_twitter_title);
+		postTwitterDialog.setButton(getString(R.string.dialog_post_twitter_post), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				progressMode();
+				PostTwitterTask task = new PostTwitterTask();
+				task.execute(noodleMaster);
+			}
+		});
+		postTwitterDialog.setButton2(getString(R.string.dialog_post_twitter_cancel), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				selectNextMode();
+			}
+		} );
+		postTwitterDialog.show();
+	}
+	
+	/**
 	 * UIから登録情報を集めて返す
 	 * 
 	 * @return
@@ -740,6 +768,7 @@ public class CreateActivity extends Activity {
 		private static final int RESULT_ERROR_GAE = 2; // Webへの登録でエラー
 		private static final int RESULT_DUPLEX = 3; // 重複登録
 
+		private GaeException exception = null;
 		/**
 		 * コンストラクタ
 		 * 
@@ -765,6 +794,7 @@ public class CreateActivity extends Activity {
 				return RESULT_DUPLEX;
 			} catch (GaeException e) {
 				Log.e("ramentimer.CreateActivity",ExceptionToStringConverter.convert(e));
+				this.exception = e;
 				return RESULT_ERROR_GAE;
 			} catch (java.sql.SQLException e) {
 				Log.e("ramentimer.CreateActivity",ExceptionToStringConverter.convert(e));
@@ -784,14 +814,24 @@ public class CreateActivity extends Activity {
 				Toast.makeText(activity, R.string.sql_complete, Toast.LENGTH_LONG).show();
 				// アニメーションの停止
 				progressIcon.clearAnimation();
-				break;
+				Handler handler = new Handler();
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						//twitterに投稿するかどうか聞く
+						showPostTwitterDialog();
+					}
+				});
+				return;
+				//break;
 			case RESULT_DUPLEX:
 				Toast.makeText(activity, R.string.sql_already_created, Toast.LENGTH_LONG).show();
 				// アニメーションの停止
 				progressIcon.clearAnimation();
 				break;
 			case RESULT_ERROR_GAE:
-				Toast.makeText(activity, R.string.sql_gae_entry_error, Toast.LENGTH_LONG)
+				//エラー内容にGAEからの戻り値を表示する
+				Toast.makeText(activity, getString(R.string.sql_gae_entry_error) + "\n" + exception.getMessage() , Toast.LENGTH_LONG)
 						.show();
 				// UIを入力可能モードにする
 				inputMode();
@@ -813,56 +853,111 @@ public class CreateActivity extends Activity {
 				activity.finish();
 			}
 		}
-		/**
-		 * ダイアログを返す。レイアウトはdialog_create_goto.xmlを参照
-		 * @return
-		 */
-		private AlertDialog getGotoDialog(){
-			Resources resources = getResources();
-			final String DIALOG_TIMERSTART_TITLE = resources.getString(R.string.dialog_create_goto_title);
-			final String DIALOG_TIMERSTART_TIMER = resources.getString(R.string.dialog_create_goto_timer);
-			final String DIALOG_TIMERSTART_BACK = resources.getString(R.string.dialog_create_goto_back);
-			
-			CustomAlertDialog dialog = new CustomAlertDialog(activity,R.style.CustomDialog);
-			dialog.setTitle(DIALOG_TIMERSTART_TITLE);
-			dialog.setButton(DIALOG_TIMERSTART_TIMER, onTimerClick);
-			dialog.setButton2(DIALOG_TIMERSTART_BACK, onHomeClick);
-			return dialog;			
-		}
-		/**
-		 * タイマーを起動のボタンが押されたとき
-		 */
-		private Dialog.OnClickListener onTimerClick = new Dialog.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int i) {
-				dialog.dismiss();
-				try{
-					callTimerActivity();
-				}catch(Exception e){
-					Toast.makeText(CreateActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-					activity.finish();					
-				}
-			}
-		};
-		/**
-		 * ホームに戻るのボタンが押されたとき
-		 */
-		private Dialog.OnClickListener onHomeClick = new Dialog.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int i) {
-				dialog.dismiss();
-				activity.finish();
-			}
-		};
 		
 		
 
 	}
+
+	/**
+	 * TwitterPost用AsynkTask
+	 * @author hide
+	 *
+	 */
+	private class PostTwitterTask extends AsyncTask<NoodleMaster, Integer, Boolean>{
+		private Exception ex = null;
+		
+		@Override
+		protected Boolean doInBackground(NoodleMaster... params) {
+			try {
+				TwitterManager.getInstance().post(CreateActivity.this, params[0]);
+			} catch (IllegalStateException e) {
+				this.ex = e;
+				Log.e(CreateActivity.class.getName(), e.getMessage(), e);
+				return false;
+			} catch (TwitterException e) {
+				this.ex = e;
+				Log.e(CreateActivity.class.getName(), e.getMessage(), e);
+				return false;
+			}
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if(result){
+				Toast.makeText(CreateActivity.this, getString(R.string.post_twitter_success), Toast.LENGTH_LONG).show();				
+			}else{
+				Toast.makeText(CreateActivity.this, getString(R.string.post_twitter_failure) + "\n" + ex.getMessage(), Toast.LENGTH_LONG).show();								
+			}
+			selectNextMode();
+		}
+		
+	}
+
+	/**
+	 * 次の行動を決定する
+	 */
+	private void selectNextMode(){
+		// リーダーから呼び出された場合
+		if (requestCode == RequestCode.READER2CREATE.ordinal()) {
+			// ダイアログで選択させる
+			Dialog dialog = getGotoDialog();
+			dialog.show();
+			// タイマーから呼び出された場合
+		} else if (requestCode == RequestCode.TIMER2CREATE.ordinal()) {
+			CreateActivity.this.finish();
+		}
+	}
+	
+	
+	/**
+	 * ダイアログを返す。レイアウトはdialog_create_goto.xmlを参照
+	 * @return
+	 */
+	private AlertDialog getGotoDialog(){
+		Resources resources = getResources();
+		final String DIALOG_TIMERSTART_TITLE = resources.getString(R.string.dialog_create_goto_title);
+		final String DIALOG_TIMERSTART_TIMER = resources.getString(R.string.dialog_create_goto_timer);
+		final String DIALOG_TIMERSTART_BACK = resources.getString(R.string.dialog_create_goto_back);
+		
+		CustomAlertDialog dialog = new CustomAlertDialog(this,R.style.CustomDialog);
+		dialog.setTitle(DIALOG_TIMERSTART_TITLE);
+		dialog.setButton(DIALOG_TIMERSTART_TIMER, onTimerClick);
+		dialog.setButton2(DIALOG_TIMERSTART_BACK, onHomeClick);
+		return dialog;			
+	}
+	/**
+	 * タイマーを起動のボタンが押されたとき
+	 */
+	private Dialog.OnClickListener onTimerClick = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int i) {
+			dialog.dismiss();
+			try{
+				callTimerActivity();
+			}catch(Exception e){
+				Toast.makeText(CreateActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+				finish();					
+			}
+		}
+	};
+	/**
+	 * ホームに戻るのボタンが押されたとき
+	 */
+	private Dialog.OnClickListener onHomeClick = new Dialog.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int i) {
+			dialog.dismiss();
+			finish();
+		}
+	};
+	
 	
 	/**
 	 * 0分0秒Exception
 	 * @author hide
-	 *
 	 */
 	private class CreateZeroException extends Exception{
 		/**
