@@ -31,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -818,8 +819,17 @@ public class CreateActivity extends Activity {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						//twitterに投稿するかどうか聞く
-						showPostTwitterDialog();
+//						//twitterに投稿するかどうか聞く
+//						showPostTwitterDialog();
+						CheckBox checkBoxTwitter = (CheckBox)findViewById(R.id.checkBoxTwitter);
+						if(checkBoxTwitter.isSelected()){
+							//twitterに投稿する
+							progressMode();
+							PostTwitterTask task = new PostTwitterTask();
+							task.execute(noodleMaster);
+						}else{
+							selectNextMode();							
+						}
 					}
 				});
 				return;

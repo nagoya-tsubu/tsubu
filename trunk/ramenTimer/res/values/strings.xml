@@ -45,6 +45,8 @@
 	<string name="create_quick_action_gallery">Gallery</string>
 	<string name="create_quick_action_camera">Camera</string>
 	<string name="create_set_time_message">Please set Cooking minutes</string>
+	<string name="checkbox_twitter">Post Twitter</string>
+	
 
 	<!-- 登録画面で利用の文字列 -->
 

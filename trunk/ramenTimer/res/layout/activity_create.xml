@@ -111,5 +111,10 @@
 		android:layout_gravity="center_horizontal"
 		android:visibility="gone"
 		/>
+	<CheckBox android:text="@string/checkbox_twitter"
+		android:id="@+id/checkBoxTwitter" 
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content">
+	</CheckBox>
 	
 </LinearLayout>

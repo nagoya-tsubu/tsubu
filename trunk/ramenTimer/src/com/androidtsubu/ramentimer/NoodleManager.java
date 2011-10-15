@@ -12,7 +12,6 @@ import android.content.res.Resources;
 import android.os.Environment;
 import android.os.Handler;
 
-
 /**
  * データの読み書きをするマネージャーです
  * 
@@ -27,11 +26,9 @@ public class NoodleManager {
 	private Context context;
 	/** image画像保存ディレクトリ */
 	public static File SAVE_IMAGE_DIRECTORY;
-	/**NoodleManager*/
+	/** NoodleManager */
 	private static NoodleManager noodleManager = null;
-	
-	
-	
+
 	/**
 	 * コンストラクタ
 	 * 
@@ -39,15 +36,17 @@ public class NoodleManager {
 	 */
 	public NoodleManager(Context _context) {
 		this.context = _context;
-		if(!hasExternalStorage()){
+		if (!hasExternalStorage()) {
 			Handler handler = new Handler();
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
-					CustomAlertDialog dialog = new CustomAlertDialog(context, R.style.CustomDialog);
+					CustomAlertDialog dialog = new CustomAlertDialog(context,
+							R.style.CustomDialog);
 					dialog.setTitle(R.string.alert_messeage);
-					dialog.setButton("OK",(OnClickListener)null);
-					dialog.setMessage(context.getString(R.string.No_Storage_Message));
+					dialog.setButton("OK", (OnClickListener) null);
+					dialog.setMessage(context
+							.getString(R.string.No_Storage_Message));
 					dialog.show();
 				}
 			});
@@ -56,8 +55,6 @@ public class NoodleManager {
 		noodleSqlController = new NoodleSqlController(context);
 	}
 
-	
-	
 	/**
 	 * JANコードを引数にSQliteやGAEから商品マスタを得ます
 	 * 
@@ -70,9 +67,7 @@ public class NoodleManager {
 		NoodleMaster master = noodleSqlController.getNoodleMaster(janCode);
 		if (master != null) {
 			// SQliteの商品マスタを返す
-			//test
-			return null;
-			//return master;
+			return master;
 		}
 		// GAEに問い合わせる
 		master = noodleGaeController.getNoodleMaster(janCode);
@@ -96,13 +91,12 @@ public class NoodleManager {
 		// SQliteにすでに登録されていないか調べる
 		NoodleMaster master = noodleSqlController.getNoodleMaster(noodleMaster
 				.getJanCode());
-//test
-		//		if (master != null) {
-//			//削除する
-//			
-//			// 重複エラーを返す
-//			throw new DuplexNoodleMasterException();
-//		}
+		if (master != null) {
+			// 削除する
+
+			// 重複エラーを返す
+			throw new DuplexNoodleMasterException();
+		}
 		// GAEに登録
 		noodleGaeController.create(noodleMaster);
 		// SQliteに登録
@@ -135,47 +129,54 @@ public class NoodleManager {
 
 	/**
 	 * マスタすべてを返す
+	 * 
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> getNoodleMastersForSqlite() throws SQLException{
+	public List<NoodleMaster> getNoodleMastersForSqlite() throws SQLException {
 		return noodleSqlController.getNoodleMasters();
 	}
-	
+
 	/**
 	 * JANコードで検索する
+	 * 
 	 * @param janCode
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> searchNoodleMastersLikeJanCode(String janCode) throws SQLException{
+	public List<NoodleMaster> searchNoodleMastersLikeJanCode(String janCode)
+			throws SQLException {
 		return noodleSqlController.getNoodleMastersLikeJanCode(janCode);
 	}
-	
+
 	/**
 	 * 名称で検索する
+	 * 
 	 * @param name
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> searchNoodleMastersLikeName(String name) throws SQLException{
+	public List<NoodleMaster> searchNoodleMastersLikeName(String name)
+			throws SQLException {
 		return noodleSqlController.getNoodleMastersLikeName(name);
 	}
-	
+
 	/**
 	 * 商品マスタを検索する
+	 * 
 	 * @param keyword
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleMaster> searchNoodleMaster(String keyword) throws SQLException{
+	public List<NoodleMaster> searchNoodleMaster(String keyword)
+			throws SQLException {
 		List<NoodleMaster> noodleMasters;
-		//JANコードで探してみる
-		noodleMasters =searchNoodleMastersLikeJanCode(keyword);
-		//名称で探してみる
+		// JANコードで探してみる
+		noodleMasters = searchNoodleMastersLikeJanCode(keyword);
+		// 名称で探してみる
 		List<NoodleMaster> noodleMasters2 = searchNoodleMastersLikeName(keyword);
-		for(NoodleMaster n2 : noodleMasters2){
-			if(!noodleMasters.contains(n2)){
+		for (NoodleMaster n2 : noodleMasters2) {
+			if (!noodleMasters.contains(n2)) {
 				noodleMasters.add(n2);
 			}
 		}
@@ -184,36 +185,40 @@ public class NoodleManager {
 
 	/**
 	 * 商品履歴を検索する
+	 * 
 	 * @param keyword
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoodleHistory> searchNoodleHistories(String keyword) throws SQLException{
+	public List<NoodleHistory> searchNoodleHistories(String keyword)
+			throws SQLException {
 		List<NoodleHistory> noodleHistories;
-		//JANコードで探してみる
-		noodleHistories = noodleSqlController.getNoodleHistoriesLikeJanCode(keyword);
-		//名称で探してみる
-		List<NoodleHistory> noodleHisotHistories2 = noodleSqlController.getNoodleHistoriesLikeName(keyword);
-		for(NoodleHistory n2 : noodleHisotHistories2){
-			if(!noodleHistories.contains(n2)){
+		// JANコードで探してみる
+		noodleHistories = noodleSqlController
+				.getNoodleHistoriesLikeJanCode(keyword);
+		// 名称で探してみる
+		List<NoodleHistory> noodleHisotHistories2 = noodleSqlController
+				.getNoodleHistoriesLikeName(keyword);
+		for (NoodleHistory n2 : noodleHisotHistories2) {
+			if (!noodleHistories.contains(n2)) {
 				noodleHistories.add(n2);
 			}
 		}
 		return noodleHistories;
 	}
-	
-	
+
 	/**
 	 * 外部ストレージチェック
 	 */
 	public boolean hasExternalStorage() {
-		if(SAVE_IMAGE_DIRECTORY != null){
+		if (SAVE_IMAGE_DIRECTORY != null) {
 			return true;
 		}
-		
+
 		String status = Environment.getExternalStorageState();
 		if (status.equals(Environment.MEDIA_MOUNTED)) {
-			SAVE_IMAGE_DIRECTORY = new File(Environment.getExternalStorageDirectory(),
+			SAVE_IMAGE_DIRECTORY = new File(
+					Environment.getExternalStorageDirectory(),
 					context.getPackageName());
 			if (!SAVE_IMAGE_DIRECTORY.exists()) {
 				SAVE_IMAGE_DIRECTORY.mkdirs();
@@ -222,30 +227,33 @@ public class NoodleManager {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 商品マスタの登録件数を返す
+	 * 
 	 * @return
 	 * @throws GaeException
 	 */
-	public int getMasterCount() throws GaeException{
+	public int getMasterCount() throws GaeException {
 		return noodleGaeController.getMasterCount();
 	}
-	
+
 	/**
 	 * GAEの情報でSQLiteの情報を上書きする
-	 * @throws SQLException 
-	 * @throws GaeException 
+	 * 
+	 * @throws SQLException
+	 * @throws GaeException
 	 */
-	public void synchronizeFromGaeToSqlite() throws SQLException, GaeException{
-		//SQLiteにある商品マスタリストを得る
+	public void synchronizeFromGaeToSqlite() throws SQLException, GaeException {
+		// SQLiteにある商品マスタリストを得る
 		List<NoodleMaster> masters = noodleSqlController.getNoodleMasters();
-		for(NoodleMaster n : masters){
-			//SQLiteにある商品マスタリストのバーコードから商品マスタを得る
-			NoodleMaster noodleMaster = noodleGaeController.getNoodleMaster(n.getJanCode());
+		for (NoodleMaster n : masters) {
+			// SQLiteにある商品マスタリストのバーコードから商品マスタを得る
+			NoodleMaster noodleMaster = noodleGaeController.getNoodleMaster(n
+					.getJanCode());
 			noodleSqlController.updateNoodleMater(noodleMaster);
 		}
-		
+
 	}
 
 }
