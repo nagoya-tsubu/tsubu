@@ -115,7 +115,9 @@
 	android:layout_height="wrap_content" 
 	android:layout_width="fill_parent"
 	android:gravity="center_vertical">	
-		<TextView android:text="@string/checkbox_twitter" 
+		<TextView
+		    style="@style/InformationFormText2"
+		    android:text="@string/checkbox_twitter" 
 			android:id="@+id/textView1" 
 			android:layout_width="wrap_content" 
 			android:layout_height="fill_parent"
