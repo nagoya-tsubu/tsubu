@@ -332,4 +332,9 @@
 		<item name="android:layout_gravity">center</item>
 		<item name="android:gravity">center</item>
 	</style>
+
+    <style name="Theme.Transparent" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@color/searchactivity_background</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

@@ -33,5 +33,6 @@
 	<!-- 
 	<color name="button_disabled">#dddddddd</color>
 	<color name="button_enabled">#ff333333</color>
-	 -->	
+	 -->
+	<color name="searchactivity_background">#00ff0000</color>	
 </resources>
