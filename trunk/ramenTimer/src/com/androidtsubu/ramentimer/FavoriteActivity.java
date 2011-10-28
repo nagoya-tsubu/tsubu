@@ -38,9 +38,10 @@ public class FavoriteActivity extends ListActivity {
 	TextView emptyFavoriteText;
 	// 登録情報のリスト
 	private List<NoodleMaster> list = new ArrayList<NoodleMaster>();
-	private ProgressDialog dialog;
 	private NoodleManager manager;
-
+	private SearchKind kind = SearchKind.FAVORITE;
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,9 +55,22 @@ public class FavoriteActivity extends ListActivity {
 
 		// 登録情報の呼び出し
 		manager = new NoodleManager(this);
-		SearchTask task = new SearchTask();
-		task.execute("");
+		search("");
 	}
+	
+	/**
+	 * 検索を開始する
+	 * @param searchString
+	 */
+	private void search(String searchString){
+		//検索Activityを呼び出す
+		Intent intent = new Intent();
+		intent.putExtra(SearchActivity.KEY_SEARCH_KIND, kind.ordinal());
+		intent.putExtra(SearchActivity.KEY_SEARCH_STRING, searchString);
+		intent.setClass(this, SearchActivity.class);		
+		startActivityForResult(intent, RequestCode.FAVORITE2SEARCH.ordinal());
+	}
+	
 	
 	/**
 	 * 描画する
@@ -90,8 +104,6 @@ public class FavoriteActivity extends ListActivity {
 		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
 				RequestCode.FAVORITE2TIMER.ordinal());
 		intent.putExtra(TimerActivity.KEY_NOODLE_MASTER, nm);
-		// //履歴も渡す @hideponm
-		// intent.putExtra(TimerActivity.KEY_NOODLE_HISTORY, nh);
 		startActivityForResult(intent, RequestCode.FAVORITE2TIMER.ordinal());
 	}
 
@@ -109,6 +121,13 @@ public class FavoriteActivity extends ListActivity {
 				// Intentをダッシュボードまで戻す。
 				// 呼び出したインテントが空の場合は、処理を終了する
 				finish();
+			}
+		}
+		if(requestCode == RequestCode.FAVORITE2SEARCH.ordinal()){
+			if(RESULT_OK == resultCode){
+				//検索結果を取得して結果を描画する
+				list = intent.getParcelableArrayListExtra(kind.getKey());
+				draw();
 			}
 		}
 	}
@@ -252,74 +271,12 @@ public class FavoriteActivity extends ListActivity {
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		//検索文字列で検索する
 		String key = searchEdit.getText().toString();
-		SearchTask task = new SearchTask();
-		task.execute(key);
+		search(key);
 	}
 	
-	/**
-	 * 検索中ダイアログを作成する
-	 */
-	private void showSearchDialog(){
-		dialog = new CustomProgressDialog(this,R.style.CustomDialog);
-		dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_icon));
-		dialog.setTitle(getResources().getString(R.string.search_searching));
-		dialog.show();
-	}
 
-	/**
-	 * 検索中ダイアログを消去する
-	 */
-	private void dismissSearchDialog(){
-		if(dialog != null){
-			dialog.dismiss();
-		}
-	}
 	
 	
-	/**
-	 * 検索用非同期Task
-	 * @author morikawa
-	 *
-	 */
-	private class SearchTask extends AsyncTask<String, Void, List<NoodleMaster>>{
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			showSearchDialog();
-		}
-
-		@Override
-		protected void onPostExecute(List<NoodleMaster> result) {
-			// TODO Auto-generated method stub
-			dismissSearchDialog();
-			list = result;
-			draw();
-		}
-
-		@Override
-		protected List<NoodleMaster> doInBackground(String... arg0) {
-//			try {
-//				Thread.sleep(5000);
-//			} catch (InterruptedException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-			try {
-				if(arg0[0] == null || arg0[0].equals("")){
-					//べたでひっぱってくる
-					return manager.getNoodleMastersForSqlite();
-				}
-				//キーで検索
-				return manager.searchNoodleMaster(arg0[0]);
-			} catch (SQLException e) {
-				Toast.makeText(FavoriteActivity.this, R.string.search_alert, Toast.LENGTH_LONG).show();
-				return null;
-			}
-		}
-	}
 
 
 }
