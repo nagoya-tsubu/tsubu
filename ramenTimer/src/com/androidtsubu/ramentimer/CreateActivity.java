@@ -822,7 +822,8 @@ public class CreateActivity extends Activity {
 //						//twitterに投稿するかどうか聞く
 //						showPostTwitterDialog();
 						CheckBox checkBoxTwitter = (CheckBox)findViewById(R.id.checkBoxTwitter);
-						if(checkBoxTwitter.isSelected()){
+
+						if(checkBoxTwitter.isChecked()){
 							//twitterに投稿する
 							progressMode();
 							PostTwitterTask task = new PostTwitterTask();

@@ -39,9 +39,7 @@ public class HistoryActivity extends ListActivity {
 	private NoodleManager manager = null;
 	//データがない場合
 	private TextView emptyHistoryText = null;
-	/**検索中ダイアログ*/
-	private ProgressDialog searchDialog;
-
+	private SearchKind kind = SearchKind.HISTORY;
 	
 	
 	// 履歴情報のリスト
@@ -54,16 +52,28 @@ public class HistoryActivity extends ListActivity {
 		setContentView(R.layout.activity_history);
 		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
 		emptyHistoryText = (TextView)findViewById(R.id.TextViewEmptyHistory);
-		// 履歴の呼び出し
-		manager = new NoodleManager(this);
-		SearchTask task = new SearchTask();
-		task.execute("");
-		
 		// Viewの取得
 		//searchEdit = (EditText) findViewById(R.id.title_edit);
 		titleText = (TextView) findViewById(R.id.title_text);
+		// 履歴の呼び出し
+		manager = new NoodleManager(this);
+		search("");
 	}
 
+	/**
+	 * 検索する
+	 * @param searchString
+	 */
+	private void search(String searchString){
+		//検索Activityを呼び出す
+		Intent intent = new Intent();
+		intent.putExtra(SearchActivity.KEY_SEARCH_KIND , kind.ordinal());
+		intent.putExtra(SearchActivity.KEY_SEARCH_STRING, searchString);
+		intent.setClass(this, SearchActivity.class);
+		startActivityForResult(intent, RequestCode.HISTORY2SEARCH.ordinal());
+	}
+	
+	
 	/**
 	 * リストがクリックされた時の動作
 	 */
@@ -99,6 +109,13 @@ public class HistoryActivity extends ListActivity {
 				// Intentをダッシュボードまで戻す。
 				// 呼び出したインテントが空の場合は、処理を終了する
 				finish();
+			}
+		}
+		if(requestCode == RequestCode.FAVORITE2SEARCH.ordinal()){
+			if(RESULT_OK == resultCode){
+				//検索結果を取り出す
+				list = intent.getParcelableArrayListExtra(kind.getKey());
+				draw();
 			}
 		}
 	}
@@ -272,70 +289,7 @@ public class HistoryActivity extends ListActivity {
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		//検索文字列で検索する
 		String key = searchEdit.getText().toString();
-		SearchTask task = new SearchTask();
-		task.execute(key);
+		search(key);
 	}
 	
-	/**
-	 * 検索中ダイアログを作成する
-	 */
-	private void showSearchDialog(){
-		searchDialog = new CustomProgressDialog(this,R.style.CustomDialog);
-		searchDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		searchDialog.setTitle(getResources().getString(R.string.search_searching));
-		searchDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_icon));
-		searchDialog.show();
-	}
-
-	/**
-	 * 検索中ダイアログを消去する
-	 */
-	private void dismissSearchDialog(){
-		if(searchDialog != null){
-			searchDialog.dismiss();
-		}
-	}
-	
-	
-	/**
-	 * 検索用非同期Task
-	 * @author morikawa
-	 *
-	 */
-	private class SearchTask extends AsyncTask<String, Void, List<NoodleHistory>>{
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			showSearchDialog();
-		}
-
-		@Override
-		protected void onPostExecute(List<NoodleHistory> result) {
-			// TODO Auto-generated method stub
-			dismissSearchDialog();
-			list = result;
-			draw();
-		}
-
-		@Override
-		protected List<NoodleHistory> doInBackground(String... arg0) {
-//			try {
-//				Thread.sleep(5000);
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			try {
-				if(arg0[0] == null || arg0[0].equals("")){
-					return manager.getNoodleHistories();
-				}
-				return manager.searchNoodleHistories(arg0[0]);
-			} catch (SQLException e) {
-				Toast.makeText(HistoryActivity.this, R.string.search_alert, Toast.LENGTH_LONG).show();
-				return null;
-			}
-		}
-	}
 }

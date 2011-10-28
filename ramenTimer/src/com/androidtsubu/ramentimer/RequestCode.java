@@ -23,6 +23,8 @@ public enum RequestCode {
 	DASHBOARD2RAMENSEARCH,//ダッシュボードから商品検索
 	RAMENSEARCH2READER,	//手入力JANコードからリーダー
 	TIMER2AUTHORIZATION,	//タイマーからtwitter認証
+	FAVORITE2SEARCH,		//お気に入りから検索
+	HISTORY2SEARCH,		//履歴から検索
 	//ActionBar用
 	ACTION_READER,		//アクションバーの読込ボタンが押された場合
 	ACTION_HISTORY,		//アクションバーの履歴ボタンが押された場合
