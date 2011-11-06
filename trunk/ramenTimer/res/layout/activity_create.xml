@@ -92,17 +92,8 @@
 			android:layout_width="fill_parent"
 			android:gravity="center_vertical"
 			android:text="@string/create_time"/>			
-		<include layout="@layout/timer_set"/>
-	</LinearLayout> 
-
-
-	<Button
-		android:id="@+id/CreateButton"
-		android:text="@string/create_create"
-		android:layout_gravity="center_horizontal"
-		android:onClick="onCreateClick"
-        style="@style/ButtonStyle"
-		/>
+ 		<include layout="@layout/timer_set"/>
+	</LinearLayout>
 	<ImageView
 		android:id="@+id/ProgressIcon"
 		android:src="@drawable/img_progress"
@@ -111,18 +102,21 @@
 		android:layout_gravity="center_horizontal"
 		android:visibility="gone"
 		/>
-	<LinearLayout android:id="@+id/linearLayout1" 
-	android:layout_height="wrap_content" 
-	android:layout_width="fill_parent"
-	android:gravity="center_vertical">	
-		<TextView
+
+	<LinearLayout
+	    android:id="@+id/linearLayout1"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center|center_vertical"
+	    android:padding="8dip">
+
+	    <TextView
+		    android:id="@+id/textView1"
 		    style="@style/InformationFormText2"
-		    android:text="@string/checkbox_twitter" 
-			android:id="@+id/textView1" 
-			android:layout_width="wrap_content" 
-			android:layout_height="fill_parent"
-			android:layout_weight="1"
-			android:gravity="center_vertical">
+		    android:layout_width="wrap_content"
+		    android:layout_height="fill_parent"
+		    android:gravity="center_vertical"
+		    android:text="@string/checkbox_twitter">
 		</TextView>
 		<CheckBox android:text=""
 			android:layout_gravity="right"
@@ -131,4 +125,20 @@
 			android:layout_height="wrap_content">
 		</CheckBox>
 	</LinearLayout>
+
+	<LinearLayout
+	    android:id="@+id/linearLayout2"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    android:padding="8dip">
+
+		<Button
+		    android:id="@+id/CreateButton"
+		    style="@style/ButtonStyle"
+		    android:onClick="onCreateClick"
+		    android:text="@string/create_create" />
+
+	</LinearLayout>
+
 </LinearLayout>
