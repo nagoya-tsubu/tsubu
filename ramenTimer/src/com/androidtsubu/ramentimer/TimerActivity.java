@@ -22,6 +22,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewStub;
@@ -157,7 +158,12 @@ public class TimerActivity extends Activity {
 				return;
 			}
 			// アンバインドする
-			unbindService(serviceConnection);
+			try{
+				unbindService(serviceConnection);
+			}catch(IllegalArgumentException ex){
+				//Service Not Registered対策。ログだけ残す @hideponm
+				Log.e(TimerActivity.class.getName(), ex.getMessage(), ex);
+			}
 			// サービスを停止する
 			ramenTimerService.stop();
 

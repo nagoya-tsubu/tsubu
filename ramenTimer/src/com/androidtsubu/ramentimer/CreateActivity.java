@@ -250,7 +250,7 @@ public class CreateActivity extends Activity {
 					 * Xperia対策：セットしたファイル名の通りに画像が作られないので、getData()からUriを取得
 					 */					
 					uri = mPictureUri;
-					// Experia 2.1対策
+					// Xperia 2.1対策
 					if (intent != null){
 						Uri _uri = intent.getData();
 						if(_uri != null)
@@ -693,32 +693,6 @@ public class CreateActivity extends Activity {
 	 */
 	public void onLogoClick(View v) {
 		finish();
-	}
-
-	/**
-	 * twitterへの投稿確認Dialog
-	 */
-	private void showPostTwitterDialog(){
-		// twitter投稿確認ダイアログの作成
-		AlertDialog postTwitterDialog = new CustomAlertDialog(this, R.style.CustomDialog);
-		postTwitterDialog.setTitle(R.string.dialog_post_twitter_title);
-		postTwitterDialog.setButton(getString(R.string.dialog_post_twitter_post), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				progressMode();
-				PostTwitterTask task = new PostTwitterTask();
-				task.execute(noodleMaster);
-			}
-		});
-		postTwitterDialog.setButton2(getString(R.string.dialog_post_twitter_cancel), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				selectNextMode();
-			}
-		} );
-		postTwitterDialog.show();
 	}
 	
 	/**
