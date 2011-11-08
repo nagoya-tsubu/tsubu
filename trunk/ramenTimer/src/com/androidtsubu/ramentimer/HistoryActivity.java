@@ -111,7 +111,7 @@ public class HistoryActivity extends ListActivity {
 				finish();
 			}
 		}
-		if(requestCode == RequestCode.FAVORITE2SEARCH.ordinal()){
+		if(requestCode == RequestCode.HISTORY2SEARCH.ordinal()){
 			if(RESULT_OK == resultCode){
 				//検索結果を取り出す
 				list = intent.getParcelableArrayListExtra(kind.getKey());

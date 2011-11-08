@@ -92,7 +92,7 @@ public class SearchActivity extends Activity {
 		@Override
 		protected List<NoodleHistory> doInBackground(String... arg0) {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -160,7 +160,7 @@ public class SearchActivity extends Activity {
 		@Override
 		protected List<NoodleMaster> doInBackground(String... arg0) {
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(200);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

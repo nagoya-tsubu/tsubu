@@ -58,16 +58,10 @@
 	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
 
 	<!-- 登録画面のtwitter認証確認ダイアログで利用の文字列 -->
-	<string name="dialog_authorization_twitter_title">authorization twitter?</string>
+	<string name="dialog_authorization_twitter_title">Noodle registration requires authorization of twitter. \n authorization twitter?</string>
 	<string name="dialog_authorization_twitter_authorization">Authorization</string>
 	<string name="dialog_authorization_twitter_cancel">Cancel</string>
 	<!-- 登録画面のtwitter認証確認ダイアログで利用の文字列 -->
-
-	<!-- 登録画面のtwitterpost確認ダイアログで利用の文字列 -->
-	<string name="dialog_post_twitter_title">post twitter?</string>
-	<string name="dialog_post_twitter_post">Post</string>
-	<string name="dialog_post_twitter_cancel">Cancel</string>
-	<!-- 登録画面のtwitterpost確認ダイアログで利用の文字列 -->
 
 	<!-- 登録画面のtwitterpostで利用の文字列 -->
 	<string name="post_twitter_success">twitter post success! </string>

@@ -228,7 +228,11 @@ public class NoodleSqlController {
 				throw new SQLException("cursor is null");
 			}
 			while (cursor.moveToNext()) {
-				histories.add(createNoodleHistory(cursor));
+				NoodleHistory history = createNoodleHistory(cursor);
+				//履歴がきちんと作成できたらリストに追加する
+				if(history != null){
+					histories.add(history);
+				}
 			}
 			return histories;
 		} finally {
@@ -391,6 +395,10 @@ public class NoodleSqlController {
 			}
 			int boiltime = cursor.getInt(cursor.getColumnIndex("boiltime"));
 			NoodleMaster noodleMaster = getNoodleMaster(jancode);
+			if(noodleMaster == null){
+				//該当する商品マスタがないので履歴に表示しない
+				return null;
+			}
 			return new NoodleHistory(noodleMaster, boiltime, measuretime);
 		} catch (SQLiteException ex) {
 			throw new SQLException(ExceptionToStringConverter.convert(ex));
