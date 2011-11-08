@@ -116,6 +116,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="fill_parent"
 		    android:gravity="center_vertical"
+		    android:padding="8dip"
 		    android:text="@string/checkbox_twitter">
 		</TextView>
 		<CheckBox android:text=""
