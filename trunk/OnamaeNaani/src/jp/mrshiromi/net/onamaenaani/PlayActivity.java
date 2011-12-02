@@ -49,7 +49,7 @@ public class PlayActivity extends BaseActivity {
 				isActive = true;
 				break;
 			case MSG_SHOW_ANIMAL:
-
+				isActive = false;
 				showAnimal((ViewHolder) msg.obj);
 				break;
 			case MSG_GO_ANIMAL_ACTIVITY:
@@ -76,7 +76,8 @@ public class PlayActivity extends BaseActivity {
 					((ViewFlipper) Shabon.mShabon)
 							.setDisplayedChild(IMG_SHABON);
 				} catch (ClassCastException e) {
-
+					e.printStackTrace();
+					
 					ViewFlipper vf = (ViewFlipper) ((FrameLayout) Shabon.mShabon)
 							.findViewById(R.id.flipper);
 					vf.setDisplayedChild(IMG_SHABON);
@@ -84,6 +85,7 @@ public class PlayActivity extends BaseActivity {
 				Shabon.startAnimation();
 			}
 		} catch (IndexOutOfBoundsException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -91,7 +93,7 @@ public class PlayActivity extends BaseActivity {
 	private final OnClickListener mShabonClickListener = new OnClickListener() {
 
 		@Override
-		public void onClick(View v) {
+		public synchronized void onClick(View v) {
 			if (isActive) {
 				ViewHolder shabon = (ViewHolder) v.getTag();
 				removeMessages();
