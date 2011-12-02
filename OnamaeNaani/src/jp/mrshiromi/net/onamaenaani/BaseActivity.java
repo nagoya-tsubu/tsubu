@@ -1,6 +1,5 @@
 package jp.mrshiromi.net.onamaenaani;
 
-import jp.mrshiromi.net.onamaenaani.util.OnamaeAnimUtil;
 import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioManager;
