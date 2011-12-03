@@ -255,12 +255,16 @@
 		<item name="android:bottomDark">@android:color/transparent</item>
 		<item name="android:bottomMedium">@android:color/transparent</item>
 	</style>
-	<style name="CustomDialog" parent="@android:style/Theme.Dialog">
-		<item name="android:windowBackground">@drawable/custom_dialog_bg</item>
-		<item name="android:textColorPrimary">@color/primary_text</item>
-		<item name="android:buttonStyle">@style/ButtonStyle</item>
-	</style>
 
+
+	<style name="CustomDialog" parent="@android:style/Theme.Dialog">
+	  	<item name="android:windowBackground">@drawable/custom_dialog_bg</item>
+	  	<item name="android:textColorPrimary">@color/primary_text</item>
+		<item name="android:buttonStyle">@style/ButtonStyle</item>
+		<item name="android:alertDialogStyle">@style/AlertDialog</item>		
+	</style>
+	    
+	    
 	<!-- QuickAction styles -->
 	<style name="Animations" />
 
@@ -332,7 +336,6 @@
 		<item name="android:layout_gravity">center</item>
 		<item name="android:gravity">center</item>
 	</style>
-
     <style name="Theme.Transparent" parent="android:style/Theme.Translucent">
         <item name="android:windowBackground">@color/searchactivity_background</item>
         <item name="android:windowNoTitle">true</item>

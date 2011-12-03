@@ -28,8 +28,8 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -133,11 +133,11 @@ public class TimerActivity extends Activity {
 	private int alarm_img_default_resouse_id = R.drawable.img_alarm_default;
 	private int alarm_img_start_resouse_id = R.drawable.img_alarm_start;
 	private int alarm_img_end_resouse_id = R.drawable.img_alarm_end;
-	/**手動検索から来たよ*/
+	/** 手動検索から来たよ */
 	private boolean fromRamenSerach = false;
-	/**twitter認証がキャンセルされた*/
+	/** twitter認証がキャンセルされた */
 	private boolean twitterauthorizationcancel = false;
-	
+
 	private Context getThis() {
 		return this;
 	}
@@ -158,11 +158,14 @@ public class TimerActivity extends Activity {
 				return;
 			}
 			// アンバインドする
-			try{
+			try {
 				unbindService(serviceConnection);
-			}catch(IllegalArgumentException ex){
-				//Service Not Registered対策。ログだけ残す @hideponm
+			} catch (IllegalArgumentException ex) {
+				// Service Not Registered対策。ログだけ残す @hideponm
 				Log.e(TimerActivity.class.getName(), ex.getMessage(), ex);
+				// debug
+				Toast.makeText(TimerActivity.this, ex.getMessage(),
+						Toast.LENGTH_LONG).show();
 			}
 			// サービスを停止する
 			ramenTimerService.stop();
@@ -409,45 +412,76 @@ public class TimerActivity extends Activity {
 
 		return dialog;
 	}
-	
+
+	// private void getAuthorizationTwitterDialog(Context context) {
+	// Resources resources = getResources();
+	// final String DIALOG_TITLE = resources
+	// .getString(R.string.dialog_authorization_twitter_title);
+	// final String DIALOG_MESSAGE = resources
+	// .getString(R.string.dialog_authorization_twitter_message);
+	// final String DIALOG_BUTTON_OK = resources
+	// .getString(R.string.dialog_authorization_twitter_authorization);
+	// final String DIALOG_BUTTON_CANCEL = resources
+	// .getString(R.string.dialog_authorization_twitter_cancel);
+	//
+	// // CustomerAlertDialogActivityを呼び出す
+	// Intent intent = new Intent();
+	// intent.setClass(context, CustomerAlertDialogActivity.class);
+	// intent.putExtra(CustomerAlertDialogActivity.KEY_TITLE, DIALOG_TITLE);
+	// intent.putExtra(CustomerAlertDialogActivity.KEY_MESSAGE, DIALOG_MESSAGE);
+	// intent.putExtra(CustomerAlertDialogActivity.KEY_BUTTON1,
+	// DIALOG_BUTTON_OK);
+	// intent.putExtra(CustomerAlertDialogActivity.KEY_BUTTON2,
+	// DIALOG_BUTTON_CANCEL);
+	// startActivityForResult(intent, 1);
+	// }
+
 	/**
 	 * twitter認証確認ダイアログを
+	 * 
 	 * @param context
 	 * @return
 	 */
-	private AlertDialog getAuthorizationTwitterDialog(Context context){
+	private CustomAlertDialog getAuthorizationTwitterDialog(Context context) {
 		Resources resources = getResources();
 		final String DIALOG_TITLE = resources
 				.getString(R.string.dialog_authorization_twitter_title);
+		final String DIALOG_MESSAGE = resources
+				.getString(R.string.dialog_authorization_twitter_message);
 		final String DIALOG_BUTTON_OK = resources
 				.getString(R.string.dialog_authorization_twitter_authorization);
 		final String DIALOG_BUTTON_CANCEL = resources
 				.getString(R.string.dialog_authorization_twitter_cancel);
 
-		CustomAlertDialog dialog = new CustomAlertDialog(this,
+		// CustomAlertDialog2 dialog = new CustomAlertDialog2(context,
+		// DIALOG_TITLE, DIALOG_MESSAGE, DIALOG_BUTTON_OK,
+		// DIALOG_BUTTON_CANCEL);
+		CustomAlertDialog dialog = new CustomAlertDialog(context,
 				R.style.CustomDialog);
 		dialog.setTitle(DIALOG_TITLE);
+		dialog.setMessage(DIALOG_MESSAGE);
 		dialog.setButton(DIALOG_BUTTON_OK, new Dialog.OnClickListener() {
-			//twitterに認証するがクリックされた
+			// twitterに認証するがクリックされた
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intent = new Intent();
 				intent.setClass(TimerActivity.this, AuthorizationActivity.class);
-				startActivityForResult(intent, RequestCode.TIMER2AUTHORIZATION.ordinal());
+				startActivityForResult(intent,
+						RequestCode.TIMER2AUTHORIZATION.ordinal());
 			}
 		});
 		dialog.setButton2(DIALOG_BUTTON_CANCEL, new Dialog.OnClickListener() {
-			//twitterに認証するがキャンセルされた
+			// twitterに認証するがキャンセルされた
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				twitterauthorizationcancel = true;
-				//もう一度画面設定する
+				// もう一度画面設定する
 				displaySetting(RequestCode.READER2TIMER.ordinal());
 			}
 		});
 
 		return dialog;
-		
+
 	}
 
 	/* 確認ダイアログの「はい」が押されたとき */
@@ -469,7 +503,7 @@ public class TimerActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		//unbindService(serviceConnection); // バインド解除
+		// unbindService(serviceConnection); // バインド解除
 		unregisterReceiver(receiver); // 登録解除
 		ramenTimerService.stopSelf(); // サービスは必要ないので終了させる。
 		ramenTimerService = null;
@@ -563,8 +597,9 @@ public class TimerActivity extends Activity {
 								.findViewById(R.id.JanCodeTextView);
 
 					} else {
-						if(!TwitterManager.getInstance().isAuthorization(this)){
-							//まだtwitter認証されていないのでtwitter認証するように促す
+						if (!TwitterManager.getInstance().isAuthorization(this)) {
+							// まだtwitter認証されていないのでtwitter認証するように促す
+							// getAuthorizationTwitterDialog(this);
 							getAuthorizationTwitterDialog(this).show();
 							return;
 						}
@@ -829,13 +864,12 @@ public class TimerActivity extends Activity {
 		finish();
 	}
 
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode == RequestCode.TIMER2AUTHORIZATION.ordinal()){
-			if(resultCode == RESULT_CANCELED){
+		if (requestCode == RequestCode.TIMER2AUTHORIZATION.ordinal()) {
+			if (resultCode == RESULT_CANCELED) {
 				twitterauthorizationcancel = true;
 			}
 			displaySetting(RequestCode.READER2TIMER.ordinal());
@@ -956,7 +990,5 @@ public class TimerActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onConfigurationChanged(newConfig);
 	}
-	
-	
 
 }
