@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest 
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	package="com.androidtsubu.ramentimer" android:versionName="0.1.4" android:versionCode="6">
+	package="com.androidtsubu.ramentimer" android:versionName="0.2.0" android:versionCode="6">
 	<application 
 		android:icon="@drawable/icon"
 	    android:theme="@style/CustomTheme"
@@ -49,6 +49,7 @@
 		    android:configChanges="keyboardHidden|orientation"
 		    android:theme="@style/Theme.Transparent"
 		    android:name="SearchActivity"></activity>
+		<activity android:name="CustomerAlertDialogActivity"></activity>
 	</application>
 	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7"/>
 	<uses-permission 
