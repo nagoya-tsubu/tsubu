@@ -52,7 +52,8 @@
 	<!-- 登録画面からタイマー起動確認のダイアログで利用の文字列 -->
 
 	<!-- 登録画面のtwitter認証確認ダイアログで利用の文字列 -->
-	<string name="dialog_authorization_twitter_title">登録にはtwitter認証が必要です。\n twitter認証を行いますか？</string>
+	<string name="dialog_authorization_twitter_title">確認</string>
+	<string name="dialog_authorization_twitter_message">登録にはtwitter認証が必要です。\n twitter認証を行いますか？</string>
 	<string name="dialog_authorization_twitter_authorization">認証</string>
 	<string name="dialog_authorization_twitter_cancel">キャンセル</string>
 	<!-- 登録画面のtwitter認証確認ダイアログで利用の文字列 -->
