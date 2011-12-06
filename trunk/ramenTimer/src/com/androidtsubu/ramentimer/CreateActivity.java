@@ -852,7 +852,6 @@ public class CreateActivity extends Activity {
 					@Override
 					public void run() {
 						// //twitterに投稿するかどうか聞く
-						// showPostTwitterDialog();
 						if (checkBoxTwitter.isChecked()) {
 							// twitterに投稿する
 							progressMode();

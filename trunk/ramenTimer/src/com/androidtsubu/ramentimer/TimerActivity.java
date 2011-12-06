@@ -164,8 +164,8 @@ public class TimerActivity extends Activity {
 				// Service Not Registered対策。ログだけ残す @hideponm
 				Log.e(TimerActivity.class.getName(), ex.getMessage(), ex);
 				// debug
-				Toast.makeText(TimerActivity.this, ex.getMessage(),
-						Toast.LENGTH_LONG).show();
+				// Toast.makeText(TimerActivity.this, ex.getMessage(),
+				// Toast.LENGTH_LONG).show();
 			}
 			// サービスを停止する
 			ramenTimerService.stop();
@@ -413,31 +413,8 @@ public class TimerActivity extends Activity {
 		return dialog;
 	}
 
-	// private void getAuthorizationTwitterDialog(Context context) {
-	// Resources resources = getResources();
-	// final String DIALOG_TITLE = resources
-	// .getString(R.string.dialog_authorization_twitter_title);
-	// final String DIALOG_MESSAGE = resources
-	// .getString(R.string.dialog_authorization_twitter_message);
-	// final String DIALOG_BUTTON_OK = resources
-	// .getString(R.string.dialog_authorization_twitter_authorization);
-	// final String DIALOG_BUTTON_CANCEL = resources
-	// .getString(R.string.dialog_authorization_twitter_cancel);
-	//
-	// // CustomerAlertDialogActivityを呼び出す
-	// Intent intent = new Intent();
-	// intent.setClass(context, CustomerAlertDialogActivity.class);
-	// intent.putExtra(CustomerAlertDialogActivity.KEY_TITLE, DIALOG_TITLE);
-	// intent.putExtra(CustomerAlertDialogActivity.KEY_MESSAGE, DIALOG_MESSAGE);
-	// intent.putExtra(CustomerAlertDialogActivity.KEY_BUTTON1,
-	// DIALOG_BUTTON_OK);
-	// intent.putExtra(CustomerAlertDialogActivity.KEY_BUTTON2,
-	// DIALOG_BUTTON_CANCEL);
-	// startActivityForResult(intent, 1);
-	// }
-
 	/**
-	 * twitter認証確認ダイアログを
+	 * twitter認証確認ダイアログを作成して返す
 	 * 
 	 * @param context
 	 * @return
@@ -453,13 +430,10 @@ public class TimerActivity extends Activity {
 		final String DIALOG_BUTTON_CANCEL = resources
 				.getString(R.string.dialog_authorization_twitter_cancel);
 
-		// CustomAlertDialog2 dialog = new CustomAlertDialog2(context,
-		// DIALOG_TITLE, DIALOG_MESSAGE, DIALOG_BUTTON_OK,
-		// DIALOG_BUTTON_CANCEL);
 		CustomAlertDialog dialog = new CustomAlertDialog(context,
 				R.style.CustomDialog);
 		dialog.setTitle(DIALOG_TITLE);
-		dialog.setMessage(DIALOG_MESSAGE);
+		// dialog.setMessage(DIALOG_MESSAGE);
 		dialog.setButton(DIALOG_BUTTON_OK, new Dialog.OnClickListener() {
 			// twitterに認証するがクリックされた
 			@Override
