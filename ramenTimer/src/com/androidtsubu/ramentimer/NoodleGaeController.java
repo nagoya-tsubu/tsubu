@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -23,18 +21,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.InputStreamBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.InputStreamBody;
-import org.apache.http.entity.mime.content.StringBody;
 
 import twitter4j.TwitterException;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -48,9 +45,9 @@ import android.util.Log;
  */
 public class NoodleGaeController {
 	/** Google App Engine のアドレス */
-//	private static String address = "http://ramentimer.appspot.com/";
-	//debug用
-	private static String address = "http://3.ramentimer.appspot.com/";
+	private static String address = "http://ramentimer.appspot.com/";
+	// debug用
+	// private static String address = "http://3.ramentimer.appspot.com/";
 	/** 該当JANコードの商品がありません */
 	private static final int NOT_FOUND = 404;
 	/** すでに該当JANコードの商品があります */
@@ -151,23 +148,24 @@ public class NoodleGaeController {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * GAEからのエラー内容をJASON形式から取り出す
+	 * 
 	 * @param string
 	 * @return
 	 */
-	private String getErrorMessage(String string){
+	private String getErrorMessage(String string) {
 		try {
 			JSONObject jsonObject = new JSONObject(string);
-			String message = jsonObject.getString("message"); 
+			String message = jsonObject.getString("message");
 			return message;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "";
-		
+
 	}
 
 	/**
@@ -235,8 +233,11 @@ public class NoodleGaeController {
 					"boilTime",
 					new StringBody(Integer.toString(noodleMaster
 							.getTimerLimit())));
-			//twitterID
-			entity.addPart("twitterId", new StringBody(Long.toString(TwitterManager.getInstance().getTwitterId(context))));
+			// twitterID
+			entity.addPart(
+					"twitterId",
+					new StringBody(Long.toString(TwitterManager.getInstance()
+							.getTwitterId(context))));
 			imageInputStream = createImageInputStream(noodleMaster.getImage());
 			// イメージ画像
 			entity.addPart("image", new InputStreamBody(imageInputStream,
@@ -257,16 +258,16 @@ public class NoodleGaeController {
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 			}
-//			if (statusCode == DUPLICATE) {
-//			// 重複エラーを返す
-//			throw new DuplexNoodleMasterException();
-//		}
-		if (statusCode >= 400) {
-			// 400以上の場合はエラーなのでExceptionを投げる。エラー内容はGAEからのもどってきた内容を使用する
-			throw new GaeException(getErrorMessage(builder.toString()));
-		}
+			// if (statusCode == DUPLICATE) {
+			// // 重複エラーを返す
+			// throw new DuplexNoodleMasterException();
+			// }
+			if (statusCode >= 400) {
+				// 400以上の場合はエラーなのでExceptionを投げる。エラー内容はGAEからのもどってきた内容を使用する
+				throw new GaeException(getErrorMessage(builder.toString()));
+			}
 			System.out.println(builder.toString());
-		} catch(TwitterException e){
+		} catch (TwitterException e) {
 			throw new GaeException(e);
 		} catch (UnsupportedEncodingException exception) {
 			throw new GaeException(exception);
@@ -382,7 +383,7 @@ public class NoodleGaeController {
 			while ((line = reader.readLine()) != null) {
 				builder.append(line);
 			}
-			
+
 			// 正常な結果が返ってきたので商品マスタを生成する
 			return Integer.parseInt(builder.toString());
 		} catch (ClientProtocolException e) {
@@ -404,13 +405,14 @@ public class NoodleGaeController {
 			}
 		}
 	}
-	
+
 	/**
 	 * 名称の部分一致で商品マスタを返す
+	 * 
 	 * @param name
 	 * @return
 	 */
-	public List<NoodleMaster> searchNoodleMaster(String name){
+	public List<NoodleMaster> searchNoodleMaster(String name) {
 		return null;
 	}
 
