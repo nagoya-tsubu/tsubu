@@ -43,7 +43,7 @@
 			android:configChanges="orientation|keyboardHidden" />
 		<activity 
 		    android:name="AuthorizationActivity" 
-		    android:screenOrientation="portrait">
+		    android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation">
 		</activity>
 		<activity 
 		    android:configChanges="keyboardHidden|orientation"
