@@ -43,20 +43,25 @@ public class PlayActivity extends BaseActivity {
 
 			switch (msg.what) {
 			case MSG_REFRESH:
+				Log.d("OnamaeNaani::PlayActivity", "MSG_REFRESH");
 				refresh();
 				break;
 			case MSG_ACTIVE:
+				Log.d("OnamaeNaani::PlayActivity", "MSG_ACTIVE");
 				isActive = true;
 				break;
 			case MSG_SHOW_ANIMAL:
+				Log.d("OnamaeNaani::PlayActivity", "MSG_SHOW_ANIMAL");
 				isActive = false;
 				showAnimal((ViewHolder) msg.obj);
 				break;
 			case MSG_GO_ANIMAL_ACTIVITY:
+				Log.d("OnamaeNaani::PlayActivity", "MSG_GO_ANIMAL_ACTIVITY");
 				startAnimalActivity(msg.arg1);
 				break;
 
 			default:
+				Log.d("OnamaeNaani::PlayActivity", "DEFAULT");
 				isActive = false;
 				mHandler.sendEmptyMessageDelayed(MSG_ACTIVE,
 						OnamaeAnimUtil.SHABON_DURATION - 2000);
@@ -95,6 +100,7 @@ public class PlayActivity extends BaseActivity {
 		@Override
 		public synchronized void onClick(View v) {
 			if (isActive) {
+				Log.d("OnamaeNaani::onClick", "isActive == true");
 				ViewHolder shabon = (ViewHolder) v.getTag();
 				removeMessages();
 				shabon.mShabon.clearAnimation();
@@ -111,11 +117,14 @@ public class PlayActivity extends BaseActivity {
 					mHandler.sendMessage(msg);
 					return;
 				} else {
+					isActive = false;
 					vf.setDisplayedChild(IMG_SHABONX);
 					Message msg = mHandler.obtainMessage(MSG_SHOW_ANIMAL,
 							shabon);
 					mHandler.sendMessageDelayed(msg, SHOW_ANIMAL_OFFSET);
 				}
+			} else {
+				Log.d("OnamaeNaani::onClick", "isActive == false");
 			}
 		}
 	};
