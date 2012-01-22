@@ -286,7 +286,7 @@ public class TimerActivity extends Activity {
 
 		// 呼び出し元を保持する
 		Intent requestIntent = getIntent();
-		requestCode = requestIntent.getIntExtra(RequestCode.KEY_RESUEST_CODE,
+		requestCode = requestIntent.getIntExtra(RequestCode.KEY_REQUEST_CODE,
 				-1);
 		// 呼び出し元のラーメン情報を取得する
 		noodleMaster = (NoodleMaster) requestIntent
@@ -804,7 +804,7 @@ public class TimerActivity extends Activity {
 	 */
 	public void onCreateButtonClick(View v) {
 		Intent intent = new Intent(TimerActivity.this, CreateActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.READER2CREATE.ordinal());
 		intent.putExtra(KEY_NOODLE_MASTER, noodleMaster);
 		startActivity(intent);
@@ -821,7 +821,7 @@ public class TimerActivity extends Activity {
 	 */
 	public void onReaderButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION_READER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
@@ -832,7 +832,7 @@ public class TimerActivity extends Activity {
 	 */
 	public void onSearchButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION_SEARCH.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();

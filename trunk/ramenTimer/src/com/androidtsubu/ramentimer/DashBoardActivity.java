@@ -1,16 +1,7 @@
 package com.androidtsubu.ramentimer;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -18,8 +9,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -186,7 +175,7 @@ public class DashBoardActivity extends Activity {
 	 */
 	private void gotoReaderActivity(int requestCode) {
 		Intent intent = new Intent(this, ReaderActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 
@@ -196,7 +185,7 @@ public class DashBoardActivity extends Activity {
 	private void gotoHistoryActivity() {
 		Intent intent = new Intent(this, HistoryActivity.class);
 		int requestCode = RequestCode.DASHBORAD2HISTORY.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 
@@ -206,7 +195,7 @@ public class DashBoardActivity extends Activity {
 	private void gotoRSerchActivity() {
 		Intent intent = new Intent(this, RamenSearchActivity.class);
 		int requestCode = RequestCode.DASHBOARD2RAMENSEARCH.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 
@@ -216,7 +205,7 @@ public class DashBoardActivity extends Activity {
 	private void gotoFavoriteActivity() {
 		Intent intent = new Intent(this, FavoriteActivity.class);
 		int requestCode = RequestCode.DASHBOARD2FAVORITE.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 
@@ -226,7 +215,7 @@ public class DashBoardActivity extends Activity {
 	private void gotoTimerActivity() {
 		Intent intent = new Intent(this, TimerActivity.class);
 		int requestCode = RequestCode.DASHBORAD2TIMER.ordinal();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE, requestCode);
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE, requestCode);
 		startActivityForResult(intent, requestCode);
 	}
 
@@ -271,9 +260,12 @@ public class DashBoardActivity extends Activity {
 				return;
 			}
 			// 戻り値のREQUEST_CODEに応じてActivityを選択する
-			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+			int rtn_code = intent.getIntExtra(RequestCode.KEY_REQUEST_CODE, -1);
 			// エラー処理
 			if (rtn_code == -1) {
+				return;
+			}
+			if (rtn_code >= RequestCode.values().length) {
 				return;
 			}
 			// アクションバーが他のActivityで押さたときはDashboardまで戻って、他のActivityを実行する
@@ -297,7 +289,11 @@ public class DashBoardActivity extends Activity {
 				return;
 			}
 			// @tan1234jp追加
-			int rtn_code = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+			// int rtn_code = intent.getIntExtra(RequestCode.KEY_REQUEST_CODE,
+			// -1);
+			// エラーコードのKEYから返り値をもらう
+			int rtn_code = intent.getIntExtra(ReaderActivity.KEY_ERROR_RESID,
+					-1);
 			// エラー処理
 			if (-1 == rtn_code) {
 				return;
@@ -344,18 +340,18 @@ public class DashBoardActivity extends Activity {
 	 * @param view
 	 */
 	public void onClickTitle(View view) {
-		try {
-			NoodleMaster master = new NoodleMaster("9999999999", "てすてすラーメン", "", 180);
-			TwitterManager.getInstance().post(this, master);
-			Toast.makeText(this, "つぶやきました！", Toast.LENGTH_LONG).show();
-		} catch (TwitterException e) {
-			Log.e(DashBoardActivity.class.getName(), e.getMessage());
-			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-		}catch(Exception e2){
-			Log.e(DashBoardActivity.class.getName(), e2.getMessage());
-			Toast.makeText(this, e2.getMessage(), Toast.LENGTH_LONG).show();			
-		}
-		
+		// try {
+		// NoodleMaster master = new NoodleMaster("9999999999", "てすてすラーメン",
+		// "", 180);
+		// TwitterManager.getInstance().post(this, master);
+		// Toast.makeText(this, "つぶやきました！", Toast.LENGTH_LONG).show();
+		// } catch (TwitterException e) {
+		// Log.e(DashBoardActivity.class.getName(), e.getMessage());
+		// Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+		// } catch (Exception e2) {
+		// Log.e(DashBoardActivity.class.getName(), e2.getMessage());
+		// Toast.makeText(this, e2.getMessage(), Toast.LENGTH_LONG).show();
+		// }
 	}
 
 	/**

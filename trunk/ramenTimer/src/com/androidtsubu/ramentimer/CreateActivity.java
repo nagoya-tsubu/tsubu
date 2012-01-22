@@ -117,7 +117,7 @@ public class CreateActivity extends Activity {
 
 		// リクエストコードを取得
 		Intent intent = getIntent();
-		requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
+		requestCode = intent.getIntExtra(RequestCode.KEY_REQUEST_CODE, -1);
 		// リクエストコードがセットされてない場合は終了
 		if (requestCode == -1)
 			finish();
@@ -416,7 +416,7 @@ public class CreateActivity extends Activity {
 	 */
 	public void onHistoryButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION_HISTORY.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
@@ -429,7 +429,7 @@ public class CreateActivity extends Activity {
 	 */
 	public void onTimerButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION＿TIMER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
@@ -588,7 +588,7 @@ public class CreateActivity extends Activity {
 	 */
 	private void callTimerActivity() {
 		Intent intent = new Intent(this, TimerActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.CREATE2TIMER.ordinal());
 		intent.putExtra(KEY_NOODLE_MASTER, noodleMaster);
 		startActivityForResult(intent, RequestCode.CREATE2TIMER.ordinal());
