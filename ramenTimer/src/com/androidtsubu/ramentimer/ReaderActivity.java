@@ -7,8 +7,8 @@
 package com.androidtsubu.ramentimer;
 
 import java.sql.SQLException;
+
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,17 +46,18 @@ public class ReaderActivity extends Activity {
 	private ImageView progressIcon = null;
 	// エラーコード(エラー文字列リソース値)
 	private int _errorResId = -1;
-	/**商品検索からやってきたフラグ*/
+	/** 商品検索からやってきたフラグ */
 	private boolean _fromRamenSearch = false;
-	
+
 	// ReaderActivityの状態
 	private static final int EXECUTE_QR_CODE_SCANNER = 100; // QRコードスキャナの実行
 	private static final int DOWNLOAD_QR_CODE_SCANNER = 200; // QRコードスキャナーのダウンロード
 	private static final int RECEIVE_NOODLE_DATA = 300; // ラーメン情報受信
 	private static final int GOTO_NEXT_INTENT = 400; // 次のインテントへ処理を移す
-	
-	//intentでやってくるJANコードのキー
+
+	// intentでやってくるJANコードのキー
 	public static final String KEY_JANCODE = "jancode";
+	public static final String KEY_ERROR_RESID = "KEY_ERROR_RESID";
 
 	/**
 	 * メッセージハンドラーに対する処理
@@ -118,9 +119,10 @@ public class ReaderActivity extends Activity {
 
 		// どのボタンからこのインテントが呼び出されたかを取得する
 		Intent intent = getIntent();
-		_requestCode = intent.getIntExtra(RequestCode.KEY_RESUEST_CODE, -1);
-		if(RequestCode.values()[_requestCode].equals(RequestCode.RAMENSEARCH2READER)){
-			//手入力の商品検索から飛んできた場合はIntentで飛んできたJANコードで商品検索を行う
+		_requestCode = intent.getIntExtra(RequestCode.KEY_REQUEST_CODE, -1);
+		if (RequestCode.values()[_requestCode]
+				.equals(RequestCode.RAMENSEARCH2READER)) {
+			// 手入力の商品検索から飛んできた場合はIntentで飛んできたJANコードで商品検索を行う
 			_janCode = intent.getStringExtra(KEY_JANCODE);
 			_fromRamenSearch = true;
 			_handler.sendEmptyMessage(RECEIVE_NOODLE_DATA);
@@ -131,7 +133,6 @@ public class ReaderActivity extends Activity {
 		_handler.sendEmptyMessage(EXECUTE_QR_CODE_SCANNER);
 	}
 
-	
 	/**
 	 * QRコードスキャナを実行する
 	 */
@@ -195,10 +196,10 @@ public class ReaderActivity extends Activity {
 		default:
 			// Intentをダッシュボードまで戻す。 TimerActivityやCreateActivityから戻ってくる。
 			if (RESULT_OK == resultCode) {
-				setResult(RESULT_OK, intent);					
+				setResult(RESULT_OK, intent);
 			}
 			// 呼び出したインテントが空の場合は、処理を終了する
-			finish(); //by @leibun ここで終了
+			finish(); // by @leibun ここで終了
 			break;
 		}
 
@@ -208,7 +209,7 @@ public class ReaderActivity extends Activity {
 	 * QRコードスキャナーが受信したJANコードを検索キーとして 履歴・GAEから商品情報を取得する
 	 */
 	private void receiveNoodleData() {
-		//問い合わせ用AsyncTaskを起動する
+		// 問い合わせ用AsyncTaskを起動する
 		ReadAsyncTask readAsyncTask = new ReadAsyncTask();
 		readAsyncTask.execute(_janCode);
 	}
@@ -219,37 +220,39 @@ public class ReaderActivity extends Activity {
 	 */
 	private void getQrCodeScanner() {
 
-		//リソースを取得する
+		// リソースを取得する
 		final Resources res = getResources();
-		
+
 		// QRコードをAndroid Marketからダウンロードしてよいか
 		// ダイアログを表示して問い合わせる
-		CustomAlertDialog dialog = new CustomAlertDialog(this, R.style.CustomDialog);
+		CustomAlertDialog dialog = new CustomAlertDialog(this,
+				R.style.CustomDialog);
 		dialog.setIcon(android.R.drawable.ic_dialog_alert);
 		dialog.setTitle(res.getString(R.string.no_qrcode_title));
 		dialog.setMessage(res.getString(R.string.no_qrcode_message));
-		dialog.setButton(res.getString(R.string.dialog_yes), new DialogInterface.OnClickListener() {
+		dialog.setButton(res.getString(R.string.dialog_yes),
+				new DialogInterface.OnClickListener() {
 					// 「はい」押下時は、Android Marketへ飛び、QRコードスキャナーの
 					// ダウンロードページを表示する
 					public void onClick(DialogInterface dialog, int which) {
 						final Intent intent = new Intent(Intent.ACTION_VIEW,
 								Uri.parse("market://search?q=pname:"
 										+ QRCODE_PKG_NAME));
-						try{
-							startActivityForResult(intent, DOWNLOAD_QR_CODE_SCANNER);
-						}catch(ActivityNotFoundException ex){
-							//通常使用ではありえない
+						try {
+							startActivityForResult(intent,
+									DOWNLOAD_QR_CODE_SCANNER);
+						} catch (ActivityNotFoundException ex) {
+							// 通常使用ではありえない
 						}
 					}
 				});
 		dialog.setButton2(res.getString(R.string.dialog_no),
-						new DialogInterface.OnClickListener() {
-							// 「いいえ」押下時は、ダッシュボードに戻る
-							public void onClick(DialogInterface dialog,
-									int which) {
-								finish();
-							}
-						});
+				new DialogInterface.OnClickListener() {
+					// 「いいえ」押下時は、ダッシュボードに戻る
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
 		dialog.show();
 	}
 
@@ -273,9 +276,11 @@ public class ReaderActivity extends Activity {
 		// ※通常はありえない
 		if (null == _noodleMaster) {
 			intent = getIntent();
-			//エラーコードをリクエストコードとして返す
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE, _errorResId);
-			//処理失敗なのでRESULT_CANCELEDをダッシュボードに返す
+			// // エラーコードをリクエストコードとして返す
+			// intent.putExtra(RequestCode.KEY_REQUEST_CODE, _errorResId);
+			// エラーコードをエラーコードして返す
+			intent.putExtra(KEY_ERROR_RESID, _errorResId);
+			// 処理失敗なのでRESULT_CANCELEDをダッシュボードに返す
 			setResult(RESULT_CANCELED, intent);
 			finish();
 			return;
@@ -283,12 +288,13 @@ public class ReaderActivity extends Activity {
 
 		// (1)ダッシュボード→商品読込みもしくは商品検索→商品読込の場合
 		RequestCode requestCode = RequestCode.values()[_requestCode];
-		if (requestCode.equals(RequestCode.DASHBORAD2READER) || requestCode.equals(RequestCode.RAMENSEARCH2READER)) {
+		if (requestCode.equals(RequestCode.DASHBORAD2READER)
+				|| requestCode.equals(RequestCode.RAMENSEARCH2READER)) {
 			// →タイマー画面へ遷移する
 			intent = new Intent(this, TimerActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+			intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 					RequestCode.READER2TIMER.ordinal());
-			//手動検索かどうかを渡す
+			// 手動検索かどうかを渡す
 			intent.putExtra(TimerActivity.KEY_FROMRAMENSEARCH, _fromRamenSearch);
 			_requestCode = RequestCode.READER2TIMER.ordinal();
 		}
@@ -296,7 +302,7 @@ public class ReaderActivity extends Activity {
 		else {
 			// →登録画面へ遷移する
 			intent = new Intent(this, CreateActivity.class);
-			intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+			intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 					RequestCode.READER2CREATE.ordinal());
 			_requestCode = RequestCode.READER2CREATE.ordinal();
 		}
@@ -304,10 +310,11 @@ public class ReaderActivity extends Activity {
 		// NoodleMaster情報もインテントに情報を送る
 		intent.putExtra(KEY_NOODLE_MASTER, _noodleMaster);
 		// インテントを発行する
-		startActivityForResult(intent,_requestCode);
-		//お役ごめん @hideponm
+		startActivityForResult(intent, _requestCode);
+		// お役ごめん @hideponm
 		progressIcon.clearAnimation();
-		//finish();	// 削除 by @leibun ここで終わられるとアクションバーのボタンの動作がダッシュボードに伝わらない onActivityForResultでfinish() 
+		// finish(); // 削除 by @leibun ここで終わられるとアクションバーのボタンの動作がダッシュボードに伝わらない
+		// onActivityForResultでfinish()
 	}
 
 	/**
@@ -356,32 +363,32 @@ public class ReaderActivity extends Activity {
 			} catch (SQLException e) {
 				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
 				errorResId = R.string.sql_local_error;
-//				Toast.makeText(ReaderActivity.this,
-//						"ローカルデータ問い合わせでエラーが発生しました",
-//						Toast.LENGTH_LONG).show();
+				// Toast.makeText(ReaderActivity.this,
+				// "ローカルデータ問い合わせでエラーが発生しました",
+				// Toast.LENGTH_LONG).show();
 				return null;
 			} catch (GaeException e) {
 				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
 				errorResId = R.string.sql_gae_error;
-//				Toast.makeText(ReaderActivity.this,
-//						"サーバー問い合わせでエラーが発生しました",
-//						Toast.LENGTH_LONG).show();
+				// Toast.makeText(ReaderActivity.this,
+				// "サーバー問い合わせでエラーが発生しました",
+				// Toast.LENGTH_LONG).show();
 				return null;
-			} catch(Exception e){
+			} catch (Exception e) {
 				Log.d("ramentimerbug", ExceptionToStringConverter.convert(e));
 				errorResId = R.string.sql_unknown_error;
-//				Toast.makeText(ReaderActivity.this,
-//						"原因不明のエラーが発生しました",
-//						Toast.LENGTH_LONG).show();
+				// Toast.makeText(ReaderActivity.this,
+				// "原因不明のエラーが発生しました",
+				// Toast.LENGTH_LONG).show();
 				return null;
 			}
 
 		}
 
 		protected void onPostExecute(NoodleMaster noodleMaster) {
-			//引数のnoodleMasterがnullの時はDBアクセス時のエラー
-			if(null == noodleMaster) {
-				//エラー文字列リソースを次のインテントへ渡す
+			// 引数のnoodleMasterがnullの時はDBアクセス時のエラー
+			if (null == noodleMaster) {
+				// エラー文字列リソースを次のインテントへ渡す
 				_errorResId = errorResId;
 			} else {
 				_errorResId = -1;

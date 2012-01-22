@@ -1,31 +1,17 @@
 package com.androidtsubu.ramentimer;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import java.sql.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.io.File;
 
 /**
  * SQLiteへの読み書きをするクラスです
@@ -229,8 +215,8 @@ public class NoodleSqlController {
 			}
 			while (cursor.moveToNext()) {
 				NoodleHistory history = createNoodleHistory(cursor);
-				//履歴がきちんと作成できたらリストに追加する
-				if(history != null){
+				// 履歴がきちんと作成できたらリストに追加する
+				if (history != null) {
 					histories.add(history);
 				}
 			}
@@ -390,13 +376,14 @@ public class NoodleSqlController {
 				measuretime = NoodleHistory.getSimpleDateFormat().parse(
 						measuretimeString);
 			} catch (ParseException e) {
-				// 絶対にExceptionは出ない
+				// 絶対にExceptionは出ないがもしでた場合は履歴はないものとする
 				e.printStackTrace();
+				return null;
 			}
 			int boiltime = cursor.getInt(cursor.getColumnIndex("boiltime"));
 			NoodleMaster noodleMaster = getNoodleMaster(jancode);
-			if(noodleMaster == null){
-				//該当する商品マスタがないので履歴に表示しない
+			if (noodleMaster == null) {
+				// 該当する商品マスタがないので履歴に表示しない
 				return null;
 			}
 			return new NoodleHistory(noodleMaster, boiltime, measuretime);

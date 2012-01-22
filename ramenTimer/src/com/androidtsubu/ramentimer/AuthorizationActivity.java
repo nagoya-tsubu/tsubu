@@ -1,23 +1,15 @@
 package com.androidtsubu.ramentimer;
 
-import java.util.Properties;
-
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
-import twitter4j.auth.AuthorizationConfiguration;
-import twitter4j.auth.AuthorizationFactory;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.auth.RequestToken;
-import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -45,7 +37,7 @@ public class AuthorizationActivity extends Activity {
 		setContentView(R.layout.activity_authorization);
 		// Twitterに接続する
 		try {
-			//twitterに接続する
+			// twitterに接続する
 			connectTwitter();
 			WebView webView = (WebView) findViewById(R.id.webViewAuthorization);
 			webView.setWebViewClient(new WebViewClient() {
@@ -56,6 +48,13 @@ public class AuthorizationActivity extends Activity {
 				public void onPageFinished(WebView view, String url) {
 					if (url != null && url.startsWith(CALLBACK_URL)) {
 						String[] urlParameters = url.split("\\?")[1].split("&");
+						if (urlParameters.length <= 1) {
+							// キャンセルしてアプリに戻るをクリックされた
+							setResult(RESULT_CANCELED);
+							finish();
+							return;
+						}
+
 						// OathTokenを得る
 						if (urlParameters[0].startsWith("oauth_token")) {
 							oauthToken = urlParameters[0].split("=")[1];
@@ -66,7 +65,8 @@ public class AuthorizationActivity extends Activity {
 						// OauthVeriferを得る
 						if (urlParameters[0].startsWith("oauth_verifier")) {
 							oauthVerifier = urlParameters[0].split("=")[1];
-						} else if (urlParameters[1].startsWith("oauth_verifier")) {
+						} else if (urlParameters[1]
+								.startsWith("oauth_verifier")) {
 							oauthVerifier = urlParameters[1].split("=")[1];
 						}
 						saveTwitterConnectSetting();
@@ -84,7 +84,8 @@ public class AuthorizationActivity extends Activity {
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(AuthorizationActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+					Toast.makeText(AuthorizationActivity.this, e.getMessage(),
+							Toast.LENGTH_LONG).show();
 					finish();
 				}
 			}, 100);
@@ -98,7 +99,8 @@ public class AuthorizationActivity extends Activity {
 		builder.setOAuthConsumerKey(TwitterManager.CONSUMER_KEY);
 		builder.setOAuthConsumerSecret(TwitterManager.CONSUMER_SECRET);
 		// 認証インスタンスをもらう
-		twitter = new TwitterFactory().getInstance(new OAuthAuthorization(builder.build()));
+		twitter = new TwitterFactory().getInstance(new OAuthAuthorization(
+				builder.build()));
 		// RequestTokenをもらう
 		requestToken = twitter.getOAuthRequestToken(CALLBACK_URL);
 	}
@@ -112,7 +114,8 @@ public class AuthorizationActivity extends Activity {
 			accessToken = twitter.getOAuthAccessToken(requestToken,
 					oauthVerifier);
 			// 連携状態とトークンの書き込み
-			TwitterManager.getInstance().saveAuthorization(this, accessToken.getToken(), accessToken.getTokenSecret());
+			TwitterManager.getInstance().saveAuthorization(this,
+					accessToken.getToken(), accessToken.getTokenSecret());
 			setResult(Activity.RESULT_OK);
 			// 設定おしまい。
 			finish();
@@ -122,7 +125,8 @@ public class AuthorizationActivity extends Activity {
 			handler.postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(AuthorizationActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+					Toast.makeText(AuthorizationActivity.this, e.getMessage(),
+							Toast.LENGTH_LONG).show();
 					finish();
 				}
 			}, 100);

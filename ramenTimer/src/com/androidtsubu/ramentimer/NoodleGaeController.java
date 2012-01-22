@@ -384,8 +384,10 @@ public class NoodleGaeController {
 				builder.append(line);
 			}
 
-			// 正常な結果が返ってきたので商品マスタを生成する
-			return Integer.parseInt(builder.toString());
+			// 正常な結果が返ってきたので商品数を作成する
+			return Integer.parseInt(builder.toString().trim());
+		} catch (NumberFormatException ex) {
+			throw new GaeException(ex);
 		} catch (ClientProtocolException e) {
 			throw new GaeException(e);
 		} catch (SocketTimeoutException e) {

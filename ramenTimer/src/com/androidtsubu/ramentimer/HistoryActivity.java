@@ -1,34 +1,25 @@
 package com.androidtsubu.ramentimer;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.text.TextUtils;
-
 
 public class HistoryActivity extends ListActivity {
 
@@ -37,23 +28,23 @@ public class HistoryActivity extends ListActivity {
 	// タイトルテキストビュー
 	private TextView titleText = null;
 	private NoodleManager manager = null;
-	//データがない場合
+	// データがない場合
 	private TextView emptyHistoryText = null;
 	private SearchKind kind = SearchKind.HISTORY;
-	
-	
+
 	// 履歴情報のリスト
 	private List<NoodleHistory> list = new ArrayList<NoodleHistory>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		this.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.activity_history);
-		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
-		emptyHistoryText = (TextView)findViewById(R.id.TextViewEmptyHistory);
+		searchEdit = (EditText) findViewById(R.id.SearchBarcodeEdit);
+		emptyHistoryText = (TextView) findViewById(R.id.TextViewEmptyHistory);
 		// Viewの取得
-		//searchEdit = (EditText) findViewById(R.id.title_edit);
+		// searchEdit = (EditText) findViewById(R.id.title_edit);
 		titleText = (TextView) findViewById(R.id.title_text);
 		// 履歴の呼び出し
 		manager = new NoodleManager(this);
@@ -62,18 +53,18 @@ public class HistoryActivity extends ListActivity {
 
 	/**
 	 * 検索する
+	 * 
 	 * @param searchString
 	 */
-	private void search(String searchString){
-		//検索Activityを呼び出す
+	private void search(String searchString) {
+		// 検索Activityを呼び出す
 		Intent intent = new Intent();
-		intent.putExtra(SearchActivity.KEY_SEARCH_KIND , kind.ordinal());
+		intent.putExtra(SearchActivity.KEY_SEARCH_KIND, kind.ordinal());
 		intent.putExtra(SearchActivity.KEY_SEARCH_STRING, searchString);
 		intent.setClass(this, SearchActivity.class);
 		startActivityForResult(intent, RequestCode.HISTORY2SEARCH.ordinal());
 	}
-	
-	
+
 	/**
 	 * リストがクリックされた時の動作
 	 */
@@ -87,7 +78,7 @@ public class HistoryActivity extends ListActivity {
 		NoodleMaster nm = nh.getNoodleMaster();
 		// タイマーを起動
 		Intent intent = new Intent(HistoryActivity.this, TimerActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.HISTORY2TIMER.ordinal());
 		intent.putExtra(TimerActivity.KEY_NOODLE_MASTER, nm);
 		// 履歴も渡す @hideponm
@@ -111,9 +102,9 @@ public class HistoryActivity extends ListActivity {
 				finish();
 			}
 		}
-		if(requestCode == RequestCode.HISTORY2SEARCH.ordinal()){
-			if(RESULT_OK == resultCode){
-				//検索結果を取り出す
+		if (requestCode == RequestCode.HISTORY2SEARCH.ordinal()) {
+			if (RESULT_OK == resultCode) {
+				// 検索結果を取り出す
 				list = intent.getParcelableArrayListExtra(kind.getKey());
 				draw();
 			}
@@ -200,7 +191,8 @@ public class HistoryActivity extends ListActivity {
 			// 日付をセット
 			TextView date;
 			date = (TextView) view.findViewById(R.id.date);
-			SimpleDateFormat format = new SimpleDateFormat(getString(R.string.decimalformat));
+			SimpleDateFormat format = new SimpleDateFormat(
+					getString(R.string.decimalformat));
 			date.setText(format.format(item.getMeasureTime()));
 			// 初期値は不可視（GONE）なので見えるように変更
 			date.setVisibility(TextView.VISIBLE);
@@ -225,7 +217,7 @@ public class HistoryActivity extends ListActivity {
 	 */
 	public void onTimerButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION＿TIMER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
@@ -236,15 +228,14 @@ public class HistoryActivity extends ListActivity {
 	 */
 	public void onReaderButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION_READER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
 	/**
-	 * アクションバーの検索ボタンが押されたとき
-	 * これはleibunが作った方のクリックイベント。有効にする時までおいておく
+	 * アクションバーの検索ボタンが押されたとき これはleibunが作った方のクリックイベント。有効にする時までおいておく
 	 */
 	public void onSearchButtonClick(View v) {
 		if (searchEdit.getVisibility() == View.GONE) {
@@ -257,14 +248,13 @@ public class HistoryActivity extends ListActivity {
 			InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		}
-		
 
 	}
-	
+
 	/**
 	 * listを描画する
 	 */
-	private void draw(){
+	private void draw() {
 		if (list != null && list.size() > 0) {
 			getListView().setVisibility(View.VISIBLE);
 			emptyHistoryText.setVisibility(View.GONE);
@@ -274,22 +264,23 @@ public class HistoryActivity extends ListActivity {
 			setListAdapter(adapter);
 			return;
 		}
-		
+
 		getListView().setVisibility(View.GONE);
 		emptyHistoryText.setVisibility(View.VISIBLE);
 	}
-	
+
 	/**
 	 * 検索ボタンが押された
+	 * 
 	 * @param v
 	 */
-	public void onSearchClick(View v){
+	public void onSearchClick(View v) {
 		// ソフトウェアキーボードを非表示にする
 		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		//検索文字列で検索する
+		// 検索文字列で検索する
 		String key = searchEdit.getText().toString();
 		search(key);
 	}
-	
+
 }

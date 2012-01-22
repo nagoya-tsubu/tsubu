@@ -1,18 +1,13 @@
 package com.androidtsubu.ramentimer;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Dialog;
 import android.app.ListActivity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.opengl.Visibility;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class FavoriteActivity extends ListActivity {
 
@@ -32,50 +26,50 @@ public class FavoriteActivity extends ListActivity {
 	EditText searchEdit = null;
 	// タイトルテキストビュー
 	TextView titleText = null;
-	//リストビュー
+	// リストビュー
 	ListView listView;
-	//空っぽ時に表示するTextView
+	// 空っぽ時に表示するTextView
 	TextView emptyFavoriteText;
 	// 登録情報のリスト
 	private List<NoodleMaster> list = new ArrayList<NoodleMaster>();
 	private NoodleManager manager;
 	private SearchKind kind = SearchKind.FAVORITE;
-	
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+		this.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		setContentView(R.layout.activity_favorite);
-		searchEdit = (EditText)findViewById(R.id.SearchBarcodeEdit);
+		searchEdit = (EditText) findViewById(R.id.SearchBarcodeEdit);
 		// Viewの取得
-		//searchEdit = (EditText) findViewById(R.id.title_edit);
+		// searchEdit = (EditText) findViewById(R.id.title_edit);
 		titleText = (TextView) findViewById(R.id.title_text);
-		emptyFavoriteText = (TextView)findViewById(R.id.TextViewEmptyFavorite);
+		emptyFavoriteText = (TextView) findViewById(R.id.TextViewEmptyFavorite);
 
 		// 登録情報の呼び出し
 		manager = new NoodleManager(this);
 		search("");
 	}
-	
+
 	/**
 	 * 検索を開始する
+	 * 
 	 * @param searchString
 	 */
-	private void search(String searchString){
-		//検索Activityを呼び出す
+	private void search(String searchString) {
+		// 検索Activityを呼び出す
 		Intent intent = new Intent();
 		intent.putExtra(SearchActivity.KEY_SEARCH_KIND, kind.ordinal());
 		intent.putExtra(SearchActivity.KEY_SEARCH_STRING, searchString);
-		intent.setClass(this, SearchActivity.class);		
+		intent.setClass(this, SearchActivity.class);
 		startActivityForResult(intent, RequestCode.FAVORITE2SEARCH.ordinal());
 	}
-	
-	
+
 	/**
 	 * 描画する
 	 */
-	private void draw(){
+	private void draw() {
 		if (list != null && list.size() > 0) {
 			getListView().setVisibility(View.VISIBLE);
 			emptyFavoriteText.setVisibility(View.GONE);
@@ -101,7 +95,7 @@ public class FavoriteActivity extends ListActivity {
 		NoodleMaster nm = list.get(position);
 		// タイマーを起動
 		Intent intent = new Intent(this, TimerActivity.class);
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.FAVORITE2TIMER.ordinal());
 		intent.putExtra(TimerActivity.KEY_NOODLE_MASTER, nm);
 		startActivityForResult(intent, RequestCode.FAVORITE2TIMER.ordinal());
@@ -123,9 +117,9 @@ public class FavoriteActivity extends ListActivity {
 				finish();
 			}
 		}
-		if(requestCode == RequestCode.FAVORITE2SEARCH.ordinal()){
-			if(RESULT_OK == resultCode){
-				//検索結果を取得して結果を描画する
+		if (requestCode == RequestCode.FAVORITE2SEARCH.ordinal()) {
+			if (RESULT_OK == resultCode) {
+				// 検索結果を取得して結果を描画する
 				list = intent.getParcelableArrayListExtra(kind.getKey());
 				draw();
 			}
@@ -230,7 +224,7 @@ public class FavoriteActivity extends ListActivity {
 	 */
 	public void onTimerButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION＿TIMER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
@@ -241,16 +235,14 @@ public class FavoriteActivity extends ListActivity {
 	 */
 	public void onReaderButtonClick(View v) {
 		Intent intent = new Intent();
-		intent.putExtra(RequestCode.KEY_RESUEST_CODE,
+		intent.putExtra(RequestCode.KEY_REQUEST_CODE,
 				RequestCode.ACTION_READER.ordinal());
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
 	/**
-	 * アクションバーの検索ボタンが押されたとき
-	 * これはleibunが作ったバージョン。
-	 * 実際使う時まで置いておく
+	 * アクションバーの検索ボタンが押されたとき これはleibunが作ったバージョン。 実際使う時まで置いておく
 	 */
 	public void onSearchButtonClick(View v) {
 		if (searchEdit.getVisibility() == View.GONE) {
@@ -264,19 +256,14 @@ public class FavoriteActivity extends ListActivity {
 			inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 		}
 	}
-	
-	public void onSearchClick(View v){
+
+	public void onSearchClick(View v) {
 		// ソフトウェアキーボードを非表示にする
 		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-		//検索文字列で検索する
+		// 検索文字列で検索する
 		String key = searchEdit.getText().toString();
 		search(key);
 	}
-	
-
-	
-	
-
 
 }
