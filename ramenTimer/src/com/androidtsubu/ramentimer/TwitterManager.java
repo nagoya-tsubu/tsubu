@@ -80,9 +80,12 @@ public class TwitterManager {
 		Twitter twitter = getTwitter(context);
 		StringBuilder buf = new StringBuilder(".@");
 		buf.append(twitter.getScreenName());
-		buf.append("がみんなのラーメンタイマーに「");
+		buf.append(" ");
+		buf.append(context.getString(R.string.twitter_post_message1));
+		buf.append(" ");
 		buf.append(master.getName());
-		buf.append("」を登録しました！ #ramentimer");
+		buf.append(" ");
+		buf.append(context.getString(R.string.twitter_post_message2));
 		twitter.updateStatus(buf.toString());
 	}
 
