@@ -21,6 +21,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -137,6 +139,8 @@ public class TimerActivity extends Activity {
 	private boolean fromRamenSerach = false;
 	/** twitter認証がキャンセルされた */
 	private boolean twitterauthorizationcancel = false;
+	/** WakeLock */
+	private WakeLock wakeLock = null;
 
 	private Context getThis() {
 		return this;
@@ -263,7 +267,10 @@ public class TimerActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		// 端末スリープのロック設定を取得する
+		wakeLock = ((PowerManager) getSystemService(Context.POWER_SERVICE))
+				.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK,
+						"PARTIAL_WAKE_LOCK");
 		// ハードウェアキーによる音量設定を有効にする
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -899,10 +906,12 @@ public class TimerActivity extends Activity {
 			// スリープを無効化する
 			getWindow().clearFlags(
 					WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			wakeLock.acquire();
 		} else {
 			// スリープを有効化する
 			getWindow()
 					.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			wakeLock.release();
 		}
 	}
 

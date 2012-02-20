@@ -146,4 +146,8 @@
 	<string name="help_url">http://sites.google.com/site/androidnagoyatsubu/apps/ramentimer_help_en</string>
 	<!-- ラーメンタイマーリストページ URL -->
 	<string name="ramen_list_url">http://ramentimer.appspot.com/</string>
+	<!-- twitterにポストする文字列 -->
+	<string name="twitter_post_message1">has registered [</string>
+	<string name="twitter_post_message2">] with Social Noodle Timer. #ramentimer</string>
+	    	
 </resources>
