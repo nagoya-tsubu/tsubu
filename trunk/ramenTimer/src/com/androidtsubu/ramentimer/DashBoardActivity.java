@@ -52,7 +52,7 @@ public class DashBoardActivity extends Activity {
 			PackageInfo packageInfo = getPackageManager().getPackageInfo(
 					packegeName, PackageManager.GET_META_DATA);
 			TextView textView = (TextView) findViewById(id.ramen_version);
-			textView.setText(packageInfo.versionName
+			textView.setText(packageInfo.versionName + " "
 					+ getString(R.string.dashboard_versionname_hai));
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
